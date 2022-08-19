@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Grid x:Name="self"
+      xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+      x:Class="Maui.DataGrid.DataGrid"
+      Padding="0"
+      RowSpacing="0">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <local:DataGridRowTemplateSelector x:Key="RowTemplateSelector" />
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" x:Name="_headerView" RowSpacing="0">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <!--Default Header Style-->
+                <Style x:Key="HeaderDefaultStyle" TargetType="Label">
+                    <Setter Property="FontAttributes" Value="Bold" />
+                    <Setter Property="HorizontalOptions" Value="Center" />
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="TextColor" Value="Black" />
+                    <Setter Property="LineBreakMode" Value="WordWrap" />
+                </Style>
+                <Style TargetType="Grid">
+                    <Setter Property="BackgroundColor" Value="{Binding HeaderBackground,Source={x:Reference self}}" />
+                </Style>
+                <Style x:Key="ImageStyleBase" TargetType="Image">
+                    <Setter Property="Aspect" Value="AspectFill" />
+                    <Setter Property="VerticalOptions" Value="Center" />
+                    <Setter Property="HorizontalOptions" Value="Center" />
+                    <Setter Property="HeightRequest" Value="5" />
+                    <Setter Property="WidthRequest" Value="9" />
+                    <Setter Property="Margin" Value="0,0,4,0" />
+                </Style>
+                <Style x:Key="AscendingIconStyle" TargetType="Image" BasedOn="{StaticResource ImageStyleBase}">
+                    <Setter Property="Source" Value="{Binding AscendingIcon, Source={x:Reference self}}" />
+                </Style>
+                <Style x:Key="DescendingIconStyle" TargetType="Image" BasedOn="{StaticResource ImageStyleBase}">
+                    <Setter Property="Source" Value="{Binding DescendingIcon, Source={x:Reference self}}" />
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+    </Grid>
+    <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2">
+        <CollectionView x:Name="_collectionView" ItemTemplate="{StaticResource RowTemplateSelector}" SelectionMode="Single"/>
+    </RefreshView>
+
+</Grid>
