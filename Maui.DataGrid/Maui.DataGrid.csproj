@@ -25,6 +25,9 @@
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<RepositoryType>git</RepositoryType>
 		<IncludeSymbols>False</IncludeSymbols>
+		<PackageId>akgul.Maui.DataGrid</PackageId>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	</PropertyGroup>
 
 	<ItemGroup>
