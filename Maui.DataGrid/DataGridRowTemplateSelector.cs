@@ -1,6 +1,6 @@
 ﻿namespace Maui.DataGrid;
 
-internal class DataGridRowTemplateSelector : DataTemplateSelector
+public class DataGridRowTemplateSelector : DataTemplateSelector
 {
     private static DataTemplate _dataGridRowTemplate;
 
