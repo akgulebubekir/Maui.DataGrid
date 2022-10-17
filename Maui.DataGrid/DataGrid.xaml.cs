@@ -13,10 +13,10 @@ public partial class DataGrid
     private readonly Dictionary<int, SortingOrder> _sortingOrders;
     public event EventHandler Refreshing;
     public event EventHandler<SelectionChangedEventArgs> ItemSelected;
-  
+
     #region ctor
 
-  public DataGrid()
+    public DataGrid()
     {
         InitializeComponent();
 
@@ -40,7 +40,7 @@ public partial class DataGrid
     }
 
     #endregion
-  
+
     #region Sorting methods
 
     internal void SortItems(SortData sortData)
@@ -213,7 +213,11 @@ public partial class DataGrid
                     collectionChanged.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
                 }
 
-                if (n != null)
+                if (n == null)
+                {
+                    self.InternalItems = null;
+                }
+                else
                 {
                     if (n is INotifyCollectionChanged changed)
                     {
