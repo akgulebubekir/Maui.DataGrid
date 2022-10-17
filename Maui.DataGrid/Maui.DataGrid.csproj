@@ -28,6 +28,9 @@
 		<PackageId>akgul.Maui.DataGrid</PackageId>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AssemblyVersion>1.1.0.0</AssemblyVersion>
+		<Version>1.0.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -38,6 +41,13 @@
 	<ItemGroup>
 	  <EmbeddedResource Include="down.png" />
 	  <EmbeddedResource Include="up.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="DataGrid.xaml">
