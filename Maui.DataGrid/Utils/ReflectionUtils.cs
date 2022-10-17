@@ -2,7 +2,7 @@
 
 namespace Maui.DataGrid.Utils;
 
-public static class ReflectionUtils
+internal static class ReflectionUtils
 {
     private const char IndexBeginOp = '[';
     private const char IndexEndOp = ']';

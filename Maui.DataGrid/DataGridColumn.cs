@@ -2,6 +2,9 @@
 
 namespace Maui.DataGrid;
 
+/// <summary>
+/// Specifies each column of the DataGrid.
+/// </summary>
 public class DataGridColumn : BindableObject, IDefinition
 {
     public DataGridColumn()
@@ -68,41 +71,69 @@ public class DataGridColumn : BindableObject, IDefinition
                 }
             });
 
-  #endregion
+    #endregion
 
-  #region properties
+    #region properties
 
-  [TypeConverter(typeof(GridLengthTypeConverter))]
-  public GridLength Width
+    /// <summary>
+    /// Width of the column. Like Grid, you can use <code>Absolute, star, Auto</code> as unit.
+    /// </summary>
+    [TypeConverter(typeof(GridLengthTypeConverter))]
+    public GridLength Width
     {
         get => (GridLength)GetValue(WidthProperty);
         set => SetValue(WidthProperty, value);
     }
 
+    /// <summary>
+    /// Column title
+    /// </summary>
     public string Title
     {
         get => (string)GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
 
+    /// <summary>
+    /// Formatted title for column
+    /// <example>
+    /// <code>
+    ///  &lt;DataGridColumn.FormattedTitle &gt;
+    ///     &lt;FormattedString &gt;
+    ///       &lt;Span Text = "Home" TextColor="Black" FontSize="13" FontAttributes="Bold" / &gt;
+    ///       &lt;Span Text = " (win-loose)" TextColor="#333333" FontSize="11" / &gt;
+    ///     &lt;/FormattedString &gt;
+    ///  &lt;/DataGridColumn.FormattedTitle &gt;
+    /// </code>
+    /// </example>
+    /// </summary>
     public FormattedString FormattedTitle
     {
         get => (string)GetValue(FormattedTitleProperty);
         set => SetValue(FormattedTitleProperty, value);
     }
 
+    /// <summary>
+    /// Property name to bind in the object
+    /// </summary>
     public string PropertyName
     {
         get => (string)GetValue(PropertyNameProperty);
         set => SetValue(PropertyNameProperty, value);
     }
 
+    /// <summary>
+    /// String format for the cell
+    /// </summary>
     public string StringFormat
     {
         get => (string)GetValue(StringFormatProperty);
         set => SetValue(StringFormatProperty, value);
     }
 
+    /// <summary>
+    /// Cell template. Default value is  <c>Label</c> with binding <code>PropertyName</code>
+    /// </summary>
     public DataTemplate CellTemplate
     {
         get => (DataTemplate)GetValue(CellTemplateProperty);
@@ -112,24 +143,36 @@ public class DataGridColumn : BindableObject, IDefinition
     internal Image SortingIcon { get; set; }
     internal Label HeaderLabel { get; set; }
 
+    /// <summary>
+    /// Horizontal alignment of the cell content 
+    /// </summary>
     public LayoutOptions HorizontalContentAlignment
     {
         get => (LayoutOptions)GetValue(HorizontalContentAlignmentProperty);
         set => SetValue(HorizontalContentAlignmentProperty, value);
     }
 
+    /// <summary>
+    /// Vertical alignment of the cell content 
+    /// </summary>
     public LayoutOptions VerticalContentAlignment
     {
         get => (LayoutOptions)GetValue(VerticalContentAlignmentProperty);
         set => SetValue(VerticalContentAlignmentProperty, value);
     }
 
+    /// <summary>
+    /// Defines if the column is sortable. Default is true
+    /// </summary>
     public bool SortingEnabled
     {
         get => (bool)GetValue(SortingEnabledProperty);
         set => SetValue(SortingEnabledProperty, value);
     }
 
+    /// <summary>
+    /// Label Style of the header. <c>TargetType</c> must be Label. 
+    /// </summary>
     public Style HeaderLabelStyle
     {
         get => (Style)GetValue(HeaderLabelStyleProperty);

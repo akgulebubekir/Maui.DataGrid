@@ -7,6 +7,9 @@ using Font = Microsoft.Maui.Font;
 
 namespace Maui.DataGrid;
 
+/// <summary>
+/// DataGrid component for Maui
+/// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
@@ -122,6 +125,12 @@ public partial class DataGrid
 
     #region Methods
 
+    /// <summary>
+    /// Scrolls to the row
+    /// </summary>
+    /// <param name="item">Item to scroll</param>
+    /// <param name="position">Position of the row in screen</param>
+    /// <param name="animated">animated</param>
     public void ScrollTo(object item, ScrollToPosition position, bool animated = true)
     {
         _collectionView.ScrollTo(item, position: position, animate: animated);
@@ -424,36 +433,57 @@ public partial class DataGrid
 
     #region Properties
 
+    /// <summary>
+    /// Selected Row color
+    /// </summary>
     public Color ActiveRowColor
     {
         get => (Color)GetValue(ActiveRowColorProperty);
         set => SetValue(ActiveRowColorProperty, value);
     }
 
+    /// <summary>
+    /// BackgroundColor of the column header
+    /// Default value is White
+    /// </summary>
     public Color HeaderBackground
     {
         get => (Color)GetValue(HeaderBackgroundProperty);
         set => SetValue(HeaderBackgroundProperty, value);
     }
 
+    /// <summary>
+    /// Border color
+    /// Default Value is Black
+    /// </summary>
     public Color BorderColor
     {
         get => (Color)GetValue(BorderColorProperty);
         set => SetValue(BorderColorProperty, value);
     }
 
+    /// <summary>
+    /// Background color of the rows. It repeats colors consecutively for rows.
+    /// </summary>
     public IColorProvider RowsBackgroundColorPalette
     {
         get => (IColorProvider)GetValue(RowsBackgroundColorPaletteProperty);
         set => SetValue(RowsBackgroundColorPaletteProperty, value);
     }
 
+
+    /// <summary>
+    /// Text color of the rows. It repeats colors consecutively for rows.
+    /// </summary>
     public IColorProvider RowsTextColorPalette
     {
         get => (IColorProvider)GetValue(RowsTextColorPaletteProperty);
         set => SetValue(RowsTextColorPaletteProperty, value);
     }
 
+    /// <summary>
+    /// ItemsSource of the DataGrid
+    /// </summary>
     public IEnumerable ItemsSource
     {
         get => (IEnumerable)GetValue(ItemsSourceProperty);
@@ -480,114 +510,179 @@ public partial class DataGrid
         }
     }
 
+    /// <summary>
+    /// Columns
+    /// </summary>
     public ColumnCollection Columns
     {
         get => (ColumnCollection)GetValue(ColumnsProperty);
         set => SetValue(ColumnsProperty, value);
     }
 
+    /// <summary>
+    /// Font size of the cells.
+    /// It does not sets header font size. Use <c>HeaderLabelStyle</c> to set header font size.
+    /// </summary>
     public double FontSize
     {
         get => (double)GetValue(FontSizeProperty);
         set => SetValue(FontSizeProperty, value);
     }
 
+    /// <summary>
+    /// Sets the font family.
+    /// It does not sets header font family. Use <c>HeaderLabelStyle</c> to set header font size.
+    /// 
+    /// </summary>
     public string FontFamily
     {
         get => (string)GetValue(FontFamilyProperty);
         set => SetValue(FontFamilyProperty, value);
     }
 
+    /// <summary>
+    /// Sets the row height 
+    /// </summary>
     public int RowHeight
     {
         get => (int)GetValue(RowHeightProperty);
         set => SetValue(RowHeightProperty, value);
     }
 
+    /// <summary>
+    /// Sets header height
+    /// </summary>
     public int HeaderHeight
     {
         get => (int)GetValue(HeaderHeightProperty);
         set => SetValue(HeaderHeightProperty, value);
     }
 
+    /// <summary>
+    /// Determines if the grid is sortable. Default value is true.
+    /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property
+    /// </summary>
     public bool IsSortable
     {
         get => (bool)GetValue(IsSortableProperty);
         set => SetValue(IsSortableProperty, value);
     }
 
+    /// <summary>
+    /// Enables selection in dataGrid. Default value is True
+    /// </summary>
     public bool SelectionEnabled
     {
         get => (bool)GetValue(SelectionEnabledProperty);
         set => SetValue(SelectionEnabledProperty, value);
     }
 
+    /// <summary>
+    /// Selected item
+    /// </summary>
     public object SelectedItem
     {
         get => GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
     }
 
+    /// <summary>
+    /// Executes the command when refreshing via pull
+    /// </summary>
     public ICommand PullToRefreshCommand
     {
         get => (ICommand)GetValue(PullToRefreshCommandProperty);
         set => SetValue(PullToRefreshCommandProperty, value);
     }
 
+    /// <summary>
+    /// Displays an ActivityIndicator when is refreshing
+    /// </summary>
     public bool IsRefreshing
     {
         get => (bool)GetValue(IsRefreshingProperty);
         set => SetValue(IsRefreshingProperty, value);
     }
 
+    /// <summary>
+    /// Border thickness for header &amp; each cell
+    /// </summary>
     public Thickness BorderThickness
     {
         get => (Thickness)GetValue(BorderThicknessProperty);
         set => SetValue(BorderThicknessProperty, value);
     }
 
+    /// <summary>
+    /// Determines to show the borders of header cells.
+    /// Default value is <code>true</code>
+    /// </summary>
     public bool HeaderBordersVisible
     {
         get => (bool)GetValue(HeaderBordersVisibleProperty);
         set => SetValue(HeaderBordersVisibleProperty, value);
     }
 
+    /// <summary>
+    /// Column index and sorting order for the DataGrid
+    /// </summary>
     public SortData SortedColumnIndex
     {
         get => (SortData)GetValue(SortedColumnIndexProperty);
         set => SetValue(SortedColumnIndexProperty, value);
     }
 
+    /// <summary>
+    /// Style of the header label.
+    /// Style's <c>TargetType</c> must be Label. 
+    /// </summary>
     public Style HeaderLabelStyle
     {
         get => (Style)GetValue(HeaderLabelStyleProperty);
         set => SetValue(HeaderLabelStyleProperty, value);
     }
 
+    /// <summary>
+    /// Ascending icon source 
+    /// </summary>
     public ImageSource AscendingIcon
     {
         get => (ImageSource)GetValue(AscendingIconProperty);
         set => SetValue(AscendingIconProperty, value);
     }
 
+    /// <summary>
+    /// Descending icon source
+    /// </summary>
     public ImageSource DescendingIcon
     {
         get => (ImageSource)GetValue(DescendingIconProperty);
         set => SetValue(DescendingIconProperty, value);
     }
 
+    /// <summary>
+    /// Style of the ascending icon
+    /// Style's <c>TargetType</c> must be Image. 
+    /// </summary>
     public Style AscendingIconStyle
     {
         get => (Style)GetValue(AscendingIconStyleProperty);
         set => SetValue(AscendingIconStyleProperty, value);
     }
 
+    /// <summary>
+    /// Style of the descending icon
+    /// Style"s <c>TargetType</c> must be Image. 
+    /// </summary>
     public Style DescendingIconStyle
     {
         get => (Style)GetValue(DescendingIconStyleProperty);
         set => SetValue(DescendingIconStyleProperty, value);
     }
 
+    /// <summary>
+    /// View to show when there is no data to display
+    /// </summary>
     public View NoDataView
     {
         get => (View)GetValue(NoDataViewProperty);
