@@ -73,8 +73,8 @@ public partial class DataGrid
             : items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
 
         column.SortingIcon.Style = order == SortingOrder.Descendant
-            ? AscendingIconStyle ?? (Style)_headerView.Resources["DescendingIconStyle"]
-            : DescendingIconStyle ?? (Style)_headerView.Resources["AscendingIconStyle"];
+            ? DescendingIconStyle ?? (Style)_headerView.Resources["DescendingIconStyle"]
+            : AscendingIconStyle ?? (Style)_headerView.Resources["AscendingIconStyle"];
 
         //Support DescendingIcon property
         if (column.SortingIcon.Style.Setters.All(x => x.Property != Image.SourceProperty))
