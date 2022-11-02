@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 internal sealed class DataGridRow : Grid
 {
@@ -60,7 +60,13 @@ internal sealed class DataGridRow : Grid
 
         foreach (var col in DataGrid.Columns)
         {
-            ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+            var columnDefinition = new ColumnDefinition { Width = col.Width };
+
+            var widthBinding = new Binding(nameof(col.IsVisible), converter: new ConditionalWidthConverter(), converterParameter: col.Width, source: col);
+            columnDefinition.SetBinding(ColumnDefinition.WidthProperty, widthBinding);
+
+            ColumnDefinitions.Add(columnDefinition);
+
             View cell;
 
             if (col.CellTemplate != null)
@@ -95,6 +101,9 @@ internal sealed class DataGridRow : Grid
                     Content = text
                 };
             }
+
+            var isVisibleBinding = new Binding(nameof(col.IsVisible), source: col);
+            cell.SetBinding(View.IsVisibleProperty, isVisibleBinding);
 
             Children.Add(cell);
             SetColumn((BindableObject)cell, DataGrid.Columns.IndexOf(col));
