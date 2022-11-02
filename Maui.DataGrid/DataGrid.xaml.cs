@@ -769,7 +769,12 @@ public partial class DataGrid
         {
             foreach (var col in Columns)
             {
-                _headerView.ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+                var columnDefinition = new ColumnDefinition();
+
+                var widthBinding = new Binding(nameof(col.IsVisible), converter: new ConditionalWidthConverter(), converterParameter: col.Width, source: col);
+                columnDefinition.SetBinding(ColumnDefinition.WidthProperty, widthBinding);
+
+                _headerView.ColumnDefinitions.Add(columnDefinition);
 
                 var cell = GetHeaderViewForColumn(col);
 

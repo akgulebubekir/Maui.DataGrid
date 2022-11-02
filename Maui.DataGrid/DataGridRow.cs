@@ -60,7 +60,13 @@ internal sealed class DataGridRow : Grid
 
         foreach (var col in DataGrid.Columns)
         {
-            ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+            var columnDefinition = new ColumnDefinition { Width = col.Width };
+
+            var widthBinding = new Binding(nameof(col.IsVisible), converter: new ConditionalWidthConverter(), converterParameter: col.Width, source: col);
+            columnDefinition.SetBinding(ColumnDefinition.WidthProperty, widthBinding);
+
+            ColumnDefinitions.Add(columnDefinition);
+
             View cell;
 
             if (col.CellTemplate != null)
