@@ -776,6 +776,9 @@ public partial class DataGrid
                 _headerView.Children.Add(cell);
                 Grid.SetColumn(cell, Columns.IndexOf(col));
 
+                var isVisibleBinding = new Binding(nameof(col.IsVisible), source: col);
+                cell.SetBinding(View.IsVisibleProperty, isVisibleBinding);
+
                 _sortingOrders.Add(Columns.IndexOf(col), SortingOrder.None);
             }
         }

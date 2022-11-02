@@ -44,6 +44,9 @@ public class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty PropertyNameProperty =
         BindableProperty.Create(nameof(PropertyName), typeof(string), typeof(DataGridColumn));
 
+    public static readonly BindableProperty IsVisibleProperty =
+        BindableProperty.Create(nameof(IsVisible), typeof(bool), typeof(DataGridColumn), true);
+
     public static readonly BindableProperty StringFormatProperty =
         BindableProperty.Create(nameof(StringFormat), typeof(string), typeof(DataGridColumn));
 
@@ -121,6 +124,16 @@ public class DataGridColumn : BindableObject, IDefinition
         get => (string)GetValue(PropertyNameProperty);
         set => SetValue(PropertyNameProperty, value);
     }
+
+    /// <summary>
+    /// Is this column visible?
+    /// </summary>
+    public bool IsVisible
+    {
+        get => (bool)GetValue(IsVisibleProperty);
+        set => SetValue(IsVisibleProperty, value);
+    }
+
 
     /// <summary>
     /// String format for the cell

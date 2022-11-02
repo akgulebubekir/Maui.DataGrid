@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 internal sealed class DataGridRow : Grid
 {
@@ -95,6 +95,9 @@ internal sealed class DataGridRow : Grid
                     Content = text
                 };
             }
+
+            var isVisibleBinding = new Binding(nameof(col.IsVisible), source: col);
+            cell.SetBinding(View.IsVisibleProperty, isVisibleBinding);
 
             Children.Add(cell);
             SetColumn((BindableObject)cell, DataGrid.Columns.IndexOf(col));
