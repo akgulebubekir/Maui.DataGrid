@@ -714,7 +714,7 @@ public partial class DataGrid
 
     #region Header Creation Methods
 
-    private View GetHeaderViewForColumn(DataGridColumn column)
+    private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
@@ -738,16 +738,12 @@ public partial class DataGrid
             {
                 Command = new Command(() =>
                 {
-                    var index = Columns.IndexOf(column);
                     var order = _sortingOrders[index] == SortingOrder.Ascendant
                         ? SortingOrder.Descendant
                         : SortingOrder.Ascendant;
 
-                    if (Columns.ElementAt(index).SortingEnabled)
-                    {
-                        SortedColumnIndex = new SortData(index, order);
-                    }
-                })
+                    SortedColumnIndex = new SortData(index, order);
+                }, () => column.SortingEnabled)
             };
             grid.GestureRecognizers.Add(tgr);
         }
@@ -769,16 +765,18 @@ public partial class DataGrid
 
         if (Columns != null)
         {
-            foreach (var col in Columns)
+            for (int i = 0; i < Columns.Count; i++)
             {
+                DataGridColumn col = Columns[i];
+
                 _headerView.ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
 
                 var cell = GetHeaderViewForColumn(col);
 
                 _headerView.Children.Add(cell);
-                Grid.SetColumn(cell, Columns.IndexOf(col));
+                Grid.SetColumn(cell, i);
 
-                _sortingOrders.Add(Columns.IndexOf(col), SortingOrder.None);
+                _sortingOrders.Add(i, SortingOrder.None);
             }
         }
     }
