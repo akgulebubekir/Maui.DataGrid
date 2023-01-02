@@ -734,18 +734,20 @@ public partial class DataGrid
             grid.Children.Add(column.SortingIcon);
             Grid.SetColumn(column.SortingIcon, 1);
 
-            var tgr = new TapGestureRecognizer();
-            tgr.Tapped += (_, _) =>
+            var tgr = new TapGestureRecognizer
             {
-                var index = Columns.IndexOf(column);
-                var order = _sortingOrders[index] == SortingOrder.Ascendant
-                    ? SortingOrder.Descendant
-                    : SortingOrder.Ascendant;
-
-                if (Columns.ElementAt(index).SortingEnabled)
+                Command = new Command(() =>
                 {
-                    SortedColumnIndex = new SortData(index, order);
-                }
+                    var index = Columns.IndexOf(column);
+                    var order = _sortingOrders[index] == SortingOrder.Ascendant
+                        ? SortingOrder.Descendant
+                        : SortingOrder.Ascendant;
+
+                    if (Columns.ElementAt(index).SortingEnabled)
+                    {
+                        SortedColumnIndex = new SortData(index, order);
+                    }
+                })
             };
             grid.GestureRecognizers.Add(tgr);
         }
