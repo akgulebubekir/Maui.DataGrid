@@ -2,7 +2,7 @@
 
 DataGrid Library for **Maui** Applications.
 
->You can install the package from **NuGet Package Manager**  [(akgul.Maui.DataGrid)](https://www.nuget.org/packages/akgul.Maui.DataGrid/)
+[![NuGet](https://img.shields.io/badge/nuget-v1.2.0-blue.svg?style=plastic)](https://www.nuget.org/packages/akgul.Maui.Datagrid)
 
 > **Supported Platforms**
   >- Android
