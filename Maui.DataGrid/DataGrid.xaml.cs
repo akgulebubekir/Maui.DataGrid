@@ -1,8 +1,8 @@
+using Maui.DataGrid.Utils;
+using Microsoft.Maui.Controls.Shapes;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Reflection;
 using System.Windows.Input;
-using Maui.DataGrid.Utils;
 using Font = Microsoft.Maui.Font;
 
 namespace Maui.DataGrid;
@@ -53,7 +53,6 @@ public partial class DataGrid
             return;
         }
 
-        var items = InternalItems;
         var column = Columns[sortData.Index];
         var order = sortData.Order;
 
@@ -67,27 +66,18 @@ public partial class DataGrid
             throw new InvalidOperationException("Please set 'PropertyName' of the Column");
         }
 
+        var items = InternalItems;
+
         //Sort
-        items = order == SortingOrder.Descendant
-            ? items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList()
-            : items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-
-        column.SortingIcon.Style = order == SortingOrder.Descendant
-            ? DescendingIconStyle ?? (Style)_headerView.Resources["DescendingIconStyle"]
-            : AscendingIconStyle ?? (Style)_headerView.Resources["AscendingIconStyle"];
-
-        //Support DescendingIcon property
-        if (column.SortingIcon.Style.Setters.All(x => x.Property != Image.SourceProperty))
+        if (order == SortingOrder.Ascendant)
         {
-            if (order == SortingOrder.Descendant && DescendingIconProperty.DefaultValue != DescendingIcon)
-            {
-                column.SortingIcon.Source = DescendingIcon;
-            }
-
-            if (order == SortingOrder.Ascendant && AscendingIconProperty.DefaultValue != AscendingIcon)
-            {
-                column.SortingIcon.Source = AscendingIcon;
-            }
+            items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+            column.SortingIcon.RotateTo(0);
+        }
+        else if (order == SortingOrder.Descendant)
+        {
+            items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+            column.SortingIcon.RotateTo(180);
         }
 
         for (var i = 0; i < Columns.Count; i++)
@@ -97,11 +87,6 @@ public partial class DataGrid
                 if (Columns[i].SortingIcon.Style != null)
                 {
                     Columns[i].SortingIcon.Style = null;
-                }
-
-                if (Columns[i].SortingIcon.Source != null)
-                {
-                    Columns[i].SortingIcon.Source = null;
                 }
 
                 _sortingOrders[i] = SortingOrder.None;
@@ -365,56 +350,21 @@ public partial class DataGrid
                 }
             });
 
-
     public static readonly BindableProperty HeaderLabelStyleProperty =
         BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGrid));
 
-    public static readonly BindableProperty AscendingIconProperty =
-        BindableProperty.Create(nameof(AscendingIcon), typeof(ImageSource), typeof(DataGrid),
-            ImageSource.FromResource("Maui.DataGrid.up.png", typeof(DataGrid).GetTypeInfo().Assembly));
+    public static readonly BindableProperty SortIconProperty =
+        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid), null);
 
-    public static readonly BindableProperty DescendingIconProperty =
-        BindableProperty.Create(nameof(DescendingIcon), typeof(ImageSource), typeof(DataGrid),
-            ImageSource.FromResource("Maui.DataGrid.down.png", typeof(DataGrid).GetTypeInfo().Assembly));
-
-    public static readonly BindableProperty DescendingIconStyleProperty =
-        BindableProperty.Create(nameof(DescendingIconStyle), typeof(Style), typeof(DataGrid), null,
+    public static readonly BindableProperty SortIconStyleProperty =
+        BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null,
             propertyChanged: (b, _, n) =>
             {
-                var self = (DataGrid)b;
-                var style = ((Style)n).Setters.FirstOrDefault(x => x.Property == Image.SourceProperty);
-                if (style != null)
+                if (b is DataGrid self && n is Style style)
                 {
-                    if (style.Value is string vs)
+                    foreach (var column in self.Columns)
                     {
-                        self.DescendingIcon = ImageSource.FromFile(vs);
-                    }
-                    else
-                    {
-                        self.DescendingIcon = (ImageSource)style.Value;
-                    }
-                }
-            });
-
-    public static readonly BindableProperty AscendingIconStyleProperty =
-        BindableProperty.Create(nameof(AscendingIconStyle), typeof(Style), typeof(DataGrid), null,
-            coerceValue: (_, v) => v,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (((Style)n).Setters.Any(x => x.Property == Image.SourceProperty))
-                {
-                    var style = ((Style)n).Setters.FirstOrDefault(x => x.Property == Image.SourceProperty);
-                    if (style != null)
-                    {
-                        if (style.Value is string vs)
-                        {
-                            self.AscendingIcon = ImageSource.FromFile(vs);
-                        }
-                        else
-                        {
-                            self.AscendingIcon = (ImageSource)style.Value;
-                        }
+                        column.SortingIcon.Style = style;
                     }
                 }
             });
@@ -643,41 +593,22 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Ascending icon source 
+    /// Sort icon
     /// </summary>
-    public ImageSource AscendingIcon
+    public Polygon SortIcon
     {
-        get => (ImageSource)GetValue(AscendingIconProperty);
-        set => SetValue(AscendingIconProperty, value);
+        get => (Polygon)GetValue(SortIconProperty);
+        set => SetValue(SortIconProperty, value);
     }
 
     /// <summary>
-    /// Descending icon source
+    /// Style of the sort icon
+    /// Style's <c>TargetType</c> must be Polygon.
     /// </summary>
-    public ImageSource DescendingIcon
+    public Style SortIconStyle
     {
-        get => (ImageSource)GetValue(DescendingIconProperty);
-        set => SetValue(DescendingIconProperty, value);
-    }
-
-    /// <summary>
-    /// Style of the ascending icon
-    /// Style's <c>TargetType</c> must be Image. 
-    /// </summary>
-    public Style AscendingIconStyle
-    {
-        get => (Style)GetValue(AscendingIconStyleProperty);
-        set => SetValue(AscendingIconStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Style of the descending icon
-    /// Style"s <c>TargetType</c> must be Image. 
-    /// </summary>
-    public Style DescendingIconStyle
-    {
-        get => (Style)GetValue(DescendingIconStyleProperty);
-        set => SetValue(DescendingIconStyleProperty, value);
+        get => (Style)GetValue(SortIconStyleProperty);
+        set => SetValue(SortIconStyleProperty, value);
     }
 
     /// <summary>
@@ -729,7 +660,7 @@ public partial class DataGrid
 
         if (IsSortable)
         {
-            column.SortingIcon.Style = (Style)_headerView.Resources["ImageStyleBase"];
+            column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
 
             grid.Children.Add(column.SortingIcon);
             Grid.SetColumn(column.SortingIcon, 1);

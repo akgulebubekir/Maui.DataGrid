@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Maui.Controls.Shapes;
+using System.ComponentModel;
 
 namespace Maui.DataGrid;
 
@@ -10,7 +11,7 @@ public class DataGridColumn : BindableObject, IDefinition
     public DataGridColumn()
     {
         HeaderLabel = new Label();
-        SortingIcon = new Image();
+        SortingIcon = new Polygon();
     }
 
     public event EventHandler SizeChanged;
@@ -140,7 +141,7 @@ public class DataGridColumn : BindableObject, IDefinition
         set => SetValue(CellTemplateProperty, value);
     }
 
-    internal Image SortingIcon { get; set; }
+    internal Polygon SortingIcon { get; set; }
     internal Label HeaderLabel { get; set; }
 
     /// <summary>
