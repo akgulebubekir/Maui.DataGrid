@@ -13,11 +13,17 @@ public class DataGridColumn : BindableObject, IDefinition
         SortingIcon = new Image();
     }
 
-    public event EventHandler SizeChanged;
+    readonly WeakEventManager _sizeChangedEventManager = new();
+
+    public event EventHandler SizeChanged
+    {
+        add => _sizeChangedEventManager.AddEventHandler(value);
+        remove => _sizeChangedEventManager.RemoveEventHandler(value);
+    }
 
     private void OnSizeChanged()
     {
-        SizeChanged?.Invoke(this, EventArgs.Empty);
+        _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
     }
 
     #region Bindable Properties
