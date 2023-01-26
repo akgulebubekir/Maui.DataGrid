@@ -1,4 +1,7 @@
-﻿namespace Maui.DataGrid;
+﻿using Maui.DataGrid.Utils;
+using Microsoft.Maui.Controls;
+
+namespace Maui.DataGrid;
 
 internal sealed class DataGridRow : Grid
 {
@@ -74,26 +77,23 @@ internal sealed class DataGridRow : Grid
             }
             else
             {
-                var text = new Label
-                {
-                    TextColor = _textColor,
-                    HorizontalOptions = col.HorizontalContentAlignment,
-                    VerticalOptions = col.VerticalContentAlignment,
-                    LineBreakMode = LineBreakMode.WordWrap
-                };
-                text.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
-                text.SetBinding(Label.FontSizeProperty,
-                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
-                text.SetBinding(Label.FontFamilyProperty,
-                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
-
-                cell = new ContentView
+                cell = new Label
                 {
                     Padding = 0,
+                    TextColor = _textColor,
                     BackgroundColor = _bgColor,
-                    Content = text
+                    VerticalOptions = LayoutOptions.Fill,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
+                    HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
+                    LineBreakMode = LineBreakMode.WordWrap
                 };
+                cell.SetBinding(Label.TextProperty,
+                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+                cell.SetBinding(Label.FontSizeProperty,
+                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
+                cell.SetBinding(Label.FontFamilyProperty,
+                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
 
             Children.Add(cell);
@@ -121,11 +121,14 @@ internal sealed class DataGridRow : Grid
     {
         foreach (var v in Children)
         {
-            var contentView = v as ContentView;
-            contentView.BackgroundColor = color;
-            if (contentView?.Content is Label label)
+            if (v is View view)
             {
-                label.TextColor = _textColor;
+                view.BackgroundColor = color;
+
+                if (view is Label label)
+                {
+                    label.TextColor = _textColor;
+                }
             }
         }
     }
