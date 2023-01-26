@@ -1,5 +1,7 @@
 ﻿namespace Maui.DataGrid;
 
+using Maui.DataGrid.Utils;
+
 internal class DataGridRowTemplateSelector : DataTemplateSelector
 {
     private static DataTemplate _dataGridRowTemplate;
@@ -15,13 +17,13 @@ internal class DataGridRowTemplateSelector : DataTemplateSelector
         var dataGrid = (DataGrid)collectionView.Parent.Parent;
         var items = dataGrid.InternalItems;
 
-        _dataGridRowTemplate.SetValue(DataGridRow.DataGridProperty, dataGrid);
-        _dataGridRowTemplate.SetValue(DataGridRow.RowContextProperty, item);
-        _dataGridRowTemplate.SetValue(VisualElement.HeightRequestProperty, dataGrid.RowHeight);
+        _dataGridRowTemplate.SetValueIfNeeded(DataGridRow.DataGridProperty, dataGrid);
+        _dataGridRowTemplate.SetValueIfNeeded(DataGridRow.RowContextProperty, item);
+        _dataGridRowTemplate.SetValueIfNeeded(VisualElement.HeightRequestProperty, dataGrid.RowHeight);
 
         if (items != null)
         {
-            _dataGridRowTemplate.SetValue(DataGridRow.IndexProperty, items.IndexOf(item));
+            _dataGridRowTemplate.SetValueIfNeeded(DataGridRow.IndexProperty, items.IndexOf(item));
         }
 
         return _dataGridRowTemplate;

@@ -103,7 +103,7 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateBackgroundColor()
     {
-        _hasSelected = DataGrid.SelectedItem == RowContext;
+        _hasSelected = DataGrid?.SelectedItem == RowContext;
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
