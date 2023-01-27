@@ -14,8 +14,22 @@ namespace Maui.DataGrid;
 public partial class DataGrid
 {
     private readonly Dictionary<int, SortingOrder> _sortingOrders;
-    public event EventHandler Refreshing;
-    public event EventHandler<SelectionChangedEventArgs> ItemSelected;
+
+    private readonly WeakEventManager _itemSelectedEventManager = new();
+
+    public event EventHandler<SelectionChangedEventArgs> ItemSelected
+    {
+        add => _itemSelectedEventManager.AddEventHandler(value);
+        remove => _itemSelectedEventManager.RemoveEventHandler(value);
+    }
+
+    private readonly WeakEventManager _refreshingEventManager = new();
+
+    public event EventHandler Refreshing
+    {
+        add => _refreshingEventManager.AddEventHandler(value);
+        remove => _refreshingEventManager.RemoveEventHandler(value);
+    }
 
     #region ctor
 
