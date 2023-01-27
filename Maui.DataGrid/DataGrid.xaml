@@ -9,7 +9,6 @@
       RowSpacing="0">
     <Grid.Resources>
         <ResourceDictionary>
-            <local:DataGridRowTemplateSelector x:Key="RowTemplateSelector" />
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.RowDefinitions>
@@ -48,7 +47,13 @@
         </Grid.Resources>
     </Grid>
     <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2">
-        <CollectionView x:Name="_collectionView" ItemTemplate="{StaticResource RowTemplateSelector}" SelectionMode="Single"/>
+        <CollectionView x:Name="_collectionView" SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}" SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <local:DataGridRow DataGrid="{Reference self}" HeightRequest="{Binding RowHeight, Source={x:Reference self}, Mode=OneTime}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </RefreshView>
 
 </Grid>
