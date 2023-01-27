@@ -287,6 +287,17 @@ public partial class DataGrid
                 }
             });
 
+    public static readonly BindableProperty RefreshingEnabledProperty =
+    BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true,
+        propertyChanged: (b, _, n) =>
+        {
+            var self = (DataGrid)b;
+            if (n is bool refreshingEnabled)
+            {
+                self.PullToRefreshCommand?.CanExecute(refreshingEnabled);
+            }
+        });
+
     public static readonly BindableProperty PullToRefreshCommandProperty =
         BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null,
             propertyChanged: (b, _, n) =>
@@ -301,6 +312,7 @@ public partial class DataGrid
                 {
                     self._refreshView.IsEnabled = true;
                     self._refreshView.Command = n as ICommand;
+                    self._refreshView.Command.CanExecute(self.RefreshingEnabled);
                 }
             });
 
@@ -413,7 +425,6 @@ public partial class DataGrid
         get => (IColorProvider)GetValue(RowsBackgroundColorPaletteProperty);
         set => SetValue(RowsBackgroundColorPaletteProperty, value);
     }
-
 
     /// <summary>
     /// Text color of the rows. It repeats colors consecutively for rows.
@@ -545,6 +556,15 @@ public partial class DataGrid
     {
         get => (bool)GetValue(IsRefreshingProperty);
         set => SetValue(IsRefreshingProperty, value);
+    }
+
+    /// <summary>
+    /// Enables refreshing the DataGrid by a pull down command
+    /// </summary>
+    public bool RefreshingEnabled
+    {
+        get => (bool)GetValue(RefreshingEnabledProperty);
+        set => SetValue(RefreshingEnabledProperty, value);
     }
 
     /// <summary>
