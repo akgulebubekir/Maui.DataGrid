@@ -23,23 +23,7 @@ public partial class DataGrid
     {
         InitializeComponent();
 
-        _sortingOrders = new Dictionary<int, SortingOrder>();
-
-        _collectionView.SelectionChanged += (_, e) =>
-        {
-            if (SelectionEnabled)
-            {
-                SelectedItem = _collectionView.SelectedItem;
-            }
-            else
-            {
-                _collectionView.SelectedItem = null;
-            }
-
-            ItemSelected?.Invoke(this, e);
-        };
-
-        _refreshView.Refreshing += (_, e) => { Refreshing?.Invoke(this, e); };
+        _sortingOrders = new();
     }
 
     #endregion
@@ -697,12 +681,41 @@ public partial class DataGrid
     {
         base.OnParentSet();
         InitHeaderView();
+        if (Parent != null)
+        {
+            _collectionView.SelectionChanged += OnSelectionChanged;
+            _refreshView.Refreshing += OnRefreshing;
+        }
+        else
+        {
+            _collectionView.SelectionChanged -= OnSelectionChanged;
+            _refreshView.Refreshing -= OnRefreshing;
+        }
     }
 
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
         SetColumnsBindingContext();
+    }
+
+    private void OnRefreshing(object sender, EventArgs e)
+    {
+        Refreshing?.Invoke(this, e);
+    }
+
+    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (SelectionEnabled)
+        {
+            SelectedItem = _collectionView.SelectedItem;
+        }
+        else
+        {
+            _collectionView.SelectedItem = null;
+        }
+
+        ItemSelected?.Invoke(this, e);
     }
 
     private void Reload()
