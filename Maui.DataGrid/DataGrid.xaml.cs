@@ -1,8 +1,8 @@
-using Maui.DataGrid.Utils;
-using Microsoft.Maui.Controls.Shapes;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Input;
+using Maui.DataGrid.Utils;
+using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
 namespace Maui.DataGrid;
@@ -52,33 +52,28 @@ public partial class DataGrid
 
         var items = InternalItems;
 
-        //Sort
-        if (order == SortingOrder.Ascendant)
+        switch (order)
         {
-            items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-            column.SortingIcon.RotateTo(0);
-        }
-        else if (order == SortingOrder.Descendant)
-        {
-            items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-            column.SortingIcon.RotateTo(180);
+            case SortingOrder.Ascendant:
+                items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                column.SortingIcon.RotateTo(0);
+                break;
+            case SortingOrder.Descendant:
+                items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                column.SortingIcon.RotateTo(180);
+                break;
         }
 
         for (var i = 0; i < Columns.Count; i++)
         {
             if (i != sortData.Index)
             {
-                if (Columns[i].SortingIcon.Style != null)
-                {
-                    Columns[i].SortingIcon.Style = null;
-                }
-
                 _sortingOrders[i] = SortingOrder.None;
-                Columns[i].SortingIcon.IsVisible = false;
+                Columns[i].SortingIconContainer.IsVisible = false;
             }
             else
             {
-                Columns[i].SortingIcon.IsVisible = true;
+                Columns[i].SortingIconContainer.IsVisible = true;
             }
         }
 
@@ -338,7 +333,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGrid));
 
     public static readonly BindableProperty SortIconProperty =
-        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid), null);
+        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid));
 
     public static readonly BindableProperty SortIconStyleProperty =
         BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null,
@@ -663,38 +658,47 @@ public partial class DataGrid
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
 
-        var grid = new Grid
-        {
-            ColumnSpacing = 0
-        };
-
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
-
-        if (IsSortable)
+        if (IsSortable && column.SortingEnabled)
         {
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
-
-            grid.Children.Add(column.SortingIcon);
-            Grid.SetColumn(column.SortingIcon, 1);
-
-            var tgr = new TapGestureRecognizer
+            column.SortingIconContainer.HeightRequest = HeaderHeight * 0.35;
+            column.SortingIconContainer.WidthRequest = HeaderHeight * 0.35;
+      
+            var grid = new Grid
             {
-                Command = new Command(() =>
+                ColumnSpacing = 0,
+                ColumnDefinitions = new()
                 {
-                    var order = _sortingOrders[index] == SortingOrder.Ascendant
-                        ? SortingOrder.Descendant
-                        : SortingOrder.Ascendant;
+                    new() { Width = new(1, GridUnitType.Star) },
+                    new() { Width = new(1, GridUnitType.Auto) }
+                },
+                Children = { column.HeaderLabel, column.SortingIconContainer },
+                GestureRecognizers =
+                {
+                    new TapGestureRecognizer
+                    {
+                        Command = new Command(() =>
+                        {
+                            var order = _sortingOrders[index] == SortingOrder.Ascendant
+                                ? SortingOrder.Descendant
+                                : SortingOrder.Ascendant;
 
-                    SortedColumnIndex = new SortData(index, order);
-                }, () => column.SortingEnabled)
+                            SortedColumnIndex = new(index, order);
+                        }, () => column.SortingEnabled)
+                    }
+                }
             };
-            grid.GestureRecognizers.Add(tgr);
+
+            Grid.SetColumn(column.SortingIconContainer, 1);
+            return grid;
         }
 
-        grid.Children.Add(column.HeaderLabel);
-
-        return grid;
+        return new ContentView
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = column.HeaderLabel, Margin = 0, Padding = 0
+        };
     }
 
     private void InitHeaderView()
@@ -704,7 +708,7 @@ public partial class DataGrid
         _headerView.ColumnDefinitions.Clear();
         _sortingOrders.Clear();
 
-        _headerView.Padding = new Thickness(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
+        _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
         _headerView.ColumnSpacing = BorderThickness.HorizontalThickness / 2;
 
         if (Columns != null)
@@ -713,10 +717,10 @@ public partial class DataGrid
             {
                 var col = Columns[i];
 
-                _headerView.ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+                _headerView.ColumnDefinitions.Add(new() { Width = col.Width });
 
                 var cell = GetHeaderViewForColumn(col, i);
-
+                cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source:this));
                 _headerView.Children.Add(cell);
                 Grid.SetColumn(cell, i);
 

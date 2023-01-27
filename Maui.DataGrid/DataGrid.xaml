@@ -27,18 +27,10 @@
                     <Setter Property="TextColor" Value="Black" />
                     <Setter Property="LineBreakMode" Value="WordWrap" />
                 </Style>
-                <Style TargetType="Grid">
-                    <Setter Property="BackgroundColor" Value="{Binding HeaderBackground,Source={x:Reference self}}" />
-                </Style>
                 <Style x:Key="SortIconStyle" TargetType="Polygon">
-                    <Setter Property="Aspect" Value="UniformToFill" />
+                    <Setter Property="Aspect" Value="Uniform" />
                     <Setter Property="Fill" Value="Black" />
-                    <Setter Property="Points" Value="300,0 600,520 0,520" />
-                    <Setter Property="VerticalOptions" Value="Center" />
-                    <Setter Property="HorizontalOptions" Value="Center" />
-                    <Setter Property="HeightRequest" Value="9" />
-                    <Setter Property="WidthRequest" Value="9" />
-                    <Setter Property="Margin" Value="0,0,4,0" />
+                    <Setter Property="Points" Value="50,0 0,80 100,80" />
                 </Style>
             </ResourceDictionary>
         </Grid.Resources>

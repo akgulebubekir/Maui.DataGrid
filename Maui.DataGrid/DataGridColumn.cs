@@ -10,8 +10,16 @@ public class DataGridColumn : BindableObject, IDefinition
 {
     public DataGridColumn()
     {
-        HeaderLabel = new Label();
-        SortingIcon = new Polygon();
+        HeaderLabel = new();
+        SortingIcon = new();
+        SortingIconContainer = new ContentView
+        {
+            IsVisible = false,
+            Content = SortingIcon,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Margin = 0
+        };
     }
 
     public event EventHandler SizeChanged;
@@ -141,8 +149,9 @@ public class DataGridColumn : BindableObject, IDefinition
         set => SetValue(CellTemplateProperty, value);
     }
 
-    internal Polygon SortingIcon { get; set; }
-    internal Label HeaderLabel { get; set; }
+    internal Polygon SortingIcon { get; }
+    internal Label HeaderLabel { get; }
+    internal View SortingIconContainer { get; }
 
     /// <summary>
     /// Horizontal alignment of the cell content 
