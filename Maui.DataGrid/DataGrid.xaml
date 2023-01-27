@@ -10,7 +10,6 @@
       RowSpacing="0">
     <Grid.Resources>
         <ResourceDictionary>
-            <local:DataGridRowTemplateSelector x:Key="RowTemplateSelector" />
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.RowDefinitions>
@@ -52,7 +51,13 @@
         <RefreshView.Resources>
             <converter:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
         </RefreshView.Resources>
-        <CollectionView x:Name="_collectionView" ItemTemplate="{StaticResource RowTemplateSelector}" SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" />
+        <CollectionView x:Name="_collectionView" SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"  SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <local:DataGridRow DataGrid="{Reference self}" HeightRequest="{Binding RowHeight, Source={x:Reference self}, Mode=OneTime}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </RefreshView>
 
 </Grid>
