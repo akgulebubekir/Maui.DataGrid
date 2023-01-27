@@ -6,8 +6,6 @@ internal sealed class DataGridRow : Grid
 {
     #region Fields
 
-    private Color _bgColor;
-    private Color _textColor;
     private bool _hasSelected;
 
     #endregion
@@ -20,6 +18,12 @@ internal sealed class DataGridRow : Grid
         set => SetValue(DataGridProperty, value);
     }
 
+    public Color TextColor
+    {
+        get => (Color)GetValue(TextColorProperty);
+        set => SetValue(TextColorProperty, value);
+    }
+
     #endregion
 
     #region Bindable Properties
@@ -28,6 +32,9 @@ internal sealed class DataGridRow : Grid
         BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
             propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
 
+    public static readonly BindableProperty TextColorProperty =
+        BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(DataGridRow), null);
+
     #endregion
 
     #region Methods
@@ -35,19 +42,15 @@ internal sealed class DataGridRow : Grid
     private void CreateView()
     {
         UpdateBackgroundColor();
-        BackgroundColor = DataGrid.BorderColor;
-        ColumnSpacing = DataGrid.BorderThickness.HorizontalThickness / 2;
-        Padding = new Thickness(DataGrid.BorderThickness.HorizontalThickness / 2,
-            DataGrid.BorderThickness.VerticalThickness / 2);
+        ColumnSpacing = DataGrid.BorderThickness / 2;
+        Padding = new Thickness(DataGrid.BorderThickness / 2);
 
         foreach (var col in DataGrid.Columns)
         {
             ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
-            View cell;
 
-            if (col.CellTemplate != null)
+            if (col.CellTemplate?.CreateContent() is View cell)
             {
-                cell = new ContentView { Content = col.CellTemplate.CreateContent() as View };
                 if (col.PropertyName != null)
                 {
                     cell.SetBinding(BindingContextProperty,
@@ -58,9 +61,7 @@ internal sealed class DataGridRow : Grid
             {
                 cell = new Label
                 {
-                    Padding = 0,
-                    TextColor = _textColor,
-                    BackgroundColor = _bgColor,
+                    TextColor = TextColor,
                     VerticalOptions = LayoutOptions.Fill,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
@@ -75,8 +76,17 @@ internal sealed class DataGridRow : Grid
                     new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
 
-            Children.Add(cell);
-            SetColumn((BindableObject)cell, DataGrid.Columns.IndexOf(col));
+            var border = new Border
+            {
+                BackgroundColor = Colors.Transparent,
+                Content = cell,
+                Stroke = new SolidColorBrush(DataGrid.BorderColor),
+                StrokeThickness = DataGrid.BorderThickness,
+                HeightRequest = DataGrid.RowHeight
+            };
+
+            Children.Add(border);
+            SetColumn((BindableObject)border, DataGrid.Columns.IndexOf(col));
         }
     }
 
@@ -86,27 +96,26 @@ internal sealed class DataGridRow : Grid
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
-            _bgColor =
+            BackgroundColor =
                 DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == BindingContext
                     ? DataGrid.ActiveRowColor
                     : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
-            _textColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
+            TextColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
 
-            ChangeColor(_bgColor);
+            ChangeColor(BackgroundColor, TextColor);
         }
     }
 
-    private void ChangeColor(Color color)
+    private void ChangeColor(Color backgroundColor, Color textColor)
     {
-        foreach (var v in Children)
+        foreach (var child in Children)
         {
-            if (v is View view)
+            if (child is Border border)
             {
-                view.BackgroundColor = color;
-
-                if (view is Label label)
+                if (border.Content is Label label)
                 {
-                    label.TextColor = _textColor;
+                    label.BackgroundColor = backgroundColor;
+                    label.TextColor = textColor;
                 }
             }
         }

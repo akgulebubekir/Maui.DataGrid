@@ -321,11 +321,11 @@ public partial class DataGrid
             propertyChanged: (b, _, n) => ((DataGrid)b)._refreshView.IsRefreshing = (bool)n);
 
     public static readonly BindableProperty BorderThicknessProperty =
-        BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
+        BindableProperty.Create(nameof(BorderThickness), typeof(double), typeof(DataGrid), (double)1,
             propertyChanged: (b, _, n) =>
             {
-                ((DataGrid)b)._headerView.ColumnSpacing = ((Thickness)n).HorizontalThickness / 2;
-                ((DataGrid)b)._headerView.Padding = ((Thickness)n).HorizontalThickness / 2;
+                ((DataGrid)b)._headerView.ColumnSpacing = ((double)n) / 2;
+                ((DataGrid)b)._headerView.Padding = new Thickness(((double)n) / 2);
             });
 
     public static readonly BindableProperty HeaderBordersVisibleProperty =
@@ -570,9 +570,9 @@ public partial class DataGrid
     /// <summary>
     /// Border thickness for header &amp; each cell
     /// </summary>
-    public Thickness BorderThickness
+    public double BorderThickness
     {
-        get => (Thickness)GetValue(BorderThicknessProperty);
+        get => (double)GetValue(BorderThicknessProperty);
         set => SetValue(BorderThicknessProperty, value);
     }
 
@@ -701,7 +701,7 @@ public partial class DataGrid
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.35;
             column.SortingIconContainer.WidthRequest = HeaderHeight * 0.35;
-      
+
             var grid = new Grid
             {
                 ColumnSpacing = 0,
@@ -746,8 +746,7 @@ public partial class DataGrid
         _headerView.ColumnDefinitions.Clear();
         _sortingOrders.Clear();
 
-        _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
-        _headerView.ColumnSpacing = BorderThickness.HorizontalThickness / 2;
+        _headerView.ColumnSpacing = BorderThickness;
 
         if (Columns != null)
         {
@@ -758,8 +757,11 @@ public partial class DataGrid
                 _headerView.ColumnDefinitions.Add(new() { Width = col.Width });
 
                 var cell = GetHeaderViewForColumn(col, i);
+
                 cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source:this));
+
                 _headerView.Children.Add(cell);
+
                 Grid.SetColumn(cell, i);
 
                 _sortingOrders.Add(i, SortingOrder.None);
