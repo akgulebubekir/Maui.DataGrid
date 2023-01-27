@@ -27,12 +27,6 @@ internal sealed class DataGridRow : Grid
         set => SetValue(IndexProperty, value);
     }
 
-    public object RowContext
-    {
-        get => GetValue(RowContextProperty);
-        set => SetValue(RowContextProperty, value);
-    }
-
     #endregion
 
     #region Bindable Properties
@@ -43,10 +37,6 @@ internal sealed class DataGridRow : Grid
 
     public static readonly BindableProperty IndexProperty =
         BindableProperty.Create(nameof(Index), typeof(int), typeof(DataGridRow), 0,
-            propertyChanged: (b, _, _) => ((DataGridRow)b).UpdateBackgroundColor());
-
-    public static readonly BindableProperty RowContextProperty =
-        BindableProperty.Create(nameof(RowContext), typeof(object), typeof(DataGridRow),
             propertyChanged: (b, _, _) => ((DataGridRow)b).UpdateBackgroundColor());
 
     #endregion
@@ -72,7 +62,7 @@ internal sealed class DataGridRow : Grid
                 if (col.PropertyName != null)
                 {
                     cell.SetBinding(BindingContextProperty,
-                        new Binding(col.PropertyName, source: RowContext));
+                        new Binding(col.PropertyName, source: BindingContext));
                 }
             }
             else
@@ -103,12 +93,12 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateBackgroundColor()
     {
-        _hasSelected = DataGrid?.SelectedItem == RowContext;
+        _hasSelected = DataGrid?.SelectedItem == BindingContext;
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
             _bgColor =
-                DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == RowContext
+                DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == BindingContext
                     ? DataGrid.ActiveRowColor
                     : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             _textColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
@@ -154,7 +144,7 @@ internal sealed class DataGridRow : Grid
 
     private void DataGrid_ItemSelected(object sender, SelectionChangedEventArgs e)
     {
-        if (DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == RowContext || _hasSelected))
+        if (DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == BindingContext || _hasSelected))
         {
             UpdateBackgroundColor();
         }
