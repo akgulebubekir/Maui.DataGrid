@@ -652,14 +652,14 @@ public partial class DataGrid
 
     private void OnRefreshing(object sender, EventArgs e)
     {
-        Refreshing?.Invoke(this, e);
+        _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
     }
 
     private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         SelectedItem = _collectionView.SelectedItem;
 
-        ItemSelected?.Invoke(this, e);
+        _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
     }
 
     private void Reload()
