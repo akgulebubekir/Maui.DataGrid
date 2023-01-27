@@ -1,6 +1,6 @@
 ﻿namespace Maui.DataGrid;
 
-using Maui.DataGrid.Utils;
+using Utils;
 
 internal sealed class DataGridRow : Grid
 {
@@ -27,6 +27,7 @@ internal sealed class DataGridRow : Grid
     public static readonly BindableProperty DataGridProperty =
         BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
             propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
+
     #endregion
 
     #region Methods

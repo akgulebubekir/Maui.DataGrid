@@ -709,13 +709,13 @@ public partial class DataGrid
 
         if (Columns != null)
         {
-            for (int i = 0; i < Columns.Count; i++)
+            for (var i = 0; i < Columns.Count; i++)
             {
-                DataGridColumn col = Columns[i];
+                var col = Columns[i];
 
                 _headerView.ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
 
-                var cell = GetHeaderViewForColumn(col);
+                var cell = GetHeaderViewForColumn(col, i);
 
                 _headerView.Children.Add(cell);
                 Grid.SetColumn(cell, i);

@@ -3,13 +3,13 @@
 <Grid x:Name="self"
       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-      xmlns:converter="clr-namespace:Maui.DataGrid.Converters;assembly=Maui.DataGrid"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
       x:Class="Maui.DataGrid.DataGrid"
       Padding="0"
       RowSpacing="0">
     <Grid.Resources>
         <ResourceDictionary>
+            <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.RowDefinitions>
@@ -44,9 +44,6 @@
         </Grid.Resources>
     </Grid>
     <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2">
-        <RefreshView.Resources>
-            <converter:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
-        </RefreshView.Resources>
         <CollectionView x:Name="_collectionView" SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"  SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
