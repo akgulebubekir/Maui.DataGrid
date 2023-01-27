@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Specialized;
-using System.Reflection;
 using System.Windows.Input;
 using Maui.DataGrid.Utils;
+using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
 namespace Maui.DataGrid;
@@ -37,23 +37,7 @@ public partial class DataGrid
     {
         InitializeComponent();
 
-        _sortingOrders = new Dictionary<int, SortingOrder>();
-
-        _collectionView.SelectionChanged += (_, e) =>
-        {
-            if (SelectionEnabled)
-            {
-                SelectedItem = _collectionView.SelectedItem;
-            }
-            else
-            {
-                _collectionView.SelectedItem = null;
-            }
-
-            _itemSelectedEventManager.HandleEvent(this, e, string.Empty);
-        };
-
-        _refreshView.Refreshing += (_, e) => _refreshingEventManager.HandleEvent(this, e, string.Empty);
+        _sortingOrders = new();
     }
 
     #endregion
@@ -67,7 +51,6 @@ public partial class DataGrid
             return;
         }
 
-        var items = InternalItems;
         var column = Columns[sortData.Index];
         var order = sortData.Order;
 
@@ -81,49 +64,30 @@ public partial class DataGrid
             throw new InvalidOperationException("Please set 'PropertyName' of the Column");
         }
 
-        //Sort
-        items = order == SortingOrder.Descendant
-            ? items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList()
-            : items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+        var items = InternalItems;
 
-        column.SortingIcon.Style = order == SortingOrder.Descendant
-            ? DescendingIconStyle ?? (Style)_headerView.Resources["DescendingIconStyle"]
-            : AscendingIconStyle ?? (Style)_headerView.Resources["AscendingIconStyle"];
-
-        //Support DescendingIcon property
-        if (column.SortingIcon.Style.Setters.All(x => x.Property != Image.SourceProperty))
+        switch (order)
         {
-            if (order == SortingOrder.Descendant && DescendingIconProperty.DefaultValue != DescendingIcon)
-            {
-                column.SortingIcon.Source = DescendingIcon;
-            }
-
-            if (order == SortingOrder.Ascendant && AscendingIconProperty.DefaultValue != AscendingIcon)
-            {
-                column.SortingIcon.Source = AscendingIcon;
-            }
+            case SortingOrder.Ascendant:
+                items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                column.SortingIcon.RotateTo(0);
+                break;
+            case SortingOrder.Descendant:
+                items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                column.SortingIcon.RotateTo(180);
+                break;
         }
 
         for (var i = 0; i < Columns.Count; i++)
         {
             if (i != sortData.Index)
             {
-                if (Columns[i].SortingIcon.Style != null)
-                {
-                    Columns[i].SortingIcon.Style = null;
-                }
-
-                if (Columns[i].SortingIcon.Source != null)
-                {
-                    Columns[i].SortingIcon.Source = null;
-                }
-
                 _sortingOrders[i] = SortingOrder.None;
-                Columns[i].SortingIcon.IsVisible = false;
+                Columns[i].SortingIconContainer.IsVisible = false;
             }
             else
             {
-                Columns[i].SortingIcon.IsVisible = true;
+                Columns[i].SortingIconContainer.IsVisible = true;
             }
         }
 
@@ -379,56 +343,21 @@ public partial class DataGrid
                 }
             });
 
-
     public static readonly BindableProperty HeaderLabelStyleProperty =
         BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGrid));
 
-    public static readonly BindableProperty AscendingIconProperty =
-        BindableProperty.Create(nameof(AscendingIcon), typeof(ImageSource), typeof(DataGrid),
-            ImageSource.FromResource("Maui.DataGrid.up.png", typeof(DataGrid).GetTypeInfo().Assembly));
+    public static readonly BindableProperty SortIconProperty =
+        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid));
 
-    public static readonly BindableProperty DescendingIconProperty =
-        BindableProperty.Create(nameof(DescendingIcon), typeof(ImageSource), typeof(DataGrid),
-            ImageSource.FromResource("Maui.DataGrid.down.png", typeof(DataGrid).GetTypeInfo().Assembly));
-
-    public static readonly BindableProperty DescendingIconStyleProperty =
-        BindableProperty.Create(nameof(DescendingIconStyle), typeof(Style), typeof(DataGrid), null,
+    public static readonly BindableProperty SortIconStyleProperty =
+        BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null,
             propertyChanged: (b, _, n) =>
             {
-                var self = (DataGrid)b;
-                var style = ((Style)n).Setters.FirstOrDefault(x => x.Property == Image.SourceProperty);
-                if (style != null)
+                if (b is DataGrid self && n is Style style)
                 {
-                    if (style.Value is string vs)
+                    foreach (var column in self.Columns)
                     {
-                        self.DescendingIcon = ImageSource.FromFile(vs);
-                    }
-                    else
-                    {
-                        self.DescendingIcon = (ImageSource)style.Value;
-                    }
-                }
-            });
-
-    public static readonly BindableProperty AscendingIconStyleProperty =
-        BindableProperty.Create(nameof(AscendingIconStyle), typeof(Style), typeof(DataGrid), null,
-            coerceValue: (_, v) => v,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (((Style)n).Setters.Any(x => x.Property == Image.SourceProperty))
-                {
-                    var style = ((Style)n).Setters.FirstOrDefault(x => x.Property == Image.SourceProperty);
-                    if (style != null)
-                    {
-                        if (style.Value is string vs)
-                        {
-                            self.AscendingIcon = ImageSource.FromFile(vs);
-                        }
-                        else
-                        {
-                            self.AscendingIcon = (ImageSource)style.Value;
-                        }
+                        column.SortingIcon.Style = style;
                     }
                 }
             });
@@ -657,41 +586,22 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Ascending icon source 
+    /// Sort icon
     /// </summary>
-    public ImageSource AscendingIcon
+    public Polygon SortIcon
     {
-        get => (ImageSource)GetValue(AscendingIconProperty);
-        set => SetValue(AscendingIconProperty, value);
+        get => (Polygon)GetValue(SortIconProperty);
+        set => SetValue(SortIconProperty, value);
     }
 
     /// <summary>
-    /// Descending icon source
+    /// Style of the sort icon
+    /// Style's <c>TargetType</c> must be Polygon.
     /// </summary>
-    public ImageSource DescendingIcon
+    public Style SortIconStyle
     {
-        get => (ImageSource)GetValue(DescendingIconProperty);
-        set => SetValue(DescendingIconProperty, value);
-    }
-
-    /// <summary>
-    /// Style of the ascending icon
-    /// Style's <c>TargetType</c> must be Image. 
-    /// </summary>
-    public Style AscendingIconStyle
-    {
-        get => (Style)GetValue(AscendingIconStyleProperty);
-        set => SetValue(AscendingIconStyleProperty, value);
-    }
-
-    /// <summary>
-    /// Style of the descending icon
-    /// Style"s <c>TargetType</c> must be Image. 
-    /// </summary>
-    public Style DescendingIconStyle
-    {
-        get => (Style)GetValue(DescendingIconStyleProperty);
-        set => SetValue(DescendingIconStyleProperty, value);
+        get => (Style)GetValue(SortIconStyleProperty);
+        set => SetValue(SortIconStyleProperty, value);
     }
 
     /// <summary>
@@ -711,12 +621,45 @@ public partial class DataGrid
     {
         base.OnParentSet();
         InitHeaderView();
+
+        if (SelectionEnabled)
+        {
+            if (Parent is null)
+            {
+                _collectionView.SelectionChanged -= OnSelectionChanged;
+            }
+            else
+            {
+                _collectionView.SelectionChanged += OnSelectionChanged;
+            }
+        }
+
+        if (Parent is null)
+        {
+            _refreshView.Refreshing -= OnRefreshing;
+        }
+        else
+        {
+            _refreshView.Refreshing += OnRefreshing;
+        }
     }
 
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
         SetColumnsBindingContext();
+    }
+
+    private void OnRefreshing(object sender, EventArgs e)
+    {
+        Refreshing?.Invoke(this, e);
+    }
+
+    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        SelectedItem = _collectionView.SelectedItem;
+
+        ItemSelected?.Invoke(this, e);
     }
 
     private void Reload()
@@ -728,47 +671,52 @@ public partial class DataGrid
 
     #region Header Creation Methods
 
-    private View GetHeaderViewForColumn(DataGridColumn column)
+    private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
 
-        var grid = new Grid
+        if (IsSortable && column.SortingEnabled)
         {
-            ColumnSpacing = 0
-        };
-
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
-
-        if (IsSortable)
-        {
-            column.SortingIcon.Style = (Style)_headerView.Resources["ImageStyleBase"];
-
-            grid.Children.Add(column.SortingIcon);
-            Grid.SetColumn(column.SortingIcon, 1);
-
-            var tgr = new TapGestureRecognizer
+            column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
+            column.SortingIconContainer.HeightRequest = HeaderHeight * 0.35;
+            column.SortingIconContainer.WidthRequest = HeaderHeight * 0.35;
+      
+            var grid = new Grid
             {
-                Command = new Command(() =>
+                ColumnSpacing = 0,
+                ColumnDefinitions = new()
                 {
-                    var index = Columns.IndexOf(column);
-                    var order = _sortingOrders[index] == SortingOrder.Ascendant
-                        ? SortingOrder.Descendant
-                        : SortingOrder.Ascendant;
-
-                    if (Columns.ElementAt(index).SortingEnabled)
+                    new() { Width = new(1, GridUnitType.Star) },
+                    new() { Width = new(1, GridUnitType.Auto) }
+                },
+                Children = { column.HeaderLabel, column.SortingIconContainer },
+                GestureRecognizers =
+                {
+                    new TapGestureRecognizer
                     {
-                        SortedColumnIndex = new SortData(index, order);
+                        Command = new Command(() =>
+                        {
+                            var order = _sortingOrders[index] == SortingOrder.Ascendant
+                                ? SortingOrder.Descendant
+                                : SortingOrder.Ascendant;
+
+                            SortedColumnIndex = new(index, order);
+                        }, () => column.SortingEnabled)
                     }
-                })
+                }
             };
-            grid.GestureRecognizers.Add(tgr);
+
+            Grid.SetColumn(column.SortingIconContainer, 1);
+            return grid;
         }
 
-        grid.Children.Add(column.HeaderLabel);
-
-        return grid;
+        return new ContentView
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = column.HeaderLabel, Margin = 0, Padding = 0
+        };
     }
 
     private void InitHeaderView()
@@ -778,21 +726,23 @@ public partial class DataGrid
         _headerView.ColumnDefinitions.Clear();
         _sortingOrders.Clear();
 
-        _headerView.Padding = new Thickness(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
+        _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
         _headerView.ColumnSpacing = BorderThickness.HorizontalThickness / 2;
 
         if (Columns != null)
         {
-            foreach (var col in Columns)
+            for (var i = 0; i < Columns.Count; i++)
             {
-                _headerView.ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+                var col = Columns[i];
 
-                var cell = GetHeaderViewForColumn(col);
+                _headerView.ColumnDefinitions.Add(new() { Width = col.Width });
 
+                var cell = GetHeaderViewForColumn(col, i);
+                cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source:this));
                 _headerView.Children.Add(cell);
-                Grid.SetColumn(cell, Columns.IndexOf(col));
+                Grid.SetColumn(cell, i);
 
-                _sortingOrders.Add(Columns.IndexOf(col), SortingOrder.None);
+                _sortingOrders.Add(i, SortingOrder.None);
             }
         }
     }

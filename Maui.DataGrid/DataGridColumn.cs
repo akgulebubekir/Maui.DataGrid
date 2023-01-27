@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Maui.Controls.Shapes;
+using System.ComponentModel;
 
 namespace Maui.DataGrid;
 
@@ -9,8 +10,16 @@ public class DataGridColumn : BindableObject, IDefinition
 {
     public DataGridColumn()
     {
-        HeaderLabel = new Label();
-        SortingIcon = new Image();
+        HeaderLabel = new();
+        SortingIcon = new();
+        SortingIconContainer = new ContentView
+        {
+            IsVisible = false,
+            Content = SortingIcon,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Margin = 0
+        };
     }
 
     readonly WeakEventManager _sizeChangedEventManager = new();
@@ -55,6 +64,10 @@ public class DataGridColumn : BindableObject, IDefinition
 
     public static readonly BindableProperty CellTemplateProperty =
         BindableProperty.Create(nameof(CellTemplate), typeof(DataTemplate), typeof(DataGridColumn));
+
+    public static readonly BindableProperty LineBreakModeProperty =
+        BindableProperty.Create(nameof(LineBreakMode), typeof(LineBreakMode), typeof(DataGridColumn),
+            LineBreakMode.WordWrap);
 
     public static readonly BindableProperty HorizontalContentAlignmentProperty =
         BindableProperty.Create(nameof(HorizontalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn),
@@ -146,8 +159,18 @@ public class DataGridColumn : BindableObject, IDefinition
         set => SetValue(CellTemplateProperty, value);
     }
 
-    internal Image SortingIcon { get; set; }
-    internal Label HeaderLabel { get; set; }
+    internal Polygon SortingIcon { get; }
+    internal Label HeaderLabel { get; }
+    internal View SortingIconContainer { get; }
+
+    /// <summary>
+    /// LineBreakModeProperty for the text. WordWrap by default.
+    /// </summary>
+    public LineBreakMode LineBreakMode
+    {
+        get => (LineBreakMode)GetValue(LineBreakModeProperty);
+        set => SetValue(LineBreakModeProperty, value);
+    }
 
     /// <summary>
     /// Horizontal alignment of the cell content 

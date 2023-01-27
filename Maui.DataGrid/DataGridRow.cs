@@ -1,5 +1,7 @@
 ﻿namespace Maui.DataGrid;
 
+using Utils;
+
 internal sealed class DataGridRow : Grid
 {
     #region Fields
@@ -18,18 +20,6 @@ internal sealed class DataGridRow : Grid
         set => SetValue(DataGridProperty, value);
     }
 
-    public int Index
-    {
-        get => (int)GetValue(IndexProperty);
-        set => SetValue(IndexProperty, value);
-    }
-
-    public object RowContext
-    {
-        get => GetValue(RowContextProperty);
-        set => SetValue(RowContextProperty, value);
-    }
-
     #endregion
 
     #region Bindable Properties
@@ -37,14 +27,6 @@ internal sealed class DataGridRow : Grid
     public static readonly BindableProperty DataGridProperty =
         BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
             propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
-
-    public static readonly BindableProperty IndexProperty =
-        BindableProperty.Create(nameof(Index), typeof(int), typeof(DataGridRow), 0,
-            propertyChanged: (b, _, _) => ((DataGridRow)b).UpdateBackgroundColor());
-
-    public static readonly BindableProperty RowContextProperty =
-        BindableProperty.Create(nameof(RowContext), typeof(object), typeof(DataGridRow),
-            propertyChanged: (b, _, _) => ((DataGridRow)b).UpdateBackgroundColor());
 
     #endregion
 
@@ -69,31 +51,28 @@ internal sealed class DataGridRow : Grid
                 if (col.PropertyName != null)
                 {
                     cell.SetBinding(BindingContextProperty,
-                        new Binding(col.PropertyName, source: RowContext));
+                        new Binding(col.PropertyName, source: BindingContext));
                 }
             }
             else
             {
-                var text = new Label
-                {
-                    TextColor = _textColor,
-                    HorizontalOptions = col.HorizontalContentAlignment,
-                    VerticalOptions = col.VerticalContentAlignment,
-                    LineBreakMode = LineBreakMode.WordWrap
-                };
-                text.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
-                text.SetBinding(Label.FontSizeProperty,
-                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
-                text.SetBinding(Label.FontFamilyProperty,
-                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
-
-                cell = new ContentView
+                cell = new Label
                 {
                     Padding = 0,
+                    TextColor = _textColor,
                     BackgroundColor = _bgColor,
-                    Content = text
+                    VerticalOptions = LayoutOptions.Fill,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
+                    HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
+                    LineBreakMode = col.LineBreakMode
                 };
+                cell.SetBinding(Label.TextProperty,
+                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+                cell.SetBinding(Label.FontSizeProperty,
+                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
+                cell.SetBinding(Label.FontFamilyProperty,
+                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
 
             Children.Add(cell);
@@ -103,12 +82,12 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateBackgroundColor()
     {
-        _hasSelected = DataGrid.SelectedItem == RowContext;
+        _hasSelected = DataGrid?.SelectedItem == BindingContext;
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
             _bgColor =
-                DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == RowContext
+                DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == BindingContext
                     ? DataGrid.ActiveRowColor
                     : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             _textColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
@@ -121,11 +100,14 @@ internal sealed class DataGridRow : Grid
     {
         foreach (var v in Children)
         {
-            var contentView = v as ContentView;
-            contentView.BackgroundColor = color;
-            if (contentView?.Content is Label label)
+            if (v is View view)
             {
-                label.TextColor = _textColor;
+                view.BackgroundColor = color;
+
+                if (view is Label label)
+                {
+                    label.TextColor = _textColor;
+                }
             }
         }
     }
@@ -139,19 +121,23 @@ internal sealed class DataGridRow : Grid
     protected override void OnParentSet()
     {
         base.OnParentSet();
-        if (Parent != null)
+
+        if (DataGrid.SelectionEnabled)
         {
-            DataGrid.ItemSelected += DataGrid_ItemSelected;
-        }
-        else
-        {
-            DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            if (Parent != null)
+            {
+                DataGrid.ItemSelected += DataGrid_ItemSelected;
+            }
+            else
+            {
+                DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            }
         }
     }
 
     private void DataGrid_ItemSelected(object sender, SelectionChangedEventArgs e)
     {
-        if (DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == RowContext || _hasSelected))
+        if (DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == BindingContext || _hasSelected))
         {
             UpdateBackgroundColor();
         }
