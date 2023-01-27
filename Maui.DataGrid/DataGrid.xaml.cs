@@ -607,15 +607,26 @@ public partial class DataGrid
     {
         base.OnParentSet();
         InitHeaderView();
-        if (Parent != null)
+
+        if (SelectionEnabled)
         {
-            _collectionView.SelectionChanged += OnSelectionChanged;
-            _refreshView.Refreshing += OnRefreshing;
+            if (Parent is null)
+            {
+                _collectionView.SelectionChanged -= OnSelectionChanged;
+            }
+            else
+            {
+                _collectionView.SelectionChanged += OnSelectionChanged;
+            }
+        }
+
+        if (Parent is null)
+        {
+            _refreshView.Refreshing -= OnRefreshing;
         }
         else
         {
-            _collectionView.SelectionChanged -= OnSelectionChanged;
-            _refreshView.Refreshing -= OnRefreshing;
+            _refreshView.Refreshing += OnRefreshing;
         }
     }
 
@@ -632,14 +643,7 @@ public partial class DataGrid
 
     private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (SelectionEnabled)
-        {
-            SelectedItem = _collectionView.SelectedItem;
-        }
-        else
-        {
-            _collectionView.SelectedItem = null;
-        }
+        SelectedItem = _collectionView.SelectedItem;
 
         ItemSelected?.Invoke(this, e);
     }
