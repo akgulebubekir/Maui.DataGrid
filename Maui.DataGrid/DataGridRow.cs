@@ -142,13 +142,17 @@ internal sealed class DataGridRow : Grid
     protected override void OnParentSet()
     {
         base.OnParentSet();
-        if (Parent != null)
+
+        if (DataGrid.SelectionEnabled)
         {
-            DataGrid.ItemSelected += DataGrid_ItemSelected;
-        }
-        else
-        {
-            DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            if (Parent != null)
+            {
+                DataGrid.ItemSelected += DataGrid_ItemSelected;
+            }
+            else
+            {
+                DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            }
         }
     }
 
