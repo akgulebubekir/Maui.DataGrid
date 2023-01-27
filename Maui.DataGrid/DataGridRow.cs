@@ -1,7 +1,6 @@
-﻿using Maui.DataGrid.Utils;
-using Microsoft.Maui.Controls;
+﻿namespace Maui.DataGrid;
 
-namespace Maui.DataGrid;
+using Maui.DataGrid.Utils;
 
 internal sealed class DataGridRow : Grid
 {
@@ -21,12 +20,6 @@ internal sealed class DataGridRow : Grid
         set => SetValue(DataGridProperty, value);
     }
 
-    public int Index
-    {
-        get => (int)GetValue(IndexProperty);
-        set => SetValue(IndexProperty, value);
-    }
-
     public object RowContext
     {
         get => GetValue(RowContextProperty);
@@ -40,10 +33,6 @@ internal sealed class DataGridRow : Grid
     public static readonly BindableProperty DataGridProperty =
         BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
             propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
-
-    public static readonly BindableProperty IndexProperty =
-        BindableProperty.Create(nameof(Index), typeof(int), typeof(DataGridRow), 0,
-            propertyChanged: (b, _, _) => ((DataGridRow)b).UpdateBackgroundColor());
 
     public static readonly BindableProperty RowContextProperty =
         BindableProperty.Create(nameof(RowContext), typeof(object), typeof(DataGridRow),
