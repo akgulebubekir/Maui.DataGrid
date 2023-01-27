@@ -51,6 +51,10 @@ public class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty CellTemplateProperty =
         BindableProperty.Create(nameof(CellTemplate), typeof(DataTemplate), typeof(DataGridColumn));
 
+    public static readonly BindableProperty LineBreakModeProperty =
+        BindableProperty.Create(nameof(LineBreakMode), typeof(LineBreakMode), typeof(DataGridColumn),
+            LineBreakMode.WordWrap);
+
     public static readonly BindableProperty HorizontalContentAlignmentProperty =
         BindableProperty.Create(nameof(HorizontalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn),
             LayoutOptions.Center);
@@ -143,6 +147,15 @@ public class DataGridColumn : BindableObject, IDefinition
 
     internal Polygon SortingIcon { get; set; }
     internal Label HeaderLabel { get; set; }
+
+    /// <summary>
+    /// LineBreakModeProperty for the text. WordWrap by default.
+    /// </summary>
+    public LineBreakMode LineBreakMode
+    {
+        get => (LineBreakMode)GetValue(LineBreakModeProperty);
+        set => SetValue(LineBreakModeProperty, value);
+    }
 
     /// <summary>
     /// Horizontal alignment of the cell content 

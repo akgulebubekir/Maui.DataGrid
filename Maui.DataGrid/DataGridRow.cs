@@ -65,7 +65,7 @@ internal sealed class DataGridRow : Grid
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
                     HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
-                    LineBreakMode = LineBreakMode.WordWrap
+                    LineBreakMode = col.LineBreakMode
                 };
                 cell.SetBinding(Label.TextProperty,
                     new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
