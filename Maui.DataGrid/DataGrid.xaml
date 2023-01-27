@@ -30,19 +30,15 @@
                 <Style TargetType="Grid">
                     <Setter Property="BackgroundColor" Value="{Binding HeaderBackground,Source={x:Reference self}}" />
                 </Style>
-                <Style x:Key="ImageStyleBase" TargetType="Image">
-                    <Setter Property="Aspect" Value="AspectFill" />
+                <Style x:Key="SortIconStyle" TargetType="Polygon">
+                    <Setter Property="Aspect" Value="UniformToFill" />
+                    <Setter Property="Fill" Value="Black" />
+                    <Setter Property="Points" Value="300,0 600,520 0,520" />
                     <Setter Property="VerticalOptions" Value="Center" />
                     <Setter Property="HorizontalOptions" Value="Center" />
-                    <Setter Property="HeightRequest" Value="5" />
+                    <Setter Property="HeightRequest" Value="9" />
                     <Setter Property="WidthRequest" Value="9" />
                     <Setter Property="Margin" Value="0,0,4,0" />
-                </Style>
-                <Style x:Key="AscendingIconStyle" TargetType="Image" BasedOn="{StaticResource ImageStyleBase}">
-                    <Setter Property="Source" Value="{Binding AscendingIcon, Source={x:Reference self}}" />
-                </Style>
-                <Style x:Key="DescendingIconStyle" TargetType="Image" BasedOn="{StaticResource ImageStyleBase}">
-                    <Setter Property="Source" Value="{Binding DescendingIcon, Source={x:Reference self}}" />
                 </Style>
             </ResourceDictionary>
         </Grid.Resources>

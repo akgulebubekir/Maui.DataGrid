@@ -34,16 +34,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="down.png" />
-	  <None Remove="up.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Include="down.png" />
-	  <EmbeddedResource Include="up.png" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Include="..\README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
