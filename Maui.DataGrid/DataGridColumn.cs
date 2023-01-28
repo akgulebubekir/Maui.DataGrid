@@ -94,14 +94,20 @@ public class DataGridColumn : BindableObject, IDefinition
 
     #region properties
 
+    public ColumnDefinition ColumnDefinition { get; private set; } = new(GridLength.Star);
+
     /// <summary>
-    /// Width of the column. Like Grid, you can use <code>Absolute, star, Auto</code> as unit.
+    /// Width of the column. Like Grid, you can use <c>Absolute, Star, Auto</c> as unit.
     /// </summary>
     [TypeConverter(typeof(GridLengthTypeConverter))]
     public GridLength Width
     {
         get => (GridLength)GetValue(WidthProperty);
-        set => SetValue(WidthProperty, value);
+        set
+        {
+            SetValue(WidthProperty, value);
+            ColumnDefinition = new ColumnDefinition(value);
+        }
     }
 
     /// <summary>

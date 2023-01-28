@@ -42,7 +42,7 @@ internal sealed class DataGridRow : Grid
 
         foreach (var col in DataGrid.Columns)
         {
-            ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+            ColumnDefinitions.Add(col.ColumnDefinition);
             View cell;
 
             if (col.CellTemplate != null)

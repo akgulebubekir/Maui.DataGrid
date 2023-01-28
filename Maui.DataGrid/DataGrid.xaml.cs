@@ -755,7 +755,7 @@ public partial class DataGrid
             {
                 var col = Columns[i];
 
-                _headerView.ColumnDefinitions.Add(new() { Width = col.Width });
+                _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
                 var cell = GetHeaderViewForColumn(col, i);
                 cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source:this));
