@@ -324,6 +324,205 @@ public partial class DataGrid
         BindableProperty.Create(nameof(BorderThickness), typeof(double), typeof(DataGrid), (double)1,
             propertyChanged: (b, _, n) =>
             {
+                if (b is DataGrid self)
+                {
+                    self._headerView.ColumnSpacing = (double)n;
+                }
+            });
+
+    public static readonly BindableProperty HeaderBordersVisibleProperty =
+        BindableProperty.Create(nameof(HeaderBordersVisible), typeof(bool), typeof(DataGrid), true,
+            propertyChanged: (b, _, n) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._headerView.BackgroundColor = (bool)n ? self.BorderColor : self.HeaderBackground;
+                }
+            });
+
+    public static readonly BindableProperty BorderColorProperty =
+        BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(DataGrid), Colors.Black,
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+                if (self.HeaderBordersVisible)
+                {
+                    self._headerView.BackgroundColor = (Color)n;
+                }
+
+                if (self.Columns != null && self.ItemsSource != null)
+                {
+                    self.Reload();
+                }
+            });
+
+    public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
+        BindableProperty.Create(nameof(RowsBackgroundColorPalette), typeof(IColorProvider), typeof(DataGrid),
+            new PaletteCollection
+            {
+                default
+            },
+            propertyChanged: (b, _, _) =>
+            {
+                var self = (DataGrid)b;
+                if (self.Columns != null && self.ItemsSource != null)
+                {
+                    self.Reload();
+                }
+            });
+
+    public static readonly BindableProperty RowsTextColorPaletteProperty =
+        BindableProperty.Create(nameof(RowsTextColorPalette), typeof(IColorProvider), typeof(DataGrid),
+            new PaletteCollection { Colors.Black },
+            propertyChanged: (b, _, _) =>
+            {
+                var self = (DataGrid)b;
+                if (self.Columns != null && self.ItemsSource != null)
+                {
+                    self.Reload();
+                }
+            });
+
+    public static readonly BindableProperty ColumnsProperty =
+        BindableProperty.Create(nameof(Columns), typeof(ColumnCollection), typeof(DataGrid),
+            propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView(),
+            defaultValueCreator: _ => new ColumnCollection());
+
+    public static readonly BindableProperty ItemsSourceProperty =
+        BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
+            propertyChanged: (b, o, n) =>
+            {
+                var self = (DataGrid)b;
+                //ObservableCollection Tracking 
+                if (o is INotifyCollectionChanged collectionChanged)
+                {
+                    collectionChanged.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
+                }
+
+                if (n == null)
+                {
+                    self.InternalItems = null;
+                }
+                else
+                {
+                    if (n is INotifyCollectionChanged changed)
+                    {
+                        changed.CollectionChanged += self.HandleItemsSourceCollectionChanged;
+                    }
+
+                    self.InternalItems = new List<object>(((IEnumerable)n).Cast<object>());
+                }
+
+                if (self.SelectedItem != null && !self.InternalItems.Contains(self.SelectedItem))
+                {
+                    self.SelectedItem = null;
+                }
+            });
+
+    private void HandleItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        InternalItems = new List<object>(((IEnumerable)sender).Cast<object>());
+        if (SelectedItem != null && !InternalItems.Contains(SelectedItem))
+        {
+            SelectedItem = null;
+        }
+    }
+
+    public static readonly BindableProperty RowHeightProperty =
+        BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(DataGrid), 40);
+
+    public static readonly BindableProperty HeaderHeightProperty =
+        BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40,
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+                self._headerView.HeightRequest = (int)n;
+            });
+
+    public static readonly BindableProperty IsSortableProperty =
+        BindableProperty.Create(nameof(IsSortable), typeof(bool), typeof(DataGrid), true);
+
+    public static readonly BindableProperty FontSizeProperty =
+        BindableProperty.Create(nameof(FontSize), typeof(double), typeof(DataGrid), 13.0);
+
+    public static readonly BindableProperty FontFamilyProperty =
+        BindableProperty.Create(nameof(FontFamily), typeof(string), typeof(DataGrid), Font.Default.Family);
+
+    public static readonly BindableProperty SelectedItemProperty =
+        BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DataGrid), null, BindingMode.TwoWay,
+            coerceValue: (b, v) =>
+            {
+                var self = (DataGrid)b;
+                if (!self.SelectionEnabled && v != null)
+                {
+                    throw new InvalidOperationException("Datagrid must be SelectionEnabled=true to set SelectedItem");
+                }
+
+                if (self.InternalItems != null && self.InternalItems.Contains(v))
+                {
+                    return v;
+                }
+
+                return null;
+            },
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+                if (self._collectionView.SelectedItem != n)
+                {
+                    self._collectionView.SelectedItem = n;
+                }
+            }
+        );
+
+    public static readonly BindableProperty SelectionEnabledProperty =
+        BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true,
+            propertyChanged: (b, _, _) =>
+            {
+                var self = (DataGrid)b;
+                if (!self.SelectionEnabled && self.SelectedItem != null)
+                {
+                    self.SelectedItem = null;
+                }
+            });
+
+    public static readonly BindableProperty RefreshingEnabledProperty =
+    BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true,
+        propertyChanged: (b, _, n) =>
+        {
+            var self = (DataGrid)b;
+            if (n is bool refreshingEnabled)
+            {
+                self.PullToRefreshCommand?.CanExecute(refreshingEnabled);
+            }
+        });
+
+    public static readonly BindableProperty PullToRefreshCommandProperty =
+        BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null,
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+                if (n == null)
+                {
+                    self._refreshView.IsEnabled = false;
+                    self._refreshView.Command = null;
+                }
+                else
+                {
+                    self._refreshView.IsEnabled = true;
+                    self._refreshView.Command = n as ICommand;
+                    self._refreshView.Command.CanExecute(self.RefreshingEnabled);
+                }
+            });
+
+    public static readonly BindableProperty IsRefreshingProperty =
+        BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay,
+            propertyChanged: (b, _, n) => ((DataGrid)b)._refreshView.IsRefreshing = (bool)n);
+
+    public static readonly BindableProperty BorderThicknessProperty =
+        BindableProperty.Create(nameof(BorderThickness), typeof(double), typeof(DataGrid), (double)1,
+            propertyChanged: (b, _, n) =>
+            {
                 ((DataGrid)b)._headerView.ColumnSpacing = ((double)n) / 2;
                 ((DataGrid)b)._headerView.Padding = new Thickness(((double)n) / 2);
             });

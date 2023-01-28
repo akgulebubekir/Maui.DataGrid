@@ -1,5 +1,6 @@
 ﻿namespace Maui.DataGrid;
 
+using Microsoft.Maui.Controls.Shapes;
 using Utils;
 
 internal sealed class DataGridRow : Grid
@@ -42,11 +43,13 @@ internal sealed class DataGridRow : Grid
     private void CreateView()
     {
         UpdateBackgroundColor();
-        ColumnSpacing = DataGrid.BorderThickness / 2;
-        Padding = new Thickness(DataGrid.BorderThickness / 2);
 
-        foreach (var col in DataGrid.Columns)
+        ColumnSpacing = DataGrid.BorderThickness;
+        Margin = new Thickness(0, 0, 0, DataGrid.BorderThickness);
+
+        for (int i = 0; i < DataGrid.Columns.Count; i++)
         {
+            DataGridColumn col = DataGrid.Columns[i];
             ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
 
             if (col.CellTemplate?.CreateContent() is View cell)
@@ -62,8 +65,6 @@ internal sealed class DataGridRow : Grid
                 cell = new Label
                 {
                     TextColor = TextColor,
-                    VerticalOptions = LayoutOptions.Fill,
-                    HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
                     HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
                     LineBreakMode = col.LineBreakMode
@@ -76,17 +77,14 @@ internal sealed class DataGridRow : Grid
                     new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
 
-            var border = new Border
+            var border = new ContentView
             {
-                BackgroundColor = Colors.Transparent,
                 Content = cell,
-                Stroke = new SolidColorBrush(DataGrid.BorderColor),
-                StrokeThickness = DataGrid.BorderThickness,
                 HeightRequest = DataGrid.RowHeight
             };
 
             Children.Add(border);
-            SetColumn((BindableObject)border, DataGrid.Columns.IndexOf(col));
+            SetColumn((BindableObject)border, i);
         }
     }
 
@@ -96,13 +94,13 @@ internal sealed class DataGridRow : Grid
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
-            BackgroundColor =
+            var backgroundColor =
                 DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == BindingContext
                     ? DataGrid.ActiveRowColor
                     : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             TextColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
 
-            ChangeColor(BackgroundColor, TextColor);
+            ChangeColor(backgroundColor, TextColor);
         }
     }
 
@@ -110,11 +108,12 @@ internal sealed class DataGridRow : Grid
     {
         foreach (var child in Children)
         {
-            if (child is Border border)
+            if (child is View view)
             {
-                if (border.Content is Label label)
+                view.BackgroundColor = backgroundColor;
+
+                if (view is ContentView contentView && contentView.Content is Label label)
                 {
-                    label.BackgroundColor = backgroundColor;
                     label.TextColor = textColor;
                 }
             }

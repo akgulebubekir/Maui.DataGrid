@@ -4,9 +4,7 @@
       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-      x:Class="Maui.DataGrid.DataGrid"
-      Padding="0"
-      RowSpacing="0">
+      x:Class="Maui.DataGrid.DataGrid">
     <Grid.Resources>
         <ResourceDictionary>
             <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
@@ -16,7 +14,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid Grid.Row="0" x:Name="_headerView" RowSpacing="0">
+    <Grid Grid.Row="0" x:Name="_headerView">
         <Grid.Resources>
             <ResourceDictionary>
                 <!--Default Header Style-->
@@ -25,7 +23,6 @@
                     <Setter Property="HorizontalOptions" Value="Center" />
                     <Setter Property="VerticalOptions" Value="Center" />
                     <Setter Property="TextColor" Value="Black" />
-                    <Setter Property="LineBreakMode" Value="WordWrap" />
                 </Style>
                 <Style x:Key="SortIconStyle" TargetType="Polygon">
                     <Setter Property="Aspect" Value="Uniform" />
@@ -35,7 +32,7 @@
             </ResourceDictionary>
         </Grid.Resources>
     </Grid>
-    <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
+    <RefreshView Grid.Row="1" x:Name="_refreshView" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
         <CollectionView x:Name="_collectionView" SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"  SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
             <CollectionView.ItemTemplate>
                 <DataTemplate>

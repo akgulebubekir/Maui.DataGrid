@@ -18,7 +18,6 @@ public class DataGridColumn : BindableObject, IDefinition
             Content = SortingIcon,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
-            Margin = 0
         };
     }
 
