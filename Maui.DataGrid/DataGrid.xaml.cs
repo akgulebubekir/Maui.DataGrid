@@ -654,13 +654,16 @@ public partial class DataGrid
             }
         }
 
-        if (Parent is null)
+        if (RefreshingEnabled)
         {
-            _refreshView.Refreshing -= OnRefreshing;
-        }
-        else
-        {
-            _refreshView.Refreshing += OnRefreshing;
+            if (Parent is null)
+            {
+                _refreshView.Refreshing -= OnRefreshing;
+            }
+            else
+            {
+                _refreshView.Refreshing += OnRefreshing;
+            }
         }
     }
 
