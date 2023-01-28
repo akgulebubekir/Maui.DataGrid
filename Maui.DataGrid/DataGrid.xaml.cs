@@ -305,12 +305,10 @@ public partial class DataGrid
                 var self = (DataGrid)b;
                 if (n == null)
                 {
-                    self._refreshView.IsEnabled = false;
                     self._refreshView.Command = null;
                 }
                 else
                 {
-                    self._refreshView.IsEnabled = true;
                     self._refreshView.Command = n as ICommand;
                     self._refreshView.Command.CanExecute(self.RefreshingEnabled);
                 }
