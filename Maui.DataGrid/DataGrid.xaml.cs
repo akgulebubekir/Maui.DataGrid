@@ -700,12 +700,13 @@ public partial class DataGrid
         if (IsSortable && column.SortingEnabled)
         {
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
-            column.SortingIconContainer.HeightRequest = HeaderHeight * 0.35;
-            column.SortingIconContainer.WidthRequest = HeaderHeight * 0.35;
+            column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
+            column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
       
             var grid = new Grid
             {
                 ColumnSpacing = 0,
+                Padding = new(0,0,4,0),
                 ColumnDefinitions = new()
                 {
                     new() { Width = new(1, GridUnitType.Star) },
