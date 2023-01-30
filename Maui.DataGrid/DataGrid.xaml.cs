@@ -289,14 +289,14 @@ public partial class DataGrid
 
     public static readonly BindableProperty RefreshingEnabledProperty =
     BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true,
-        propertyChanged: (b, _, n) =>
-        {
-            var self = (DataGrid)b;
-            if (n is bool refreshingEnabled)
+            propertyChanged: (b, _, n) =>
             {
-                self.PullToRefreshCommand?.CanExecute(refreshingEnabled);
-            }
-        });
+                var self = (DataGrid)b;
+                if (n is bool refreshingEnabled)
+                {
+                    self.PullToRefreshCommand?.CanExecute(() => refreshingEnabled);
+                }
+            });
 
     public static readonly BindableProperty PullToRefreshCommandProperty =
         BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null,
@@ -305,12 +305,10 @@ public partial class DataGrid
                 var self = (DataGrid)b;
                 if (n == null)
                 {
-                    self._refreshView.IsEnabled = false;
                     self._refreshView.Command = null;
                 }
                 else
                 {
-                    self._refreshView.IsEnabled = true;
                     self._refreshView.Command = n as ICommand;
                     self._refreshView.Command.CanExecute(self.RefreshingEnabled);
                 }
@@ -654,13 +652,16 @@ public partial class DataGrid
             }
         }
 
-        if (Parent is null)
+        if (RefreshingEnabled)
         {
-            _refreshView.Refreshing -= OnRefreshing;
-        }
-        else
-        {
-            _refreshView.Refreshing += OnRefreshing;
+            if (Parent is null)
+            {
+                _refreshView.Refreshing -= OnRefreshing;
+            }
+            else
+            {
+                _refreshView.Refreshing += OnRefreshing;
+            }
         }
     }
 
