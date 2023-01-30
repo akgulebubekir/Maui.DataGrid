@@ -8,7 +8,10 @@
         "Road": "32-9",
         "Div": "10-6",
         "Conf": "39-13",
-        "Streak": "L 1",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
         "Last10": "6-4",
         "Logo": "suns.png"
     },
@@ -21,7 +24,10 @@
         "Road": "26-15",
         "Div": "11-5",
         "Conf": "36-16",
-        "Streak": "L 1",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
         "Last10": "7-3",
         "Logo": "mem.png"
     },
@@ -34,7 +40,10 @@
         "Road": "22-19",
         "Div": "12-4",
         "Conf": "33-19",
-        "Streak": "W 5",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 5
+        },
         "Last10": "6-4",
         "Logo": "gsw.png"
     },
@@ -47,7 +56,10 @@
         "Road": "23-18",
         "Div": "14-2",
         "Conf": "36-16",
-        "Streak": "W 4",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 4
+        },
         "Last10": "8-2",
         "Logo": "mavs.png"
     },
@@ -60,7 +72,10 @@
         "Road": "20-21",
         "Div": "15-1",
         "Conf": "33-19",
-        "Streak": "W 1",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 1
+        },
         "Last10": "4-6",
         "Logo": "jazz.png"
     },
@@ -73,7 +88,10 @@
         "Road": "25-16",
         "Div": "6-10",
         "Conf": "29-23",
-        "Streak": "L 1",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
         "Last10": "6-4",
         "Logo": "nuggets.png"
     },
@@ -86,7 +104,10 @@
         "Road": "20-21",
         "Div": "12-4",
         "Conf": "32-20",
-        "Streak": "L 1",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
         "Last10": "4-6",
         "Logo": "timberwolves.png"
     },
@@ -99,7 +120,10 @@
         "Road": "17-24",
         "Div": "6-10",
         "Conf": "25-27",
-        "Streak": "L 2",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 2
+        },
         "Last10": "6-4",
         "Logo": "nop.png"
     },
@@ -112,7 +136,10 @@
         "Road": "17-24",
         "Div": "9-7",
         "Conf": "26-26",
-        "Streak": "W 5",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 5
+        },
         "Last10": "6-4",
         "Logo": "lac.png"
     },
@@ -125,7 +152,10 @@
         "Road": "18-23",
         "Div": "6-10",
         "Conf": "24-28",
-        "Streak": "L 3",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 3
+        },
         "Last10": "6-4",
         "Logo": "sas.png"
     },
@@ -138,7 +168,10 @@
         "Road": "12-29",
         "Div": "3-13",
         "Conf": "18-34",
-        "Streak": "W 2",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 2
+        },
         "Last10": "2-8",
         "Logo": "lakers.png"
     },
@@ -151,7 +184,10 @@
         "Road": "14-27",
         "Div": "6-10",
         "Conf": "20-32",
-        "Streak": "W 1",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 1
+        },
         "Last10": "5-5",
         "Logo": "kings.png"
     },
@@ -164,7 +200,10 @@
         "Road": "10-31",
         "Div": "1-15",
         "Conf": "11-41",
-        "Streak": "L 11",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 11
+        },
         "Last10": "0-10",
         "Logo": "ptb.png"
     },
@@ -177,7 +216,10 @@
         "Road": "12-29",
         "Div": "6-10",
         "Conf": "17-35",
-        "Streak": "L 3",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 3
+        },
         "Last10": "4-6",
         "Logo": "okc.png"
     },
@@ -190,7 +232,10 @@
         "Road": "9-32",
         "Div": "3-13",
         "Conf": "11-41",
-        "Streak": "L 7",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 7
+        },
         "Last10": "2-8",
         "Logo": "hou.png"
     }

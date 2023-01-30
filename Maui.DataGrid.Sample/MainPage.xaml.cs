@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.ViewModels;
 
 namespace Maui.DataGrid.Sample;
@@ -20,27 +21,13 @@ internal class StreakToColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value == null)
+        if (value is Streak s)
         {
-            return Colors.Transparent;
+            return s.Result == Result.Win
+                ? Colors.Green.AddLuminosity(s.NumStreak / 30F)
+                : Colors.Red.AddLuminosity(-s.NumStreak / 30F);
         }
-
-        var val = value.ToString();
-
-        var tokens = val.Split(' ');
-        if (tokens.Length != 2)
-        {
-            throw new ArgumentException("incorrect streak format");
-        }
-
-        if (!int.TryParse(tokens[1], out var numStreak))
-        {
-            throw new ArgumentException("incorrect streak format");
-        }
-
-        return tokens.First() == "W"
-            ? Colors.Green.AddLuminosity(numStreak / 30F)
-            : Colors.Red.AddLuminosity(-numStreak / 30F);
+        return Colors.Transparent;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
