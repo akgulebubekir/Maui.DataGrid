@@ -33,11 +33,15 @@
                 </ResourceDictionary>
             </Grid.Resources>
         </Grid>
-        <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
-            <CollectionView x:Name="_collectionView" SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"  SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
+        <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" 
+                     IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
+            <CollectionView x:Name="_collectionView" WidthRequest="{Binding WidthRequest, Source={x:Reference self}}" 
+                            SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"
+                            SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <local:DataGridRow DataGrid="{Reference self}" HeightRequest="{Binding RowHeight, Source={x:Reference self}, Mode=OneTime}" />
+                        <local:DataGridRow DataGrid="{Reference self}" 
+                                           HeightRequest="{Binding RowHeight, Source={x:Reference self}, Mode=OneTime}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
