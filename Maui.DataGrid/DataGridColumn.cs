@@ -8,6 +8,7 @@ namespace Maui.DataGrid;
 /// </summary>
 public class DataGridColumn : BindableObject, IDefinition
 {
+    private bool? _isSortable;
     private ColumnDefinition _columnDefinition;
     private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
 
@@ -235,11 +236,37 @@ public class DataGridColumn : BindableObject, IDefinition
 
     /// <summary>
     /// Defines if the column is sortable. Default is true
+    /// Sortable columns must implement <see cref="IComparable"/>
     /// </summary>
     public bool SortingEnabled
     {
         get => (bool)GetValue(SortingEnabledProperty);
         set => SetValue(SortingEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// Determines via reflection if the column's data type is sortable.
+    /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property
+    /// </summary>
+    public bool IsSortable(DataGrid dataGrid)
+    {
+        if (_isSortable is not null)
+        {
+            return _isSortable.Value;
+        }
+
+        try
+        {
+            var listItemType = dataGrid.ItemsSource.GetType().GetGenericArguments().Single();
+            var columnDataType = listItemType.GetProperty(PropertyName).PropertyType;
+            _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+        }
+        catch
+        {
+            _isSortable = false;
+        }
+
+        return _isSortable ?? false;
     }
 
     /// <summary>
