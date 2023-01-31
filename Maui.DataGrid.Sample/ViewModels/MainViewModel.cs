@@ -11,6 +11,9 @@ public class MainViewModel : INotifyPropertyChanged
     private List<Team> _teams;
     private Team _selectedItem;
     private bool _isRefreshing;
+    private bool _teamColumnVisible = true;
+    private bool _winColumnVisible = true;
+    private bool _headerBordersVisible = true;
 
     public MainViewModel()
     {
@@ -25,6 +28,36 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _teams = value;
             OnPropertyChanged(nameof(Teams));
+        }
+    }
+
+    public bool HeaderBordersVisible
+    {
+        get => _headerBordersVisible;
+        set
+        {
+            _headerBordersVisible = value;
+            OnPropertyChanged(nameof(HeaderBordersVisible));
+        }
+    }
+
+    public bool TeamColumnVisible
+    {
+        get => _teamColumnVisible;
+        set
+        {
+            _teamColumnVisible = value;
+            OnPropertyChanged(nameof(TeamColumnVisible));
+        }
+    }
+
+    public bool WinColumnVisible
+    {
+        get => _winColumnVisible;
+        set
+        {
+            _winColumnVisible = value;
+            OnPropertyChanged(nameof(WinColumnVisible));
         }
     }
 

@@ -4,7 +4,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
       x:Class="Maui.DataGrid.DataGrid">
-    <Grid x:Name="_mainGrid">
+    <Grid>
         <Grid.Resources>
             <ResourceDictionary>
                 <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="_headerView" RowSpacing="0">
+        <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={x:Reference self}}">
             <Grid.Resources>
                 <ResourceDictionary>
                     <!--Default Header Style-->
@@ -29,6 +29,7 @@
                         <Setter Property="Aspect" Value="Uniform" />
                         <Setter Property="Fill" Value="Black" />
                         <Setter Property="Points" Value="50,0 0,80 100,80" />
+                        <Setter Property="Margin" Value="0,0,3,0" />
                     </Style>
                 </ResourceDictionary>
             </Grid.Resources>

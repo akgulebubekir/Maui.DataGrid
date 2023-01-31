@@ -3,13 +3,30 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
              xmlns:conv="clr-namespace:Maui.DataGrid.Sample;assembly=Maui.DataGrid.Sample"
+             x:DataType="vm:MainViewModel"
              x:Class="Maui.DataGrid.Sample.MainPage">
-    <ContentView BackgroundColor="White">
+    <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
-        <dg:DataGrid ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
+        <HorizontalStackLayout BackgroundColor="Black">
+            <HorizontalStackLayout>
+                <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Switch IsToggled="{Binding HeaderBordersVisible}" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Label Text="Team Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Switch IsToggled="{Binding TeamColumnVisible}" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Label Text="Win Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Switch IsToggled="{Binding WinColumnVisible}" />
+            </HorizontalStackLayout>
+        </HorizontalStackLayout>
+
+        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
-                     HeaderBackground="{StaticResource GridHeaderBgColor}"
+                     HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
                      PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}"
                      ActiveRowColor="{StaticResource ActiveRowColor}">
             <dg:DataGrid.Columns>
@@ -21,8 +38,8 @@
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
-                <dg:DataGridColumn Title="Team" PropertyName="Name" />
-                <dg:DataGridColumn Title="Win" PropertyName="Win" />
+                <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" />
+                <dg:DataGridColumn Title="Win" PropertyName="Win" IsVisible="{Binding WinColumnVisible}" />
                 <dg:DataGridColumn Title="Loose" PropertyName="Loose" />
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
@@ -57,6 +74,6 @@
                 </ResourceDictionary>
             </dg:DataGrid.Resources>
         </dg:DataGrid>
-    </ContentView>
+    </Grid>
 
 </ContentPage>

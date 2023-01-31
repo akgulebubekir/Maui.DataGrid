@@ -1,5 +1,6 @@
 ﻿namespace Maui.DataGrid;
 
+using Microsoft.Maui.Controls;
 using Utils;
 
 internal sealed class DataGridRow : Grid
@@ -34,15 +35,25 @@ internal sealed class DataGridRow : Grid
 
     private void CreateView()
     {
-        UpdateBackgroundColor();
-        BackgroundColor = DataGrid.BorderColor;
-        ColumnSpacing = DataGrid.BorderThickness.HorizontalThickness / 2;
-        Padding = new Thickness(DataGrid.BorderThickness.HorizontalThickness / 2,
-            DataGrid.BorderThickness.VerticalThickness / 2);
+        ColumnDefinitions.Clear();
+        Children.Clear();
 
-        foreach (var col in DataGrid.Columns)
+        BackgroundColor = DataGrid.BorderColor;
+
+        var borderThickness = DataGrid.BorderThickness;
+
+        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
+        ColumnSpacing = borderThickness.HorizontalThickness;
+        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
+
+        for (int i = 0; i < DataGrid.Columns.Count; i++)
         {
-            ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+            DataGridColumn col = DataGrid.Columns[i];
+
+            col.ColumnDefinition ??= new(col.Width);
+
+            ColumnDefinitions.Add(col.ColumnDefinition);
+
             View cell;
 
             if (col.CellTemplate != null)
@@ -58,7 +69,6 @@ internal sealed class DataGridRow : Grid
             {
                 cell = new Label
                 {
-                    Padding = 0,
                     TextColor = _textColor,
                     BackgroundColor = _bgColor,
                     VerticalOptions = LayoutOptions.Fill,
@@ -75,9 +85,14 @@ internal sealed class DataGridRow : Grid
                     new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
 
+            cell.SetBinding(IsVisibleProperty,
+                new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
+
             Children.Add(cell);
-            SetColumn((BindableObject)cell, DataGrid.Columns.IndexOf(col));
+            SetColumn((BindableObject)cell, i);
         }
+
+        UpdateBackgroundColor();
     }
 
     private void UpdateBackgroundColor()
@@ -92,21 +107,21 @@ internal sealed class DataGridRow : Grid
                     : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             _textColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
 
-            ChangeColor(_bgColor);
+            ChangeColor(_bgColor, _textColor);
         }
     }
 
-    private void ChangeColor(Color color)
+    private void ChangeColor(Color bgColor, Color textColor)
     {
         foreach (var v in Children)
         {
             if (v is View view)
             {
-                view.BackgroundColor = color;
+                view.BackgroundColor = bgColor;
 
                 if (view is Label label)
                 {
-                    label.TextColor = _textColor;
+                    label.TextColor = textColor;
                 }
             }
         }
@@ -115,7 +130,7 @@ internal sealed class DataGridRow : Grid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        UpdateBackgroundColor();
+        CreateView();
     }
 
     protected override void OnParentSet()

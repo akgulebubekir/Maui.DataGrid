@@ -8,6 +8,9 @@ namespace Maui.DataGrid;
 /// </summary>
 public class DataGridColumn : BindableObject, IDefinition
 {
+    private ColumnDefinition _columnDefinition;
+    private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
+
     public DataGridColumn()
     {
         HeaderLabel = new();
@@ -18,7 +21,6 @@ public class DataGridColumn : BindableObject, IDefinition
             Content = SortingIcon,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
-            Margin = 0
         };
     }
 
@@ -59,6 +61,18 @@ public class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty PropertyNameProperty =
         BindableProperty.Create(nameof(PropertyName), typeof(string), typeof(DataGridColumn));
 
+    public static readonly BindableProperty IsVisibleProperty =
+        BindableProperty.Create(nameof(IsVisible), typeof(bool), typeof(DataGridColumn), true,
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n && b is DataGridColumn column)
+                {
+                    var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
+                    dataGrid.Reload();
+                    column.OnSizeChanged();
+                }
+            });
+
     public static readonly BindableProperty StringFormatProperty =
         BindableProperty.Create(nameof(StringFormat), typeof(string), typeof(DataGridColumn));
 
@@ -94,6 +108,21 @@ public class DataGridColumn : BindableObject, IDefinition
 
     #region properties
 
+    public ColumnDefinition ColumnDefinition
+    {
+        get
+        {
+            if (!IsVisible)
+            {
+                return _invisibleColumnDefinition;
+            }
+
+            return _columnDefinition;
+        }
+
+        internal set => _columnDefinition = value;
+    }
+
     /// <summary>
     /// Width of the column. Like Grid, you can use <code>Absolute, star, Auto</code> as unit.
     /// </summary>
@@ -101,7 +130,11 @@ public class DataGridColumn : BindableObject, IDefinition
     public GridLength Width
     {
         get => (GridLength)GetValue(WidthProperty);
-        set => SetValue(WidthProperty, value);
+        set
+        {
+            SetValue(WidthProperty, value);
+            ColumnDefinition = new(value);
+        }
     }
 
     /// <summary>
@@ -140,6 +173,16 @@ public class DataGridColumn : BindableObject, IDefinition
         get => (string)GetValue(PropertyNameProperty);
         set => SetValue(PropertyNameProperty, value);
     }
+
+    /// <summary>
+    /// Is this column visible?
+    /// </summary>
+    public bool IsVisible
+    {
+        get => (bool)GetValue(IsVisibleProperty);
+        set => SetValue(IsVisibleProperty, value);
+    }
+
 
     /// <summary>
     /// String format for the cell
