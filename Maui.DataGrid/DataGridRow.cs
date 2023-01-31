@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 using Utils;
 
@@ -92,21 +92,21 @@ internal sealed class DataGridRow : Grid
                     : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             _textColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
 
-            ChangeColor(_bgColor);
+            ChangeColor(_bgColor, _textColor);
         }
     }
 
-    private void ChangeColor(Color color)
+    private void ChangeColor(Color bgColor, Color textColor)
     {
         foreach (var v in Children)
         {
             if (v is View view)
             {
-                view.BackgroundColor = color;
+                view.BackgroundColor = bgColor;
 
                 if (view is Label label)
                 {
-                    label.TextColor = _textColor;
+                    label.TextColor = textColor;
                 }
             }
         }
