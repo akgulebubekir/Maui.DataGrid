@@ -233,12 +233,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(DataGrid), 40);
 
     public static readonly BindableProperty HeaderHeightProperty =
-        BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                self._headerView.HeightRequest = (int)n;
-            });
+        BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40);
 
     public static readonly BindableProperty IsSortableProperty =
         BindableProperty.Create(nameof(IsSortable), typeof(bool), typeof(DataGrid), true);

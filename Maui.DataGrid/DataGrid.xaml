@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="_headerView" RowSpacing="0">
+        <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={x:Reference self}}">
             <Grid.Resources>
                 <ResourceDictionary>
                     <!--Default Header Style-->
