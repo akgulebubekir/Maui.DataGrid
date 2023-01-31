@@ -29,6 +29,7 @@
                         <Setter Property="Aspect" Value="Uniform" />
                         <Setter Property="Fill" Value="Black" />
                         <Setter Property="Points" Value="50,0 0,80 100,80" />
+                        <Setter Property="Margin" Value="0,0,3,0" />
                     </Style>
                 </ResourceDictionary>
             </Grid.Resources>
