@@ -8,7 +8,7 @@ namespace Maui.DataGrid;
 /// </summary>
 public class SortDataTypeConverter : TypeConverter
 {
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         if (int.TryParse(value?.ToString(), out var index))
         {
