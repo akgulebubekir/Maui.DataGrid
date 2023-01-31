@@ -54,14 +54,19 @@ public partial class DataGrid
         var column = Columns[sortData.Index];
         var order = sortData.Order;
 
+        if (column.PropertyName == null)
+        {
+            throw new InvalidOperationException($"Please set the {nameof(column.PropertyName)} of the column");
+        }
+
+        if (!column.IsSortable(this))
+        {
+            throw new InvalidOperationException($"{column.PropertyName} column is not sortable");
+        }
+
         if (!IsSortable)
         {
             throw new InvalidOperationException("DataGrid is not sortable");
-        }
-
-        if (column.PropertyName == null)
-        {
-            throw new InvalidOperationException("Please set 'PropertyName' of the Column");
         }
 
         var items = InternalItems;
@@ -506,8 +511,9 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Determines if the grid is sortable. Default value is true.
-    /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property
+    /// Gets or sets if the grid is sortable. Default value is true.
+    /// Sortable columns must implement <see cref="IComparable"/>
+    /// If you want to enable or disable sorting for specific column please use <c>SortingEnabled</c> property
     /// </summary>
     public bool IsSortable
     {
@@ -703,7 +709,7 @@ public partial class DataGrid
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
 
-        if (IsSortable && column.SortingEnabled)
+        if (IsSortable && column.IsSortable(this) && column.SortingEnabled)
         {
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
