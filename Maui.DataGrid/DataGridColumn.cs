@@ -9,7 +9,7 @@ namespace Maui.DataGrid;
 public class DataGridColumn : BindableObject, IDefinition
 {
     private bool? _isSortable;
-    private ColumnDefinition _columnDefinition;
+    private ColumnDefinition? _columnDefinition;
     private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
 
     public DataGridColumn()
@@ -109,7 +109,7 @@ public class DataGridColumn : BindableObject, IDefinition
 
     #region properties
 
-    public ColumnDefinition ColumnDefinition
+    public ColumnDefinition? ColumnDefinition
     {
         get
         {
@@ -258,8 +258,12 @@ public class DataGridColumn : BindableObject, IDefinition
         try
         {
             var listItemType = dataGrid.ItemsSource.GetType().GetGenericArguments().Single();
-            var columnDataType = listItemType.GetProperty(PropertyName).PropertyType;
-            _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+            var columnDataType = listItemType.GetProperty(PropertyName)?.PropertyType;
+
+            if (columnDataType is not null)
+            {
+                _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+            }
         }
         catch
         {

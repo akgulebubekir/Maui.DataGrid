@@ -166,7 +166,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(RowsBackgroundColorPalette), typeof(IColorProvider), typeof(DataGrid),
             new PaletteCollection
             {
-                default
+                Colors.White
             },
             propertyChanged: (b, _, _) =>
             {
@@ -219,18 +219,21 @@ public partial class DataGrid
                     self.InternalItems = new List<object>(((IEnumerable)n).Cast<object>());
                 }
 
-                if (self.SelectedItem != null && !self.InternalItems.Contains(self.SelectedItem))
+                if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
                 {
                     self.SelectedItem = null;
                 }
             });
 
-    private void HandleItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void HandleItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        InternalItems = new List<object>(((IEnumerable)sender).Cast<object>());
-        if (SelectedItem != null && !InternalItems.Contains(SelectedItem))
+        if (sender is IEnumerable items)
         {
-            SelectedItem = null;
+            InternalItems = new List<object>(items.Cast<object>());
+            if (SelectedItem != null && !InternalItems.Contains(SelectedItem))
+            {
+                SelectedItem = null;
+            }
         }
     }
 
@@ -253,13 +256,19 @@ public partial class DataGrid
         BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DataGrid), null, BindingMode.TwoWay,
             coerceValue: (b, v) =>
             {
+                if (v is null)
+                {
+                    return null;
+                }
+
                 var self = (DataGrid)b;
-                if (!self.SelectionEnabled && v != null)
+
+                if (!self.SelectionEnabled)
                 {
                     throw new InvalidOperationException("Datagrid must be SelectionEnabled=true to set SelectedItem");
                 }
 
-                if (self.InternalItems != null && self.InternalItems.Contains(v))
+                if (self.InternalItems?.Contains(v) == true)
                 {
                     return v;
                 }
@@ -310,7 +319,7 @@ public partial class DataGrid
                 else
                 {
                     self._refreshView.Command = n as ICommand;
-                    self._refreshView.Command.CanExecute(self.RefreshingEnabled);
+                    self._refreshView.Command?.CanExecute(self.RefreshingEnabled);
                 }
             });
 
@@ -442,9 +451,9 @@ public partial class DataGrid
         set => SetValue(ItemsSourceProperty, value);
     }
 
-    private IList<object> _internalItems;
+    private IList<object>? _internalItems;
 
-    internal IList<object> InternalItems
+    internal IList<object>? InternalItems
     {
         get => _internalItems;
         set
@@ -533,7 +542,7 @@ public partial class DataGrid
     /// <summary>
     /// Selected item
     /// </summary>
-    public object SelectedItem
+    public object? SelectedItem
     {
         get => GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
@@ -671,12 +680,12 @@ public partial class DataGrid
         InitHeaderView();
     }
 
-    private void OnRefreshing(object sender, EventArgs e)
+    private void OnRefreshing(object? sender, EventArgs e)
     {
         _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
     }
 
-    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         SelectedItem = _collectionView.SelectedItem;
 
@@ -685,7 +694,10 @@ public partial class DataGrid
 
     internal void Reload()
     {
-        InternalItems = new List<object>(_internalItems);
+        if (_internalItems is not null)
+        {
+            InternalItems = new List<object>(_internalItems);
+        }
         RefreshHeaderColumnWidths();
     }
 

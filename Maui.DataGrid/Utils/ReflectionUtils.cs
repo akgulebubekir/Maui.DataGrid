@@ -8,10 +8,16 @@ internal static class ReflectionUtils
     private const char IndexEndOp = ']';
     private const char PropertyOfOp = '.';
 
-    public static object GetValueByPath(object obj, string path)
+    public static object? GetValueByPath(object obj, string path)
     {
         var result = obj;
         var tokens = path?.Split(IndexBeginOp, PropertyOfOp).ToList();
+
+        if (tokens is null)
+        {
+            return null;
+        }
+
         foreach (var token in tokens)
         {
             if (result == null)
@@ -28,7 +34,7 @@ internal static class ReflectionUtils
         return result;
     }
 
-    private static object GetPropertyValue(object obj, string propertyName)
+    private static object? GetPropertyValue(object obj, string propertyName)
     {
         try
         {
@@ -40,9 +46,10 @@ internal static class ReflectionUtils
         }
     }
 
-    private static object GetIndexValue(object obj, string index)
+    private static object? GetIndexValue(object obj, string index)
     {
-        object result = null;
+        object? result = null;
+
         var indexOperator = obj?.GetType().GetRuntimeProperty("Item");
         if (indexOperator != null)
         {
