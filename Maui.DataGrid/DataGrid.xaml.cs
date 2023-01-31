@@ -702,7 +702,7 @@ public partial class DataGrid
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
             column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
-      
+
             var grid = new Grid
             {
                 ColumnSpacing = 0,
@@ -735,9 +735,7 @@ public partial class DataGrid
 
         return new ContentView
         {
-            HorizontalOptions = LayoutOptions.Fill,
-            VerticalOptions = LayoutOptions.Fill,
-            Content = column.HeaderLabel, Margin = 0, Padding = 0
+            Content = column.HeaderLabel
         };
     }
 
