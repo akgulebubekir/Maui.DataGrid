@@ -4,7 +4,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
       x:Class="Maui.DataGrid.DataGrid">
-    <Grid x:Name="_mainGrid">
+    <Grid>
         <Grid.Resources>
             <ResourceDictionary>
                 <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
