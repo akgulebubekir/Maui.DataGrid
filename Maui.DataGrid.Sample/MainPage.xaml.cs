@@ -11,9 +11,6 @@ public partial class MainPage
     {
         InitializeComponent();
         BindingContext = new MainViewModel();
-
-        var dg = new DataGrid();
-        var dgc = new DataGridColumn();
     }
 }
 
