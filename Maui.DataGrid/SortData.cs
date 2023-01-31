@@ -53,4 +53,9 @@ public class SortData
     public int Index { get; set; }
 
     #endregion
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
 }

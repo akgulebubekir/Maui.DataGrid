@@ -254,6 +254,14 @@ public partial class DataGrid
 
     public static readonly BindableProperty SelectedItemProperty =
         BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DataGrid), null, BindingMode.TwoWay,
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+                if (self._collectionView.SelectedItem != n)
+                {
+                    self._collectionView.SelectedItem = n;
+                }
+            },
             coerceValue: (b, v) =>
             {
                 if (v is null)
@@ -274,14 +282,6 @@ public partial class DataGrid
                 }
 
                 return null;
-            },
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (self._collectionView.SelectedItem != n)
-                {
-                    self._collectionView.SelectedItem = n;
-                }
             }
         );
 
@@ -493,7 +493,6 @@ public partial class DataGrid
     /// <summary>
     /// Sets the font family.
     /// It does not sets header font family. Use <c>HeaderLabelStyle</c> to set header font size.
-    /// 
     /// </summary>
     public string FontFamily
     {
@@ -502,7 +501,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets the row height 
+    /// Sets the row height
     /// </summary>
     public int RowHeight
     {
@@ -586,7 +585,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Determines to show the borders of header cells.
-    /// Default value is <code>true</code>
+    /// Default value is <c>true</c>
     /// </summary>
     public bool HeaderBordersVisible
     {
@@ -605,7 +604,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Style of the header label.
-    /// Style's <c>TargetType</c> must be Label. 
+    /// Style's <c>TargetType</c> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
     {
