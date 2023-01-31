@@ -1,5 +1,6 @@
-namespace Maui.DataGrid;
+﻿namespace Maui.DataGrid;
 
+using Microsoft.Maui.Controls;
 using Utils;
 
 internal sealed class DataGridRow : Grid
@@ -34,7 +35,9 @@ internal sealed class DataGridRow : Grid
 
     private void CreateView()
     {
-        UpdateBackgroundColor();
+        ColumnDefinitions.Clear();
+        Children.Clear();
+
         BackgroundColor = DataGrid.BorderColor;
 
         var borderThickness = DataGrid.BorderThickness;
@@ -46,6 +49,10 @@ internal sealed class DataGridRow : Grid
         for (int i = 0; i < DataGrid.Columns.Count; i++)
         {
             DataGridColumn col = DataGrid.Columns[i];
+
+            col.ColumnDefinition ??= new(col.Width);
+
+            ColumnDefinitions.Add(col.ColumnDefinition);
 
             View cell;
 
@@ -78,9 +85,14 @@ internal sealed class DataGridRow : Grid
                     new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
 
+            cell.SetBinding(IsVisibleProperty,
+                new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
+
             Children.Add(cell);
             SetColumn((BindableObject)cell, i);
         }
+
+        UpdateBackgroundColor();
     }
 
     private void UpdateBackgroundColor()
@@ -118,7 +130,7 @@ internal sealed class DataGridRow : Grid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        UpdateBackgroundColor();
+        CreateView();
     }
 
     protected override void OnParentSet()

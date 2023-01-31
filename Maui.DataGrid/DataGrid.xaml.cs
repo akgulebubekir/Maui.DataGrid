@@ -678,9 +678,20 @@ public partial class DataGrid
         _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
     }
 
-    private void Reload()
+    internal void Reload()
     {
         InternalItems = new List<object>(_internalItems);
+        RefreshHeaderColumnWidths();
+    }
+
+    private void RefreshHeaderColumnWidths()
+    {
+        for (int i = 0; i < Columns.Count; i++)
+        {
+            var column = Columns[i];
+
+            _headerView.ColumnDefinitions[i] = column.ColumnDefinition;
+        }
     }
 
     #endregion
@@ -734,7 +745,7 @@ public partial class DataGrid
         };
     }
 
-    private void InitHeaderView()
+    internal void InitHeaderView()
     {
         SetColumnsBindingContext();
 
@@ -751,11 +762,19 @@ public partial class DataGrid
             {
                 var col = Columns[i];
 
-                _headerView.ColumnDefinitions.Add(new() { Width = col.Width });
+                col.ColumnDefinition ??= new(col.Width);
+
+                _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
                 var cell = GetHeaderViewForColumn(col, i);
+
                 cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source:this));
+
+                cell.SetBinding(IsVisibleProperty,
+                    new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
+
                 _headerView.Children.Add(cell);
+
                 Grid.SetColumn(cell, i);
 
                 _sortingOrders.Add(i, SortingOrder.None);
