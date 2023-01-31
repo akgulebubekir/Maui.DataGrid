@@ -778,9 +778,8 @@ public partial class DataGrid
                 cell.SetBinding(IsVisibleProperty,
                     new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
-                _headerView.Children.Add(cell);
-
                 Grid.SetColumn(cell, i);
+                _headerView.Children.Add(cell);
 
                 _sortingOrders.Add(i, SortingOrder.None);
             }
