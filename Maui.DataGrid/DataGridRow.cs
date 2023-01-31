@@ -40,9 +40,10 @@ internal sealed class DataGridRow : Grid
         Padding = new Thickness(DataGrid.BorderThickness.HorizontalThickness / 2,
             DataGrid.BorderThickness.VerticalThickness / 2);
 
-        foreach (var col in DataGrid.Columns)
+        for (int i = 0; i < DataGrid.Columns.Count; i++)
         {
-            ColumnDefinitions.Add(new ColumnDefinition { Width = col.Width });
+            DataGridColumn col = DataGrid.Columns[i];
+
             View cell;
 
             if (col.CellTemplate != null)
@@ -76,7 +77,7 @@ internal sealed class DataGridRow : Grid
             }
 
             Children.Add(cell);
-            SetColumn((BindableObject)cell, DataGrid.Columns.IndexOf(col));
+            SetColumn((BindableObject)cell, i);
         }
     }
 
