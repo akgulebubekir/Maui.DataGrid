@@ -737,12 +737,13 @@ public partial class DataGrid
     private void InitHeaderView()
     {
         SetColumnsBindingContext();
+
         _headerView.Children.Clear();
         _headerView.ColumnDefinitions.Clear();
         _sortingOrders.Clear();
 
         _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
-        _headerView.ColumnSpacing = BorderThickness.HorizontalThickness / 2;
+        _headerView.ColumnSpacing = BorderThickness.HorizontalThickness;
 
         if (Columns != null)
         {
