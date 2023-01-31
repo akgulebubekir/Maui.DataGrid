@@ -1,4 +1,4 @@
-namespace Maui.DataGrid;
+﻿namespace Maui.DataGrid;
 
 using Microsoft.Maui.Controls;
 using Utils;
@@ -86,8 +86,8 @@ internal sealed class DataGridRow : Grid
             cell.SetBinding(IsVisibleProperty,
                 new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
-            Children.Add(cell);
             SetColumn((BindableObject)cell, i);
+            Children.Add(cell);
         }
 
         UpdateBackgroundColor();
