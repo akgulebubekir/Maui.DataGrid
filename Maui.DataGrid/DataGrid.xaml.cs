@@ -639,7 +639,6 @@ public partial class DataGrid
     protected override void OnParentSet()
     {
         base.OnParentSet();
-        InitHeaderView();
 
         if (SelectionEnabled)
         {
@@ -669,7 +668,7 @@ public partial class DataGrid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        SetColumnsBindingContext();
+        InitHeaderView();
     }
 
     private void OnRefreshing(object sender, EventArgs e)
