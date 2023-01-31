@@ -36,9 +36,12 @@ internal sealed class DataGridRow : Grid
     {
         UpdateBackgroundColor();
         BackgroundColor = DataGrid.BorderColor;
-        ColumnSpacing = DataGrid.BorderThickness.HorizontalThickness / 2;
-        Padding = new Thickness(DataGrid.BorderThickness.HorizontalThickness / 2,
-            DataGrid.BorderThickness.VerticalThickness / 2);
+
+        var borderThickness = DataGrid.BorderThickness;
+
+        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
+        ColumnSpacing = borderThickness.HorizontalThickness;
+        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
 
         for (int i = 0; i < DataGrid.Columns.Count; i++)
         {
@@ -59,7 +62,6 @@ internal sealed class DataGridRow : Grid
             {
                 cell = new Label
                 {
-                    Padding = 0,
                     TextColor = _textColor,
                     BackgroundColor = _bgColor,
                     VerticalOptions = LayoutOptions.Fill,
