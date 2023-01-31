@@ -11,8 +11,5 @@ public sealed class PaletteCollection : List<Color>, IColorProvider
     /// <param name="rowIndex">Index of the row based on DataSource</param>
     /// <param name="item">Item on the index</param>
     /// <returns>Color for the row</returns>
-    public Color GetColor(int rowIndex, object item)
-    {
-        return Count > 0 ? this.ElementAt(rowIndex % Count) : default;
-    }
+    public Color GetColor(int rowIndex, object item) => this.Count > 0 ? this.ElementAt(rowIndex % this.Count) : Colors.White;
 }

@@ -1,8 +1,8 @@
+namespace Maui.DataGrid.Sample;
+
 using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
-
-namespace Maui.DataGrid.Sample;
 
 class Program : MauiApplication
 {

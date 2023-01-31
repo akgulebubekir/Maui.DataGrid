@@ -1,83 +1,83 @@
-﻿using System.ComponentModel;
+namespace Maui.DataGrid.Sample.ViewModels;
+
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Utils;
 
-namespace Maui.DataGrid.Sample.ViewModels;
-
 public class MainViewModel : INotifyPropertyChanged
 {
-    private List<Team> _teams;
-    private Team _selectedItem;
-    private bool _isRefreshing;
-    private bool _teamColumnVisible = true;
-    private bool _winColumnVisible = true;
-    private bool _headerBordersVisible = true;
+    private List<Team> teams;
+    private Team selectedItem;
+    private bool isRefreshing;
+    private bool teamColumnVisible = true;
+    private bool winColumnVisible = true;
+    private bool headerBordersVisible = true;
 
     public MainViewModel()
     {
-        Teams = DummyDataProvider.GetTeams();
-        RefreshCommand = new Command(CmdRefresh);
+        this.Teams = DummyDataProvider.GetTeams();
+        this.RefreshCommand = new Command(this.CmdRefresh);
     }
 
     public List<Team> Teams
     {
-        get => _teams;
+        get => this.teams;
         set
         {
-            _teams = value;
-            OnPropertyChanged(nameof(Teams));
+            this.teams = value;
+            this.OnPropertyChanged(nameof(this.Teams));
         }
     }
 
     public bool HeaderBordersVisible
     {
-        get => _headerBordersVisible;
+        get => this.headerBordersVisible;
         set
         {
-            _headerBordersVisible = value;
-            OnPropertyChanged(nameof(HeaderBordersVisible));
+            this.headerBordersVisible = value;
+            this.OnPropertyChanged(nameof(this.HeaderBordersVisible));
         }
     }
 
     public bool TeamColumnVisible
     {
-        get => _teamColumnVisible;
+        get => this.teamColumnVisible;
         set
         {
-            _teamColumnVisible = value;
-            OnPropertyChanged(nameof(TeamColumnVisible));
+            this.teamColumnVisible = value;
+            this.OnPropertyChanged(nameof(this.TeamColumnVisible));
         }
     }
 
     public bool WinColumnVisible
     {
-        get => _winColumnVisible;
+        get => this.winColumnVisible;
         set
         {
-            _winColumnVisible = value;
-            OnPropertyChanged(nameof(WinColumnVisible));
+            this.winColumnVisible = value;
+            this.OnPropertyChanged(nameof(this.WinColumnVisible));
         }
     }
 
     public Team SelectedTeam
     {
-        get => _selectedItem;
+        get => this.selectedItem;
         set
         {
-            _selectedItem = value;
+            this.selectedItem = value;
             Debug.WriteLine("Team Selected : " + value?.Name);
         }
     }
 
     public bool IsRefreshing
     {
-        get => _isRefreshing;
+        get => this.isRefreshing;
         set
         {
-            _isRefreshing = value;
-            OnPropertyChanged(nameof(IsRefreshing));
+            this.isRefreshing = value;
+            this.OnPropertyChanged(nameof(this.IsRefreshing));
         }
     }
 
@@ -85,20 +85,17 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void CmdRefresh()
     {
-        IsRefreshing = true;
+        this.IsRefreshing = true;
         // wait 3 secs for demo
         await Task.Delay(3000);
-        IsRefreshing = false;
+        this.IsRefreshing = false;
     }
 
-  #region INotifyPropertyChanged implementation
+    #region INotifyPropertyChanged implementation
 
-  public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-    private void OnPropertyChanged(string property)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-    }
+    private void OnPropertyChanged(string property) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
-    #endregion
+    #endregion INotifyPropertyChanged implementation
 }

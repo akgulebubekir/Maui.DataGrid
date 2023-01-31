@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿namespace Maui.DataGrid.Utils;
 
-namespace Maui.DataGrid.Utils;
+using System.Globalization;
+using System.Reflection;
 
 internal static class ReflectionUtils
 {
@@ -53,14 +54,13 @@ internal static class ReflectionUtils
         var indexOperator = obj?.GetType().GetRuntimeProperty("Item");
         if (indexOperator != null)
         {
-            var indexParameters = indexOperator.GetIndexParameters();
             // Looking up suitable index operator
-            foreach (var parameter in indexParameters)
+            foreach (var parameter in indexOperator.GetIndexParameters())
             {
                 var isIndexOpWorked = true;
                 try
                 {
-                    var indexVal = Convert.ChangeType(index, parameter.ParameterType);
+                    var indexVal = Convert.ChangeType(index, parameter.ParameterType, CultureInfo.InvariantCulture);
                     result = indexOperator.GetValue(obj, new[] { indexVal });
                 }
                 catch

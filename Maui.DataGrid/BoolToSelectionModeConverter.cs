@@ -1,17 +1,11 @@
-﻿using System.Globalization;
+﻿namespace Maui.DataGrid;
 
-namespace Maui.DataGrid;
+using System.Globalization;
 
 internal class BoolToSelectionModeConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value is true ?
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is true ?
             SelectionMode.Single : SelectionMode.None;
-    }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

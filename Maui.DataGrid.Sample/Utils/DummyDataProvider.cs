@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+namespace Maui.DataGrid.Sample.Utils;
+
+using System.Reflection;
 using Maui.DataGrid.Sample.Models;
 using Newtonsoft.Json;
-
-namespace Maui.DataGrid.Sample.Utils;
 
 internal static class DummyDataProvider
 {

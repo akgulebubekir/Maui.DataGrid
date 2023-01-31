@@ -1,16 +1,16 @@
-﻿using System.Globalization;
+namespace Maui.DataGrid.Sample;
+
+using System.Globalization;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.ViewModels;
-
-namespace Maui.DataGrid.Sample;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class MainPage
 {
     public MainPage()
     {
-        InitializeComponent();
-        BindingContext = new MainViewModel();
+        this.InitializeComponent();
+        this.BindingContext = new MainViewModel();
     }
 }
 
@@ -27,8 +27,5 @@ internal class StreakToColorConverter : IValueConverter
         return Colors.Transparent;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }
