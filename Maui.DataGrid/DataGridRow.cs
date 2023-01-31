@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 using Microsoft.Maui.Controls;
 using Utils;
@@ -49,8 +49,6 @@ internal sealed class DataGridRow : Grid
         for (int i = 0; i < DataGrid.Columns.Count; i++)
         {
             DataGridColumn col = DataGrid.Columns[i];
-
-            col.ColumnDefinition ??= new(col.Width);
 
             ColumnDefinitions.Add(col.ColumnDefinition);
 
