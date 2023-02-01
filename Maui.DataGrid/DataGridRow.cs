@@ -1,7 +1,7 @@
 namespace Maui.DataGrid;
 
+using Maui.DataGrid.Utils;
 using Microsoft.Maui.Controls;
-using Utils;
 
 internal sealed class DataGridRow : Grid
 {
