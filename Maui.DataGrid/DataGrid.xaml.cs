@@ -271,7 +271,7 @@ public partial class DataGrid
 
     public static readonly BindableProperty SortedColumnIndexProperty =
         BindableProperty.Create(nameof(SortedColumnIndex), typeof(SortData), typeof(DataGrid), null, BindingMode.TwoWay,
-            (b, v) =>
+            validateValue: (b, v) =>
             {
                 var self = (DataGrid)b;
                 var sData = (SortData)v;
@@ -282,7 +282,7 @@ public partial class DataGrid
                     self.Columns.Count == 0 ||
                     (sData.Index < self.Columns.Count && self.Columns[sData.Index].SortingEnabled);
             },
-            (b, o, n) =>
+            propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
                 if (o != n)
