@@ -26,12 +26,18 @@ public partial class DataGrid
         this.sortingOrders = new();
     }
 
+    /// <summary>
+    /// Item selected event.
+    /// </summary>
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
     {
         add => this.itemSelectedEventManager.AddEventHandler(value);
         remove => this.itemSelectedEventManager.RemoveEventHandler(value);
     }
 
+    /// <summary>
+    /// Grid refreshing event.
+    /// </summary>
     public event EventHandler Refreshing
     {
         add => this.refreshingEventManager.AddEventHandler(value);
