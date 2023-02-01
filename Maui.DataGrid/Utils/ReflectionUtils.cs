@@ -26,7 +26,7 @@ internal static class ReflectionUtils
                 break;
             }
 
-            //  Property
+            // Property
             result = !token.Contains(IndexEndOp.ToString())
                 ? GetPropertyValue(result, token)
                 : GetIndexValue(result, token.Replace(IndexEndOp.ToString(), string.Empty));
