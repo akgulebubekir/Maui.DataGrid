@@ -564,6 +564,9 @@ public partial class DataGrid
         set => this.SetValue(NoDataViewProperty, value);
     }
 
+    /// <summary>
+    /// Reloads all rows in the DataGrid, and refreshes all column widths.
+    /// </summary>
     internal void Reload()
     {
         if (this.internalItems is not null)
