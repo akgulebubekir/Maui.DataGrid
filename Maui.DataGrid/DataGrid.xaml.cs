@@ -128,7 +128,8 @@ public partial class DataGrid
             propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
-                //ObservableCollection Tracking 
+
+                // ObservableCollection Tracking
                 if (o is INotifyCollectionChanged collectionChanged)
                 {
                     collectionChanged.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
