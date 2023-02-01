@@ -44,66 +44,6 @@ public partial class DataGrid
         remove => this.refreshingEventManager.RemoveEventHandler(value);
     }
 
-    internal void SortItems(SortData sortData)
-    {
-        if (this.InternalItems == null || sortData.Index >= this.Columns.Count || !this.Columns[sortData.Index].SortingEnabled)
-        {
-            return;
-        }
-
-        var column = this.Columns[sortData.Index];
-        var order = sortData.Order;
-
-        if (column.PropertyName == null)
-        {
-            throw new InvalidOperationException($"Please set the {nameof(column.PropertyName)} of the column");
-        }
-
-        if (!column.IsSortable(this))
-        {
-            throw new InvalidOperationException($"{column.PropertyName} column is not sortable");
-        }
-
-        if (!this.IsSortable)
-        {
-            throw new InvalidOperationException("DataGrid is not sortable");
-        }
-
-        var items = this.InternalItems;
-
-        switch (order)
-        {
-            case SortingOrder.Ascendant:
-                items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-                _ = column.SortingIcon.RotateTo(0);
-                break;
-            case SortingOrder.Descendant:
-                items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-                _ = column.SortingIcon.RotateTo(180);
-                break;
-        }
-
-        for (var i = 0; i < this.Columns.Count; i++)
-        {
-            if (i != sortData.Index)
-            {
-                this.sortingOrders[i] = SortingOrder.None;
-                this.Columns[i].SortingIconContainer.IsVisible = false;
-            }
-            else
-            {
-                this.Columns[i].SortingIconContainer.IsVisible = true;
-            }
-        }
-
-        this.internalItems = items;
-
-        this.sortingOrders[sortData.Index] = order;
-        this.SortedColumnIndex = sortData;
-
-        this.collectionView.ItemsSource = this.internalItems;
-    }
-
     /// <summary>
     /// Scrolls to the row.
     /// </summary>
@@ -769,6 +709,66 @@ public partial class DataGrid
                 this.sortingOrders.Add(i, SortingOrder.None);
             }
         }
+    }
+
+    private void SortItems(SortData sortData)
+    {
+        if (this.InternalItems == null || sortData.Index >= this.Columns.Count || !this.Columns[sortData.Index].SortingEnabled)
+        {
+            return;
+        }
+
+        var column = this.Columns[sortData.Index];
+        var order = sortData.Order;
+
+        if (column.PropertyName == null)
+        {
+            throw new InvalidOperationException($"Please set the {nameof(column.PropertyName)} of the column");
+        }
+
+        if (!column.IsSortable(this))
+        {
+            throw new InvalidOperationException($"{column.PropertyName} column is not sortable");
+        }
+
+        if (!this.IsSortable)
+        {
+            throw new InvalidOperationException("DataGrid is not sortable");
+        }
+
+        var items = this.InternalItems;
+
+        switch (order)
+        {
+            case SortingOrder.Ascendant:
+                items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                _ = column.SortingIcon.RotateTo(0);
+                break;
+            case SortingOrder.Descendant:
+                items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                _ = column.SortingIcon.RotateTo(180);
+                break;
+        }
+
+        for (var i = 0; i < this.Columns.Count; i++)
+        {
+            if (i != sortData.Index)
+            {
+                this.sortingOrders[i] = SortingOrder.None;
+                this.Columns[i].SortingIconContainer.IsVisible = false;
+            }
+            else
+            {
+                this.Columns[i].SortingIconContainer.IsVisible = true;
+            }
+        }
+
+        this.internalItems = items;
+
+        this.sortingOrders[sortData.Index] = order;
+        this.SortedColumnIndex = sortData;
+
+        this.collectionView.ItemsSource = this.internalItems;
     }
 
     private void SetColumnsBindingContext()
