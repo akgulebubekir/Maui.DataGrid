@@ -14,20 +14,11 @@ public sealed class SortData
         Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant,
     };
 
-    public override bool Equals(object? obj)
-    {
-        if (obj is SortData other)
-        {
-            return other.Index == this.Index && other.Order == this.Order;
-        }
-
-        return false;
-    }
-
     #region ctor
 
     public SortData()
-    { }
+    {
+    }
 
     public SortData(int index, SortingOrder order)
     {
@@ -50,6 +41,16 @@ public sealed class SortData
     public int Index { get; set; }
 
     #endregion Properties
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is SortData other)
+        {
+            return other.Index == this.Index && other.Order == this.Order;
+        }
+
+        return false;
+    }
 
     public override int GetHashCode() => throw new NotImplementedException();
 }
