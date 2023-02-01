@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 using Microsoft.Maui.Controls.Shapes;
 using System.ComponentModel;
@@ -6,7 +6,7 @@ using System.ComponentModel;
 /// <summary>
 /// Specifies each column of the DataGrid.
 /// </summary>
-public class DataGridColumn : BindableObject, IDefinition
+public sealed class DataGridColumn : BindableObject, IDefinition
 {
     private bool? isSortable;
     private ColumnDefinition? columnDefinition;
