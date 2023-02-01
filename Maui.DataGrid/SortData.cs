@@ -11,7 +11,7 @@ public sealed class SortData
     public static implicit operator SortData(int index) => new()
     {
         Index = Math.Abs(index),
-        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant
+        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant,
     };
 
     public override bool Equals(object? obj)
