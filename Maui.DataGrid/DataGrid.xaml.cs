@@ -730,7 +730,7 @@ public partial class DataGrid
         };
     }
 
-    internal void InitHeaderView()
+    private void InitHeaderView()
     {
         this.SetColumnsBindingContext();
 
