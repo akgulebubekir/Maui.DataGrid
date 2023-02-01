@@ -375,10 +375,8 @@ public partial class DataGrid
                 }
             });
 
-
-
     /// <summary>
-    /// Selected Row color
+    /// Gets or sets selected Row color.
     /// </summary>
     public Color ActiveRowColor
     {
@@ -387,8 +385,8 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// BackgroundColor of the column header
-    /// Default value is White
+    /// Gets or sets backgroundColor of the column header
+    /// Default value is White.
     /// </summary>
     public Color HeaderBackground
     {
@@ -397,8 +395,8 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Border color
-    /// Default Value is Black
+    /// Gets or sets border color
+    /// Default Value is Black.
     /// </summary>
     public Color BorderColor
     {
@@ -407,7 +405,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Background color of the rows. It repeats colors consecutively for rows.
+    /// Gets or sets background color of the rows. It repeats colors consecutively for rows.
     /// </summary>
     public IColorProvider RowsBackgroundColorPalette
     {
@@ -416,7 +414,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Text color of the rows. It repeats colors consecutively for rows.
+    /// Gets or sets text color of the rows. It repeats colors consecutively for rows.
     /// </summary>
     public IColorProvider RowsTextColorPalette
     {
@@ -425,7 +423,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// ItemsSource of the DataGrid
+    /// Gets or sets itemsSource of the DataGrid.
     /// </summary>
     public IEnumerable ItemsSource
     {
@@ -454,7 +452,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Columns
+    /// Gets or sets columns.
     /// </summary>
     public List<DataGridColumn> Columns
     {
@@ -463,7 +461,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Font size of the cells.
+    /// Gets or sets font size of the cells.
     /// It does not sets header font size. Use <c>HeaderLabelStyle</c> to set header font size.
     /// </summary>
     public double FontSize
@@ -473,7 +471,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets the font family.
+    /// Gets or sets the font family.
     /// It does not sets header font family. Use <c>HeaderLabelStyle</c> to set header font size.
     /// </summary>
     public string FontFamily
@@ -483,7 +481,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets the row height
+    /// Gets or sets the row height.
     /// </summary>
     public int RowHeight
     {
@@ -492,7 +490,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets header height
+    /// Gets or sets header height.
     /// </summary>
     public int HeaderHeight
     {
@@ -501,9 +499,9 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets if the grid is sortable. Default value is true.
+    /// Gets or sets a value indicating whether gets or sets if the grid is sortable. Default value is true.
     /// Sortable columns must implement <see cref="IComparable"/>
-    /// If you want to enable or disable sorting for specific column please use <c>SortingEnabled</c> property
+    /// If you want to enable or disable sorting for specific column please use <c>SortingEnabled</c> property.
     /// </summary>
     public bool IsSortable
     {
@@ -512,7 +510,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables selection in dataGrid. Default value is True
+    /// Gets or sets a value indicating whether enables selection in dataGrid. Default value is True.
     /// </summary>
     public bool SelectionEnabled
     {
@@ -521,7 +519,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Selected item
+    /// Gets or sets selected item.
     /// </summary>
     public object? SelectedItem
     {
@@ -530,7 +528,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Executes the command when refreshing via pull
+    /// Gets or sets executes the command when refreshing via pull.
     /// </summary>
     public ICommand PullToRefreshCommand
     {
@@ -539,7 +537,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Displays an ActivityIndicator when is refreshing
+    /// Gets or sets a value indicating whether displays an ActivityIndicator when is refreshing.
     /// </summary>
     public bool IsRefreshing
     {
@@ -548,7 +546,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables refreshing the DataGrid by a pull down command
+    /// Gets or sets a value indicating whether enables refreshing the DataGrid by a pull down command.
     /// </summary>
     public bool RefreshingEnabled
     {
@@ -557,7 +555,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Border thickness for header &amp; each cell
+    /// Gets or sets border thickness for header &amp; each cell.
     /// </summary>
     public Thickness BorderThickness
     {
@@ -566,8 +564,8 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Determines to show the borders of header cells.
-    /// Default value is <c>true</c>
+    /// Gets or sets a value indicating whether determines to show the borders of header cells.
+    /// Default value is <c>true</c>.
     /// </summary>
     public bool HeaderBordersVisible
     {
@@ -576,7 +574,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Column index and sorting order for the DataGrid
+    /// Gets or sets column index and sorting order for the DataGrid.
     /// </summary>
     public SortData SortedColumnIndex
     {
@@ -585,7 +583,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Style of the header label.
+    /// Gets or sets style of the header label.
     /// Style's <c>TargetType</c> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
@@ -595,7 +593,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sort icon
+    /// Gets or sets sort icon.
     /// </summary>
     public Polygon SortIcon
     {
@@ -604,7 +602,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Style of the sort icon
+    /// Gets or sets style of the sort icon
     /// Style's <c>TargetType</c> must be Polygon.
     /// </summary>
     public Style SortIconStyle
@@ -614,7 +612,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// View to show when there is no data to display
+    /// Gets or sets view to show when there is no data to display.
     /// </summary>
     public View NoDataView
     {
