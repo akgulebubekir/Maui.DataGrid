@@ -116,7 +116,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.
+    /// Gets or sets width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.
     /// </summary>
     [TypeConverter(typeof(GridLengthTypeConverter))]
     public GridLength Width
@@ -130,7 +130,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Column title
+    /// Gets or sets column title.
     /// </summary>
     public string Title
     {
@@ -139,7 +139,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Formatted title for column
+    /// Gets or sets formatted title for column.
     /// <example>
     /// <code>
     ///  &lt;DataGridColumn.FormattedTitle &gt;
@@ -158,7 +158,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Property name to bind in the object
+    /// Gets or sets property name to bind in the object.
     /// </summary>
     public string PropertyName
     {
@@ -167,7 +167,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Is this column visible?
+    /// Gets or sets a value indicating whether is this column visible?.
     /// </summary>
     public bool IsVisible
     {
@@ -176,7 +176,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// String format for the cell
+    /// Gets or sets string format for the cell.
     /// </summary>
     public string StringFormat
     {
@@ -185,7 +185,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Cell template. Default value is <c>Label</c> with binding <c>PropertyName</c>
+    /// Gets or sets cell template. Default value is <c>Label</c> with binding <c>PropertyName</c>.
     /// </summary>
     public DataTemplate CellTemplate
     {
@@ -198,7 +198,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal View SortingIconContainer { get; }
 
     /// <summary>
-    /// LineBreakModeProperty for the text. WordWrap by default.
+    /// Gets or sets lineBreakModeProperty for the text. WordWrap by default.
     /// </summary>
     public LineBreakMode LineBreakMode
     {
@@ -207,7 +207,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Horizontal alignment of the cell content
+    /// Gets or sets horizontal alignment of the cell content.
     /// </summary>
     public LayoutOptions HorizontalContentAlignment
     {
@@ -216,7 +216,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Vertical alignment of the cell content
+    /// Gets or sets vertical alignment of the cell content.
     /// </summary>
     public LayoutOptions VerticalContentAlignment
     {
@@ -225,8 +225,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Defines if the column is sortable. Default is true
-    /// Sortable columns must implement <see cref="IComparable"/>
+    /// Gets or sets a value indicating whether defines if the column is sortable. Default is true
+    /// Sortable columns must implement <see cref="IComparable"/>.
     /// </summary>
     public bool SortingEnabled
     {
@@ -236,7 +236,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     /// <summary>
     /// Determines via reflection if the column's data type is sortable.
-    /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property
+    /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property.
     /// </summary>
     /// <param name="dataGrid"></param>
     public bool IsSortable(DataGrid dataGrid)
@@ -265,7 +265,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Label Style of the header. <c>TargetType</c> must be Label.
+    /// Gets or sets label Style of the header. <c>TargetType</c> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
     {
