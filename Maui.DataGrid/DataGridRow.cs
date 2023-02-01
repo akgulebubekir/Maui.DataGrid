@@ -53,8 +53,8 @@ internal sealed class DataGridRow : Grid
             {
                 cell = new Label
                 {
-                    TextColor = textColor,
-                    BackgroundColor = bgColor,
+                    TextColor = this.textColor,
+                    BackgroundColor = this.bgColor,
                     VerticalOptions = LayoutOptions.Fill,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),

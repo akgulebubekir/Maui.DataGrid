@@ -19,7 +19,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         this.SortingIconContainer = new ContentView
         {
             IsVisible = false,
-            Content = SortingIcon,
+            Content = this.SortingIcon,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
         };
