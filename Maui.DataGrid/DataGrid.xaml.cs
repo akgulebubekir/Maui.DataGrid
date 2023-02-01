@@ -7,7 +7,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
 /// <summary>
-/// DataGrid component for Maui
+/// DataGrid component for Maui.
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
@@ -36,13 +36,6 @@ public partial class DataGrid
     {
         add => this.refreshingEventManager.AddEventHandler(value);
         remove => this.refreshingEventManager.RemoveEventHandler(value);
-    }
-
-    public DataGrid()
-    {
-        this.InitializeComponent();
-
-        this.sortingOrders = new();
     }
 
     internal void SortItems(SortData sortData)
@@ -102,18 +95,16 @@ public partial class DataGrid
         this.sortingOrders[sortData.Index] = order;
         this.SortedColumnIndex = sortData;
 
-        this._collectionView.ItemsSource = this.internalItems;
+        this.collectionView.ItemsSource = this.internalItems;
     }
 
-
-
     /// <summary>
-    /// Scrolls to the row
+    /// Scrolls to the row.
     /// </summary>
-    /// <param name="item">Item to scroll</param>
-    /// <param name="position">Position of the row in screen</param>
-    /// <param name="animated">animated</param>
-    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => this._collectionView.ScrollTo(item, position: position, animate: animated);
+    /// <param name="item">Item to scroll.</param>
+    /// <param name="position">Position of the row in screen.</param>
+    /// <param name="animated">animated.</param>
+    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => this.collectionView.ScrollTo(item, position: position, animate: animated);
 
     public static readonly BindableProperty ActiveRowColorProperty =
         BindableProperty.Create(nameof(ActiveRowColor), typeof(Color), typeof(DataGrid), Color.FromRgb(128, 144, 160),
@@ -132,9 +123,9 @@ public partial class DataGrid
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
-                if (self._headerView != null && !self.HeaderBordersVisible)
+                if (self.headerView != null && !self.HeaderBordersVisible)
                 {
-                    self._headerView.BackgroundColor = (Color)n;
+                    self.headerView.BackgroundColor = (Color)n;
                 }
             });
 
@@ -145,7 +136,7 @@ public partial class DataGrid
                 var self = (DataGrid)b;
                 if (self.HeaderBordersVisible)
                 {
-                    self._headerView.BackgroundColor = (Color)n;
+                    self.headerView.BackgroundColor = (Color)n;
                 }
 
                 if (self.Columns != null && self.ItemsSource != null)
@@ -249,9 +240,9 @@ public partial class DataGrid
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
-                if (self._collectionView.SelectedItem != n)
+                if (self.collectionView.SelectedItem != n)
                 {
-                    self._collectionView.SelectedItem = n;
+                    self.collectionView.SelectedItem = n;
                 }
             },
             coerceValue: (b, v) =>
@@ -306,30 +297,30 @@ public partial class DataGrid
                 var self = (DataGrid)b;
                 if (n == null)
                 {
-                    self._refreshView.Command = null;
+                    self.refreshView.Command = null;
                 }
                 else
                 {
-                    self._refreshView.Command = n as ICommand;
-                    _ = self._refreshView.Command?.CanExecute(self.RefreshingEnabled);
+                    self.refreshView.Command = n as ICommand;
+                    _ = self.refreshView.Command?.CanExecute(self.RefreshingEnabled);
                 }
             });
 
     public static readonly BindableProperty IsRefreshingProperty =
         BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay,
-            propertyChanged: (b, _, n) => ((DataGrid)b)._refreshView.IsRefreshing = (bool)n);
+            propertyChanged: (b, _, n) => ((DataGrid)b).refreshView.IsRefreshing = (bool)n);
 
     public static readonly BindableProperty BorderThicknessProperty =
         BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
             propertyChanged: (b, _, n) =>
             {
-                ((DataGrid)b)._headerView.ColumnSpacing = ((Thickness)n).HorizontalThickness / 2;
-                ((DataGrid)b)._headerView.Padding = ((Thickness)n).HorizontalThickness / 2;
+                ((DataGrid)b).headerView.ColumnSpacing = ((Thickness)n).HorizontalThickness / 2;
+                ((DataGrid)b).headerView.Padding = ((Thickness)n).HorizontalThickness / 2;
             });
 
     public static readonly BindableProperty HeaderBordersVisibleProperty =
         BindableProperty.Create(nameof(HeaderBordersVisible), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, n) => ((DataGrid)b)._headerView.BackgroundColor =
+            propertyChanged: (b, _, n) => ((DataGrid)b).headerView.BackgroundColor =
                 (bool)n ? ((DataGrid)b).BorderColor : ((DataGrid)b).HeaderBackground);
 
     public static readonly BindableProperty SortedColumnIndexProperty =
@@ -379,7 +370,7 @@ public partial class DataGrid
             {
                 if (o != n)
                 {
-                    ((DataGrid)b)._collectionView.EmptyView = n as View;
+                    ((DataGrid)b).collectionView.EmptyView = n as View;
                 }
             });
 
@@ -439,8 +430,6 @@ public partial class DataGrid
         set => this.SetValue(ItemsSourceProperty, value);
     }
 
-    private IList<object>? internalItems;
-
     internal IList<object>? InternalItems
     {
         get => this.internalItems;
@@ -454,7 +443,7 @@ public partial class DataGrid
             }
             else
             {
-                this._collectionView.ItemsSource = this.internalItems;
+                this.collectionView.ItemsSource = this.internalItems;
             }
         }
     }
@@ -628,6 +617,16 @@ public partial class DataGrid
         set => this.SetValue(NoDataViewProperty, value);
     }
 
+    internal void Reload()
+    {
+        if (this.internalItems is not null)
+        {
+            this.InternalItems = new List<object>(this.internalItems);
+        }
+
+        this.RefreshHeaderColumnWidths();
+    }
+
     protected override void OnParentSet()
     {
         base.OnParentSet();
@@ -636,11 +635,11 @@ public partial class DataGrid
         {
             if (this.Parent is null)
             {
-                this._collectionView.SelectionChanged -= this.OnSelectionChanged;
+                this.collectionView.SelectionChanged -= this.OnSelectionChanged;
             }
             else
             {
-                this._collectionView.SelectionChanged += this.OnSelectionChanged;
+                this.collectionView.SelectionChanged += this.OnSelectionChanged;
             }
         }
 
@@ -648,11 +647,11 @@ public partial class DataGrid
         {
             if (this.Parent is null)
             {
-                this._refreshView.Refreshing -= this.OnRefreshing;
+                this.refreshView.Refreshing -= this.OnRefreshing;
             }
             else
             {
-                this._refreshView.Refreshing += this.OnRefreshing;
+                this.refreshView.Refreshing += this.OnRefreshing;
             }
         }
     }
@@ -663,22 +662,13 @@ public partial class DataGrid
         this.InitHeaderView();
     }
 
-    private void OnRefreshing(object? sender, EventArgs e) => this.refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
+    private void OnRefreshing(object? sender, EventArgs e) => this.refreshingEventManager.HandleEvent(this, e, nameof(this.Refreshing));
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        this.SelectedItem = this._collectionView.SelectedItem;
+        this.SelectedItem = this.collectionView.SelectedItem;
 
-        this.itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
-    }
-
-    internal void Reload()
-    {
-        if (this.internalItems is not null)
-        {
-            this.InternalItems = new List<object>(this.internalItems);
-        }
-        this.RefreshHeaderColumnWidths();
+        this.itemSelectedEventManager.HandleEvent(this, e, nameof(this.ItemSelected));
     }
 
     private void RefreshHeaderColumnWidths()
@@ -687,18 +677,18 @@ public partial class DataGrid
         {
             var column = this.Columns[i];
 
-            this._headerView.ColumnDefinitions[i] = column.ColumnDefinition;
+            this.headerView.ColumnDefinitions[i] = column.ColumnDefinition;
         }
     }
 
     private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
-                                   this.HeaderLabelStyle ?? (Style)this._headerView.Resources["HeaderDefaultStyle"];
+                                   this.HeaderLabelStyle ?? (Style)this.headerView.Resources["HeaderDefaultStyle"];
 
         if (this.IsSortable && column.IsSortable(this) && column.SortingEnabled)
         {
-            column.SortingIcon.Style = this.SortIconStyle ?? (Style)this._headerView.Resources["SortIconStyle"];
+            column.SortingIcon.Style = this.SortIconStyle ?? (Style)this.headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = this.HeaderHeight * 0.3;
             column.SortingIconContainer.WidthRequest = this.HeaderHeight * 0.3;
 
@@ -709,23 +699,25 @@ public partial class DataGrid
                 ColumnDefinitions = new()
                 {
                     new() { Width = new(1, GridUnitType.Star) },
-                    new() { Width = new(1, GridUnitType.Auto) }
+                    new() { Width = new(1, GridUnitType.Auto) },
                 },
                 Children = { column.HeaderLabel, column.SortingIconContainer },
                 GestureRecognizers =
                 {
                     new TapGestureRecognizer
                     {
-                        Command = new Command(() =>
-                        {
-                            var order = this.sortingOrders[index] == SortingOrder.Ascendant
-                                ? SortingOrder.Descendant
-                                : SortingOrder.Ascendant;
+                        Command = new Command(
+                            () =>
+                            {
+                                var order = this.sortingOrders[index] == SortingOrder.Ascendant
+                                    ? SortingOrder.Descendant
+                                    : SortingOrder.Ascendant;
 
-                            this.SortedColumnIndex = new(index, order);
-                        }, () => column.SortingEnabled)
-                    }
-                }
+                                this.SortedColumnIndex = new(index, order);
+                            },
+                            () => column.SortingEnabled),
+                    },
+                },
             };
 
             Grid.SetColumn(column.SortingIconContainer, 1);
@@ -734,7 +726,7 @@ public partial class DataGrid
 
         return new ContentView
         {
-            Content = column.HeaderLabel
+            Content = column.HeaderLabel,
         };
     }
 
@@ -742,12 +734,12 @@ public partial class DataGrid
     {
         this.SetColumnsBindingContext();
 
-        this._headerView.Children.Clear();
-        this._headerView.ColumnDefinitions.Clear();
+        this.headerView.Children.Clear();
+        this.headerView.ColumnDefinitions.Clear();
         this.sortingOrders.Clear();
 
-        this._headerView.Padding = new(this.BorderThickness.Left, this.BorderThickness.Top, this.BorderThickness.Right, 0);
-        this._headerView.ColumnSpacing = this.BorderThickness.HorizontalThickness;
+        this.headerView.Padding = new(this.BorderThickness.Left, this.BorderThickness.Top, this.BorderThickness.Right, 0);
+        this.headerView.ColumnSpacing = this.BorderThickness.HorizontalThickness;
 
         if (this.Columns != null)
         {
@@ -757,17 +749,16 @@ public partial class DataGrid
 
                 col.ColumnDefinition ??= new(col.Width);
 
-                this._headerView.ColumnDefinitions.Add(col.ColumnDefinition);
+                this.headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
                 var cell = this.GetHeaderViewForColumn(col, i);
 
                 cell.SetBinding(BackgroundColorProperty, new Binding(nameof(this.HeaderBackground), source: this));
 
-                cell.SetBinding(IsVisibleProperty,
-                    new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
+                cell.SetBinding(IsVisibleProperty, new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
                 Grid.SetColumn(cell, i);
-                this._headerView.Children.Add(cell);
+                this.headerView.Children.Add(cell);
 
                 this.sortingOrders.Add(i, SortingOrder.None);
             }

@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={x:Reference self}}">
+        <Grid Grid.Row="0" x:Name="headerView" HeightRequest="{Binding HeaderHeight, Source={x:Reference self}}">
             <Grid.Resources>
                 <ResourceDictionary>
                     <!--Default Header Style-->
@@ -34,9 +34,9 @@
                 </ResourceDictionary>
             </Grid.Resources>
         </Grid>
-        <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" 
+        <RefreshView Grid.Row="1" x:Name="refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" 
                      IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
-            <CollectionView x:Name="_collectionView" WidthRequest="{Binding WidthRequest, Source={x:Reference self}}" 
+            <CollectionView x:Name="collectionView" WidthRequest="{Binding WidthRequest, Source={x:Reference self}}" 
                             SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"
                             SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
                 <CollectionView.ItemTemplate>
