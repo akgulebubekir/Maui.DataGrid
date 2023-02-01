@@ -7,21 +7,21 @@ internal sealed class DataGridRow : Grid
 {
     #region Fields
 
-    private Color _bgColor;
-    private Color _textColor;
-    private bool _hasSelected;
+    private Color? bgColor;
+    private Color? textColor;
+    private bool hasSelected;
 
-    #endregion
+    #endregion Fields
 
     #region properties
 
     public DataGrid DataGrid
     {
-        get => (DataGrid)GetValue(DataGridProperty);
-        set => SetValue(DataGridProperty, value);
+        get => (DataGrid)this.GetValue(DataGridProperty);
+        set => this.SetValue(DataGridProperty, value);
     }
 
-    #endregion
+    #endregion properties
 
     #region Bindable Properties
 
@@ -29,28 +29,28 @@ internal sealed class DataGridRow : Grid
         BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
             propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
 
-    #endregion
+    #endregion Bindable Properties
 
     #region Methods
 
     private void CreateView()
     {
-        ColumnDefinitions.Clear();
-        Children.Clear();
+        this.ColumnDefinitions.Clear();
+        this.Children.Clear();
 
-        BackgroundColor = DataGrid.BorderColor;
+        this.BackgroundColor = this.DataGrid.BorderColor;
 
-        var borderThickness = DataGrid.BorderThickness;
+        var borderThickness = this.DataGrid.BorderThickness;
 
-        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
-        ColumnSpacing = borderThickness.HorizontalThickness;
-        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
+        this.Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
+        this.ColumnSpacing = borderThickness.HorizontalThickness;
+        this.Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
 
-        for (int i = 0; i < DataGrid.Columns.Count; i++)
+        for (var i = 0; i < this.DataGrid.Columns.Count; i++)
         {
-            DataGridColumn col = DataGrid.Columns[i];
+            var col = this.DataGrid.Columns[i];
 
-            ColumnDefinitions.Add(col.ColumnDefinition);
+            this.ColumnDefinitions.Add(col.ColumnDefinition);
 
             View cell;
 
@@ -60,15 +60,15 @@ internal sealed class DataGridRow : Grid
                 if (col.PropertyName != null)
                 {
                     cell.SetBinding(BindingContextProperty,
-                        new Binding(col.PropertyName, source: BindingContext));
+                        new Binding(col.PropertyName, source: this.BindingContext));
                 }
             }
             else
             {
                 cell = new Label
                 {
-                    TextColor = _textColor,
-                    BackgroundColor = _bgColor,
+                    TextColor = textColor,
+                    BackgroundColor = bgColor,
                     VerticalOptions = LayoutOptions.Fill,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
@@ -78,40 +78,40 @@ internal sealed class DataGridRow : Grid
                 cell.SetBinding(Label.TextProperty,
                     new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
                 cell.SetBinding(Label.FontSizeProperty,
-                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
+                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: this.DataGrid));
                 cell.SetBinding(Label.FontFamilyProperty,
-                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
+                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: this.DataGrid));
             }
 
             cell.SetBinding(IsVisibleProperty,
                 new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
             SetColumn((BindableObject)cell, i);
-            Children.Add(cell);
+            this.Children.Add(cell);
         }
 
-        UpdateBackgroundColor();
+        this.UpdateBackgroundColor();
     }
 
     private void UpdateBackgroundColor()
     {
-        _hasSelected = DataGrid?.SelectedItem == BindingContext;
-        var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
+        this.hasSelected = this.DataGrid?.SelectedItem == this.BindingContext;
+        var actualIndex = this.DataGrid?.InternalItems?.IndexOf(this.BindingContext) ?? -1;
         if (actualIndex > -1)
         {
-            _bgColor =
-                DataGrid.SelectionEnabled && DataGrid.SelectedItem != null && DataGrid.SelectedItem == BindingContext
-                    ? DataGrid.ActiveRowColor
-                    : DataGrid.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
-            _textColor = DataGrid.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
+            this.bgColor =
+                this.DataGrid?.SelectionEnabled == true && this.DataGrid.SelectedItem != null && this.DataGrid.SelectedItem == this.BindingContext
+                    ? this.DataGrid.ActiveRowColor
+                    : this.DataGrid?.RowsBackgroundColorPalette.GetColor(actualIndex, this.BindingContext);
+            this.textColor = this.DataGrid?.RowsTextColorPalette.GetColor(actualIndex, this.BindingContext);
 
-            ChangeColor(_bgColor, _textColor);
+            this.ChangeColor(this.bgColor, this.textColor);
         }
     }
 
-    private void ChangeColor(Color bgColor, Color textColor)
+    private void ChangeColor(Color? bgColor, Color? textColor)
     {
-        foreach (var v in Children)
+        foreach (var v in this.Children)
         {
             if (v is View view)
             {
@@ -128,33 +128,33 @@ internal sealed class DataGridRow : Grid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        CreateView();
+        this.CreateView();
     }
 
     protected override void OnParentSet()
     {
         base.OnParentSet();
 
-        if (DataGrid.SelectionEnabled)
+        if (this.DataGrid.SelectionEnabled)
         {
-            if (Parent != null)
+            if (this.Parent != null)
             {
-                DataGrid.ItemSelected += DataGrid_ItemSelected;
+                this.DataGrid.ItemSelected += this.DataGrid_ItemSelected;
             }
             else
             {
-                DataGrid.ItemSelected -= DataGrid_ItemSelected;
+                this.DataGrid.ItemSelected -= this.DataGrid_ItemSelected;
             }
         }
     }
 
-    private void DataGrid_ItemSelected(object sender, SelectionChangedEventArgs e)
+    private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == BindingContext || _hasSelected))
+        if (this.DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == this.BindingContext || this.hasSelected))
         {
-            UpdateBackgroundColor();
+            this.UpdateBackgroundColor();
         }
     }
 
-    #endregion
+    #endregion Methods
 }

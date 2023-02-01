@@ -1,7 +1,6 @@
-﻿namespace Maui.DataGrid.Platforms.MacCatalyst
+﻿namespace Maui.DataGrid.Platforms.MacCatalyst;
+
+// All the code in this file is only included on Mac Catalyst.
+public class PlatformClass
 {
-  // All the code in this file is only included on Mac Catalyst.
-  public class PlatformClass
-  {
-  }
 }

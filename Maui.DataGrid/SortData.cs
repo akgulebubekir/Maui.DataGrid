@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
-
 namespace Maui.DataGrid;
+
+using System.ComponentModel;
 
 /// <summary>
 /// Creates SortData for DataGrid
@@ -8,20 +8,17 @@ namespace Maui.DataGrid;
 [TypeConverter(typeof(SortDataTypeConverter))]
 public class SortData
 {
-    public static implicit operator SortData(int index)
+    public static implicit operator SortData(int index) => new()
     {
-        return new SortData
-        {
-            Index = Math.Abs(index),
-            Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant
-        };
-    }
+        Index = Math.Abs(index),
+        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant
+    };
 
     public override bool Equals(object? obj)
     {
         if (obj is SortData other)
         {
-            return other.Index == Index && other.Order == Order;
+            return other.Index == this.Index && other.Order == this.Order;
         }
 
         return false;
@@ -34,11 +31,11 @@ public class SortData
 
     public SortData(int index, SortingOrder order)
     {
-        Index = index;
-        Order = order;
+        this.Index = index;
+        this.Order = order;
     }
 
-    #endregion
+    #endregion ctor
 
     #region Properties
 
@@ -52,10 +49,7 @@ public class SortData
     /// </summary>
     public int Index { get; set; }
 
-    #endregion
+    #endregion Properties
 
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
+    public override int GetHashCode() => throw new NotImplementedException();
 }

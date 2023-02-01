@@ -22,7 +22,7 @@ public class Streak : IComparable
 
     public int CompareTo(object other)
     {
-        var score = Result == Result.Win ? NumStreak : -NumStreak;
+        var score = this.Result == Result.Win ? this.NumStreak : -this.NumStreak;
         if (other is Streak s)
         {
             var otherScore = s.Result == Result.Win ? s.NumStreak : -s.NumStreak;
@@ -32,10 +32,7 @@ public class Streak : IComparable
         return score;
     }
 
-    public override string ToString()
-    {
-        return $"{Enum.GetName(typeof(Result), Result)} {NumStreak}";
-    }
+    public override string ToString() => $"{Enum.GetName(typeof(Result), this.Result)} {this.NumStreak}";
 }
 
 public enum Result

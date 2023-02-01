@@ -3,10 +3,10 @@
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class App
 {
-	public App()
-	{
-		InitializeComponent();
+    public App()
+    {
+        this.InitializeComponent();
 
-		MainPage = new AppShell();
-	}
+        this.MainPage = new AppShell();
+    }
 }
