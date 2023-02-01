@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid.Utils;
+namespace Maui.DataGrid.Utils;
 
 using System.Globalization;
 using System.Reflection;

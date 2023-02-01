@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 /// <summary>
 /// Color Provider interface for Background and Text color of each row.

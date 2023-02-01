@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 /// <summary>
 /// Creates PaletteCollection for row's visual. It repeats colors consecutively for rows.
