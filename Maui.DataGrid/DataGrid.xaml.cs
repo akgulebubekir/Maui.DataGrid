@@ -30,18 +30,12 @@ public partial class DataGrid
         remove => this.refreshingEventManager.RemoveEventHandler(value);
     }
 
-    #region ctor
-
     public DataGrid()
     {
         this.InitializeComponent();
 
         this.sortingOrders = new();
     }
-
-    #endregion ctor
-
-    #region Sorting methods
 
     internal void SortItems(SortData sortData)
     {
@@ -103,9 +97,7 @@ public partial class DataGrid
         this._collectionView.ItemsSource = this.internalItems;
     }
 
-    #endregion Sorting methods
 
-    #region Methods
 
     /// <summary>
     /// Scrolls to the row
@@ -114,10 +106,6 @@ public partial class DataGrid
     /// <param name="position">Position of the row in screen</param>
     /// <param name="animated">animated</param>
     public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => this._collectionView.ScrollTo(item, position: position, animate: animated);
-
-    #endregion Methods
-
-    #region Bindable properties
 
     public static readonly BindableProperty ActiveRowColorProperty =
         BindableProperty.Create(nameof(ActiveRowColor), typeof(Color), typeof(DataGrid), Color.FromRgb(128, 144, 160),
@@ -387,9 +375,7 @@ public partial class DataGrid
                 }
             });
 
-    #endregion Bindable properties
 
-    #region Properties
 
     /// <summary>
     /// Selected Row color
@@ -636,10 +622,6 @@ public partial class DataGrid
         set => this.SetValue(NoDataViewProperty, value);
     }
 
-    #endregion Properties
-
-    #region UI Methods
-
     protected override void OnParentSet()
     {
         base.OnParentSet();
@@ -702,10 +684,6 @@ public partial class DataGrid
             this._headerView.ColumnDefinitions[i] = column.ColumnDefinition;
         }
     }
-
-    #endregion UI Methods
-
-    #region Header Creation Methods
 
     private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
@@ -800,6 +778,4 @@ public partial class DataGrid
             }
         }
     }
-
-    #endregion Header Creation Methods
 }

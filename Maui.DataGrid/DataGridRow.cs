@@ -5,15 +5,9 @@ using Utils;
 
 internal sealed class DataGridRow : Grid
 {
-    #region Fields
-
     private Color? bgColor;
     private Color? textColor;
     private bool hasSelected;
-
-    #endregion Fields
-
-    #region properties
 
     public DataGrid DataGrid
     {
@@ -21,17 +15,9 @@ internal sealed class DataGridRow : Grid
         set => this.SetValue(DataGridProperty, value);
     }
 
-    #endregion properties
-
-    #region Bindable Properties
-
     public static readonly BindableProperty DataGridProperty =
         BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
             propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
-
-    #endregion Bindable Properties
-
-    #region Methods
 
     private void CreateView()
     {
@@ -155,6 +141,4 @@ internal sealed class DataGridRow : Grid
             this.UpdateBackgroundColor();
         }
     }
-
-    #endregion Methods
 }

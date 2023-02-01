@@ -14,8 +14,6 @@ public sealed class SortData
         Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant,
     };
 
-    #region ctor
-
     public SortData()
     {
     }
@@ -26,9 +24,7 @@ public sealed class SortData
         this.Order = order;
     }
 
-    #endregion ctor
 
-    #region Properties
 
     /// <summary>
     /// Sorting order for the column
@@ -39,8 +35,6 @@ public sealed class SortData
     /// Column Index to sort
     /// </summary>
     public int Index { get; set; }
-
-    #endregion Properties
 
     public override bool Equals(object? obj)
     {

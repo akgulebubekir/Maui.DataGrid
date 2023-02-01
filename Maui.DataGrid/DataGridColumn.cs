@@ -35,8 +35,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     private void OnSizeChanged() => this.sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
 
-    #region Bindable Properties
-
     public static readonly BindableProperty WidthProperty =
         BindableProperty.Create(nameof(Width), typeof(GridLength), typeof(DataGridColumn),
             GridLength.Star,
@@ -101,10 +99,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                     ((DataGridColumn)b).HeaderLabel.Style = n as Style;
                 }
             });
-
-    #endregion Bindable Properties
-
-    #region properties
 
     public ColumnDefinition? ColumnDefinition
     {
@@ -278,6 +272,4 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         get => (Style)this.GetValue(HeaderLabelStyleProperty);
         set => this.SetValue(HeaderLabelStyleProperty, value);
     }
-
-    #endregion properties
 }
