@@ -1,7 +1,7 @@
 namespace Maui.DataGrid;
 
 /// <summary>
-/// Represents the sorting orders for DataGrid
+/// Represents the sorting orders for DataGrid.
 /// </summary>
 public enum SortingOrder
 {
