@@ -186,9 +186,9 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty ColumnsProperty =
-        BindableProperty.Create(nameof(Columns), typeof(ColumnCollection), typeof(DataGrid),
+        BindableProperty.Create(nameof(Columns), typeof(List<DataGridColumn>), typeof(DataGrid),
             propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView(),
-            defaultValueCreator: _ => new ColumnCollection());
+            defaultValueCreator: _ => new List<DataGridColumn>());
 
     public static readonly BindableProperty ItemsSourceProperty =
         BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
@@ -347,7 +347,7 @@ public partial class DataGrid
                     sData == null ||
                     self.Columns == null ||
                     self.Columns.Count == 0 ||
-                    (sData.Index < self.Columns.Count && self.Columns.ElementAt(sData.Index).SortingEnabled);
+                    (sData.Index < self.Columns.Count && self.Columns[sData.Index].SortingEnabled);
             },
             (b, o, n) =>
             {
@@ -470,9 +470,9 @@ public partial class DataGrid
     /// <summary>
     /// Columns
     /// </summary>
-    public ColumnCollection Columns
+    public List<DataGridColumn> Columns
     {
-        get => (ColumnCollection)this.GetValue(ColumnsProperty);
+        get => (List<DataGridColumn>)this.GetValue(ColumnsProperty);
         set => this.SetValue(ColumnsProperty, value);
     }
 
