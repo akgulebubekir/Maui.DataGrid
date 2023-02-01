@@ -15,14 +15,22 @@ public partial class DataGrid
     private readonly Dictionary<int, SortingOrder> sortingOrders;
 
     private readonly WeakEventManager itemSelectedEventManager = new();
+    private readonly WeakEventManager refreshingEventManager = new();
+
+    private IList<object>? internalItems;
+
+    public DataGrid()
+    {
+        this.InitializeComponent();
+
+        this.sortingOrders = new();
+    }
 
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
     {
         add => this.itemSelectedEventManager.AddEventHandler(value);
         remove => this.itemSelectedEventManager.RemoveEventHandler(value);
     }
-
-    private readonly WeakEventManager refreshingEventManager = new();
 
     public event EventHandler Refreshing
     {
