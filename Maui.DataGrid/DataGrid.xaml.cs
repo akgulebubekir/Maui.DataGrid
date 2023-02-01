@@ -577,6 +577,7 @@ public partial class DataGrid
         this.RefreshHeaderColumnWidths();
     }
 
+    /// <inheritdoc/>
     protected override void OnParentSet()
     {
         base.OnParentSet();
@@ -606,6 +607,7 @@ public partial class DataGrid
         }
     }
 
+    /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
