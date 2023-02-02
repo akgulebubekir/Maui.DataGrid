@@ -1,8 +1,7 @@
-﻿// To learn more about WinUI, the WinUI project structure,
+// To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace Maui.DataGrid.Sample.WinUI;
-using Microsoft.UI.Xaml;
 
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
@@ -20,4 +19,3 @@ public partial class App : MauiWinUIApplication
 
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 }
-
