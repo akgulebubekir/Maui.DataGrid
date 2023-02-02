@@ -2,7 +2,7 @@ namespace Maui.DataGrid.Sample.Utils;
 
 using System.Reflection;
 using Maui.DataGrid.Sample.Models;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 internal static class DummyDataProvider
 {
@@ -14,6 +14,6 @@ internal static class DummyDataProvider
         using var reader = new StreamReader(stream);
         var json = reader.ReadToEnd();
 
-        return JsonConvert.DeserializeObject<List<Team>>(json);
+        return JsonSerializer.Deserialize<List<Team>>(json);
     }
 }
