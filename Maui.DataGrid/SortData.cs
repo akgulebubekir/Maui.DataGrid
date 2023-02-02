@@ -8,23 +8,23 @@ using System.ComponentModel;
 [TypeConverter(typeof(SortDataTypeConverter))]
 public sealed class SortData
 {
-    public static implicit operator SortData(int index) => new()
-    {
-        Index = Math.Abs(index),
-        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant,
-    };
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SortData"/> class.
+    /// </summary>
     public SortData()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SortData"/> class.
+    /// </summary>
+    /// <param name="index">The column index to sort.</param>
+    /// <param name="order">Ascending, descending, or none.</param>
     public SortData(int index, SortingOrder order)
     {
         this.Index = index;
         this.Order = order;
     }
-
-
 
     /// <summary>
     /// Gets or sets sorting order for the column.
@@ -36,6 +36,13 @@ public sealed class SortData
     /// </summary>
     public int Index { get; set; }
 
+    public static implicit operator SortData(int index) => new()
+    {
+        Index = Math.Abs(index),
+        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant,
+    };
+
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         if (obj is SortData other)
@@ -46,5 +53,6 @@ public sealed class SortData
         return false;
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode() => throw new NotImplementedException();
 }

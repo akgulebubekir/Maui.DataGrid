@@ -3,21 +3,54 @@ namespace Maui.DataGrid;
 using Maui.DataGrid.Utils;
 using Microsoft.Maui.Controls;
 
+/// <summary>
+/// A row of the DataGrid which is itself a grid that leverages the ColumnDefinitions of the row.
+/// </summary>
 internal sealed class DataGridRow : Grid
 {
+    /// <summary>
+    /// BindableProperty that gets or sets the DataGrid that this row is attached to.
+    /// </summary>
+    public static readonly BindableProperty DataGridProperty =
+        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
+
     private Color? bgColor;
     private Color? textColor;
     private bool hasSelected;
 
+    /// <summary>
+    /// Gets or sets a reference back to the DataGrid that the row is an item of.
+    /// </summary>
     public DataGrid DataGrid
     {
         get => (DataGrid)this.GetValue(DataGridProperty);
         set => this.SetValue(DataGridProperty, value);
     }
 
-    public static readonly BindableProperty DataGridProperty =
-        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
-            propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
+    /// <inheritdoc/>
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+        this.CreateView();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnParentSet()
+    {
+        base.OnParentSet();
+
+        if (this.DataGrid.SelectionEnabled)
+        {
+            if (this.Parent != null)
+            {
+                this.DataGrid.ItemSelected += this.DataGrid_ItemSelected;
+            }
+            else
+            {
+                this.DataGrid.ItemSelected -= this.DataGrid_ItemSelected;
+            }
+        }
+    }
 
     private void CreateView()
     {
@@ -45,8 +78,7 @@ internal sealed class DataGridRow : Grid
                 cell = new ContentView { Content = col.CellTemplate.CreateContent() as View };
                 if (col.PropertyName != null)
                 {
-                    cell.SetBinding(BindingContextProperty,
-                        new Binding(col.PropertyName, source: this.BindingContext));
+                    cell.SetBinding(BindingContextProperty, new Binding(col.PropertyName, source: this.BindingContext));
                 }
             }
             else
@@ -59,18 +91,14 @@ internal sealed class DataGridRow : Grid
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
                     HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
-                    LineBreakMode = col.LineBreakMode
+                    LineBreakMode = col.LineBreakMode,
                 };
-                cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
-                cell.SetBinding(Label.FontSizeProperty,
-                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: this.DataGrid));
-                cell.SetBinding(Label.FontFamilyProperty,
-                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: this.DataGrid));
+                cell.SetBinding(Label.TextProperty, new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+                cell.SetBinding(Label.FontSizeProperty, new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: this.DataGrid));
+                cell.SetBinding(Label.FontFamilyProperty, new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: this.DataGrid));
             }
 
-            cell.SetBinding(IsVisibleProperty,
-                new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
+            cell.SetBinding(IsVisibleProperty, new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
             SetColumn((BindableObject)cell, i);
             this.Children.Add(cell);
@@ -107,31 +135,6 @@ internal sealed class DataGridRow : Grid
                 {
                     label.TextColor = textColor;
                 }
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    protected override void OnBindingContextChanged()
-    {
-        base.OnBindingContextChanged();
-        this.CreateView();
-    }
-
-    /// <inheritdoc/>
-    protected override void OnParentSet()
-    {
-        base.OnParentSet();
-
-        if (this.DataGrid.SelectionEnabled)
-        {
-            if (this.Parent != null)
-            {
-                this.DataGrid.ItemSelected += this.DataGrid_ItemSelected;
-            }
-            else
-            {
-                this.DataGrid.ItemSelected -= this.DataGrid_ItemSelected;
             }
         }
     }

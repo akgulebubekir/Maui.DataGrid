@@ -9,6 +9,12 @@ internal static class ReflectionUtils
     private const char IndexEndOp = ']';
     private const char PropertyOfOp = '.';
 
+    /// <summary>
+    /// Use reflection to retrieve the value of an object by a binding path.
+    /// </summary>
+    /// <param name="obj">The object to use.</param>
+    /// <param name="path">A binding path.</param>
+    /// <returns>The value from the path within the object.</returns>
     public static object? GetValueByPath(object obj, string path)
     {
         var result = obj;

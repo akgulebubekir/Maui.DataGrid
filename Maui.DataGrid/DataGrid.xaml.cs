@@ -1,4 +1,6 @@
 namespace Maui.DataGrid;
+
+using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Input;
@@ -12,6 +14,184 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
+    /// <summary>
+    /// BindableProperty that sets the color of the selected row.
+    /// </summary>
+    public static readonly BindableProperty ActiveRowColorProperty =
+        BindableProperty.Create(nameof(ActiveRowColor), typeof(Color), typeof(DataGrid), Color.FromRgb(128, 144, 160));
+
+    /// <summary>
+    /// BindableProperty that sets the header background color.
+    /// </summary>
+    public static readonly BindableProperty HeaderBackgroundProperty =
+        BindableProperty.Create(nameof(HeaderBackground), typeof(Color), typeof(DataGrid), Colors.White, propertyChanged: OnHeaderBackgroundChanged);
+
+    /// <summary>
+    /// BindableProperty that sets the border color around every cell.
+    /// </summary>
+    public static readonly BindableProperty BorderColorProperty =
+        BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(DataGrid), Colors.Black, propertyChanged: OnBorderColorChanged);
+
+    /// <summary>
+    /// BindableProperty that sets the alternating background color palette.
+    /// </summary>
+    public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
+        BindableProperty.Create(nameof(RowsBackgroundColorPalette), typeof(IColorProvider), typeof(DataGrid), new PaletteCollection { Colors.White }, propertyChanged: OnColorPaletteChanged);
+
+    /// <summary>
+    /// BindableProperty that sets the alternating text color palette.
+    /// </summary>
+    public static readonly BindableProperty RowsTextColorPaletteProperty =
+        BindableProperty.Create(nameof(RowsTextColorPalette), typeof(IColorProvider), typeof(DataGrid), new PaletteCollection { Colors.Black }, propertyChanged: OnColorPaletteChanged);
+
+    /// <summary>
+    /// BindableProperty that sets the DataGridColumns for this DataGrid.
+    /// </summary>
+    public static readonly BindableProperty ColumnsProperty =
+        BindableProperty.Create(nameof(Columns), typeof(List<DataGridColumn>), typeof(DataGrid), new List<DataGridColumn>(), propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView());
+
+    /// <summary>
+    /// BindableProperty that sets the list of objects that forms the binding context of the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty ItemsSourceProperty =
+        BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null, propertyChanged: OnItemsSourceChanged);
+
+    /// <summary>
+    /// BindableProperty that sets the height of every normal row upon page load.
+    /// </summary>
+    public static readonly BindableProperty RowHeightProperty =
+        BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(DataGrid), 40);
+
+    /// <summary>
+    /// BindableProperty that sets the height of the header row upon page load.
+    /// </summary>
+    public static readonly BindableProperty HeaderHeightProperty =
+        BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40);
+
+    /// <summary>
+    /// BindableProperty that sets whether sorting is enabled for the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty SortingEnabledProperty =
+        BindableProperty.Create(nameof(SortingEnabled), typeof(bool), typeof(DataGrid), true);
+
+    /// <summary>
+    /// BindableProperty that sets the font size for the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty FontSizeProperty =
+        BindableProperty.Create(nameof(FontSize), typeof(double), typeof(DataGrid), 13.0);
+
+    /// <summary>
+    /// BindableProperty that sets the font family for the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty FontFamilyProperty =
+        BindableProperty.Create(nameof(FontFamily), typeof(string), typeof(DataGrid), Font.Default.Family);
+
+    /// <summary>
+    /// BindableProperty that gets and sets selected item for the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty SelectedItemProperty =
+        BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DataGrid), null, BindingMode.TwoWay, propertyChanged: OnSelectedItemChanged, coerceValue: SetSelectedItem);
+
+    /// <summary>
+    /// BindableProperty that sets whether selecting items is enabled for this DataGrid.
+    /// </summary>
+    public static readonly BindableProperty SelectionEnabledProperty =
+        BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true, propertyChanged: OnSelectionEnabledChanged);
+
+    /// <summary>
+    /// BindableProperty that sets whether refreshing via the PullToRefreshCommandProperty is enabled for this DataGrid.
+    /// </summary>
+    public static readonly BindableProperty RefreshingEnabledProperty =
+        BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true, propertyChanged: OnRefreshingEnabledChanged);
+
+    /// <summary>
+    /// BindableProperty that sets the command used to refresh the DataGrid when doing a pull down gesture.
+    /// </summary>
+    public static readonly BindableProperty PullToRefreshCommandProperty =
+        BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null, propertyChanged: OnPullToRefreshChanged);
+
+    /// <summary>
+    /// BindableProperty that gets or sets whether Refreshing is occurring.
+    /// </summary>
+    public static readonly BindableProperty IsRefreshingProperty =
+        BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay, propertyChanged: OnIsRefreshingChanged);
+
+    /// <summary>
+    /// BindableProperty that gets or sets the thickness of the borders around the cells.
+    /// </summary>
+    public static readonly BindableProperty BorderThicknessProperty =
+        BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1), propertyChanged: OnBorderThicknessChanged);
+
+    /// <summary>
+    /// BindableProperty that gets or sets whether the header has borders.
+    /// </summary>
+    public static readonly BindableProperty HeaderBordersVisibleProperty =
+        BindableProperty.Create(nameof(HeaderBordersVisible), typeof(bool), typeof(DataGrid), true, propertyChanged: OnHeaderBordersVisibleChanged);
+
+    /// <summary>
+    /// BindableProperty that gets or sets the index of the column that is sorted.
+    /// </summary>
+    public static readonly BindableProperty SortedColumnIndexProperty =
+        BindableProperty.Create(
+            nameof(SortedColumnIndex),
+            typeof(SortData),
+            typeof(DataGrid),
+            null,
+            BindingMode.TwoWay,
+            validateValue: (b, v) =>
+                   v is not SortData sData
+                || b is not DataGrid self
+                || self.Columns is null
+                || self.Columns.Count == 0
+                || (sData.Index < self.Columns.Count && self.Columns[sData.Index].SortingEnabled),
+            propertyChanged: (b, o, n) =>
+            {
+                var self = (DataGrid)b;
+                if (o != n)
+                {
+                    self.SortItems((SortData)n);
+                }
+            });
+
+    /// <summary>
+    /// BindableProperty that sets the styling of the header labels.
+    /// </summary>
+    public static readonly BindableProperty HeaderLabelStyleProperty =
+        BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGrid));
+
+    /// <summary>
+    /// BindableProperty that gets or sets the polygon used for the sort icon.
+    /// </summary>
+    public static readonly BindableProperty SortIconProperty =
+        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid));
+
+    /// <summary>
+    /// BindableProperty that gets or sets the styling of the sort icon.
+    /// </summary>
+    public static readonly BindableProperty SortIconStyleProperty =
+        BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null, propertyChanged: (b, _, n) =>
+            {
+                if (b is DataGrid self && n is Style style)
+                {
+                    foreach (var column in self.Columns)
+                    {
+                        column.SortingIcon.Style = style;
+                    }
+                }
+            });
+
+    /// <summary>
+    /// BindableProperty that gets or sets the view used inside the grid when there is no data to display.
+    /// </summary>
+    public static readonly BindableProperty NoDataViewProperty =
+        BindableProperty.Create(nameof(NoDataView), typeof(View), typeof(DataGrid), propertyChanged: (b, o, n) =>
+            {
+                if (o != n)
+                {
+                    ((DataGrid)b).collectionView.EmptyView = n as View;
+                }
+            });
+
     private readonly Dictionary<int, SortingOrder> sortingOrders;
 
     private readonly WeakEventManager itemSelectedEventManager = new();
@@ -19,6 +199,9 @@ public partial class DataGrid
 
     private IList<object>? internalItems;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataGrid"/> class.
+    /// </summary>
     public DataGrid()
     {
         this.InitializeComponent();
@@ -43,283 +226,6 @@ public partial class DataGrid
         add => this.refreshingEventManager.AddEventHandler(value);
         remove => this.refreshingEventManager.RemoveEventHandler(value);
     }
-
-    /// <summary>
-    /// Scrolls to the row.
-    /// </summary>
-    /// <param name="item">Item to scroll.</param>
-    /// <param name="position">Position of the row in screen.</param>
-    /// <param name="animated">animated.</param>
-    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => this.collectionView.ScrollTo(item, position: position, animate: animated);
-
-    public static readonly BindableProperty ActiveRowColorProperty =
-        BindableProperty.Create(nameof(ActiveRowColor), typeof(Color), typeof(DataGrid), Color.FromRgb(128, 144, 160),
-            coerceValue: (b, v) =>
-            {
-                if (!((DataGrid)b).SelectionEnabled)
-                {
-                    throw new InvalidOperationException("Datagrid must be SelectionEnabled to set ActiveRowColor");
-                }
-
-                return v;
-            });
-
-    public static readonly BindableProperty HeaderBackgroundProperty =
-        BindableProperty.Create(nameof(HeaderBackground), typeof(Color), typeof(DataGrid), Colors.White,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (self.headerView != null && !self.HeaderBordersVisible)
-                {
-                    self.headerView.BackgroundColor = (Color)n;
-                }
-            });
-
-    public static readonly BindableProperty BorderColorProperty =
-        BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(DataGrid), Colors.Black,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (self.HeaderBordersVisible)
-                {
-                    self.headerView.BackgroundColor = (Color)n;
-                }
-
-                if (self.Columns != null && self.ItemsSource != null)
-                {
-                    self.Reload();
-                }
-            });
-
-    public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
-        BindableProperty.Create(nameof(RowsBackgroundColorPalette), typeof(IColorProvider), typeof(DataGrid),
-            new PaletteCollection
-            {
-                Colors.White
-            },
-            propertyChanged: (b, _, _) =>
-            {
-                var self = (DataGrid)b;
-                if (self.Columns != null && self.ItemsSource != null)
-                {
-                    self.Reload();
-                }
-            });
-
-    public static readonly BindableProperty RowsTextColorPaletteProperty =
-        BindableProperty.Create(nameof(RowsTextColorPalette), typeof(IColorProvider), typeof(DataGrid),
-            new PaletteCollection { Colors.Black },
-            propertyChanged: (b, _, _) =>
-            {
-                var self = (DataGrid)b;
-                if (self.Columns != null && self.ItemsSource != null)
-                {
-                    self.Reload();
-                }
-            });
-
-    public static readonly BindableProperty ColumnsProperty =
-        BindableProperty.Create(nameof(Columns), typeof(List<DataGridColumn>), typeof(DataGrid),
-            propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView(),
-            defaultValueCreator: _ => new List<DataGridColumn>());
-
-    public static readonly BindableProperty ItemsSourceProperty =
-        BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
-            propertyChanged: (b, o, n) =>
-            {
-                var self = (DataGrid)b;
-
-                // ObservableCollection Tracking
-                if (o is INotifyCollectionChanged collectionChanged)
-                {
-                    collectionChanged.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
-                }
-
-                if (n == null)
-                {
-                    self.InternalItems = null;
-                }
-                else
-                {
-                    if (n is INotifyCollectionChanged changed)
-                    {
-                        changed.CollectionChanged += self.HandleItemsSourceCollectionChanged;
-                    }
-
-                    self.InternalItems = new List<object>(((IEnumerable)n).Cast<object>());
-                }
-
-                if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
-                {
-                    self.SelectedItem = null;
-                }
-            });
-
-    private void HandleItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (sender is IEnumerable items)
-        {
-            this.InternalItems = new List<object>(items.Cast<object>());
-            if (this.SelectedItem != null && !this.InternalItems.Contains(this.SelectedItem))
-            {
-                this.SelectedItem = null;
-            }
-        }
-    }
-
-    public static readonly BindableProperty RowHeightProperty =
-        BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(DataGrid), 40);
-
-    public static readonly BindableProperty HeaderHeightProperty =
-        BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40);
-
-    public static readonly BindableProperty IsSortableProperty =
-        BindableProperty.Create(nameof(IsSortable), typeof(bool), typeof(DataGrid), true);
-
-    public static readonly BindableProperty FontSizeProperty =
-        BindableProperty.Create(nameof(FontSize), typeof(double), typeof(DataGrid), 13.0);
-
-    public static readonly BindableProperty FontFamilyProperty =
-        BindableProperty.Create(nameof(FontFamily), typeof(string), typeof(DataGrid), Font.Default.Family);
-
-    public static readonly BindableProperty SelectedItemProperty =
-        BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DataGrid), null, BindingMode.TwoWay,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (self.collectionView.SelectedItem != n)
-                {
-                    self.collectionView.SelectedItem = n;
-                }
-            },
-            coerceValue: (b, v) =>
-            {
-                if (v is null)
-                {
-                    return null;
-                }
-
-                var self = (DataGrid)b;
-
-                if (!self.SelectionEnabled)
-                {
-                    throw new InvalidOperationException("Datagrid must be SelectionEnabled=true to set SelectedItem");
-                }
-
-                if (self.InternalItems?.Contains(v) == true)
-                {
-                    return v;
-                }
-
-                return null;
-            }
-        );
-
-    public static readonly BindableProperty SelectionEnabledProperty =
-        BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, _) =>
-            {
-                var self = (DataGrid)b;
-                if (!self.SelectionEnabled && self.SelectedItem != null)
-                {
-                    self.SelectedItem = null;
-                }
-            });
-
-    public static readonly BindableProperty RefreshingEnabledProperty =
-    BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (n is bool refreshingEnabled)
-                {
-                    _ = self.PullToRefreshCommand?.CanExecute(() => refreshingEnabled);
-                }
-            });
-
-    public static readonly BindableProperty PullToRefreshCommandProperty =
-        BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null,
-            propertyChanged: (b, _, n) =>
-            {
-                var self = (DataGrid)b;
-                if (n == null)
-                {
-                    self.refreshView.Command = null;
-                }
-                else
-                {
-                    self.refreshView.Command = n as ICommand;
-                    _ = self.refreshView.Command?.CanExecute(self.RefreshingEnabled);
-                }
-            });
-
-    public static readonly BindableProperty IsRefreshingProperty =
-        BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay,
-            propertyChanged: (b, _, n) => ((DataGrid)b).refreshView.IsRefreshing = (bool)n);
-
-    public static readonly BindableProperty BorderThicknessProperty =
-        BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
-            propertyChanged: (b, _, n) =>
-            {
-                ((DataGrid)b).headerView.ColumnSpacing = ((Thickness)n).HorizontalThickness / 2;
-                ((DataGrid)b).headerView.Padding = ((Thickness)n).HorizontalThickness / 2;
-            });
-
-    public static readonly BindableProperty HeaderBordersVisibleProperty =
-        BindableProperty.Create(nameof(HeaderBordersVisible), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, n) => ((DataGrid)b).headerView.BackgroundColor =
-                (bool)n ? ((DataGrid)b).BorderColor : ((DataGrid)b).HeaderBackground);
-
-    public static readonly BindableProperty SortedColumnIndexProperty =
-        BindableProperty.Create(nameof(SortedColumnIndex), typeof(SortData), typeof(DataGrid), null, BindingMode.TwoWay,
-            validateValue: (b, v) =>
-            {
-                var self = (DataGrid)b;
-                var sData = (SortData)v;
-
-                return
-                    sData == null ||
-                    self.Columns == null ||
-                    self.Columns.Count == 0 ||
-                    (sData.Index < self.Columns.Count && self.Columns[sData.Index].SortingEnabled);
-            },
-            propertyChanged: (b, o, n) =>
-            {
-                var self = (DataGrid)b;
-                if (o != n)
-                {
-                    self.SortItems((SortData)n);
-                }
-            });
-
-    public static readonly BindableProperty HeaderLabelStyleProperty =
-        BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGrid));
-
-    public static readonly BindableProperty SortIconProperty =
-        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid));
-
-    public static readonly BindableProperty SortIconStyleProperty =
-        BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null,
-            propertyChanged: (b, _, n) =>
-            {
-                if (b is DataGrid self && n is Style style)
-                {
-                    foreach (var column in self.Columns)
-                    {
-                        column.SortingIcon.Style = style;
-                    }
-                }
-            });
-
-    public static readonly BindableProperty NoDataViewProperty =
-        BindableProperty.Create(nameof(NoDataView), typeof(View), typeof(DataGrid),
-            propertyChanged: (b, o, n) =>
-            {
-                if (o != n)
-                {
-                    ((DataGrid)b).collectionView.EmptyView = n as View;
-                }
-            });
 
     /// <summary>
     /// Gets or sets selected Row color.
@@ -377,24 +283,6 @@ public partial class DataGrid
         set => this.SetValue(ItemsSourceProperty, value);
     }
 
-    internal IList<object>? InternalItems
-    {
-        get => this.internalItems;
-        set
-        {
-            this.internalItems = value;
-
-            if (this.IsSortable && this.SortedColumnIndex != null)
-            {
-                this.SortItems(this.SortedColumnIndex);
-            }
-            else
-            {
-                this.collectionView.ItemsSource = this.internalItems;
-            }
-        }
-    }
-
     /// <summary>
     /// Gets or sets columns.
     /// </summary>
@@ -447,10 +335,10 @@ public partial class DataGrid
     /// Sortable columns must implement <see cref="IComparable"/>
     /// If you want to enable or disable sorting for specific column please use <c>SortingEnabled</c> property.
     /// </summary>
-    public bool IsSortable
+    public bool SortingEnabled
     {
-        get => (bool)this.GetValue(IsSortableProperty);
-        set => this.SetValue(IsSortableProperty, value);
+        get => (bool)this.GetValue(SortingEnabledProperty);
+        set => this.SetValue(SortingEnabledProperty, value);
     }
 
     /// <summary>
@@ -565,6 +453,35 @@ public partial class DataGrid
     }
 
     /// <summary>
+    /// Gets or sets the internal copy of ItemsSource.
+    /// </summary>
+    internal IList<object>? InternalItems
+    {
+        get => this.internalItems;
+        set
+        {
+            this.internalItems = value;
+
+            if (this.SortingEnabled && this.SortedColumnIndex != null)
+            {
+                this.SortItems(this.SortedColumnIndex);
+            }
+            else
+            {
+                this.collectionView.ItemsSource = this.internalItems;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Scrolls to the row.
+    /// </summary>
+    /// <param name="item">Item to scroll.</param>
+    /// <param name="position">Position of the row in screen.</param>
+    /// <param name="animated">animated.</param>
+    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => this.collectionView.ScrollTo(item, position: position, animate: animated);
+
+    /// <summary>
     /// Reloads all rows in the DataGrid, and refreshes all column widths.
     /// </summary>
     internal void Reload()
@@ -614,6 +531,157 @@ public partial class DataGrid
         this.InitHeaderView();
     }
 
+    private static void OnIsRefreshingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && newValue is bool isRefreshing)
+        {
+            self.refreshView.IsRefreshing = isRefreshing;
+        }
+    }
+
+    private static void OnBorderThicknessChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && newValue is Thickness thickness)
+        {
+            self.headerView.ColumnSpacing = thickness.HorizontalThickness / 2;
+            self.headerView.Padding = thickness.HorizontalThickness / 2;
+        }
+    }
+
+    private static void OnHeaderBordersVisibleChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && newValue is bool isVisible)
+        {
+            self.headerView.BackgroundColor = isVisible ? self.BorderColor : self.HeaderBackground;
+        }
+    }
+
+    private static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self)
+        {
+            // ObservableCollection Tracking
+            if (oldValue is INotifyCollectionChanged collectionChanged)
+            {
+                collectionChanged.CollectionChanged -= self.OnItemsSourceCollectionChanged;
+            }
+
+            if (newValue == null)
+            {
+                self.InternalItems = null;
+            }
+            else
+            {
+                if (newValue is INotifyCollectionChanged changed)
+                {
+                    changed.CollectionChanged += self.OnItemsSourceCollectionChanged;
+                }
+
+                self.InternalItems = new List<object>(((IEnumerable)newValue).Cast<object>());
+            }
+
+            if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
+            {
+                self.SelectedItem = null;
+            }
+        }
+    }
+
+    private static void OnSelectionEnabledChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && !self.SelectionEnabled && self.SelectedItem != null)
+        {
+            self.SelectedItem = null;
+        }
+    }
+
+    private static void OnRefreshingEnabledChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && newValue is bool refreshingEnabled)
+        {
+            _ = self.PullToRefreshCommand?.CanExecute(() => refreshingEnabled);
+        }
+    }
+
+    private static void OnPullToRefreshChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self)
+        {
+            if (newValue is ICommand command)
+            {
+                self.refreshView.Command = command;
+                _ = self.refreshView.Command?.CanExecute(self.RefreshingEnabled);
+            }
+            else
+            {
+                self.refreshView.Command = null;
+            }
+        }
+    }
+
+    private static void OnHeaderBackgroundChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && self.headerView != null && !self.HeaderBordersVisible)
+        {
+            self.headerView.BackgroundColor = newValue as Color;
+        }
+    }
+
+    private static void OnBorderColorChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self)
+        {
+            if (self.HeaderBordersVisible)
+            {
+                self.headerView.BackgroundColor = newValue as Color;
+            }
+
+            if (self.Columns != null && self.ItemsSource != null)
+            {
+                self.Reload();
+            }
+        }
+    }
+
+    private static void OnColorPaletteChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && self.Columns != null && self.ItemsSource != null)
+        {
+            self.Reload();
+        }
+    }
+
+    private static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is DataGrid self && self.collectionView.SelectedItem != newValue)
+        {
+            self.collectionView.SelectedItem = newValue;
+        }
+    }
+
+    private static object? SetSelectedItem(BindableObject bindable, object value)
+    {
+        if (value is null)
+        {
+            return null;
+        }
+
+        if (bindable is DataGrid self)
+        {
+            if (!self.SelectionEnabled)
+            {
+                return null;
+            }
+
+            if (self.InternalItems?.Contains(value) == true)
+            {
+                return value;
+            }
+        }
+
+        return null;
+    }
+
     private void OnRefreshing(object? sender, EventArgs e) => this.refreshingEventManager.HandleEvent(this, e, nameof(this.Refreshing));
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -621,6 +689,18 @@ public partial class DataGrid
         this.SelectedItem = this.collectionView.SelectedItem;
 
         this.itemSelectedEventManager.HandleEvent(this, e, nameof(this.ItemSelected));
+    }
+
+    private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (sender is IEnumerable items)
+        {
+            this.InternalItems = new List<object>(items.Cast<object>());
+            if (this.SelectedItem != null && !this.InternalItems.Contains(this.SelectedItem))
+            {
+                this.SelectedItem = null;
+            }
+        }
     }
 
     private void RefreshHeaderColumnWidths()
@@ -638,7 +718,7 @@ public partial class DataGrid
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    this.HeaderLabelStyle ?? (Style)this.headerView.Resources["HeaderDefaultStyle"];
 
-        if (this.IsSortable && column.IsSortable(this) && column.SortingEnabled)
+        if (this.SortingEnabled && column.IsSortable(this) && column.SortingEnabled)
         {
             column.SortingIcon.Style = this.SortIconStyle ?? (Style)this.headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = this.HeaderHeight * 0.3;
@@ -737,7 +817,7 @@ public partial class DataGrid
             throw new InvalidOperationException($"{column.PropertyName} column is not sortable");
         }
 
-        if (!this.IsSortable)
+        if (!this.SortingEnabled)
         {
             throw new InvalidOperationException("DataGrid is not sortable");
         }

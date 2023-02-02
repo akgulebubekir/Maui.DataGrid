@@ -1,17 +1,114 @@
 namespace Maui.DataGrid;
 
-using Microsoft.Maui.Controls.Shapes;
 using System.ComponentModel;
+using Microsoft.Maui.Controls.Shapes;
 
 /// <summary>
 /// Specifies each column of the DataGrid.
 /// </summary>
 public sealed class DataGridColumn : BindableObject, IDefinition
 {
+    /// <summary>
+    /// BindableProperty that sets the width of this column.
+    /// </summary>
+    public static readonly BindableProperty WidthProperty =
+        BindableProperty.Create(nameof(Width), typeof(GridLength), typeof(DataGridColumn), GridLength.Star, propertyChanged: (b, o, n) =>
+        {
+            if (o != n)
+            {
+                ((DataGridColumn)b).OnSizeChanged();
+            }
+        });
+
+    /// <summary>
+    /// BindableProperty that sets the title of this column.
+    /// </summary>
+    public static readonly BindableProperty TitleProperty =
+        BindableProperty.Create(nameof(Title), typeof(string), typeof(DataGridColumn), string.Empty, propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = (string)n);
+
+    /// <summary>
+    /// BindableProperty that sets the title of this column as a FormattedString.
+    /// </summary>
+    public static readonly BindableProperty FormattedTitleProperty =
+        BindableProperty.Create(nameof(FormattedTitle), typeof(FormattedString), typeof(DataGridColumn), propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = (FormattedString)n);
+
+    /// <summary>
+    /// BindableProperty that sets the property name that this column reads from the binding context.
+    /// </summary>
+    public static readonly BindableProperty PropertyNameProperty =
+        BindableProperty.Create(nameof(PropertyName), typeof(string), typeof(DataGridColumn));
+
+    /// <summary>
+    /// BindableProperty that sets whether this column is visible.
+    /// </summary>
+    public static readonly BindableProperty IsVisibleProperty =
+        BindableProperty.Create(nameof(IsVisible), typeof(bool), typeof(DataGridColumn), true, propertyChanged: (b, o, n) =>
+        {
+            if (o != n && b is DataGridColumn column)
+            {
+                var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
+                dataGrid.Reload();
+                column.OnSizeChanged();
+            }
+        });
+
+    /// <summary>
+    /// BindableProperty that sets the string format of this column.
+    /// </summary>
+    public static readonly BindableProperty StringFormatProperty =
+        BindableProperty.Create(nameof(StringFormat), typeof(string), typeof(DataGridColumn));
+
+    /// <summary>
+    /// BindableProperty that sets the cell template of this column.
+    /// </summary>
+    public static readonly BindableProperty CellTemplateProperty =
+        BindableProperty.Create(nameof(CellTemplate), typeof(DataTemplate), typeof(DataGridColumn));
+
+    /// <summary>
+    /// BindableProperty that sets the word wrapping of this column.
+    /// </summary>
+    public static readonly BindableProperty LineBreakModeProperty =
+        BindableProperty.Create(nameof(LineBreakMode), typeof(LineBreakMode), typeof(DataGridColumn), LineBreakMode.WordWrap);
+
+    /// <summary>
+    /// BindableProperty that sets the horizontal content alignment of this column.
+    /// </summary>
+    public static readonly BindableProperty HorizontalContentAlignmentProperty =
+        BindableProperty.Create(nameof(HorizontalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn), LayoutOptions.Center);
+
+    /// <summary>
+    /// BindableProperty that sets the vertical content alignment of this column.
+    /// </summary>
+    public static readonly BindableProperty VerticalContentAlignmentProperty =
+        BindableProperty.Create(nameof(VerticalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn), LayoutOptions.Center);
+
+    /// <summary>
+    /// BindableProperty that sets whether sorting is enabled for column.
+    /// </summary>
+    public static readonly BindableProperty SortingEnabledProperty =
+        BindableProperty.Create(nameof(SortingEnabled), typeof(bool), typeof(DataGridColumn), true);
+
+    /// <summary>
+    /// BindableProperty that sets the styling of the header label for column.
+    /// </summary>
+    public static readonly BindableProperty HeaderLabelStyleProperty =
+        BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGridColumn), propertyChanged: (b, o, n) =>
+        {
+            if (((DataGridColumn)b).HeaderLabel != null && o != n)
+            {
+                ((DataGridColumn)b).HeaderLabel.Style = n as Style;
+            }
+        });
+
+    private readonly ColumnDefinition invisibleColumnDefinition = new(0);
+    private readonly WeakEventManager sizeChangedEventManager = new();
+
     private bool? isSortable;
     private ColumnDefinition? columnDefinition;
-    private readonly ColumnDefinition invisibleColumnDefinition = new(0);
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataGridColumn"/> class.
+    /// </summary>
     public DataGridColumn()
     {
         this.HeaderLabel = new();
@@ -25,81 +122,18 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         };
     }
 
-    private readonly WeakEventManager sizeChangedEventManager = new();
-
+    /// <summary>
+    /// An event that triggers when the size of the column is changed.
+    /// </summary>
     public event EventHandler SizeChanged
     {
         add => this.sizeChangedEventManager.AddEventHandler(value);
         remove => this.sizeChangedEventManager.RemoveEventHandler(value);
     }
 
-    private void OnSizeChanged() => this.sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
-
-    public static readonly BindableProperty WidthProperty =
-        BindableProperty.Create(nameof(Width), typeof(GridLength), typeof(DataGridColumn),
-            GridLength.Star,
-            propertyChanged: (b, o, n) =>
-            {
-                if (o != n)
-                {
-                    ((DataGridColumn)b).OnSizeChanged();
-                }
-            });
-
-    public static readonly BindableProperty TitleProperty =
-        BindableProperty.Create(nameof(Title), typeof(string), typeof(DataGridColumn), string.Empty,
-            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = (string)n);
-
-    public static readonly BindableProperty FormattedTitleProperty =
-        BindableProperty.Create(nameof(FormattedTitle), typeof(FormattedString), typeof(DataGridColumn),
-            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = (FormattedString)n);
-
-    public static readonly BindableProperty PropertyNameProperty =
-        BindableProperty.Create(nameof(PropertyName), typeof(string), typeof(DataGridColumn));
-
-    public static readonly BindableProperty IsVisibleProperty =
-        BindableProperty.Create(nameof(IsVisible), typeof(bool), typeof(DataGridColumn), true,
-            propertyChanged: (b, o, n) =>
-            {
-                if (o != n && b is DataGridColumn column)
-                {
-                    var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
-                    dataGrid.Reload();
-                    column.OnSizeChanged();
-                }
-            });
-
-    public static readonly BindableProperty StringFormatProperty =
-        BindableProperty.Create(nameof(StringFormat), typeof(string), typeof(DataGridColumn));
-
-    public static readonly BindableProperty CellTemplateProperty =
-        BindableProperty.Create(nameof(CellTemplate), typeof(DataTemplate), typeof(DataGridColumn));
-
-    public static readonly BindableProperty LineBreakModeProperty =
-        BindableProperty.Create(nameof(LineBreakMode), typeof(LineBreakMode), typeof(DataGridColumn),
-            LineBreakMode.WordWrap);
-
-    public static readonly BindableProperty HorizontalContentAlignmentProperty =
-        BindableProperty.Create(nameof(HorizontalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn),
-            LayoutOptions.Center);
-
-    public static readonly BindableProperty VerticalContentAlignmentProperty =
-        BindableProperty.Create(nameof(VerticalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn),
-            LayoutOptions.Center);
-
-    public static readonly BindableProperty SortingEnabledProperty =
-        BindableProperty.Create(nameof(SortingEnabled), typeof(bool), typeof(DataGridColumn), true);
-
-    public static readonly BindableProperty HeaderLabelStyleProperty =
-        BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGridColumn),
-            propertyChanged: (b, o, n) =>
-            {
-                if (((DataGridColumn)b).HeaderLabel != null && o != n)
-                {
-                    ((DataGridColumn)b).HeaderLabel.Style = n as Style;
-                }
-            });
-
+    /// <summary>
+    /// Gets the column definition for this column.
+    /// </summary>
     public ColumnDefinition? ColumnDefinition
     {
         get
@@ -111,7 +145,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
             return this.columnDefinition;
         }
-
         internal set => this.columnDefinition = value;
     }
 
@@ -193,10 +226,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         set => this.SetValue(CellTemplateProperty, value);
     }
 
-    internal Polygon SortingIcon { get; }
-    internal Label HeaderLabel { get; }
-    internal View SortingIconContainer { get; }
-
     /// <summary>
     /// Gets or sets lineBreakModeProperty for the text. WordWrap by default.
     /// </summary>
@@ -235,10 +264,35 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
+    /// Gets or sets label Style of the header. <c>TargetType</c> must be Label.
+    /// </summary>
+    public Style HeaderLabelStyle
+    {
+        get => (Style)this.GetValue(HeaderLabelStyleProperty);
+        set => this.SetValue(HeaderLabelStyleProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the header label control for this column.
+    /// </summary>
+    internal Label HeaderLabel { get; }
+
+    /// <summary>
+    /// Gets the sort icon polygon for this column.
+    /// </summary>
+    internal Polygon SortingIcon { get; }
+
+    /// <summary>
+    /// Gets the container of the sort icon for this column.
+    /// </summary>
+    internal View SortingIconContainer { get; }
+
+    /// <summary>
     /// Determines via reflection if the column's data type is sortable.
     /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property.
     /// </summary>
-    /// <param name="dataGrid"></param>
+    /// <param name="dataGrid">The DataGrid this column is attached to.</param>
+    /// <returns>Whether the column implements IComparable.</returns>
     public bool IsSortable(DataGrid dataGrid)
     {
         if (this.isSortable is not null)
@@ -264,12 +318,5 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         return this.isSortable ?? false;
     }
 
-    /// <summary>
-    /// Gets or sets label Style of the header. <c>TargetType</c> must be Label.
-    /// </summary>
-    public Style HeaderLabelStyle
-    {
-        get => (Style)this.GetValue(HeaderLabelStyleProperty);
-        set => this.SetValue(HeaderLabelStyleProperty, value);
-    }
+    private void OnSizeChanged() => this.sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
 }
