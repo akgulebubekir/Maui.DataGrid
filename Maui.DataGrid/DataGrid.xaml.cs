@@ -331,7 +331,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether gets or sets if the grid is sortable. Default value is true.
+    /// Gets or sets if the grid is sortable. Default value is true.
     /// Sortable columns must implement <see cref="IComparable"/>
     /// If you want to enable or disable sorting for specific column please use <c>SortingEnabled</c> property.
     /// </summary>
@@ -342,7 +342,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether enables selection in dataGrid. Default value is True.
+    /// Gets or sets a value indicating whether selection is enabled in the DataGrid. Default value is True.
     /// </summary>
     public bool SelectionEnabled
     {
@@ -369,7 +369,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether displays an ActivityIndicator when is refreshing.
+    /// Gets or sets a value indicating whether the DataGrid displays an ActivityIndicator while refreshing.
     /// </summary>
     public bool IsRefreshing
     {
@@ -378,7 +378,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether enables refreshing the DataGrid by a pull down command.
+    /// Gets or sets a value indicating whether refreshing is enabled in the DataGrid via a pull down gesture.
     /// </summary>
     public bool RefreshingEnabled
     {
@@ -396,7 +396,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether determines to show the borders of header cells.
+    /// Gets or sets a value indicating whether to show the borders of header cells.
     /// Default value is <c>true</c>.
     /// </summary>
     public bool HeaderBordersVisible
