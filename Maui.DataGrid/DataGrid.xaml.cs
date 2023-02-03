@@ -52,7 +52,6 @@ public partial class DataGrid
         }
 
         var column = Columns[sortData.Index];
-        var order = sortData.Order;
 
         if (column.PropertyName == null)
         {
@@ -71,7 +70,7 @@ public partial class DataGrid
 
         var items = InternalItems;
 
-        switch (order)
+        switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
                 items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
@@ -98,7 +97,7 @@ public partial class DataGrid
 
         _internalItems = items;
 
-        _sortingOrders[sortData.Index] = order;
+        _sortingOrders[sortData.Index] = sortData.Order;
         SortedColumnIndex = sortData;
 
         _collectionView.ItemsSource = _internalItems;
