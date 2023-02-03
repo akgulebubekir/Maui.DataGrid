@@ -8,9 +8,9 @@ using System.ComponentModel;
 /// </summary>
 public sealed class DataGridColumn : BindableObject, IDefinition
 {
-    private bool? isSortable;
-    private ColumnDefinition? columnDefinition;
-    private readonly ColumnDefinition invisibleColumnDefinition = new(0);
+    private bool? _isSortable;
+    private ColumnDefinition? _columnDefinition;
+    private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
 
     public DataGridColumn()
     {
@@ -25,15 +25,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         };
     }
 
-    private readonly WeakEventManager sizeChangedEventManager = new();
+    private readonly WeakEventManager _sizeChangedEventManager = new();
 
     public event EventHandler SizeChanged
     {
-        add => sizeChangedEventManager.AddEventHandler(value);
-        remove => sizeChangedEventManager.RemoveEventHandler(value);
+        add => _sizeChangedEventManager.AddEventHandler(value);
+        remove => _sizeChangedEventManager.RemoveEventHandler(value);
     }
 
-    private void OnSizeChanged() => sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
+    private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
 
     #region Bindable Properties
 
@@ -112,13 +112,13 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         {
             if (!IsVisible)
             {
-                return invisibleColumnDefinition;
+                return _invisibleColumnDefinition;
             }
 
-            return columnDefinition;
+            return _columnDefinition;
         }
 
-        internal set => columnDefinition = value;
+        internal set => _columnDefinition = value;
     }
 
     /// <summary>
@@ -247,9 +247,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// <param name="dataGrid"></param>
     public bool IsSortable(DataGrid dataGrid)
     {
-        if (isSortable is not null)
+        if (_isSortable is not null)
         {
-            return isSortable.Value;
+            return _isSortable.Value;
         }
 
         try
@@ -259,15 +259,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
             if (columnDataType is not null)
             {
-                isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+                _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
             }
         }
         catch
         {
-            isSortable = false;
+            _isSortable = false;
         }
 
-        return isSortable ?? false;
+        return _isSortable ?? false;
     }
 
     /// <summary>
