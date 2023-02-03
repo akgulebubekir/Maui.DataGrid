@@ -43,7 +43,7 @@ public partial class DataGrid
 
     #region Sorting methods
 
-    internal void SortItems(SortData sortData)
+    private void SortItems(SortData sortData)
     {
         if (this.InternalItems == null || sortData.Index >= this.Columns.Count || !this.Columns[sortData.Index].SortingEnabled)
         {
@@ -754,7 +754,7 @@ public partial class DataGrid
         };
     }
 
-    internal void InitHeaderView()
+    private void InitHeaderView()
     {
         this.SetColumnsBindingContext();
 
