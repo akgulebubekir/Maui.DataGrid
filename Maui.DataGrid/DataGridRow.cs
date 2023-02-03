@@ -150,9 +150,19 @@ internal sealed class DataGridRow : Grid
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (this.DataGrid.SelectionEnabled && (e.CurrentSelection[^1] == this.BindingContext || this.hasSelected))
+        if (this.DataGrid.SelectionEnabled)
         {
-            this.UpdateBackgroundColor();
+            if (this.hasSelected)
+            {
+                this.UpdateBackgroundColor();
+            }
+            else if (e.CurrentSelection.Count > 0)
+            {
+                if (e.CurrentSelection[^1] == this.BindingContext)
+                {
+                    this.UpdateBackgroundColor();
+                }
+            }
         }
     }
 
