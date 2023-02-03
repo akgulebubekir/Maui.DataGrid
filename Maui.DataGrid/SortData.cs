@@ -19,7 +19,7 @@ public sealed class SortData
     {
         if (obj is SortData other)
         {
-            return other.Index == this.Index && other.Order == this.Order;
+            return other.Index == Index && other.Order == Order;
         }
 
         return false;
@@ -32,8 +32,8 @@ public sealed class SortData
 
     public SortData(int index, SortingOrder order)
     {
-        this.Index = index;
-        this.Order = order;
+        Index = index;
+        Order = order;
     }
 
     #endregion ctor

@@ -17,67 +17,67 @@ public class MainViewModel : INotifyPropertyChanged
 
     public MainViewModel()
     {
-        this.Teams = DummyDataProvider.GetTeams();
-        this.RefreshCommand = new Command(this.CmdRefresh);
+        Teams = DummyDataProvider.GetTeams();
+        RefreshCommand = new Command(CmdRefresh);
     }
 
     public List<Team> Teams
     {
-        get => this._teams;
+        get => _teams;
         set
         {
-            this._teams = value;
-            this.OnPropertyChanged(nameof(this.Teams));
+            _teams = value;
+            OnPropertyChanged(nameof(Teams));
         }
     }
 
     public bool HeaderBordersVisible
     {
-        get => this._headerBordersVisible;
+        get => _headerBordersVisible;
         set
         {
-            this._headerBordersVisible = value;
-            this.OnPropertyChanged(nameof(this.HeaderBordersVisible));
+            _headerBordersVisible = value;
+            OnPropertyChanged(nameof(HeaderBordersVisible));
         }
     }
 
     public bool TeamColumnVisible
     {
-        get => this._teamColumnVisible;
+        get => _teamColumnVisible;
         set
         {
-            this._teamColumnVisible = value;
-            this.OnPropertyChanged(nameof(this.TeamColumnVisible));
+            _teamColumnVisible = value;
+            OnPropertyChanged(nameof(TeamColumnVisible));
         }
     }
 
     public bool WinColumnVisible
     {
-        get => this._winColumnVisible;
+        get => _winColumnVisible;
         set
         {
-            this._winColumnVisible = value;
-            this.OnPropertyChanged(nameof(this.WinColumnVisible));
+            _winColumnVisible = value;
+            OnPropertyChanged(nameof(WinColumnVisible));
         }
     }
 
     public Team SelectedTeam
     {
-        get => this._selectedItem;
+        get => _selectedItem;
         set
         {
-            this._selectedItem = value;
+            _selectedItem = value;
             Debug.WriteLine("Team Selected : " + value?.Name);
         }
     }
 
     public bool IsRefreshing
     {
-        get => this._isRefreshing;
+        get => _isRefreshing;
         set
         {
-            this._isRefreshing = value;
-            this.OnPropertyChanged(nameof(this.IsRefreshing));
+            _isRefreshing = value;
+            OnPropertyChanged(nameof(IsRefreshing));
         }
     }
 
@@ -85,10 +85,10 @@ public class MainViewModel : INotifyPropertyChanged
 
     private async void CmdRefresh()
     {
-        this.IsRefreshing = true;
+        IsRefreshing = true;
         // wait 3 secs for demo
         await Task.Delay(3000);
-        this.IsRefreshing = false;
+        IsRefreshing = false;
     }
 
     #region INotifyPropertyChanged implementation

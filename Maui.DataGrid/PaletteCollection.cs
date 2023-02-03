@@ -13,9 +13,9 @@ public sealed class PaletteCollection : List<Color>, IColorProvider
     /// <returns>Color for the row</returns>
     public Color GetColor(int rowIndex, object item)
     {
-        if (this.Count > 0)
+        if (Count > 0)
         {
-            return this.ElementAt(rowIndex % this.Count);
+            return this.ElementAt(rowIndex % Count);
         }
 
         return Colors.White;

@@ -5,6 +5,6 @@ public partial class AppShell
 {
     public AppShell()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

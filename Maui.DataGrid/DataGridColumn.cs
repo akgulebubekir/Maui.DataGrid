@@ -14,9 +14,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     public DataGridColumn()
     {
-        this.HeaderLabel = new();
-        this.SortingIcon = new();
-        this.SortingIconContainer = new ContentView
+        HeaderLabel = new();
+        SortingIcon = new();
+        SortingIconContainer = new ContentView
         {
             IsVisible = false,
             Content = SortingIcon,
@@ -29,11 +29,11 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     public event EventHandler SizeChanged
     {
-        add => this.sizeChangedEventManager.AddEventHandler(value);
-        remove => this.sizeChangedEventManager.RemoveEventHandler(value);
+        add => sizeChangedEventManager.AddEventHandler(value);
+        remove => sizeChangedEventManager.RemoveEventHandler(value);
     }
 
-    private void OnSizeChanged() => this.sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
+    private void OnSizeChanged() => sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
 
     #region Bindable Properties
 
@@ -110,15 +110,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         get
         {
-            if (!this.IsVisible)
+            if (!IsVisible)
             {
-                return this.invisibleColumnDefinition;
+                return invisibleColumnDefinition;
             }
 
-            return this.columnDefinition;
+            return columnDefinition;
         }
 
-        internal set => this.columnDefinition = value;
+        internal set => columnDefinition = value;
     }
 
     /// <summary>
@@ -127,11 +127,11 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     [TypeConverter(typeof(GridLengthTypeConverter))]
     public GridLength Width
     {
-        get => (GridLength)this.GetValue(WidthProperty);
+        get => (GridLength)GetValue(WidthProperty);
         set
         {
-            this.SetValue(WidthProperty, value);
-            this.ColumnDefinition = new(value);
+            SetValue(WidthProperty, value);
+            ColumnDefinition = new(value);
         }
     }
 
@@ -140,8 +140,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public string Title
     {
-        get => (string)this.GetValue(TitleProperty);
-        set => this.SetValue(TitleProperty, value);
+        get => (string)GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
     }
 
     /// <summary>
@@ -159,8 +159,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public FormattedString FormattedTitle
     {
-        get => (string)this.GetValue(FormattedTitleProperty);
-        set => this.SetValue(FormattedTitleProperty, value);
+        get => (string)GetValue(FormattedTitleProperty);
+        set => SetValue(FormattedTitleProperty, value);
     }
 
     /// <summary>
@@ -168,8 +168,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public string PropertyName
     {
-        get => (string)this.GetValue(PropertyNameProperty);
-        set => this.SetValue(PropertyNameProperty, value);
+        get => (string)GetValue(PropertyNameProperty);
+        set => SetValue(PropertyNameProperty, value);
     }
 
     /// <summary>
@@ -177,8 +177,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public bool IsVisible
     {
-        get => (bool)this.GetValue(IsVisibleProperty);
-        set => this.SetValue(IsVisibleProperty, value);
+        get => (bool)GetValue(IsVisibleProperty);
+        set => SetValue(IsVisibleProperty, value);
     }
 
     /// <summary>
@@ -186,8 +186,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public string StringFormat
     {
-        get => (string)this.GetValue(StringFormatProperty);
-        set => this.SetValue(StringFormatProperty, value);
+        get => (string)GetValue(StringFormatProperty);
+        set => SetValue(StringFormatProperty, value);
     }
 
     /// <summary>
@@ -195,8 +195,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public DataTemplate CellTemplate
     {
-        get => (DataTemplate)this.GetValue(CellTemplateProperty);
-        set => this.SetValue(CellTemplateProperty, value);
+        get => (DataTemplate)GetValue(CellTemplateProperty);
+        set => SetValue(CellTemplateProperty, value);
     }
 
     internal Polygon SortingIcon { get; }
@@ -208,8 +208,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public LineBreakMode LineBreakMode
     {
-        get => (LineBreakMode)this.GetValue(LineBreakModeProperty);
-        set => this.SetValue(LineBreakModeProperty, value);
+        get => (LineBreakMode)GetValue(LineBreakModeProperty);
+        set => SetValue(LineBreakModeProperty, value);
     }
 
     /// <summary>
@@ -217,8 +217,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public LayoutOptions HorizontalContentAlignment
     {
-        get => (LayoutOptions)this.GetValue(HorizontalContentAlignmentProperty);
-        set => this.SetValue(HorizontalContentAlignmentProperty, value);
+        get => (LayoutOptions)GetValue(HorizontalContentAlignmentProperty);
+        set => SetValue(HorizontalContentAlignmentProperty, value);
     }
 
     /// <summary>
@@ -226,8 +226,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public LayoutOptions VerticalContentAlignment
     {
-        get => (LayoutOptions)this.GetValue(VerticalContentAlignmentProperty);
-        set => this.SetValue(VerticalContentAlignmentProperty, value);
+        get => (LayoutOptions)GetValue(VerticalContentAlignmentProperty);
+        set => SetValue(VerticalContentAlignmentProperty, value);
     }
 
     /// <summary>
@@ -236,8 +236,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public bool SortingEnabled
     {
-        get => (bool)this.GetValue(SortingEnabledProperty);
-        set => this.SetValue(SortingEnabledProperty, value);
+        get => (bool)GetValue(SortingEnabledProperty);
+        set => SetValue(SortingEnabledProperty, value);
     }
 
     /// <summary>
@@ -247,27 +247,27 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// <param name="dataGrid"></param>
     public bool IsSortable(DataGrid dataGrid)
     {
-        if (this.isSortable is not null)
+        if (isSortable is not null)
         {
-            return this.isSortable.Value;
+            return isSortable.Value;
         }
 
         try
         {
             var listItemType = dataGrid.ItemsSource.GetType().GetGenericArguments().Single();
-            var columnDataType = listItemType.GetProperty(this.PropertyName)?.PropertyType;
+            var columnDataType = listItemType.GetProperty(PropertyName)?.PropertyType;
 
             if (columnDataType is not null)
             {
-                this.isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+                isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
             }
         }
         catch
         {
-            this.isSortable = false;
+            isSortable = false;
         }
 
-        return this.isSortable ?? false;
+        return isSortable ?? false;
     }
 
     /// <summary>
@@ -275,8 +275,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public Style HeaderLabelStyle
     {
-        get => (Style)this.GetValue(HeaderLabelStyleProperty);
-        set => this.SetValue(HeaderLabelStyleProperty, value);
+        get => (Style)GetValue(HeaderLabelStyleProperty);
+        set => SetValue(HeaderLabelStyleProperty, value);
     }
 
     #endregion properties
