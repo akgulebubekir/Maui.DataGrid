@@ -10,17 +10,17 @@
     <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
         <FlexLayout BackgroundColor="Black" Wrap="Wrap">
-            <HorizontalStackLayout HeightRequest="50">
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
                 <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding HeaderBordersVisible}" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout HeightRequest="50">
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding TeamColumnVisible}"  />
                 <Label Text="Team Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding TeamColumnVisible}" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout HeightRequest="50">
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding WinColumnVisible}" />
                 <Label Text="Win Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding WinColumnVisible}" />
             </HorizontalStackLayout>
         </FlexLayout>
 
