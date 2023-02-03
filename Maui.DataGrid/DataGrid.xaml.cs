@@ -1,4 +1,5 @@
 namespace Maui.DataGrid;
+
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Input;
@@ -717,7 +718,7 @@ public partial class DataGrid
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
 
-        if (IsSortable && column.IsSortable(this) && column.SortingEnabled)
+        if (IsSortable && column.SortingEnabled && column.IsSortable(this))
         {
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
