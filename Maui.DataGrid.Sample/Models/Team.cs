@@ -20,10 +20,10 @@ public class Streak : IComparable
     public Result Result { get; set; }
     public int NumStreak { get; set; }
 
-    public int CompareTo(object other)
+    public int CompareTo(object obj)
     {
         var score = this.Result == Result.Win ? this.NumStreak : -this.NumStreak;
-        if (other is Streak s)
+        if (obj is Streak s)
         {
             var otherScore = s.Result == Result.Win ? s.NumStreak : -s.NumStreak;
             return score - otherScore;
