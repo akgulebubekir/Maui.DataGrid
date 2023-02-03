@@ -39,5 +39,5 @@ public class Streak : IComparable
 public enum Result
 {
     Loose = 0,
-    Win
+    Win = 1
 }
