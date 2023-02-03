@@ -39,8 +39,8 @@
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" />
-                <dg:DataGridColumn Title="Won" PropertyName="Won" IsVisible="{Binding WonColumnVisible}" />
-                <dg:DataGridColumn Title="Lost" PropertyName="Lost" />
+                <dg:DataGridColumn Title="Won" PropertyName="Won" Width="0.5*" IsVisible="{Binding WonColumnVisible}" />
+                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*" />
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
                         <FormattedString>
@@ -49,8 +49,8 @@
                         </FormattedString>
                     </dg:DataGridColumn.FormattedTitle>
                 </dg:DataGridColumn>
-                <dg:DataGridColumn Title="Win %" PropertyName="Percentage" StringFormat="{}{0:0.00}" />
-                <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.5*">
+                <dg:DataGridColumn Title="Win %" PropertyName="Percentage" Width="0.75*" StringFormat="{}{0:0.00}" />
+                <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.75*">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
                             <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
