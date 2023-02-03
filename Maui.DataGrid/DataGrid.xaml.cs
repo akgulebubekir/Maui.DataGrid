@@ -1,4 +1,5 @@
 namespace Maui.DataGrid;
+
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Input;
@@ -51,7 +52,6 @@ public partial class DataGrid
         }
 
         var column = Columns[sortData.Index];
-        var order = sortData.Order;
 
         if (column.PropertyName == null)
         {
@@ -70,7 +70,7 @@ public partial class DataGrid
 
         var items = InternalItems;
 
-        switch (order)
+        switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
                 items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
@@ -97,7 +97,7 @@ public partial class DataGrid
 
         _internalItems = items;
 
-        _sortingOrders[sortData.Index] = order;
+        _sortingOrders[sortData.Index] = sortData.Order;
         SortedColumnIndex = sortData;
 
         _collectionView.ItemsSource = _internalItems;
@@ -717,7 +717,7 @@ public partial class DataGrid
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
                                    HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
 
-        if (IsSortable && column.IsSortable(this) && column.SortingEnabled)
+        if (IsSortable && column.SortingEnabled && column.IsSortable(this))
         {
             column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
