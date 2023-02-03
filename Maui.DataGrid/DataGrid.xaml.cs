@@ -12,22 +12,22 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
-    private readonly Dictionary<int, SortingOrder> sortingOrders;
+    private readonly Dictionary<int, SortingOrder> _sortingOrders;
 
-    private readonly WeakEventManager itemSelectedEventManager = new();
+    private readonly WeakEventManager _itemSelectedEventManager = new();
 
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
     {
-        add => this.itemSelectedEventManager.AddEventHandler(value);
-        remove => this.itemSelectedEventManager.RemoveEventHandler(value);
+        add => this._itemSelectedEventManager.AddEventHandler(value);
+        remove => this._itemSelectedEventManager.RemoveEventHandler(value);
     }
 
-    private readonly WeakEventManager refreshingEventManager = new();
+    private readonly WeakEventManager _refreshingEventManager = new();
 
     public event EventHandler Refreshing
     {
-        add => this.refreshingEventManager.AddEventHandler(value);
-        remove => this.refreshingEventManager.RemoveEventHandler(value);
+        add => this._refreshingEventManager.AddEventHandler(value);
+        remove => this._refreshingEventManager.RemoveEventHandler(value);
     }
 
     #region ctor
@@ -36,7 +36,7 @@ public partial class DataGrid
     {
         this.InitializeComponent();
 
-        this.sortingOrders = new();
+        this._sortingOrders = new();
     }
 
     #endregion ctor
@@ -86,7 +86,7 @@ public partial class DataGrid
         {
             if (i != sortData.Index)
             {
-                this.sortingOrders[i] = SortingOrder.None;
+                this._sortingOrders[i] = SortingOrder.None;
                 this.Columns[i].SortingIconContainer.IsVisible = false;
             }
             else
@@ -95,12 +95,12 @@ public partial class DataGrid
             }
         }
 
-        this.internalItems = items;
+        this._internalItems = items;
 
-        this.sortingOrders[sortData.Index] = order;
+        this._sortingOrders[sortData.Index] = order;
         this.SortedColumnIndex = sortData;
 
-        this._collectionView.ItemsSource = this.internalItems;
+        this._collectionView.ItemsSource = this._internalItems;
     }
 
     #endregion Sorting methods
@@ -447,14 +447,14 @@ public partial class DataGrid
         set => this.SetValue(ItemsSourceProperty, value);
     }
 
-    private IList<object>? internalItems;
+    private IList<object>? _internalItems;
 
     internal IList<object>? InternalItems
     {
-        get => this.internalItems;
+        get => this._internalItems;
         set
         {
-            this.internalItems = value;
+            this._internalItems = value;
 
             if (this.IsSortable && this.SortedColumnIndex != null)
             {
@@ -462,7 +462,7 @@ public partial class DataGrid
             }
             else
             {
-                this._collectionView.ItemsSource = this.internalItems;
+                this._collectionView.ItemsSource = this._internalItems;
             }
         }
     }
@@ -677,20 +677,20 @@ public partial class DataGrid
         this.InitHeaderView();
     }
 
-    private void OnRefreshing(object? sender, EventArgs e) => this.refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
+    private void OnRefreshing(object? sender, EventArgs e) => this._refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         this.SelectedItem = this._collectionView.SelectedItem;
 
-        this.itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
+        this._itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
     }
 
     internal void Reload()
     {
-        if (this.internalItems is not null)
+        if (this._internalItems is not null)
         {
-            this.InternalItems = new List<object>(this.internalItems);
+            this.InternalItems = new List<object>(this._internalItems);
         }
         this.RefreshHeaderColumnWidths();
     }
@@ -736,7 +736,7 @@ public partial class DataGrid
                     {
                         Command = new Command(() =>
                         {
-                            var order = this.sortingOrders[index] == SortingOrder.Ascendant
+                            var order = this._sortingOrders[index] == SortingOrder.Ascendant
                                 ? SortingOrder.Descendant
                                 : SortingOrder.Ascendant;
 
@@ -762,7 +762,7 @@ public partial class DataGrid
 
         this._headerView.Children.Clear();
         this._headerView.ColumnDefinitions.Clear();
-        this.sortingOrders.Clear();
+        this._sortingOrders.Clear();
 
         this._headerView.Padding = new(this.BorderThickness.Left, this.BorderThickness.Top, this.BorderThickness.Right, 0);
         this._headerView.ColumnSpacing = this.BorderThickness.HorizontalThickness;
@@ -787,7 +787,7 @@ public partial class DataGrid
                 Grid.SetColumn(cell, i);
                 this._headerView.Children.Add(cell);
 
-                this.sortingOrders.Add(i, SortingOrder.None);
+                this._sortingOrders.Add(i, SortingOrder.None);
             }
         }
     }

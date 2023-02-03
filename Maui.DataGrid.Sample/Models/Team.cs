@@ -33,7 +33,10 @@ public class Streak : IComparable
     }
 
     /// <inheritdoc/>
-    public override string ToString() => $"{Enum.GetName(typeof(Result), this.Result)} {this.NumStreak}";
+    public override string ToString()
+    {
+        return $"{Enum.GetName(typeof(Result), this.Result)} {this.NumStreak}";
+    }
 }
 
 public enum Result

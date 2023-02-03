@@ -7,9 +7,9 @@ internal sealed class DataGridRow : Grid
 {
     #region Fields
 
-    private Color? bgColor;
-    private Color? textColor;
-    private bool hasSelected;
+    private Color? _bgColor;
+    private Color? _textColor;
+    private bool _hasSelected;
 
     #endregion Fields
 
@@ -67,8 +67,8 @@ internal sealed class DataGridRow : Grid
             {
                 cell = new Label
                 {
-                    TextColor = textColor,
-                    BackgroundColor = bgColor,
+                    TextColor = _textColor,
+                    BackgroundColor = _bgColor,
                     VerticalOptions = LayoutOptions.Fill,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
@@ -95,17 +95,17 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateBackgroundColor()
     {
-        this.hasSelected = this.DataGrid?.SelectedItem == this.BindingContext;
+        this._hasSelected = this.DataGrid?.SelectedItem == this.BindingContext;
         var actualIndex = this.DataGrid?.InternalItems?.IndexOf(this.BindingContext) ?? -1;
         if (actualIndex > -1)
         {
-            this.bgColor =
+            this._bgColor =
                 this.DataGrid?.SelectionEnabled == true && this.DataGrid.SelectedItem != null && this.DataGrid.SelectedItem == this.BindingContext
                     ? this.DataGrid.ActiveRowColor
                     : this.DataGrid?.RowsBackgroundColorPalette.GetColor(actualIndex, this.BindingContext);
-            this.textColor = this.DataGrid?.RowsTextColorPalette.GetColor(actualIndex, this.BindingContext);
+            this._textColor = this.DataGrid?.RowsTextColorPalette.GetColor(actualIndex, this.BindingContext);
 
-            this.ChangeColor(this.bgColor, this.textColor);
+            this.ChangeColor(this._bgColor, this._textColor);
         }
     }
 
@@ -154,7 +154,7 @@ internal sealed class DataGridRow : Grid
     {
         if (this.DataGrid.SelectionEnabled)
         {
-            if (this.hasSelected)
+            if (this._hasSelected)
             {
                 this.UpdateBackgroundColor();
             }

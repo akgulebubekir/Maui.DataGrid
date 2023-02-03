@@ -8,12 +8,12 @@ using Maui.DataGrid.Sample.Utils;
 
 public class MainViewModel : INotifyPropertyChanged
 {
-    private List<Team> teams;
-    private Team selectedItem;
-    private bool isRefreshing;
-    private bool teamColumnVisible = true;
-    private bool winColumnVisible = true;
-    private bool headerBordersVisible = true;
+    private List<Team> _teams;
+    private Team _selectedItem;
+    private bool _isRefreshing;
+    private bool _teamColumnVisible = true;
+    private bool _winColumnVisible = true;
+    private bool _headerBordersVisible = true;
 
     public MainViewModel()
     {
@@ -23,60 +23,60 @@ public class MainViewModel : INotifyPropertyChanged
 
     public List<Team> Teams
     {
-        get => this.teams;
+        get => this._teams;
         set
         {
-            this.teams = value;
+            this._teams = value;
             this.OnPropertyChanged(nameof(this.Teams));
         }
     }
 
     public bool HeaderBordersVisible
     {
-        get => this.headerBordersVisible;
+        get => this._headerBordersVisible;
         set
         {
-            this.headerBordersVisible = value;
+            this._headerBordersVisible = value;
             this.OnPropertyChanged(nameof(this.HeaderBordersVisible));
         }
     }
 
     public bool TeamColumnVisible
     {
-        get => this.teamColumnVisible;
+        get => this._teamColumnVisible;
         set
         {
-            this.teamColumnVisible = value;
+            this._teamColumnVisible = value;
             this.OnPropertyChanged(nameof(this.TeamColumnVisible));
         }
     }
 
     public bool WinColumnVisible
     {
-        get => this.winColumnVisible;
+        get => this._winColumnVisible;
         set
         {
-            this.winColumnVisible = value;
+            this._winColumnVisible = value;
             this.OnPropertyChanged(nameof(this.WinColumnVisible));
         }
     }
 
     public Team SelectedTeam
     {
-        get => this.selectedItem;
+        get => this._selectedItem;
         set
         {
-            this.selectedItem = value;
+            this._selectedItem = value;
             Debug.WriteLine("Team Selected : " + value?.Name);
         }
     }
 
     public bool IsRefreshing
     {
-        get => this.isRefreshing;
+        get => this._isRefreshing;
         set
         {
-            this.isRefreshing = value;
+            this._isRefreshing = value;
             this.OnPropertyChanged(nameof(this.IsRefreshing));
         }
     }
