@@ -7,6 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maui.DataGrid.Sample", "Mau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maui.DataGrid", "Maui.DataGrid\Maui.DataGrid.csproj", "{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root Files", "Root Files", "{175C8F2C-B5A2-4AAE-A858-2D4A1E8F073E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		Maui.DataGrid.Sample.sln.DotSettings = Maui.DataGrid.Sample.sln.DotSettings
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

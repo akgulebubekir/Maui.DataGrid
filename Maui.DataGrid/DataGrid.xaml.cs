@@ -12,31 +12,31 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
-    private readonly Dictionary<int, SortingOrder> sortingOrders;
+    private readonly Dictionary<int, SortingOrder> _sortingOrders;
 
-    private readonly WeakEventManager itemSelectedEventManager = new();
+    private readonly WeakEventManager _itemSelectedEventManager = new();
 
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
     {
-        add => this.itemSelectedEventManager.AddEventHandler(value);
-        remove => this.itemSelectedEventManager.RemoveEventHandler(value);
+        add => _itemSelectedEventManager.AddEventHandler(value);
+        remove => _itemSelectedEventManager.RemoveEventHandler(value);
     }
 
-    private readonly WeakEventManager refreshingEventManager = new();
+    private readonly WeakEventManager _refreshingEventManager = new();
 
     public event EventHandler Refreshing
     {
-        add => this.refreshingEventManager.AddEventHandler(value);
-        remove => this.refreshingEventManager.RemoveEventHandler(value);
+        add => _refreshingEventManager.AddEventHandler(value);
+        remove => _refreshingEventManager.RemoveEventHandler(value);
     }
 
     #region ctor
 
     public DataGrid()
     {
-        this.InitializeComponent();
+        InitializeComponent();
 
-        this.sortingOrders = new();
+        _sortingOrders = new();
     }
 
     #endregion ctor
@@ -45,12 +45,12 @@ public partial class DataGrid
 
     private void SortItems(SortData sortData)
     {
-        if (this.InternalItems == null || sortData.Index >= this.Columns.Count || !this.Columns[sortData.Index].SortingEnabled)
+        if (InternalItems == null || sortData.Index >= Columns.Count || !Columns[sortData.Index].SortingEnabled)
         {
             return;
         }
 
-        var column = this.Columns[sortData.Index];
+        var column = Columns[sortData.Index];
         var order = sortData.Order;
 
         if (column.PropertyName == null)
@@ -63,12 +63,12 @@ public partial class DataGrid
             throw new InvalidOperationException($"{column.PropertyName} column is not sortable");
         }
 
-        if (!this.IsSortable)
+        if (!IsSortable)
         {
             throw new InvalidOperationException("DataGrid is not sortable");
         }
 
-        var items = this.InternalItems;
+        var items = InternalItems;
 
         switch (order)
         {
@@ -82,25 +82,25 @@ public partial class DataGrid
                 break;
         }
 
-        for (var i = 0; i < this.Columns.Count; i++)
+        for (var i = 0; i < Columns.Count; i++)
         {
             if (i != sortData.Index)
             {
-                this.sortingOrders[i] = SortingOrder.None;
-                this.Columns[i].SortingIconContainer.IsVisible = false;
+                _sortingOrders[i] = SortingOrder.None;
+                Columns[i].SortingIconContainer.IsVisible = false;
             }
             else
             {
-                this.Columns[i].SortingIconContainer.IsVisible = true;
+                Columns[i].SortingIconContainer.IsVisible = true;
             }
         }
 
-        this.internalItems = items;
+        _internalItems = items;
 
-        this.sortingOrders[sortData.Index] = order;
-        this.SortedColumnIndex = sortData;
+        _sortingOrders[sortData.Index] = order;
+        SortedColumnIndex = sortData;
 
-        this._collectionView.ItemsSource = this.internalItems;
+        _collectionView.ItemsSource = _internalItems;
     }
 
     #endregion Sorting methods
@@ -113,7 +113,7 @@ public partial class DataGrid
     /// <param name="item">Item to scroll</param>
     /// <param name="position">Position of the row in screen</param>
     /// <param name="animated">animated</param>
-    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => this._collectionView.ScrollTo(item, position: position, animate: animated);
+    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => _collectionView.ScrollTo(item, position: position, animate: animated);
 
     #endregion Methods
 
@@ -225,10 +225,10 @@ public partial class DataGrid
     {
         if (sender is IEnumerable items)
         {
-            this.InternalItems = new List<object>(items.Cast<object>());
-            if (this.SelectedItem != null && !this.InternalItems.Contains(this.SelectedItem))
+            InternalItems = new List<object>(items.Cast<object>());
+            if (SelectedItem != null && !InternalItems.Contains(SelectedItem))
             {
-                this.SelectedItem = null;
+                SelectedItem = null;
             }
         }
     }
@@ -396,8 +396,8 @@ public partial class DataGrid
     /// </summary>
     public Color ActiveRowColor
     {
-        get => (Color)this.GetValue(ActiveRowColorProperty);
-        set => this.SetValue(ActiveRowColorProperty, value);
+        get => (Color)GetValue(ActiveRowColorProperty);
+        set => SetValue(ActiveRowColorProperty, value);
     }
 
     /// <summary>
@@ -406,8 +406,8 @@ public partial class DataGrid
     /// </summary>
     public Color HeaderBackground
     {
-        get => (Color)this.GetValue(HeaderBackgroundProperty);
-        set => this.SetValue(HeaderBackgroundProperty, value);
+        get => (Color)GetValue(HeaderBackgroundProperty);
+        set => SetValue(HeaderBackgroundProperty, value);
     }
 
     /// <summary>
@@ -416,8 +416,8 @@ public partial class DataGrid
     /// </summary>
     public Color BorderColor
     {
-        get => (Color)this.GetValue(BorderColorProperty);
-        set => this.SetValue(BorderColorProperty, value);
+        get => (Color)GetValue(BorderColorProperty);
+        set => SetValue(BorderColorProperty, value);
     }
 
     /// <summary>
@@ -425,8 +425,8 @@ public partial class DataGrid
     /// </summary>
     public IColorProvider RowsBackgroundColorPalette
     {
-        get => (IColorProvider)this.GetValue(RowsBackgroundColorPaletteProperty);
-        set => this.SetValue(RowsBackgroundColorPaletteProperty, value);
+        get => (IColorProvider)GetValue(RowsBackgroundColorPaletteProperty);
+        set => SetValue(RowsBackgroundColorPaletteProperty, value);
     }
 
     /// <summary>
@@ -434,8 +434,8 @@ public partial class DataGrid
     /// </summary>
     public IColorProvider RowsTextColorPalette
     {
-        get => (IColorProvider)this.GetValue(RowsTextColorPaletteProperty);
-        set => this.SetValue(RowsTextColorPaletteProperty, value);
+        get => (IColorProvider)GetValue(RowsTextColorPaletteProperty);
+        set => SetValue(RowsTextColorPaletteProperty, value);
     }
 
     /// <summary>
@@ -443,26 +443,26 @@ public partial class DataGrid
     /// </summary>
     public IEnumerable ItemsSource
     {
-        get => (IEnumerable)this.GetValue(ItemsSourceProperty);
-        set => this.SetValue(ItemsSourceProperty, value);
+        get => (IEnumerable)GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
     }
 
-    private IList<object>? internalItems;
+    private IList<object>? _internalItems;
 
     internal IList<object>? InternalItems
     {
-        get => this.internalItems;
+        get => _internalItems;
         set
         {
-            this.internalItems = value;
+            _internalItems = value;
 
-            if (this.IsSortable && this.SortedColumnIndex != null)
+            if (IsSortable && SortedColumnIndex != null)
             {
-                this.SortItems(this.SortedColumnIndex);
+                SortItems(SortedColumnIndex);
             }
             else
             {
-                this._collectionView.ItemsSource = this.internalItems;
+                _collectionView.ItemsSource = _internalItems;
             }
         }
     }
@@ -472,8 +472,8 @@ public partial class DataGrid
     /// </summary>
     public List<DataGridColumn> Columns
     {
-        get => (List<DataGridColumn>)this.GetValue(ColumnsProperty);
-        set => this.SetValue(ColumnsProperty, value);
+        get => (List<DataGridColumn>)GetValue(ColumnsProperty);
+        set => SetValue(ColumnsProperty, value);
     }
 
     /// <summary>
@@ -482,8 +482,8 @@ public partial class DataGrid
     /// </summary>
     public double FontSize
     {
-        get => (double)this.GetValue(FontSizeProperty);
-        set => this.SetValue(FontSizeProperty, value);
+        get => (double)GetValue(FontSizeProperty);
+        set => SetValue(FontSizeProperty, value);
     }
 
     /// <summary>
@@ -492,8 +492,8 @@ public partial class DataGrid
     /// </summary>
     public string FontFamily
     {
-        get => (string)this.GetValue(FontFamilyProperty);
-        set => this.SetValue(FontFamilyProperty, value);
+        get => (string)GetValue(FontFamilyProperty);
+        set => SetValue(FontFamilyProperty, value);
     }
 
     /// <summary>
@@ -501,8 +501,8 @@ public partial class DataGrid
     /// </summary>
     public int RowHeight
     {
-        get => (int)this.GetValue(RowHeightProperty);
-        set => this.SetValue(RowHeightProperty, value);
+        get => (int)GetValue(RowHeightProperty);
+        set => SetValue(RowHeightProperty, value);
     }
 
     /// <summary>
@@ -510,8 +510,8 @@ public partial class DataGrid
     /// </summary>
     public int HeaderHeight
     {
-        get => (int)this.GetValue(HeaderHeightProperty);
-        set => this.SetValue(HeaderHeightProperty, value);
+        get => (int)GetValue(HeaderHeightProperty);
+        set => SetValue(HeaderHeightProperty, value);
     }
 
     /// <summary>
@@ -521,8 +521,8 @@ public partial class DataGrid
     /// </summary>
     public bool IsSortable
     {
-        get => (bool)this.GetValue(IsSortableProperty);
-        set => this.SetValue(IsSortableProperty, value);
+        get => (bool)GetValue(IsSortableProperty);
+        set => SetValue(IsSortableProperty, value);
     }
 
     /// <summary>
@@ -530,8 +530,8 @@ public partial class DataGrid
     /// </summary>
     public bool SelectionEnabled
     {
-        get => (bool)this.GetValue(SelectionEnabledProperty);
-        set => this.SetValue(SelectionEnabledProperty, value);
+        get => (bool)GetValue(SelectionEnabledProperty);
+        set => SetValue(SelectionEnabledProperty, value);
     }
 
     /// <summary>
@@ -539,8 +539,8 @@ public partial class DataGrid
     /// </summary>
     public object? SelectedItem
     {
-        get => this.GetValue(SelectedItemProperty);
-        set => this.SetValue(SelectedItemProperty, value);
+        get => GetValue(SelectedItemProperty);
+        set => SetValue(SelectedItemProperty, value);
     }
 
     /// <summary>
@@ -548,8 +548,8 @@ public partial class DataGrid
     /// </summary>
     public ICommand PullToRefreshCommand
     {
-        get => (ICommand)this.GetValue(PullToRefreshCommandProperty);
-        set => this.SetValue(PullToRefreshCommandProperty, value);
+        get => (ICommand)GetValue(PullToRefreshCommandProperty);
+        set => SetValue(PullToRefreshCommandProperty, value);
     }
 
     /// <summary>
@@ -557,8 +557,8 @@ public partial class DataGrid
     /// </summary>
     public bool IsRefreshing
     {
-        get => (bool)this.GetValue(IsRefreshingProperty);
-        set => this.SetValue(IsRefreshingProperty, value);
+        get => (bool)GetValue(IsRefreshingProperty);
+        set => SetValue(IsRefreshingProperty, value);
     }
 
     /// <summary>
@@ -566,8 +566,8 @@ public partial class DataGrid
     /// </summary>
     public bool RefreshingEnabled
     {
-        get => (bool)this.GetValue(RefreshingEnabledProperty);
-        set => this.SetValue(RefreshingEnabledProperty, value);
+        get => (bool)GetValue(RefreshingEnabledProperty);
+        set => SetValue(RefreshingEnabledProperty, value);
     }
 
     /// <summary>
@@ -575,8 +575,8 @@ public partial class DataGrid
     /// </summary>
     public Thickness BorderThickness
     {
-        get => (Thickness)this.GetValue(BorderThicknessProperty);
-        set => this.SetValue(BorderThicknessProperty, value);
+        get => (Thickness)GetValue(BorderThicknessProperty);
+        set => SetValue(BorderThicknessProperty, value);
     }
 
     /// <summary>
@@ -585,8 +585,8 @@ public partial class DataGrid
     /// </summary>
     public bool HeaderBordersVisible
     {
-        get => (bool)this.GetValue(HeaderBordersVisibleProperty);
-        set => this.SetValue(HeaderBordersVisibleProperty, value);
+        get => (bool)GetValue(HeaderBordersVisibleProperty);
+        set => SetValue(HeaderBordersVisibleProperty, value);
     }
 
     /// <summary>
@@ -594,8 +594,8 @@ public partial class DataGrid
     /// </summary>
     public SortData SortedColumnIndex
     {
-        get => (SortData)this.GetValue(SortedColumnIndexProperty);
-        set => this.SetValue(SortedColumnIndexProperty, value);
+        get => (SortData)GetValue(SortedColumnIndexProperty);
+        set => SetValue(SortedColumnIndexProperty, value);
     }
 
     /// <summary>
@@ -604,8 +604,8 @@ public partial class DataGrid
     /// </summary>
     public Style HeaderLabelStyle
     {
-        get => (Style)this.GetValue(HeaderLabelStyleProperty);
-        set => this.SetValue(HeaderLabelStyleProperty, value);
+        get => (Style)GetValue(HeaderLabelStyleProperty);
+        set => SetValue(HeaderLabelStyleProperty, value);
     }
 
     /// <summary>
@@ -613,8 +613,8 @@ public partial class DataGrid
     /// </summary>
     public Polygon SortIcon
     {
-        get => (Polygon)this.GetValue(SortIconProperty);
-        set => this.SetValue(SortIconProperty, value);
+        get => (Polygon)GetValue(SortIconProperty);
+        set => SetValue(SortIconProperty, value);
     }
 
     /// <summary>
@@ -623,8 +623,8 @@ public partial class DataGrid
     /// </summary>
     public Style SortIconStyle
     {
-        get => (Style)this.GetValue(SortIconStyleProperty);
-        set => this.SetValue(SortIconStyleProperty, value);
+        get => (Style)GetValue(SortIconStyleProperty);
+        set => SetValue(SortIconStyleProperty, value);
     }
 
     /// <summary>
@@ -632,8 +632,8 @@ public partial class DataGrid
     /// </summary>
     public View NoDataView
     {
-        get => (View)this.GetValue(NoDataViewProperty);
-        set => this.SetValue(NoDataViewProperty, value);
+        get => (View)GetValue(NoDataViewProperty);
+        set => SetValue(NoDataViewProperty, value);
     }
 
     #endregion Properties
@@ -645,27 +645,27 @@ public partial class DataGrid
     {
         base.OnParentSet();
 
-        if (this.SelectionEnabled)
+        if (SelectionEnabled)
         {
-            if (this.Parent is null)
+            if (Parent is null)
             {
-                this._collectionView.SelectionChanged -= this.OnSelectionChanged;
+                _collectionView.SelectionChanged -= OnSelectionChanged;
             }
             else
             {
-                this._collectionView.SelectionChanged += this.OnSelectionChanged;
+                _collectionView.SelectionChanged += OnSelectionChanged;
             }
         }
 
-        if (this.RefreshingEnabled)
+        if (RefreshingEnabled)
         {
-            if (this.Parent is null)
+            if (Parent is null)
             {
-                this._refreshView.Refreshing -= this.OnRefreshing;
+                _refreshView.Refreshing -= OnRefreshing;
             }
             else
             {
-                this._refreshView.Refreshing += this.OnRefreshing;
+                _refreshView.Refreshing += OnRefreshing;
             }
         }
     }
@@ -674,34 +674,34 @@ public partial class DataGrid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        this.InitHeaderView();
+        InitHeaderView();
     }
 
-    private void OnRefreshing(object? sender, EventArgs e) => this.refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
+    private void OnRefreshing(object? sender, EventArgs e) => _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        this.SelectedItem = this._collectionView.SelectedItem;
+        SelectedItem = _collectionView.SelectedItem;
 
-        this.itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
+        _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
     }
 
     internal void Reload()
     {
-        if (this.internalItems is not null)
+        if (_internalItems is not null)
         {
-            this.InternalItems = new List<object>(this.internalItems);
+            InternalItems = new List<object>(_internalItems);
         }
-        this.RefreshHeaderColumnWidths();
+        RefreshHeaderColumnWidths();
     }
 
     private void RefreshHeaderColumnWidths()
     {
-        for (var i = 0; i < this.Columns.Count; i++)
+        for (var i = 0; i < Columns.Count; i++)
         {
-            var column = this.Columns[i];
+            var column = Columns[i];
 
-            this._headerView.ColumnDefinitions[i] = column.ColumnDefinition;
+            _headerView.ColumnDefinitions[i] = column.ColumnDefinition;
         }
     }
 
@@ -712,13 +712,13 @@ public partial class DataGrid
     private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
-                                   this.HeaderLabelStyle ?? (Style)this._headerView.Resources["HeaderDefaultStyle"];
+                                   HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
 
-        if (this.IsSortable && column.IsSortable(this) && column.SortingEnabled)
+        if (IsSortable && column.IsSortable(this) && column.SortingEnabled)
         {
-            column.SortingIcon.Style = this.SortIconStyle ?? (Style)this._headerView.Resources["SortIconStyle"];
-            column.SortingIconContainer.HeightRequest = this.HeaderHeight * 0.3;
-            column.SortingIconContainer.WidthRequest = this.HeaderHeight * 0.3;
+            column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
+            column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
+            column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
 
             var grid = new Grid
             {
@@ -736,11 +736,11 @@ public partial class DataGrid
                     {
                         Command = new Command(() =>
                         {
-                            var order = this.sortingOrders[index] == SortingOrder.Ascendant
+                            var order = _sortingOrders[index] == SortingOrder.Ascendant
                                 ? SortingOrder.Descendant
                                 : SortingOrder.Ascendant;
 
-                            this.SortedColumnIndex = new(index, order);
+                            SortedColumnIndex = new(index, order);
                         }, () => column.SortingEnabled)
                     }
                 }
@@ -758,47 +758,47 @@ public partial class DataGrid
 
     private void InitHeaderView()
     {
-        this.SetColumnsBindingContext();
+        SetColumnsBindingContext();
 
-        this._headerView.Children.Clear();
-        this._headerView.ColumnDefinitions.Clear();
-        this.sortingOrders.Clear();
+        _headerView.Children.Clear();
+        _headerView.ColumnDefinitions.Clear();
+        _sortingOrders.Clear();
 
-        this._headerView.Padding = new(this.BorderThickness.Left, this.BorderThickness.Top, this.BorderThickness.Right, 0);
-        this._headerView.ColumnSpacing = this.BorderThickness.HorizontalThickness;
+        _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
+        _headerView.ColumnSpacing = BorderThickness.HorizontalThickness;
 
-        if (this.Columns != null)
+        if (Columns != null)
         {
-            for (var i = 0; i < this.Columns.Count; i++)
+            for (var i = 0; i < Columns.Count; i++)
             {
-                var col = this.Columns[i];
+                var col = Columns[i];
 
                 col.ColumnDefinition ??= new(col.Width);
 
-                this._headerView.ColumnDefinitions.Add(col.ColumnDefinition);
+                _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
-                var cell = this.GetHeaderViewForColumn(col, i);
+                var cell = GetHeaderViewForColumn(col, i);
 
-                cell.SetBinding(BackgroundColorProperty, new Binding(nameof(this.HeaderBackground), source: this));
+                cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
 
                 cell.SetBinding(IsVisibleProperty,
                     new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
                 Grid.SetColumn(cell, i);
-                this._headerView.Children.Add(cell);
+                _headerView.Children.Add(cell);
 
-                this.sortingOrders.Add(i, SortingOrder.None);
+                _sortingOrders.Add(i, SortingOrder.None);
             }
         }
     }
 
     private void SetColumnsBindingContext()
     {
-        if (this.Columns != null)
+        if (Columns != null)
         {
-            foreach (var c in this.Columns)
+            foreach (var c in Columns)
             {
-                c.BindingContext = this.BindingContext;
+                c.BindingContext = BindingContext;
             }
         }
     }
