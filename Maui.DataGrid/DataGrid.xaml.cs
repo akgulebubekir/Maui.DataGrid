@@ -43,7 +43,7 @@ public partial class DataGrid
 
     #region Sorting methods
 
-    internal void SortItems(SortData sortData)
+    private void SortItems(SortData sortData)
     {
         if (this.InternalItems == null || sortData.Index >= this.Columns.Count || !this.Columns[sortData.Index].SortingEnabled)
         {
@@ -640,6 +640,7 @@ public partial class DataGrid
 
     #region UI Methods
 
+    /// <inheritdoc/>
     protected override void OnParentSet()
     {
         base.OnParentSet();
@@ -669,6 +670,7 @@ public partial class DataGrid
         }
     }
 
+    /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
@@ -754,7 +756,7 @@ public partial class DataGrid
         };
     }
 
-    internal void InitHeaderView()
+    private void InitHeaderView()
     {
         this.SetColumnsBindingContext();
 

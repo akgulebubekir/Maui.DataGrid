@@ -6,7 +6,8 @@ using Microsoft.Maui.Hosting;
 
 class Program : MauiApplication
 {
-	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+    /// <inheritdoc/>
+    protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 
 	static void Main(string[] args)
 	{
