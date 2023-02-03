@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,20 +9,20 @@
              x:Class="Maui.DataGrid.Sample.MainPage">
     <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
-        <HorizontalStackLayout BackgroundColor="Black">
-            <HorizontalStackLayout>
+        <FlexLayout BackgroundColor="Black" Wrap="Wrap">
+            <HorizontalStackLayout HeightRequest="50">
                 <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
                 <Switch IsToggled="{Binding HeaderBordersVisible}" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50">
                 <Label Text="Team Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
                 <Switch IsToggled="{Binding TeamColumnVisible}" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50">
                 <Label Text="Win Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
                 <Switch IsToggled="{Binding WinColumnVisible}" />
             </HorizontalStackLayout>
-        </HorizontalStackLayout>
+        </FlexLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
