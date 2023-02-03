@@ -19,8 +19,8 @@
                 <Label Text="Team Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
-                <CheckBox IsChecked="{Binding WinColumnVisible}" />
-                <Label Text="Win Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <CheckBox IsChecked="{Binding WonColumnVisible}" />
+                <Label Text="Won Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
         </FlexLayout>
 
@@ -39,13 +39,13 @@
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" />
-                <dg:DataGridColumn Title="Win" PropertyName="Win" IsVisible="{Binding WinColumnVisible}" />
-                <dg:DataGridColumn Title="Loose" PropertyName="Loose" />
+                <dg:DataGridColumn Title="Won" PropertyName="Won" IsVisible="{Binding WonColumnVisible}" />
+                <dg:DataGridColumn Title="Lost" PropertyName="Lost" />
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
                         <FormattedString>
                             <Span Text="Home" TextColor="Black" FontSize="13" FontAttributes="Bold" />
-                            <Span Text=" (win-loose)" TextColor="#333333" FontSize="11" />
+                            <Span Text=" (won-lost)" TextColor="#333333" FontSize="11" />
                         </FormattedString>
                     </dg:DataGridColumn.FormattedTitle>
                 </dg:DataGridColumn>

@@ -151,7 +151,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     ///  &lt;DataGridColumn.FormattedTitle &gt;
     ///     &lt;FormattedString &gt;
     ///       &lt;Span Text = "Home" TextColor="Black" FontSize="13" FontAttributes="Bold" / &gt;
-    ///       &lt;Span Text = " (win-loose)" TextColor="#333333" FontSize="11" / &gt;
+    ///       &lt;Span Text = " (won-lost)" TextColor="#333333" FontSize="11" / &gt;
     ///     &lt;/FormattedString &gt;
     ///  &lt;/DataGridColumn.FormattedTitle &gt;
     /// </code>
