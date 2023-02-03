@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 using System.ComponentModel;
 using System.Globalization;
@@ -8,6 +8,7 @@ using System.Globalization;
 /// </summary>
 public class SortDataTypeConverter : TypeConverter
 {
+    /// <inheritdoc/>
     public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         if (int.TryParse(value.ToString(), out var index))

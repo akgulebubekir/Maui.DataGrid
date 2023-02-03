@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid.Sample.Models;
+namespace Maui.DataGrid.Sample.Models;
 
 public class Team
 {
@@ -32,6 +32,7 @@ public class Streak : IComparable
         return score;
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Enum.GetName(typeof(Result), this.Result)} {this.NumStreak}";
 }
 

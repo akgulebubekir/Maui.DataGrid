@@ -11,5 +11,6 @@ public class MainApplication : MauiApplication
     {
     }
 
+    /// <inheritdoc/>
     protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
 }

@@ -125,12 +125,14 @@ internal sealed class DataGridRow : Grid
         }
     }
 
+    /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
         this.CreateView();
     }
 
+    /// <inheritdoc/>
     protected override void OnParentSet()
     {
         base.OnParentSet();

@@ -14,6 +14,7 @@ public sealed class SortData
         Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant
     };
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         if (obj is SortData other)
@@ -51,5 +52,6 @@ public sealed class SortData
 
     #endregion Properties
 
+    /// <inheritdoc/>
     public override int GetHashCode() => throw new NotImplementedException();
 }
