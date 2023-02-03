@@ -12,7 +12,7 @@ public class MainViewModel : INotifyPropertyChanged
     private Team _selectedItem;
     private bool _isRefreshing;
     private bool _teamColumnVisible = true;
-    private bool _winColumnVisible = true;
+    private bool _wonColumnVisible = true;
     private bool _headerBordersVisible = true;
 
     public MainViewModel()
@@ -51,13 +51,13 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool WinColumnVisible
+    public bool WonColumnVisible
     {
-        get => _winColumnVisible;
+        get => _wonColumnVisible;
         set
         {
-            _winColumnVisible = value;
-            OnPropertyChanged(nameof(WinColumnVisible));
+            _wonColumnVisible = value;
+            OnPropertyChanged(nameof(WonColumnVisible));
         }
     }
 

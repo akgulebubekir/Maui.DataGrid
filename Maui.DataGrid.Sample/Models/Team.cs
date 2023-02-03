@@ -3,8 +3,8 @@ namespace Maui.DataGrid.Sample.Models;
 public class Team
 {
     public string Name { get; set; }
-    public int Win { get; set; }
-    public int Loose { get; set; }
+    public int Won { get; set; }
+    public int Lost { get; set; }
     public double Percentage { get; set; }
     public string Conf { get; set; }
     public string Div { get; set; }
@@ -22,10 +22,10 @@ public class Streak : IComparable
 
     public int CompareTo(object obj)
     {
-        var score = Result == Result.Win ? NumStreak : -NumStreak;
+        var score = Result == Result.Won ? NumStreak : -NumStreak;
         if (obj is Streak s)
         {
-            var otherScore = s.Result == Result.Win ? s.NumStreak : -s.NumStreak;
+            var otherScore = s.Result == Result.Won ? s.NumStreak : -s.NumStreak;
             return score - otherScore;
         }
 
@@ -41,6 +41,6 @@ public class Streak : IComparable
 
 public enum Result
 {
-    Loose = 0,
-    Win = 1
+    Lost = 0,
+    Won = 1
 }
