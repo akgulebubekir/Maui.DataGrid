@@ -26,8 +26,7 @@ internal sealed class DataGridRow : Grid
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
-        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
-            propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
+        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null, BindingMode.OneTime);
 
     #endregion Bindable Properties
 
