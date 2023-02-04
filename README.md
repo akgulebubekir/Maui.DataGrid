@@ -1,6 +1,6 @@
 # Maui.DataGrid
 
-DataGrid Library for **Maui** Applications.
+DataGrid library for .NET **MAUI** applications.
 
 [![NuGet](https://img.shields.io/badge/nuget-v2.0.0-blue.svg?style=plastic)](https://www.nuget.org/packages/akgul.Maui.Datagrid)
 
