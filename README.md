@@ -15,7 +15,6 @@ DataGrid Library for **Maui** Applications.
 
 ```xaml
  xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
- xmlns:conv="clr-namespace:Maui.DataGrid.Sample;assembly=Maui.DataGrid.Sample"
 
 <dg:DataGrid ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
              RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
