@@ -7,7 +7,10 @@ DataGrid Library for **Maui** Applications.
 > **Supported Platforms**
   >- Android
   >- iOS
+  >- MacCatalyst
+  >- Tizen
   >- Windows
+  >- and any other platform that MAUI runs on
 
 
 ```xaml
