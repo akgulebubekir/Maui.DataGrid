@@ -65,9 +65,16 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             {
                 if (o != n && b is DataGridColumn column)
                 {
-                    var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
-                    dataGrid.Reload();
-                    column.OnSizeChanged();
+                    try
+                    {
+                        var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
+                        dataGrid.Reload();
+                    }
+                    catch { }
+                    finally
+                    {
+                        column.OnSizeChanged();
+                    }
                 }
             });
 
