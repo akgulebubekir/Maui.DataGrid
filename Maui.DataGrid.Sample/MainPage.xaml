@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,20 +9,20 @@
              x:Class="Maui.DataGrid.Sample.MainPage">
     <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
-        <HorizontalStackLayout BackgroundColor="Black">
-            <HorizontalStackLayout>
+        <FlexLayout BackgroundColor="Black" Wrap="Wrap">
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
                 <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding HeaderBordersVisible}" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding TeamColumnVisible}"  />
                 <Label Text="Team Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding TeamColumnVisible}" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout>
-                <Label Text="Win Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
-                <Switch IsToggled="{Binding WinColumnVisible}" />
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding WonColumnVisible}" />
+                <Label Text="Won Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
-        </HorizontalStackLayout>
+        </FlexLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
@@ -30,7 +30,7 @@
                      PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}"
                      ActiveRowColor="{StaticResource ActiveRowColor}">
             <dg:DataGrid.Columns>
-                <dg:DataGridColumn Title="Logo" PropertyName="Logo" Width="150" SortingEnabled="False">
+                <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
                             <Image Source="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
@@ -39,18 +39,18 @@
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" />
-                <dg:DataGridColumn Title="Win" PropertyName="Win" IsVisible="{Binding WinColumnVisible}" />
-                <dg:DataGridColumn Title="Loose" PropertyName="Loose" />
+                <dg:DataGridColumn Title="Won" PropertyName="Won" Width="0.5*" IsVisible="{Binding WonColumnVisible}" />
+                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*" />
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
                         <FormattedString>
                             <Span Text="Home" TextColor="Black" FontSize="13" FontAttributes="Bold" />
-                            <Span Text=" (win-loose)" TextColor="#333333" FontSize="11" />
+                            <Span Text=" (won-lost)" TextColor="#333333" FontSize="11" />
                         </FormattedString>
                     </dg:DataGridColumn.FormattedTitle>
                 </dg:DataGridColumn>
-                <dg:DataGridColumn Title="Percentage" PropertyName="Percentage" StringFormat="{}{0:0.00}" />
-                <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.5*">
+                <dg:DataGridColumn Title="Win %" PropertyName="Percentage" Width="0.75*" StringFormat="{}{0:0.00}" />
+                <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.75*">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
                             <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"

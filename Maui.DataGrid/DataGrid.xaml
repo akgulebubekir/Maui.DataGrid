@@ -3,8 +3,9 @@
       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
-      x:Class="Maui.DataGrid.DataGrid">
-    <Grid>
+      x:Class="Maui.DataGrid.DataGrid"
+      CompressedLayout.IsHeadless="True">
+    <Grid CompressedLayout.IsHeadless="True">
         <Grid.Resources>
             <ResourceDictionary>
                 <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
