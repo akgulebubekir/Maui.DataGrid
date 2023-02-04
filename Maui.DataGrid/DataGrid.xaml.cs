@@ -69,17 +69,20 @@ public partial class DataGrid
             throw new InvalidOperationException("DataGrid is not sortable");
         }
 
-        var items = InternalItems;
+        IList<object> items;
 
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
-                items = items.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                items = InternalItems.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
                 _ = column.SortingIcon.RotateTo(0);
                 break;
             case SortingOrder.Descendant:
-                items = items.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
+                items = InternalItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
                 _ = column.SortingIcon.RotateTo(180);
+                break;
+            default:
+                items = InternalItems;
                 break;
         }
 
