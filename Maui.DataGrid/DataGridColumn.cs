@@ -70,6 +70,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                         var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
                         dataGrid.Reload();
                     }
+                    catch { }
                     finally
                     {
                         column.OnSizeChanged();
