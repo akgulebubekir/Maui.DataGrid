@@ -1,18 +1,20 @@
 # Maui.DataGrid
 
-DataGrid Library for **Maui** Applications.
+DataGrid library for .NET **MAUI** applications.
 
 [![NuGet](https://img.shields.io/badge/nuget-v2.0.0-blue.svg?style=plastic)](https://www.nuget.org/packages/akgul.Maui.Datagrid)
 
 > **Supported Platforms**
   >- Android
   >- iOS
+  >- MacCatalyst
+  >- Tizen
   >- Windows
+  >- and any other platform that MAUI runs on
 
 
 ```xaml
  xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
- xmlns:conv="clr-namespace:Maui.DataGrid.Sample;assembly=Maui.DataGrid.Sample"
 
 <dg:DataGrid ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
              RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
