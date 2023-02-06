@@ -189,7 +189,8 @@ public partial class DataGrid
 
     public static readonly BindableProperty ColumnsProperty =
         BindableProperty.Create(nameof(Columns), typeof(ObservableCollection<DataGridColumn>), typeof(DataGrid),
-            new ObservableCollection<DataGridColumn>(), propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView());
+            propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView(),
+            defaultValueCreator: _ => new ObservableCollection<DataGridColumn>());
 
     public static readonly BindableProperty ItemsSourceProperty =
         BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
