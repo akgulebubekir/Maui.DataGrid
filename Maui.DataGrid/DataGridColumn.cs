@@ -113,7 +113,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region properties
 
-    public ColumnDefinition? ColumnDefinition
+    internal ColumnDefinition? ColumnDefinition
     {
         get
         {
@@ -124,8 +124,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
             return _columnDefinition;
         }
-
-        internal set => _columnDefinition = value;
+        set => _columnDefinition = value;
     }
 
     /// <summary>
