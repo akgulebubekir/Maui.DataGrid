@@ -1,9 +1,11 @@
 namespace Maui.DataGrid;
 
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using Maui.DataGrid.Utils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
@@ -186,16 +188,15 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty ColumnsProperty =
-        BindableProperty.Create(nameof(Columns), typeof(List<DataGridColumn>), typeof(DataGrid),
-            propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView(),
-            defaultValueCreator: _ => new List<DataGridColumn>());
+        BindableProperty.Create(nameof(Columns), typeof(ObservableCollection<DataGridColumn>), typeof(DataGrid),
+            new ObservableCollection<DataGridColumn>(), propertyChanged: (b, _, _) => ((DataGrid)b).InitHeaderView());
 
     public static readonly BindableProperty ItemsSourceProperty =
         BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
             propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
-                //ObservableCollection Tracking 
+                //ObservableCollection Tracking
                 if (o is INotifyCollectionChanged collectionChanged)
                 {
                     collectionChanged.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
@@ -473,9 +474,9 @@ public partial class DataGrid
     /// <summary>
     /// Columns
     /// </summary>
-    public List<DataGridColumn> Columns
+    public ObservableCollection<DataGridColumn> Columns
     {
-        get => (List<DataGridColumn>)GetValue(ColumnsProperty);
+        get => (ObservableCollection<DataGridColumn>)GetValue(ColumnsProperty);
         set => SetValue(ColumnsProperty, value);
     }
 
@@ -671,6 +672,15 @@ public partial class DataGrid
                 _refreshView.Refreshing += OnRefreshing;
             }
         }
+
+        if (Parent is null)
+        {
+            Columns.CollectionChanged -= OnColumnsChanged;
+        }
+        else
+        {
+            Columns.CollectionChanged += OnColumnsChanged;
+        }
     }
 
     /// <inheritdoc/>
@@ -678,6 +688,11 @@ public partial class DataGrid
     {
         base.OnBindingContextChanged();
         InitHeaderView();
+    }
+
+    private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Reload();
     }
 
     private void OnRefreshing(object? sender, EventArgs e) => _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
@@ -691,20 +706,11 @@ public partial class DataGrid
 
     internal void Reload()
     {
+        InitHeaderView();
+
         if (_internalItems is not null)
         {
             InternalItems = new List<object>(_internalItems);
-        }
-        RefreshHeaderColumnWidths();
-    }
-
-    private void RefreshHeaderColumnWidths()
-    {
-        for (var i = 0; i < Columns.Count; i++)
-        {
-            var column = Columns[i];
-
-            _headerView.ColumnDefinitions[i] = column.ColumnDefinition;
         }
     }
 
@@ -780,15 +786,15 @@ public partial class DataGrid
 
                 _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
-                var cell = GetHeaderViewForColumn(col, i);
+                col.HeaderView ??= GetHeaderViewForColumn(col, i);
 
-                cell.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
+                col.HeaderView.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
 
-                cell.SetBinding(IsVisibleProperty,
+                col.HeaderView.SetBinding(IsVisibleProperty,
                     new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
-                Grid.SetColumn(cell, i);
-                _headerView.Children.Add(cell);
+                Grid.SetColumn(col.HeaderView, i);
+                _headerView.Children.Add(col.HeaderView);
 
                 _sortingOrders.Add(i, SortingOrder.None);
             }

@@ -67,8 +67,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 {
                     try
                     {
-                        var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
-                        dataGrid.Reload();
+                        var dataGrid = (DataGrid?)column.HeaderLabel.Parent?.Parent?.Parent?.Parent;
+                        dataGrid?.Reload();
                     }
                     catch { }
                     finally
@@ -113,7 +113,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region properties
 
-    public ColumnDefinition? ColumnDefinition
+    internal ColumnDefinition? ColumnDefinition
     {
         get
         {
@@ -124,9 +124,10 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
             return _columnDefinition;
         }
-
-        internal set => _columnDefinition = value;
+        set => _columnDefinition = value;
     }
+
+    internal View HeaderView { get; set; }
 
     /// <summary>
     /// Width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.
