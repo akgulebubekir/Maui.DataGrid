@@ -127,7 +127,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         set => _columnDefinition = value;
     }
 
-    internal View HeaderView { get; set; }
+    internal View? HeaderView { get; set; }
 
     /// <summary>
     /// Width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.
