@@ -31,8 +31,8 @@ DataGrid library for .NET **MAUI** applications.
             </dg:DataGridColumn.CellTemplate>
         </dg:DataGridColumn>
         <dg:DataGridColumn Title="Team" PropertyName="Name" />
-        <dg:DataGridColumn Title="Win" PropertyName="Win" />
-        <dg:DataGridColumn Title="Loose" PropertyName="Loose" />
+        <dg:DataGridColumn Title="Won" PropertyName="Won" />
+        <dg:DataGridColumn Title="Lost" PropertyName="Lost" />
         <dg:DataGridColumn PropertyName="Home">
             <dg:DataGridColumn.FormattedTitle>
                 <FormattedString>

@@ -26,8 +26,7 @@ internal sealed class DataGridRow : Grid
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
-        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null,
-            propertyChanged: (b, _, _) => ((DataGridRow)b).CreateView());
+        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null, BindingMode.OneTime);
 
     #endregion Bindable Properties
 
@@ -75,8 +74,12 @@ internal sealed class DataGridRow : Grid
                     HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
                     LineBreakMode = col.LineBreakMode
                 };
-                cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+
+                if (!string.IsNullOrWhiteSpace(col.PropertyName))
+                {
+                    cell.SetBinding(Label.TextProperty,
+                        new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+                }
                 cell.SetBinding(Label.FontSizeProperty,
                     new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
                 cell.SetBinding(Label.FontFamilyProperty,

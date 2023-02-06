@@ -65,9 +65,16 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             {
                 if (o != n && b is DataGridColumn column)
                 {
-                    var dataGrid = (DataGrid)column.HeaderLabel.Parent.Parent.Parent.Parent;
-                    dataGrid.Reload();
-                    column.OnSizeChanged();
+                    try
+                    {
+                        var dataGrid = (DataGrid?)column.HeaderLabel.Parent?.Parent?.Parent?.Parent;
+                        dataGrid?.Reload();
+                    }
+                    catch { }
+                    finally
+                    {
+                        column.OnSizeChanged();
+                    }
                 }
             });
 
@@ -106,7 +113,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region properties
 
-    public ColumnDefinition? ColumnDefinition
+    internal ColumnDefinition? ColumnDefinition
     {
         get
         {
@@ -117,9 +124,10 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
             return _columnDefinition;
         }
-
-        internal set => _columnDefinition = value;
+        set => _columnDefinition = value;
     }
+
+    internal View HeaderView { get; set; }
 
     /// <summary>
     /// Width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.
@@ -151,7 +159,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     ///  &lt;DataGridColumn.FormattedTitle &gt;
     ///     &lt;FormattedString &gt;
     ///       &lt;Span Text = "Home" TextColor="Black" FontSize="13" FontAttributes="Bold" / &gt;
-    ///       &lt;Span Text = " (win-loose)" TextColor="#333333" FontSize="11" / &gt;
+    ///       &lt;Span Text = " (won-lost)" TextColor="#333333" FontSize="11" / &gt;
     ///     &lt;/FormattedString &gt;
     ///  &lt;/DataGridColumn.FormattedTitle &gt;
     /// </code>
