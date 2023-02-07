@@ -2,7 +2,6 @@ namespace Maui.DataGrid.Utils;
 
 using System.Globalization;
 using System.Reflection;
-using Microsoft.Maui.Controls.PlatformConfiguration;
 
 internal static class ReflectionUtils
 {
@@ -66,7 +65,7 @@ internal static class ReflectionUtils
             {
                 try
                 {
-                    var trimmedIndex = index.Replace(IndexEndOp.ToString(), "");
+                    var trimmedIndex = index.Trim().TrimEnd(IndexEndOp).Trim();
                     var indexVal = Convert.ChangeType(trimmedIndex, parameter.ParameterType, CultureInfo.InvariantCulture);
                     return indexOperator.GetValue(obj, new[] { indexVal });
                 }
