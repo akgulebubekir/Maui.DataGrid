@@ -17,7 +17,7 @@ internal static class ReflectionUtils
         }
 
         var result = obj;
-        var tokens = path?.Split(IndexBeginOp, PropertyOfOp).ToList();
+        var tokens = path?.Split(IndexBeginOp, PropertyOfOp);
 
         if (tokens is null)
         {
