@@ -25,6 +25,8 @@ internal static class ReflectionUtils
 
         var result = obj;
 
+        var type = obj.GetType();
+
         foreach (var token in tokens)
         {
             if (result is null)
@@ -34,18 +36,18 @@ internal static class ReflectionUtils
 
             //  Property
             result = !token.Contains(IndexEndOp)
-                ? GetPropertyValue(result, token)
-                : GetIndexValue(result, token.Replace(IndexEndOp.ToString(), ""));
+                ? GetPropertyValue(type, obj, token)
+                : GetIndexValue(type, obj, token.Replace(IndexEndOp.ToString(), ""));
         }
 
         return result;
     }
 
-    private static object? GetPropertyValue(object obj, string propertyName)
+    private static object? GetPropertyValue(Type type, object obj, string propertyName)
     {
         try
         {
-            return obj?.GetType().GetRuntimeProperty(propertyName)?.GetValue(obj);
+            return type.GetRuntimeProperty(propertyName)?.GetValue(obj);
         }
         catch
         {
@@ -53,9 +55,9 @@ internal static class ReflectionUtils
         }
     }
 
-    private static object? GetIndexValue(object obj, string index)
+    private static object? GetIndexValue(Type type, object obj, string index)
     {
-        var indexOperator = obj?.GetType().GetRuntimeProperty("Item");
+        var indexOperator = type.GetRuntimeProperty("Item");
         if (indexOperator != null)
         {
             // Looking up suitable index operator
