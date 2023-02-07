@@ -16,13 +16,14 @@ internal static class ReflectionUtils
             return null;
         }
 
-        var result = obj;
         var tokens = path?.Split(IndexBeginOp, PropertyOfOp);
 
         if (tokens is null)
         {
             return null;
         }
+
+        var result = obj;
 
         foreach (var token in tokens)
         {
