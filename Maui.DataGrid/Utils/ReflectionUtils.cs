@@ -54,33 +54,23 @@ internal static class ReflectionUtils
 
     private static object? GetIndexValue(object obj, string index)
     {
-        object? result = null;
-
         var indexOperator = obj?.GetType().GetRuntimeProperty("Item");
         if (indexOperator != null)
         {
             // Looking up suitable index operator
             foreach (var parameter in indexOperator.GetIndexParameters())
             {
-                var isIndexOpWorked = true;
                 try
                 {
                     var indexVal = Convert.ChangeType(index, parameter.ParameterType, CultureInfo.InvariantCulture);
-                    result = indexOperator.GetValue(obj, new[] { indexVal });
+                    return indexOperator.GetValue(obj, new[] { indexVal });
                 }
                 catch
                 {
-                    isIndexOpWorked = false;
-                }
-
-                // If the index operator worked, skip looking up others
-                if (isIndexOpWorked)
-                {
-                    break;
                 }
             }
         }
 
-        return result;
+        return null;
     }
 }
