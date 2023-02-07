@@ -32,7 +32,7 @@ internal static class ReflectionUtils
             }
 
             //  Property
-            result = !token.Contains(IndexEndOp.ToString())
+            result = !token.Contains(IndexEndOp)
                 ? GetPropertyValue(result, token)
                 : GetIndexValue(result, token.Replace(IndexEndOp.ToString(), ""));
         }
