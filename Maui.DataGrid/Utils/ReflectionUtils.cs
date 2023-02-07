@@ -11,6 +11,11 @@ internal static class ReflectionUtils
 
     public static object? GetValueByPath(object obj, string path)
     {
+        if (obj is null)
+        {
+            return null;
+        }
+
         var result = obj;
         var tokens = path?.Split(IndexBeginOp, PropertyOfOp).ToList();
 
