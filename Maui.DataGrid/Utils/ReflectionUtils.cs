@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid.Utils;
+namespace Maui.DataGrid.Utils;
 
 using System.Globalization;
 using System.Reflection;
@@ -27,7 +27,7 @@ internal static class ReflectionUtils
 
         foreach (var token in tokens)
         {
-            if (result == null)
+            if (result is null)
             {
                 break;
             }
