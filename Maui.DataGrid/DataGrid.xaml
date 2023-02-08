@@ -35,14 +35,16 @@
                 </ResourceDictionary>
             </Grid.Resources>
         </Grid>
-        <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}" 
+        <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={x:Reference self}}"
                      IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
-            <CollectionView x:Name="_collectionView" WidthRequest="{Binding WidthRequest, Source={x:Reference self}}" 
+            <!-- Set all platforms to use MeasureFirstItem when this bug is resolved https://github.com/dotnet/maui/issues/7562 -->
+            <CollectionView x:Name="_collectionView" WidthRequest="{Binding WidthRequest, Source={x:Reference self}}"
                             SelectedItem="{Binding SelectedItem, Source={x:Reference self}, Mode=TwoWay}"
+                            ItemSizingStrategy="{OnPlatform Android=MeasureAllItems, Default=MeasureFirstItem}"
                             SelectionMode="{Binding SelectionEnabled, Source={x:Reference self}, Converter={StaticResource boolToSelectionMode}}" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <local:DataGridRow DataGrid="{Reference self}" 
+                        <local:DataGridRow DataGrid="{Reference self}"
                                            HeightRequest="{Binding RowHeight, Source={x:Reference self}, Mode=OneTime}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
