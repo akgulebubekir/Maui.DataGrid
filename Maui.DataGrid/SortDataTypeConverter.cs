@@ -6,7 +6,7 @@ using System.Globalization;
 /// <summary>
 /// Converts string to <c>SortingOrder</c> enum.
 /// </summary>
-public class SortDataTypeConverter : TypeConverter
+internal sealed class SortDataTypeConverter : TypeConverter
 {
     /// <inheritdoc/>
     public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
