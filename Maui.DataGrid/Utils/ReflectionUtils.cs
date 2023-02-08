@@ -60,12 +60,13 @@ internal static class ReflectionUtils
         var indexOperator = type.GetRuntimeProperty("Item");
         if (indexOperator != null)
         {
+            var trimmedIndex = index.Trim().TrimEnd(IndexEndOp).Trim();
+
             // Looking up suitable index operator
             foreach (var parameter in indexOperator.GetIndexParameters())
             {
                 try
                 {
-                    var trimmedIndex = index.Trim().TrimEnd(IndexEndOp).Trim();
                     var indexVal = Convert.ChangeType(trimmedIndex, parameter.ParameterType, CultureInfo.InvariantCulture);
                     return indexOperator.GetValue(obj, new[] { indexVal });
                 }
