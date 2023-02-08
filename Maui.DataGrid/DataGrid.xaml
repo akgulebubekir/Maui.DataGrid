@@ -4,6 +4,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
       x:Class="Maui.DataGrid.DataGrid"
+      x:DataType="local:DataGrid"
       CompressedLayout.IsHeadless="True">
     <Grid CompressedLayout.IsHeadless="True">
         <Grid.Resources>
