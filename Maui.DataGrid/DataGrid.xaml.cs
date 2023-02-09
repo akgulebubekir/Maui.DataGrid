@@ -47,12 +47,17 @@ public partial class DataGrid
 
     private void SortItems(SortData sortData)
     {
-        if (InternalItems == null || sortData.Index >= Columns.Count || !Columns[sortData.Index].SortingEnabled)
+        if (InternalItems == null || sortData.Index >= Columns.Count)
         {
             return;
         }
 
         var column = Columns[sortData.Index];
+
+        if (!column.SortingEnabled)
+        {
+            return;
+        }
 
         if (column.PropertyName == null)
         {
