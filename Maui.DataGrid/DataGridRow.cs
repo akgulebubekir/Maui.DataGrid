@@ -37,6 +37,8 @@ internal sealed class DataGridRow : Grid
         ColumnDefinitions.Clear();
         Children.Clear();
 
+        UpdateBackgroundColor();
+
         BackgroundColor = DataGrid.BorderColor;
 
         var borderThickness = DataGrid.BorderThickness;
@@ -55,7 +57,12 @@ internal sealed class DataGridRow : Grid
 
             if (col.CellTemplate != null)
             {
-                cell = new ContentView { Content = col.CellTemplate.CreateContent() as View };
+                cell = new ContentView
+                {
+                    BackgroundColor = _bgColor,
+                    Content = col.CellTemplate.CreateContent() as View
+                };
+
                 if (col.PropertyName != null)
                 {
                     cell.SetBinding(BindingContextProperty,
@@ -92,8 +99,6 @@ internal sealed class DataGridRow : Grid
             SetColumn((BindableObject)cell, i);
             Children.Add(cell);
         }
-
-        UpdateBackgroundColor();
     }
 
     private void UpdateBackgroundColor()
