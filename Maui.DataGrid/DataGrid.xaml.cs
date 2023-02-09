@@ -131,7 +131,7 @@ public partial class DataGrid
             {
                 if (!((DataGrid)b).SelectionEnabled)
                 {
-                    throw new InvalidOperationException("Datagrid must be SelectionEnabled to set ActiveRowColor");
+                    throw new InvalidOperationException("DataGrid must have SelectionEnabled to set ActiveRowColor");
                 }
 
                 return v;
@@ -275,7 +275,7 @@ public partial class DataGrid
 
                 if (!self.SelectionEnabled)
                 {
-                    throw new InvalidOperationException("Datagrid must be SelectionEnabled=true to set SelectedItem");
+                    throw new InvalidOperationException("DataGrid must have SelectionEnabled=true to set SelectedItem");
                 }
 
                 if (self.InternalItems?.Contains(v) == true)
