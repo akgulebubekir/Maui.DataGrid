@@ -81,9 +81,11 @@ public partial class DataGrid
                 items = InternalItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
                 _ = column.SortingIcon.RotateTo(180);
                 break;
-            default:
+            case SortingOrder.None:
                 items = InternalItems;
                 break;
+            default:
+                throw new NotImplementedException();
         }
 
         for (var i = 0; i < Columns.Count; i++)
