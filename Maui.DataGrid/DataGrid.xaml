@@ -40,6 +40,7 @@
                      IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}">
             <!-- Set all platforms to use MeasureFirstItem when this bug is resolved https://github.com/dotnet/maui/issues/7562 -->
             <CollectionView x:Name="_collectionView" WidthRequest="{Binding WidthRequest, Source={Reference self}}"
+                            BackgroundColor="{Binding BorderColor, Source={Reference self}}"
                             SelectedItem="{Binding SelectedItem, Source={Reference self}, Mode=TwoWay}"
                             ItemSizingStrategy="{OnPlatform Android=MeasureAllItems, Default=MeasureFirstItem}"
                             SelectionMode="{Binding SelectionEnabled, Source={Reference self}, Converter={StaticResource boolToSelectionMode}}" >
