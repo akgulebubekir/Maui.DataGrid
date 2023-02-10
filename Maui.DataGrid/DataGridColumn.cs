@@ -67,8 +67,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 {
                     try
                     {
-                        var dataGrid = (DataGrid?)column.HeaderLabel.Parent?.Parent?.Parent?.Parent;
-                        dataGrid?.Reload();
+                        column.DataGrid ??= (DataGrid?)column.HeaderLabel.Parent?.Parent?.Parent?.Parent;
+                        column.DataGrid?.Reload();
                     }
                     catch { }
                     finally
@@ -112,6 +112,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     #endregion Bindable Properties
 
     #region properties
+
+    internal DataGrid? DataGrid { get; set; }
 
     internal ColumnDefinition? ColumnDefinition
     {

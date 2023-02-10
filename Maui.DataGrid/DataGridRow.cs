@@ -53,6 +53,11 @@ internal sealed class DataGridRow : Grid
 
             ColumnDefinitions.Add(col.ColumnDefinition);
 
+            if (!col.IsVisible)
+            {
+                continue;
+            }
+
             View cell;
 
             if (col.CellTemplate != null)
@@ -92,9 +97,6 @@ internal sealed class DataGridRow : Grid
                 cell.SetBinding(Label.FontFamilyProperty,
                     new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
             }
-
-            cell.SetBinding(IsVisibleProperty,
-                new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
             SetColumn((BindableObject)cell, i);
             Children.Add(cell);
