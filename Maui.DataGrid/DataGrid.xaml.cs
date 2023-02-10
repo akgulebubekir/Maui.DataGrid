@@ -331,8 +331,7 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty IsRefreshingProperty =
-        BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay,
-            propertyChanged: (b, _, n) => ((DataGrid)b)._refreshView.IsRefreshing = (bool)n);
+        BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay);
 
     public static readonly BindableProperty BorderThicknessProperty =
         BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
