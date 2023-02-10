@@ -25,14 +25,14 @@ internal static class ReflectionUtils
 
         var result = obj;
 
-        var type = obj.GetType();
-
         foreach (var token in tokens)
         {
             if (result is null)
             {
                 break;
             }
+
+            var type = result.GetType();
 
             //  Property
             result = !token.Contains(IndexEndOp)
