@@ -796,12 +796,14 @@ public partial class DataGrid
 
                 _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
+                if (!col.IsVisible)
+                {
+                    continue;
+                }
+
                 col.HeaderView ??= GetHeaderViewForColumn(col, i);
 
                 col.HeaderView.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
-
-                col.HeaderView.SetBinding(IsVisibleProperty,
-                    new Binding(nameof(col.IsVisible), BindingMode.OneWay, source: col));
 
                 Grid.SetColumn(col.HeaderView, i);
                 _headerView.Children.Add(col.HeaderView);
