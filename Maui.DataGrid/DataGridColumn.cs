@@ -33,7 +33,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         remove => _sizeChangedEventManager.RemoveEventHandler(value);
     }
 
-    private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, string.Empty);
+    private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
 
     #region Bindable Properties
 
