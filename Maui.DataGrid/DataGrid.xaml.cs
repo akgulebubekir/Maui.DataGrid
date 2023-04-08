@@ -3,6 +3,7 @@ namespace Maui.DataGrid;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows.Input;
 using Maui.DataGrid.Utils;
 using Microsoft.Maui.Controls.Shapes;
@@ -493,6 +494,7 @@ public partial class DataGrid
     /// Font size of the cells.
     /// It does not sets header font size. Use <c>HeaderLabelStyle</c> to set header font size.
     /// </summary>
+    [TypeConverter(typeof(FontSizeConverter))]
     public double FontSize
     {
         get => (double)GetValue(FontSizeProperty);
