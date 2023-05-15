@@ -214,7 +214,7 @@ public partial class DataGrid
                     newColumns.CollectionChanged += self.OnColumnsChanged;
                 }
 
-                self.InitHeaderView();
+                self.Reload();
             },
             defaultValueCreator: _ => new ObservableCollection<DataGridColumn>());
 
