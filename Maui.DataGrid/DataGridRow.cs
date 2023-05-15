@@ -53,15 +53,7 @@ internal sealed class DataGridRow : Grid
         ColumnDefinitions.Clear();
         Children.Clear();
 
-        UpdateBackgroundColor();
-
-        BackgroundColor = DataGrid.BorderColor; // We are using the spacing between rows to generate visible borders, and thus the background color is the border color.
-
-        var borderThickness = DataGrid.BorderThickness;
-
-        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
-        ColumnSpacing = borderThickness.HorizontalThickness;
-        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
+        SetStyling();
 
         for (var i = 0; i < DataGrid.Columns.Count; i++)
         {
@@ -79,6 +71,20 @@ internal sealed class DataGridRow : Grid
             SetColumn((BindableObject)cell, i);
             Children.Add(cell);
         }
+    }
+
+    private void SetStyling()
+    {
+        UpdateBackgroundColor();
+
+        // We are using the spacing between rows to generate visible borders, and thus the background color is the border color.
+        BackgroundColor = DataGrid.BorderColor;
+
+        var borderThickness = DataGrid.BorderThickness;
+
+        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
+        ColumnSpacing = borderThickness.HorizontalThickness;
+        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
     }
 
     private View CreateCell(DataGridColumn col)
