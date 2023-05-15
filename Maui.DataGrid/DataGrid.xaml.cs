@@ -213,11 +213,21 @@ public partial class DataGrid
                 if (o is ObservableCollection<DataGridColumn> oldColumns)
                 {
                     oldColumns.CollectionChanged -= self.OnColumnsChanged;
+
+                    foreach (var oldColumn in oldColumns)
+                    {
+                        oldColumn.SizeChanged -= self.OnColumnSizeChanged;
+                    }
                 }
 
                 if (n is ObservableCollection<DataGridColumn> newColumns)
                 {
                     newColumns.CollectionChanged += self.OnColumnsChanged;
+
+                    foreach (var newColumn in newColumns)
+                    {
+                        newColumn.SizeChanged += self.OnColumnSizeChanged;
+                    }
                 }
 
                 self.Reload();
@@ -723,10 +733,20 @@ public partial class DataGrid
         if (Parent is null)
         {
             Columns.CollectionChanged -= OnColumnsChanged;
+
+            foreach (var column in Columns)
+            {
+                column.SizeChanged -= OnColumnSizeChanged;
+            }
         }
         else
         {
             Columns.CollectionChanged += OnColumnsChanged;
+
+            foreach (var column in Columns)
+            {
+                column.SizeChanged += OnColumnSizeChanged;
+            }
         }
     }
 
@@ -737,10 +757,9 @@ public partial class DataGrid
         InitHeaderView();
     }
 
-    private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        Reload();
-    }
+    private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e) => Reload();
+
+    private void OnColumnSizeChanged(object? sender, EventArgs e) => Reload();
 
     private void OnRefreshing(object? sender, EventArgs e) => _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
 
