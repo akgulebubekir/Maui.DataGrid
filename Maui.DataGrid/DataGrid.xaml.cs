@@ -65,29 +65,34 @@ public partial class DataGrid
     {
         if (sortData.Index >= Columns.Count)
         {
+            Console.WriteLine("Sort index is out of range");
             return false;
         }
 
         var columnToSort = Columns[sortData.Index];
 
-        if (!columnToSort.SortingEnabled)
+        if (columnToSort.PropertyName == null)
         {
+            Console.WriteLine($"Please set the {nameof(columnToSort.PropertyName)} of the column");
             return false;
         }
 
-        if (columnToSort.PropertyName == null)
+        if (!columnToSort.SortingEnabled)
         {
-            throw new InvalidOperationException($"Please set the {nameof(columnToSort.PropertyName)} of the column");
+            Console.WriteLine($"{columnToSort.PropertyName} column does not have sorting enabled");
+            return false;
         }
 
         if (!columnToSort.IsSortable(this))
         {
-            throw new InvalidOperationException($"{columnToSort.PropertyName} column is not sortable");
+            Console.WriteLine($"{columnToSort.PropertyName} column is not sortable");
+            return false;
         }
 
         if (!IsSortable)
         {
-            throw new InvalidOperationException("DataGrid is not sortable");
+            Console.WriteLine("DataGrid is not sortable");
+            return false;
         }
 
         return true;
