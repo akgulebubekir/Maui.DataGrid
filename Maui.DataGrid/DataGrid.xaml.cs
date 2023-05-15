@@ -355,7 +355,7 @@ public partial class DataGrid
 
     public static readonly BindableProperty BorderThicknessProperty =
         BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
-            propertyChanged: (b, _, n) =>
+            propertyChanged: (b, _, _) =>
             {
                 var self = (DataGrid)b;
                 if (self.Columns != null && self.ItemsSource != null)
