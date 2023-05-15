@@ -42,9 +42,10 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             GridLength.Star,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n)
+                if (o != n && n is GridLength width && b is DataGridColumn self)
                 {
-                    ((DataGridColumn)b).OnSizeChanged();
+                    self.ColumnDefinition = new(width);
+                    self.OnSizeChanged();
                 }
             });
 
@@ -138,11 +139,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     public GridLength Width
     {
         get => (GridLength)GetValue(WidthProperty);
-        set
-        {
-            SetValue(WidthProperty, value);
-            ColumnDefinition = new(value);
-        }
+        set => SetValue(WidthProperty, value);
     }
 
     /// <summary>
