@@ -14,6 +14,7 @@ public class MainViewModel : INotifyPropertyChanged
     private bool _teamColumnVisible = true;
     private bool _wonColumnVisible = true;
     private bool _headerBordersVisible = true;
+    private ushort _teamColumnWidth = 70;
 
     public MainViewModel()
     {
@@ -58,6 +59,16 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _wonColumnVisible = value;
             OnPropertyChanged(nameof(WonColumnVisible));
+        }
+    }
+
+    public ushort TeamColumnWidth
+    {
+        get => _teamColumnWidth;
+        set
+        {
+            _teamColumnWidth = value;
+            OnPropertyChanged(nameof(TeamColumnWidth));
         }
     }
 
