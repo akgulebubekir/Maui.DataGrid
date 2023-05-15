@@ -18,7 +18,22 @@ internal sealed class DataGridRow : Grid
     public DataGrid DataGrid
     {
         get => (DataGrid)GetValue(DataGridProperty);
-        set => SetValue(DataGridProperty, value);
+        set
+        {
+            var oldDataGrid = DataGrid;
+
+            if (oldDataGrid != null)
+            {
+                oldDataGrid.ItemSelected -= DataGrid_ItemSelected;
+            }
+
+            SetValue(DataGridProperty, value);
+
+            if (DataGrid != null)
+            {
+                DataGrid.ItemSelected += DataGrid_ItemSelected;
+            }
+        }
     }
 
     #endregion properties
