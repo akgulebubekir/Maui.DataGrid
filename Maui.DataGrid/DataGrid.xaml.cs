@@ -336,11 +336,11 @@ public partial class DataGrid
 
     public static readonly BindableProperty RefreshingEnabledProperty =
     BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, n) =>
+            propertyChanged: (b, o, n) =>
             {
-                var self = (DataGrid)b;
-                if (n is bool refreshingEnabled)
+                if (o != n && n is bool refreshingEnabled)
                 {
+                var self = (DataGrid)b;
                     _ = self.PullToRefreshCommand?.CanExecute(() => refreshingEnabled);
                 }
             });
