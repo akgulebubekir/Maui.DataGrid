@@ -205,9 +205,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(Columns), typeof(ObservableCollection<DataGridColumn>), typeof(DataGrid),
             propertyChanged: (b, o, n) =>
             {
-                var self = (DataGrid)b;
-
-                if (n == o)
+                if (n == o || b is not DataGrid self)
                 {
                     return;
                 }
@@ -230,9 +228,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
             propertyChanged: (b, o, n) =>
             {
-                var self = (DataGrid)b;
-
-                if (n == o)
+                if (n == o || b is not DataGrid self)
                 {
                     return;
                 }
@@ -302,12 +298,10 @@ public partial class DataGrid
             },
             coerceValue: (b, v) =>
             {
-                if (v is null)
+                if (v is null || b is not DataGrid self)
                 {
                     return null;
                 }
-
-                var self = (DataGrid)b;
 
                 if (!self.SelectionEnabled)
                 {
@@ -325,11 +319,11 @@ public partial class DataGrid
 
     public static readonly BindableProperty SelectionEnabledProperty =
         BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, n) =>
+            propertyChanged: (b, o, n) =>
             {
-                if (n is bool selectionEnabled && !selectionEnabled)
+                if (o != n && n is bool selectionEnabled && !selectionEnabled)
                 {
-                var self = (DataGrid)b;
+                    var self = (DataGrid)b;
                     self.SelectedItem = null;
                 }
             });
@@ -340,16 +334,20 @@ public partial class DataGrid
             {
                 if (o != n && n is bool refreshingEnabled)
                 {
-                var self = (DataGrid)b;
+                    var self = (DataGrid)b;
                     _ = self.PullToRefreshCommand?.CanExecute(() => refreshingEnabled);
                 }
             });
 
     public static readonly BindableProperty PullToRefreshCommandProperty =
         BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null,
-            propertyChanged: (b, _, n) =>
+            propertyChanged: (b, o, n) =>
             {
-                var self = (DataGrid)b;
+                if (o == n || b is not DataGrid self)
+                {
+                    return;
+                }
+
                 if (n == null)
                 {
                     self._refreshView.Command = null;
@@ -394,14 +392,10 @@ public partial class DataGrid
             },
             (b, o, n) =>
             {
-                if (o == n)
+                if (o != n && b is DataGrid self)
                 {
-                    return;
+                    self.SortItems((SortData)n);
                 }
-
-                var self = (DataGrid)b;
-
-                self.SortItems((SortData)n);
             });
 
     public static readonly BindableProperty HeaderLabelStyleProperty =
@@ -412,9 +406,9 @@ public partial class DataGrid
 
     public static readonly BindableProperty SortIconStyleProperty =
         BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null,
-            propertyChanged: (b, _, n) =>
+            propertyChanged: (b, o, n) =>
             {
-                if (b is DataGrid self && n is Style style)
+                if (o != n && b is DataGrid self && n is Style style)
                 {
                     foreach (var column in self.Columns)
                     {
@@ -427,9 +421,9 @@ public partial class DataGrid
         BindableProperty.Create(nameof(NoDataView), typeof(View), typeof(DataGrid),
             propertyChanged: (b, o, n) =>
             {
-                if (o != n)
+                if (o != n && b is DataGrid self)
                 {
-                    ((DataGrid)b)._collectionView.EmptyView = n as View;
+                    self._collectionView.EmptyView = n as View;
                 }
             });
 
