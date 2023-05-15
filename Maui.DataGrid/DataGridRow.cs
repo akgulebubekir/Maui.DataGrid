@@ -9,7 +9,6 @@ internal sealed class DataGridRow : Grid
 
     private Color? _bgColor;
     private Color? _textColor;
-    private bool _hasSelected;
 
     #endregion Fields
 
@@ -46,6 +45,8 @@ internal sealed class DataGridRow : Grid
     #endregion Bindable Properties
 
     #region Methods
+
+    private bool IsSelected() => DataGrid?.SelectedItem == BindingContext;
 
     private void CreateView()
     {
@@ -120,12 +121,11 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateBackgroundColor()
     {
-        _hasSelected = DataGrid?.SelectedItem == BindingContext;
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
             _bgColor =
-                DataGrid?.SelectionEnabled == true && DataGrid.SelectedItem != null && DataGrid.SelectedItem == BindingContext
+                DataGrid?.SelectionEnabled == true && DataGrid.SelectedItem != null && IsSelected()
                     ? DataGrid.ActiveRowColor
                     : DataGrid?.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             _textColor = DataGrid?.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
@@ -182,7 +182,7 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection[^1] == BindingContext))
+        if (IsSelected() || (e.CurrentSelection.Count > 0 && e.CurrentSelection[^1] == BindingContext))
         {
             UpdateBackgroundColor();
         }
