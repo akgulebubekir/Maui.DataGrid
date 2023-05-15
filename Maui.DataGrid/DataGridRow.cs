@@ -99,7 +99,7 @@ internal sealed class DataGridRow : Grid
                 Content = col.CellTemplate.CreateContent() as View
             };
 
-            if (col.PropertyName != null)
+            if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
                 cell.SetBinding(BindingContextProperty,
                     new Binding(col.PropertyName, source: BindingContext));
