@@ -815,28 +815,30 @@ public partial class DataGrid
         _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
         _headerView.ColumnSpacing = BorderThickness.HorizontalThickness;
 
-        if (Columns != null)
+        if (Columns == null)
         {
-            for (var i = 0; i < Columns.Count; i++)
+            return;
+        }
+
+        for (var i = 0; i < Columns.Count; i++)
+        {
+            var col = Columns[i];
+
+            col.ColumnDefinition ??= new(col.Width);
+
+            _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
+
+            if (!col.IsVisible)
             {
-                var col = Columns[i];
-
-                col.ColumnDefinition ??= new(col.Width);
-
-                _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
-
-                if (!col.IsVisible)
-                {
-                    continue;
-                }
-
-                col.HeaderView ??= GetHeaderViewForColumn(col, i);
-
-                col.HeaderView.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
-
-                Grid.SetColumn(col.HeaderView, i);
-                _headerView.Children.Add(col.HeaderView);
+                continue;
             }
+
+            col.HeaderView ??= GetHeaderViewForColumn(col, i);
+
+            col.HeaderView.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
+
+            Grid.SetColumn(col.HeaderView, i);
+            _headerView.Children.Add(col.HeaderView);
         }
     }
 
