@@ -2,6 +2,8 @@ namespace Maui.DataGrid;
 
 using Microsoft.Maui.Controls;
 using Maui.DataGrid.Utils;
+using System;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 
 internal sealed class DataGridRow : Grid
 {
@@ -72,49 +74,56 @@ internal sealed class DataGridRow : Grid
                 continue;
             }
 
-            View cell;
-
-            if (col.CellTemplate != null)
-            {
-                cell = new ContentView
-                {
-                    BackgroundColor = _bgColor,
-                    Content = col.CellTemplate.CreateContent() as View
-                };
-
-                if (col.PropertyName != null)
-                {
-                    cell.SetBinding(BindingContextProperty,
-                        new Binding(col.PropertyName, source: BindingContext));
-                }
-            }
-            else
-            {
-                cell = new Label
-                {
-                    TextColor = _textColor,
-                    BackgroundColor = _bgColor,
-                    VerticalOptions = LayoutOptions.Fill,
-                    HorizontalOptions = LayoutOptions.Fill,
-                    VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
-                    HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
-                    LineBreakMode = col.LineBreakMode
-                };
-
-                if (!string.IsNullOrWhiteSpace(col.PropertyName))
-                {
-                    cell.SetBinding(Label.TextProperty,
-                        new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
-                }
-                cell.SetBinding(Label.FontSizeProperty,
-                    new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
-                cell.SetBinding(Label.FontFamilyProperty,
-                    new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
-            }
+            var cell = CreateCell(col);
 
             SetColumn((BindableObject)cell, i);
             Children.Add(cell);
         }
+    }
+
+    private View CreateCell(DataGridColumn col)
+    {
+        View cell;
+
+        if (col.CellTemplate != null)
+        {
+            cell = new ContentView
+            {
+                BackgroundColor = _bgColor,
+                Content = col.CellTemplate.CreateContent() as View
+            };
+
+            if (col.PropertyName != null)
+            {
+                cell.SetBinding(BindingContextProperty,
+                    new Binding(col.PropertyName, source: BindingContext));
+            }
+        }
+        else
+        {
+            cell = new Label
+            {
+                TextColor = _textColor,
+                BackgroundColor = _bgColor,
+                VerticalOptions = LayoutOptions.Fill,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
+                HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
+                LineBreakMode = col.LineBreakMode
+            };
+
+            if (!string.IsNullOrWhiteSpace(col.PropertyName))
+            {
+                cell.SetBinding(Label.TextProperty,
+                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+            }
+            cell.SetBinding(Label.FontSizeProperty,
+                new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
+            cell.SetBinding(Label.FontFamilyProperty,
+                new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
+        }
+
+        return cell;
     }
 
     private void UpdateBackgroundColor()
