@@ -15,8 +15,6 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
-    private readonly Dictionary<int, SortingOrder> _sortingOrders;
-
     private readonly WeakEventManager _itemSelectedEventManager = new();
 
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
@@ -38,8 +36,6 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
-
-        _sortingOrders = new();
     }
 
     #endregion ctor
@@ -53,21 +49,21 @@ public partial class DataGrid
             return;
         }
 
-        var column = Columns[sortData.Index];
+        var columnToSort = Columns[sortData.Index];
 
-        if (!column.SortingEnabled)
+        if (!columnToSort.SortingEnabled)
         {
             return;
         }
 
-        if (column.PropertyName == null)
+        if (columnToSort.PropertyName == null)
         {
-            throw new InvalidOperationException($"Please set the {nameof(column.PropertyName)} of the column");
+            throw new InvalidOperationException($"Please set the {nameof(columnToSort.PropertyName)} of the column");
         }
 
-        if (!column.IsSortable(this))
+        if (!columnToSort.IsSortable(this))
         {
-            throw new InvalidOperationException($"{column.PropertyName} column is not sortable");
+            throw new InvalidOperationException($"{columnToSort.PropertyName} column is not sortable");
         }
 
         if (!IsSortable)
@@ -80,12 +76,12 @@ public partial class DataGrid
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
-                items = InternalItems.OrderBy(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-                _ = column.SortingIcon.RotateTo(0);
+                items = InternalItems.OrderBy(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
+                _ = columnToSort.SortingIcon.RotateTo(0);
                 break;
             case SortingOrder.Descendant:
-                items = InternalItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, column.PropertyName)).ToList();
-                _ = column.SortingIcon.RotateTo(180);
+                items = InternalItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
+                _ = columnToSort.SortingIcon.RotateTo(180);
                 break;
             case SortingOrder.None:
                 items = InternalItems;
@@ -94,22 +90,22 @@ public partial class DataGrid
                 throw new NotImplementedException();
         }
 
-        for (var i = 0; i < Columns.Count; i++)
+        foreach (var column in Columns)
         {
-            if (i != sortData.Index)
+            if (column == columnToSort)
             {
-                _sortingOrders[i] = SortingOrder.None;
-                Columns[i].SortingIconContainer.IsVisible = false;
+                column.SortingOrder = sortData.Order;
+                column.SortingIconContainer.IsVisible = true;
             }
             else
             {
-                Columns[i].SortingIconContainer.IsVisible = true;
+                column.SortingOrder = SortingOrder.None;
+                column.SortingIconContainer.IsVisible = false;
             }
         }
 
         _internalItems = items;
 
-        _sortingOrders[sortData.Index] = sortData.Order;
         SortedColumnIndex = sortData;
 
         _collectionView.ItemsSource = _internalItems;
@@ -756,7 +752,7 @@ public partial class DataGrid
                     {
                         Command = new Command(() =>
                         {
-                            var order = _sortingOrders[index] == SortingOrder.Ascendant
+                            var order = column.SortingOrder == SortingOrder.Ascendant
                                 ? SortingOrder.Descendant
                                 : SortingOrder.Ascendant;
 
@@ -782,7 +778,7 @@ public partial class DataGrid
 
         _headerView.Children.Clear();
         _headerView.ColumnDefinitions.Clear();
-        _sortingOrders.Clear();
+        ResetSortingOrders();
 
         _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
         _headerView.ColumnSpacing = BorderThickness.HorizontalThickness;
@@ -808,9 +804,15 @@ public partial class DataGrid
 
                 Grid.SetColumn(col.HeaderView, i);
                 _headerView.Children.Add(col.HeaderView);
-
-                _sortingOrders.Add(i, SortingOrder.None);
             }
+        }
+    }
+
+    private void ResetSortingOrders()
+    {
+        foreach (var column in Columns)
+        {
+            column.SortingOrder = SortingOrder.None;
         }
     }
 

@@ -212,6 +212,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal Polygon SortingIcon { get; }
     internal Label HeaderLabel { get; }
     internal View SortingIconContainer { get; }
+    internal SortingOrder SortingOrder { get; set; }
 
     /// <summary>
     /// LineBreakModeProperty for the text. WordWrap by default.
