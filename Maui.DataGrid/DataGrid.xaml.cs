@@ -49,16 +49,30 @@ public partial class DataGrid
 
     private void SortItems(SortData sortData)
     {
-        if (InternalItems == null || sortData.Index >= Columns.Count)
+        if (InternalItems == null || !CanSort(sortData))
         {
             return;
+        }
+
+        _internalItems = GetSortedItems(InternalItems, sortData);
+
+        SortedColumnIndex = sortData;
+
+        _collectionView.ItemsSource = _internalItems;
+    }
+
+    private bool CanSort(SortData sortData)
+    {
+        if (sortData.Index >= Columns.Count)
+        {
+            return false;
         }
 
         var columnToSort = Columns[sortData.Index];
 
         if (!columnToSort.SortingEnabled)
         {
-            return;
+            return false;
         }
 
         if (columnToSort.PropertyName == null)
@@ -76,20 +90,27 @@ public partial class DataGrid
             throw new InvalidOperationException("DataGrid is not sortable");
         }
 
+        return true;
+    }
+
+    private IList<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
+    {
+        var columnToSort = Columns[sortData.Index];
+
         IList<object> items;
 
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
-                items = InternalItems.OrderBy(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
+                items = unsortedItems.OrderBy(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
                 _ = columnToSort.SortingIcon.RotateTo(0);
                 break;
             case SortingOrder.Descendant:
-                items = InternalItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
+                items = unsortedItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
                 _ = columnToSort.SortingIcon.RotateTo(180);
                 break;
             case SortingOrder.None:
-                items = InternalItems;
+                items = unsortedItems;
                 break;
             default:
                 throw new NotImplementedException();
@@ -109,11 +130,7 @@ public partial class DataGrid
             }
         }
 
-        _internalItems = items;
-
-        SortedColumnIndex = sortData;
-
-        _collectionView.ItemsSource = _internalItems;
+        return items;
     }
 
     #endregion Sorting methods
