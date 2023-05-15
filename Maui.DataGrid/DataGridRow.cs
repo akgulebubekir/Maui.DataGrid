@@ -18,22 +18,7 @@ internal sealed class DataGridRow : Grid
     public DataGrid DataGrid
     {
         get => (DataGrid)GetValue(DataGridProperty);
-        set
-        {
-            var oldDataGrid = DataGrid;
-
-            if (oldDataGrid != null)
-            {
-                oldDataGrid.ItemSelected -= DataGrid_ItemSelected;
-            }
-
-            SetValue(DataGridProperty, value);
-
-            if (DataGrid != null)
-            {
-                DataGrid.ItemSelected += DataGrid_ItemSelected;
-            }
-        }
+        set => SetValue(DataGridProperty, value);
     }
 
     #endregion properties
@@ -41,7 +26,21 @@ internal sealed class DataGridRow : Grid
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
-        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null, BindingMode.OneTime);
+        BindableProperty.Create(nameof(DataGrid), typeof(DataGrid), typeof(DataGridRow), null, BindingMode.OneTime,
+            propertyChanged: (b, o, n) =>
+            {
+                var self = (DataGridRow)b;
+
+                if (o is DataGrid oldDataGrid)
+                {
+                    oldDataGrid.ItemSelected -= self.DataGrid_ItemSelected;
+                }
+
+                if (n is DataGrid newDataGrid)
+                {
+                    newDataGrid.ItemSelected += self.DataGrid_ItemSelected;
+                }
+            });
 
     #endregion Bindable Properties
 
