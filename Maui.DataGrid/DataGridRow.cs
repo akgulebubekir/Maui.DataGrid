@@ -167,16 +167,9 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        if (_hasSelected)
+        if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection[^1] == BindingContext))
         {
             UpdateBackgroundColor();
-        }
-        else if (e.CurrentSelection.Count > 0)
-        {
-            if (e.CurrentSelection[^1] == BindingContext)
-            {
-                UpdateBackgroundColor();
-            }
         }
     }
 
