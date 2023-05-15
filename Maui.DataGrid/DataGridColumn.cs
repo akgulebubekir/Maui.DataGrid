@@ -104,9 +104,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGridColumn),
             propertyChanged: (b, o, n) =>
             {
-                if (((DataGridColumn)b).HeaderLabel != null && o != n)
+                if (o != n && b is DataGridColumn self && self.HeaderLabel != null)
                 {
-                    ((DataGridColumn)b).HeaderLabel.Style = n as Style;
+                    self.HeaderLabel.Style = n as Style;
                 }
             });
 
