@@ -39,8 +39,8 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
-        _defaultHeaderStyle = (Style)_headerView.Resources["DefaultHeaderStyle"];
-        _defaultSortIconStyle = (Style)_headerView.Resources["DefaultSortIconStyle"];
+        _defaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
+        _defaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
     }
 
     #endregion ctor

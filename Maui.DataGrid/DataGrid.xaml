@@ -6,36 +6,32 @@
       x:Class="Maui.DataGrid.DataGrid"
       x:DataType="local:DataGrid"
       CompressedLayout.IsHeadless="True">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
+            <!--Default Header Style-->
+            <Style x:Key="DefaultHeaderStyle" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+            </Style>
+            <!--Default Sort Icon Style-->
+            <Style x:Key="DefaultSortIconStyle" TargetType="Polygon">
+                <Setter Property="Aspect" Value="Uniform" />
+                <Setter Property="Fill" Value="Black" />
+                <Setter Property="Points" Value="50,0 0,80 100,80" />
+                <Setter Property="Margin" Value="0,0,3,0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <Grid CompressedLayout.IsHeadless="True">
-        <Grid.Resources>
-            <ResourceDictionary>
-                <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
-            </ResourceDictionary>
-        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={Reference self}}">
-            <Grid.Resources>
-                <ResourceDictionary>
-                    <!--Default Header Style-->
-                    <Style x:Key="DefaultHeaderStyle" TargetType="Label">
-                        <Setter Property="FontAttributes" Value="Bold" />
-                        <Setter Property="HorizontalOptions" Value="Center" />
-                        <Setter Property="VerticalOptions" Value="Center" />
-                        <Setter Property="TextColor" Value="Black" />
-                        <Setter Property="LineBreakMode" Value="WordWrap" />
-                    </Style>
-                    <Style x:Key="DefaultSortIconStyle" TargetType="Polygon">
-                        <Setter Property="Aspect" Value="Uniform" />
-                        <Setter Property="Fill" Value="Black" />
-                        <Setter Property="Points" Value="50,0 0,80 100,80" />
-                        <Setter Property="Margin" Value="0,0,3,0" />
-                    </Style>
-                </ResourceDictionary>
-            </Grid.Resources>
-        </Grid>
+        <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={Reference self}}" />
         <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={Reference self}}"
                      IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}" IsEnabled="{Binding RefreshingEnabled, Source={Reference self}}">
             <!--  Remove ContentView when this pull request is merged https://github.com/dotnet/maui/pull/14302  -->
