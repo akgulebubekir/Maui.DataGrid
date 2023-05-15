@@ -123,8 +123,7 @@ internal sealed class DataGridRow : Grid
         var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
         if (actualIndex > -1)
         {
-            _bgColor =
-                DataGrid?.SelectionEnabled == true && DataGrid.SelectedItem != null && _hasSelected
+            _bgColor = DataGrid?.SelectionEnabled == true && _hasSelected
                     ? DataGrid.ActiveRowColor
                     : DataGrid?.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
             _textColor = DataGrid?.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
