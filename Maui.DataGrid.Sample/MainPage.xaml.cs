@@ -1,7 +1,5 @@
 namespace Maui.DataGrid.Sample;
 
-using System.Globalization;
-using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.ViewModels;
 
 [XamlCompilation(XamlCompilationOptions.Compile)]
