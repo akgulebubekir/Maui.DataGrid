@@ -368,8 +368,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
             propertyChanged: (b, _, _) =>
             {
-                var self = (DataGrid)b;
-                if (self.Columns != null && self.ItemsSource != null)
+                if (b is DataGrid self)
                 {
                     self.Reload();
                 }
