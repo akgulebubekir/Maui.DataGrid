@@ -207,6 +207,11 @@ public partial class DataGrid
             {
                 var self = (DataGrid)b;
 
+                if (n == o)
+                {
+                    return;
+                }
+
                 if (o is ObservableCollection<DataGridColumn> oldColumns)
                 {
                     oldColumns.CollectionChanged -= self.OnColumnsChanged;
@@ -226,6 +231,12 @@ public partial class DataGrid
             propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
+
+                if (n == o)
+                {
+                    return;
+                }
+
                 //ObservableCollection Tracking
                 if (o is INotifyCollectionChanged collectionChanged)
                 {
