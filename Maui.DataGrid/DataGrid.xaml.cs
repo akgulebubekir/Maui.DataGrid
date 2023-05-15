@@ -325,11 +325,11 @@ public partial class DataGrid
 
     public static readonly BindableProperty SelectionEnabledProperty =
         BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true,
-            propertyChanged: (b, _, _) =>
+            propertyChanged: (b, _, n) =>
             {
-                var self = (DataGrid)b;
-                if (!self.SelectionEnabled && self.SelectedItem != null)
+                if (n is bool selectionEnabled && !selectionEnabled)
                 {
+                var self = (DataGrid)b;
                     self.SelectedItem = null;
                 }
             });
