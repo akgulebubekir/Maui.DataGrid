@@ -17,6 +17,9 @@ public partial class DataGrid
 {
     private readonly WeakEventManager _itemSelectedEventManager = new();
 
+    private readonly Style _defaultHeaderStyle;
+    private readonly Style _defaultSortIconStyle;
+
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
     {
         add => _itemSelectedEventManager.AddEventHandler(value);
@@ -36,6 +39,8 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
+        _defaultHeaderStyle = (Style)_headerView.Resources["DefaultHeaderStyle"];
+        _defaultSortIconStyle = (Style)_headerView.Resources["DefaultSortIconStyle"];
     }
 
     #endregion ctor
@@ -742,12 +747,11 @@ public partial class DataGrid
 
     private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
-        column.HeaderLabel.Style = column.HeaderLabelStyle ??
-                                   HeaderLabelStyle ?? (Style)_headerView.Resources["DefaultHeaderStyle"];
+        column.HeaderLabel.Style = column.HeaderLabelStyle ?? HeaderLabelStyle ?? _defaultHeaderStyle;
 
         if (IsSortable && column.SortingEnabled && column.IsSortable(this))
         {
-            column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["DefaultSortIconStyle"];
+            column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
             column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
 
