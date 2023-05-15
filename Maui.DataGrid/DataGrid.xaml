@@ -43,7 +43,7 @@
                     BackgroundColor="{Binding BorderColor, Source={Reference self}, Mode=TwoWay}"
                     SelectedItem="{Binding SelectedItem, Source={Reference self}, Mode=TwoWay}"
                     ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}, Mode=TwoWay}"
-                    SelectionMode="{Binding SelectionEnabled, Source={Reference self}, Converter={StaticResource boolToSelectionMode}, Mode=TwoWay}">
+                    SelectionMode="{Binding SelectionEnabled, Source={Reference self}, Converter={StaticResource boolToSelectionMode}}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <local:DataGridRow DataGrid="{Reference self}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
