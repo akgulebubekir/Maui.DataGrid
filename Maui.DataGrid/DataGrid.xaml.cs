@@ -282,7 +282,7 @@ public partial class DataGrid
                         newCollection.CollectionChanged += self.HandleItemsSourceCollectionChanged;
                     }
 
-                    self.InternalItems = new List<object>(((IEnumerable)n).Cast<object>());
+                    self.InternalItems = ((IEnumerable)n).Cast<object>().ToList();
                 }
 
                 if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
