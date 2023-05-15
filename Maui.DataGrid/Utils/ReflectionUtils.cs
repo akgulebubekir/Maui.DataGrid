@@ -30,9 +30,9 @@ internal static class ReflectionUtils
             var type = result.GetType();
 
             //  Property
-            result = !token.Contains(IndexEndOp)
-                ? GetPropertyValue(type, obj, token)
-                : GetIndexValue(type, obj, token);
+            result = token.Contains(IndexEndOp)
+                ? GetIndexValue(type, obj, token)
+                : GetPropertyValue(type, obj, token);
         }
 
         return result;
