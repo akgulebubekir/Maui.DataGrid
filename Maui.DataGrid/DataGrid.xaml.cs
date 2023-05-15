@@ -395,11 +395,14 @@ public partial class DataGrid
             },
             (b, o, n) =>
             {
-                var self = (DataGrid)b;
-                if (o != n)
+                if (o == n)
                 {
-                    self.SortItems((SortData)n);
+                    return;
                 }
+
+                var self = (DataGrid)b;
+
+                self.SortItems((SortData)n);
             });
 
     public static readonly BindableProperty HeaderLabelStyleProperty =
