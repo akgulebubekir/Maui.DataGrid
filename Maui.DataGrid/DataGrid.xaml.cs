@@ -402,9 +402,9 @@ public partial class DataGrid
             },
             (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (o != n && b is DataGrid self && n is SortData sortData)
                 {
-                    self.SortItems((SortData)n);
+                    self.SortItems(sortData);
                 }
             });
 
