@@ -120,17 +120,17 @@ internal sealed class DataGridRow : Grid
     private void UpdateBackgroundColor()
     {
         _hasSelected = DataGrid?.SelectedItem == BindingContext;
-        var actualIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
+        var rowIndex = DataGrid?.InternalItems?.IndexOf(BindingContext) ?? -1;
 
-        if (actualIndex < 0)
+        if (rowIndex < 0)
         {
             return;
         }
 
         _bgColor = DataGrid?.SelectionEnabled == true && _hasSelected
                 ? DataGrid.ActiveRowColor
-                : DataGrid?.RowsBackgroundColorPalette.GetColor(actualIndex, BindingContext);
-        _textColor = DataGrid?.RowsTextColorPalette.GetColor(actualIndex, BindingContext);
+                : DataGrid?.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
+        _textColor = DataGrid?.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
 
         ChangeColor(_bgColor, _textColor);
     }
