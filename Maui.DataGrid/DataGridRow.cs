@@ -53,7 +53,7 @@ internal sealed class DataGridRow : Grid
 
         UpdateBackgroundColor();
 
-        BackgroundColor = DataGrid.BorderColor;
+        BackgroundColor = DataGrid.BorderColor; // We are using the spacing between rows to generate visible borders, and thus the background color is the border color.
 
         var borderThickness = DataGrid.BorderThickness;
 
