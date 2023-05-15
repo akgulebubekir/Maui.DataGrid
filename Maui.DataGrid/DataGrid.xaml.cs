@@ -455,7 +455,7 @@ public partial class DataGrid
 
     /// <summary>
     /// ItemSizingStrategy
-    /// Default Value is MeasureFirstItem
+    /// Default Value is MeasureFirstItem, except on Android
     /// </summary>
     public ItemSizingStrategy ItemSizingStrategy
     {
