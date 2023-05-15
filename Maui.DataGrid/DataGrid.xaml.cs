@@ -267,7 +267,7 @@ public partial class DataGrid
     {
         if (sender is IEnumerable items)
         {
-            InternalItems = new List<object>(items.Cast<object>());
+            InternalItems = items.Cast<object>().ToList();
             if (SelectedItem != null && !InternalItems.Contains(SelectedItem))
             {
                 SelectedItem = null;
