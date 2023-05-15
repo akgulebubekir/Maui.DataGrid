@@ -171,6 +171,9 @@ public partial class DataGrid
                 }
             });
 
+    public static readonly BindableProperty ItemSizingStrategyProperty =
+    BindableProperty.Create(nameof(ItemSizingStrategy), typeof(ItemSizingStrategy), typeof(DataGrid), DeviceInfo.Platform == DevicePlatform.Android ? ItemSizingStrategy.MeasureAllItems : ItemSizingStrategy.MeasureFirstItem);
+
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
         BindableProperty.Create(nameof(RowsBackgroundColorPalette), typeof(IColorProvider), typeof(DataGrid),
             new PaletteCollection
@@ -448,6 +451,16 @@ public partial class DataGrid
     {
         get => (Color)GetValue(BorderColorProperty);
         set => SetValue(BorderColorProperty, value);
+    }
+
+    /// <summary>
+    /// ItemSizingStrategy
+    /// Default Value is MeasureFirstItem
+    /// </summary>
+    public ItemSizingStrategy ItemSizingStrategy
+    {
+        get => (ItemSizingStrategy)GetValue(ItemSizingStrategyProperty);
+        set => SetValue(ItemSizingStrategyProperty, value);
     }
 
     /// <summary>

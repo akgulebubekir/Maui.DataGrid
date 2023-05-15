@@ -42,8 +42,7 @@
                     WidthRequest="{Binding WidthRequest, Source={Reference self}}"
                     BackgroundColor="{Binding BorderColor, Source={Reference self}}"
                     SelectedItem="{Binding SelectedItem, Source={Reference self}, Mode=TwoWay}"
-                    ItemSizingStrategy="{OnPlatform Android=MeasureAllItems,
-                                                    Default=MeasureFirstItem}"
+                    ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}}"
                     SelectionMode="{Binding SelectionEnabled, Source={Reference self}, Converter={StaticResource boolToSelectionMode}}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
