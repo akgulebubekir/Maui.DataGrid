@@ -20,14 +20,14 @@
             <Grid.Resources>
                 <ResourceDictionary>
                     <!--Default Header Style-->
-                    <Style x:Key="HeaderDefaultStyle" TargetType="Label">
+                    <Style x:Key="DefaultHeaderStyle" TargetType="Label">
                         <Setter Property="FontAttributes" Value="Bold" />
                         <Setter Property="HorizontalOptions" Value="Center" />
                         <Setter Property="VerticalOptions" Value="Center" />
                         <Setter Property="TextColor" Value="Black" />
                         <Setter Property="LineBreakMode" Value="WordWrap" />
                     </Style>
-                    <Style x:Key="SortIconStyle" TargetType="Polygon">
+                    <Style x:Key="DefaultSortIconStyle" TargetType="Polygon">
                         <Setter Property="Aspect" Value="Uniform" />
                         <Setter Property="Fill" Value="Black" />
                         <Setter Property="Points" Value="50,0 0,80 100,80" />

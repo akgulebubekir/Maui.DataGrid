@@ -743,11 +743,11 @@ public partial class DataGrid
     private View GetHeaderViewForColumn(DataGridColumn column, int index)
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ??
-                                   HeaderLabelStyle ?? (Style)_headerView.Resources["HeaderDefaultStyle"];
+                                   HeaderLabelStyle ?? (Style)_headerView.Resources["DefaultHeaderStyle"];
 
         if (IsSortable && column.SortingEnabled && column.IsSortable(this))
         {
-            column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["SortIconStyle"];
+            column.SortingIcon.Style = SortIconStyle ?? (Style)_headerView.Resources["DefaultSortIconStyle"];
             column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
             column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
 
