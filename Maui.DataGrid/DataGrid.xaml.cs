@@ -238,9 +238,9 @@ public partial class DataGrid
                 }
 
                 //ObservableCollection Tracking
-                if (o is INotifyCollectionChanged collectionChanged)
+                if (o is INotifyCollectionChanged oldCollection)
                 {
-                    collectionChanged.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
+                    oldCollection.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
                 }
 
                 if (n == null)
@@ -249,9 +249,9 @@ public partial class DataGrid
                 }
                 else
                 {
-                    if (n is INotifyCollectionChanged changed)
+                    if (n is INotifyCollectionChanged newCollection)
                     {
-                        changed.CollectionChanged += self.HandleItemsSourceCollectionChanged;
+                        newCollection.CollectionChanged += self.HandleItemsSourceCollectionChanged;
                     }
 
                     self.InternalItems = new List<object>(((IEnumerable)n).Cast<object>());
