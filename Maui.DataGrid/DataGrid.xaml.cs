@@ -414,13 +414,9 @@ public partial class DataGrid
             (b, v) =>
             {
                 var self = (DataGrid)b;
-                var sData = (SortData)v;
+                var sortData = (SortData)v;
 
-                return
-                    sData == null ||
-                    self.Columns == null ||
-                    self.Columns.Count == 0 ||
-                    (sData.Index < self.Columns.Count && self.Columns[sData.Index].SortingEnabled);
+                return self.CanSort(sortData);
             },
             (b, o, n) =>
             {
