@@ -47,8 +47,10 @@ public partial class DataGrid
 
     #region Sorting methods
 
-    private void SortItems(SortData sortData)
+    private void SortItems(SortData? sortData = null)
     {
+        sortData ??= SortedColumnIndex;
+
         if (InternalItems == null || !CanSort(sortData))
         {
             return;
@@ -61,8 +63,10 @@ public partial class DataGrid
         _collectionView.ItemsSource = _internalItems;
     }
 
-    private bool CanSort(SortData sortData)
+    private bool CanSort(SortData? sortData = null)
     {
+        sortData ??= SortedColumnIndex;
+
         if (!IsSortable)
         {
             Console.WriteLine("DataGrid is not sortable");
@@ -542,7 +546,7 @@ public partial class DataGrid
 
             if (IsSortable && SortedColumnIndex != null)
             {
-                SortItems(SortedColumnIndex);
+                SortItems();
             }
             else
             {
