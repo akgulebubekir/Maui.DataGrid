@@ -67,6 +67,12 @@ public partial class DataGrid
     {
         sortData ??= SortedColumnIndex;
 
+        if (InternalItems is null)
+        {
+            Console.WriteLine("There are no items to sort");
+            return false;
+        }
+
         if (!IsSortable)
         {
             Console.WriteLine("DataGrid is not sortable");
@@ -544,7 +550,7 @@ public partial class DataGrid
         {
             _internalItems = value;
 
-            if (IsSortable && SortedColumnIndex != null)
+            if (CanSort())
             {
                 SortItems();
             }
