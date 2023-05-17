@@ -63,6 +63,18 @@ public partial class DataGrid
 
     private bool CanSort(SortData sortData)
     {
+        if (!IsSortable)
+        {
+            Console.WriteLine("DataGrid is not sortable");
+            return false;
+        }
+
+        if (Columns.Count < 1)
+        {
+            Console.WriteLine("There are no columns on this DataGrid.");
+            return false;
+        }
+
         if (sortData.Index >= Columns.Count)
         {
             Console.WriteLine("Sort index is out of range");
@@ -86,12 +98,6 @@ public partial class DataGrid
         if (!columnToSort.IsSortable(this))
         {
             Console.WriteLine($"{columnToSort.PropertyName} column is not sortable");
-            return false;
-        }
-
-        if (!IsSortable)
-        {
-            Console.WriteLine("DataGrid is not sortable");
             return false;
         }
 
