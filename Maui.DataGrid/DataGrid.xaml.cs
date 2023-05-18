@@ -67,6 +67,12 @@ public partial class DataGrid
     {
         sortData ??= SortedColumnIndex;
 
+        if (sortData is null)
+        {
+            Console.WriteLine("There is no sort data");
+            return false;
+        }
+
         if (InternalItems is null)
         {
             Console.WriteLine("There are no items to sort");
