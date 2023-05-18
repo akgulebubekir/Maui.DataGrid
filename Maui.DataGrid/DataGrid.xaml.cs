@@ -1,6 +1,7 @@
 namespace Maui.DataGrid;
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -47,22 +48,6 @@ public partial class DataGrid
 
     #region Sorting methods
 
-    private void SortItems(SortData? sortData = null)
-    {
-        sortData ??= SortedColumnIndex;
-
-        if (InternalItems == null || !CanSort(sortData))
-        {
-            return;
-        }
-
-        _internalItems = GetSortedItems(InternalItems, sortData);
-
-        SortedColumnIndex = sortData;
-
-        _collectionView.ItemsSource = _internalItems;
-    }
-
     private bool CanSort(SortData? sortData = null)
     {
         sortData ??= SortedColumnIndex;
@@ -88,6 +73,12 @@ public partial class DataGrid
         if (Columns.Count < 1)
         {
             Console.WriteLine("There are no columns on this DataGrid.");
+            return false;
+        }
+
+        if (sortData is null)
+        {
+            Console.WriteLine("Sort index is null");
             return false;
         }
 
@@ -120,7 +111,7 @@ public partial class DataGrid
         return true;
     }
 
-    private IList<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
+    private IList<object> GetSortedItems(IEnumerable<object> unsortedItems, SortData sortData)
     {
         var columnToSort = Columns[sortData.Index];
 
@@ -137,7 +128,7 @@ public partial class DataGrid
                 _ = columnToSort.SortingIcon.RotateTo(180);
                 break;
             case SortingOrder.None:
-                items = unsortedItems;
+                items = unsortedItems.ToList();
                 break;
             default:
                 throw new NotImplementedException();
@@ -161,6 +152,49 @@ public partial class DataGrid
     }
 
     #endregion Sorting methods
+
+    #region Pagination methods
+
+    private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
+    {
+        var skip = (PageNumber - 1) * PageSize;
+
+        return unpaginatedItems.Skip(skip).Take(PageSize);
+    }
+
+    private void SortAndPaginate(SortData? sortData = null)
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
+        sortData ??= SortedColumnIndex;
+
+        var originalItems = ItemsSource.Cast<object>().ToList();
+
+        IList<object> sortedItems;
+
+        if (CanSort(sortData))
+        {
+            sortedItems = GetSortedItems(originalItems, sortData);
+        }
+        else
+        {
+            sortedItems = originalItems;
+        }
+
+        if (PaginationEnabled)
+        {
+            InternalItems = GetPaginatedItems(sortedItems).ToList();
+        }
+        else
+        {
+            InternalItems = sortedItems;
+        }
+    }
+
+    #endregion Pagination methods
 
     #region Methods
 
@@ -190,12 +224,17 @@ public partial class DataGrid
 
     public static readonly BindableProperty HeaderBackgroundProperty =
         BindableProperty.Create(nameof(HeaderBackground), typeof(Color), typeof(DataGrid), Colors.White,
-            propertyChanged: (b, _, n) =>
+            propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
-                if (self._headerView != null && !self.HeaderBordersVisible)
+                if (o != n && self._headerView != null && !self.HeaderBordersVisible && n is Color color)
                 {
-                    self._headerView.BackgroundColor = (Color)n;
+                    foreach (var child in self._headerView.Children.OfType<View>())
+                    {
+                        child.BackgroundColor = color;
+                    }
+
+                    self._footerView.BackgroundColor = color;
                 }
             });
 
@@ -204,9 +243,9 @@ public partial class DataGrid
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
-                if (self.HeaderBordersVisible)
+                if (self.HeaderBordersVisible && n is Color color)
                 {
-                    self._headerView.BackgroundColor = (Color)n;
+                    self._headerView.BackgroundColor = color;
                 }
 
                 if (self.Columns != null && self.ItemsSource != null)
@@ -304,7 +343,11 @@ public partial class DataGrid
                         newCollection.CollectionChanged += self.HandleItemsSourceCollectionChanged;
                     }
 
-                    self.InternalItems = ((IEnumerable)n).Cast<object>().ToList();
+                    var itemsSource = ((IEnumerable)n).Cast<object>().ToList();
+
+                    self.PageCount = (int)Math.Ceiling(itemsSource.Count / (double)self.PageSize);
+
+                    self.SortAndPaginate();
                 }
 
                 if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
@@ -325,8 +368,31 @@ public partial class DataGrid
         }
     }
 
+    public static readonly BindableProperty PageCountProperty =
+        BindableProperty.Create(nameof(PageCount), typeof(int), typeof(DataGrid), 1,
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n && b is DataGrid self && n is int pageCount && pageCount > 0)
+                {
+                    self._paginationStepper.Maximum = pageCount;
+                }
+            });
+
+    public static readonly BindableProperty PageSizeProperty =
+        BindableProperty.Create(nameof(PageSize), typeof(int), typeof(DataGrid), 100,
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n && b is DataGrid self)
+                {
+                    self.SortAndPaginate();
+                }
+            });
+
     public static readonly BindableProperty RowHeightProperty =
         BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(DataGrid), 40);
+
+    public static readonly BindableProperty FooterHeightProperty =
+        BindableProperty.Create(nameof(FooterHeight), typeof(int), typeof(DataGrid), 40);
 
     public static readonly BindableProperty HeaderHeightProperty =
         BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40);
@@ -370,6 +436,17 @@ public partial class DataGrid
                 return null;
             }
         );
+
+    public static readonly BindableProperty PaginationEnabledProperty =
+        BindableProperty.Create(nameof(PaginationEnabled), typeof(bool), typeof(DataGrid), false,
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n && n is bool paginationEnabled && !paginationEnabled)
+                {
+                    var self = (DataGrid)b;
+                    self.SortAndPaginate();
+                }
+            });
 
     public static readonly BindableProperty SelectionEnabledProperty =
         BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true,
@@ -444,7 +521,26 @@ public partial class DataGrid
             {
                 if (o != n && b is DataGrid self && n is SortData sortData)
                 {
-                    self.SortItems(sortData);
+                    self.SortAndPaginate(sortData);
+                }
+            });
+
+    public static readonly BindableProperty PageNumberProperty =
+        BindableProperty.Create(nameof(PageNumber), typeof(int), typeof(DataGrid), 1, BindingMode.TwoWay,
+            (b, v) =>
+            {
+                if (b is DataGrid self && v is int pageNumber)
+                {
+                    return pageNumber == 1 || pageNumber <= self.PageCount;
+                }
+
+                return false;
+            },
+            (b, o, n) =>
+            {
+                if (o != n && b is DataGrid self && self.ItemsSource?.Cast<object>().Any() == true)
+                {
+                    self.SortAndPaginate();
                 }
             });
 
@@ -556,14 +652,7 @@ public partial class DataGrid
         {
             _internalItems = value;
 
-            if (CanSort())
-            {
-                SortItems();
-            }
-            else
-            {
-                _collectionView.ItemsSource = _internalItems;
-            }
+            _collectionView.ItemsSource = _internalItems; // TODO: Use efficent CollectionChanged handling with observables
         }
     }
 
@@ -598,12 +687,30 @@ public partial class DataGrid
     }
 
     /// <summary>
+    /// Gets or sets the page size
+    /// </summary>
+    public int PageSize
+    {
+        get => (int)GetValue(PageSizeProperty);
+        set => SetValue(PageSizeProperty, value);
+    }
+
+    /// <summary>
     /// Sets the row height
     /// </summary>
     public int RowHeight
     {
         get => (int)GetValue(RowHeightProperty);
         set => SetValue(RowHeightProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets footer height
+    /// </summary>
+    public int FooterHeight
+    {
+        get => (int)GetValue(FooterHeightProperty);
+        set => SetValue(FooterHeightProperty, value);
     }
 
     /// <summary>
@@ -624,6 +731,24 @@ public partial class DataGrid
     {
         get => (bool)GetValue(IsSortableProperty);
         set => SetValue(IsSortableProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the page number. Default value is 1
+    /// </summary>
+    public int PageNumber
+    {
+        get => (int)GetValue(PageNumberProperty);
+        set => SetValue(PageNumberProperty, value);
+    }
+
+    /// <summary>
+    /// Enables pagination in dataGrid. Default value is False
+    /// </summary>
+    public bool PaginationEnabled
+    {
+        get => (bool)GetValue(PaginationEnabledProperty);
+        set => SetValue(PaginationEnabledProperty, value);
     }
 
     /// <summary>
@@ -735,6 +860,15 @@ public partial class DataGrid
     {
         get => (View)GetValue(NoDataViewProperty);
         set => SetValue(NoDataViewProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the page count
+    /// </summary>
+    public int PageCount
+    {
+        get => (int)GetValue(PageCountProperty);
+        private set => SetValue(PageCountProperty, value);
     }
 
     #endregion Properties
