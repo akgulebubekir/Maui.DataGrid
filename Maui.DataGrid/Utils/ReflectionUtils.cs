@@ -1,12 +1,9 @@
 namespace Maui.DataGrid.Utils;
 
-using System.Globalization;
-using System.Reflection;
+using System.ComponentModel;
 
 internal static class ReflectionUtils
 {
-    private const char IndexBeginOp = '[';
-    private const char IndexEndOp = ']';
     private const char PropertyOfOp = '.';
 
     public static object? GetValueByPath(object obj, string path)
@@ -16,7 +13,7 @@ internal static class ReflectionUtils
             return null;
         }
 
-        var tokens = path.Split(IndexBeginOp, PropertyOfOp);
+        var tokens = path.Split(PropertyOfOp);
 
         var result = obj;
 
@@ -27,50 +24,21 @@ internal static class ReflectionUtils
                 break;
             }
 
-            var type = result.GetType();
-
-            //  Property
-            result = token.Contains(IndexEndOp)
-                ? GetIndexValue(type, obj, token)
-                : GetPropertyValue(type, obj, token);
+            result = GetPropertyValue(result, token);
         }
 
         return result;
     }
 
-    private static object? GetPropertyValue(Type type, object obj, string propertyName)
+    private static object? GetPropertyValue(object obj, string propertyName)
     {
-        try
-        {
-            return type.GetRuntimeProperty(propertyName)?.GetValue(obj);
-        }
-        catch
+        var propertyDescriptor = TypeDescriptor.GetProperties(obj)[propertyName];
+
+        if (propertyDescriptor is null)
         {
             return null;
         }
-    }
 
-    private static object? GetIndexValue(Type type, object obj, string index)
-    {
-        var indexOperator = type.GetRuntimeProperty("Item");
-        if (indexOperator != null)
-        {
-            var trimmedIndex = index.Trim().TrimEnd(IndexEndOp).Trim();
-
-            // Looking up suitable index operator
-            foreach (var parameter in indexOperator.GetIndexParameters())
-            {
-                try
-                {
-                    var indexVal = Convert.ChangeType(trimmedIndex, parameter.ParameterType, CultureInfo.InvariantCulture);
-                    return indexOperator.GetValue(obj, new[] { indexVal });
-                }
-                catch
-                {
-                }
-            }
-        }
-
-        return null;
+        return propertyDescriptor.GetValue(obj);
     }
 }
