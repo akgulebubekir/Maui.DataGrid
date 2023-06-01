@@ -117,7 +117,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #endregion Bindable Properties
 
-    #region properties
+    #region Properties
 
     internal DataGrid? DataGrid { get; set; }
 
@@ -262,7 +262,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal View SortingIconContainer { get; }
     internal SortingOrder SortingOrder { get; set; }
 
-    #endregion properties
+    #endregion Properties
 
     #region Methods
 

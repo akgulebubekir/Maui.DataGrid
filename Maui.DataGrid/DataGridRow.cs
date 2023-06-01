@@ -13,7 +13,7 @@ internal sealed class DataGridRow : Grid
 
     #endregion Fields
 
-    #region properties
+    #region Properties
 
     public DataGrid DataGrid
     {
@@ -21,7 +21,7 @@ internal sealed class DataGridRow : Grid
         set => SetValue(DataGridProperty, value);
     }
 
-    #endregion properties
+    #endregion Properties
 
     #region Bindable Properties
 
