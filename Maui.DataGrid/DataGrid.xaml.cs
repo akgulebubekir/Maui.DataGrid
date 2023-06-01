@@ -454,7 +454,7 @@ public partial class DataGrid
         BindableProperty.Create(nameof(PaginationEnabled), typeof(bool), typeof(DataGrid), false,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && n is bool paginationEnabled && !paginationEnabled)
+                if (o != n)
                 {
                     var self = (DataGrid)b;
                     self.SortAndPaginate();
