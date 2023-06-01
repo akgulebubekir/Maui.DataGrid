@@ -16,6 +16,12 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
+    private static readonly ColumnDefinitionCollection HeaderColumnDefinitions = new()
+                {
+                    new() { Width = new(1, GridUnitType.Star) },
+                    new() { Width = new(1, GridUnitType.Auto) }
+                };
+
     private readonly WeakEventManager _itemSelectedEventManager = new();
 
     private readonly Style _defaultHeaderStyle;
@@ -972,11 +978,7 @@ public partial class DataGrid
             {
                 ColumnSpacing = 0,
                 Padding = new(0, 0, 4, 0),
-                ColumnDefinitions = new()
-                {
-                    new() { Width = new(1, GridUnitType.Star) },
-                    new() { Width = new(1, GridUnitType.Auto) }
-                },
+                ColumnDefinitions = HeaderColumnDefinitions,
                 Children = { column.HeaderLabel, column.SortingIconContainer },
                 GestureRecognizers =
                 {
