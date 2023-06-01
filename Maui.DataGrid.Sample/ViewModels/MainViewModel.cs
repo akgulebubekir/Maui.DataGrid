@@ -14,6 +14,7 @@ public class MainViewModel : INotifyPropertyChanged
     private bool _teamColumnVisible = true;
     private bool _wonColumnVisible = true;
     private bool _headerBordersVisible = true;
+    private bool _paginationEnabled = true;
     private ushort _teamColumnWidth = 70;
 
     public MainViewModel()
@@ -69,6 +70,16 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _teamColumnWidth = value;
             OnPropertyChanged(nameof(TeamColumnWidth));
+        }
+    }
+
+    public bool PaginationEnabled
+    {
+        get => _paginationEnabled;
+        set
+        {
+            _paginationEnabled = value;
+            OnPropertyChanged(nameof(PaginationEnabled));
         }
     }
 
