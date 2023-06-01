@@ -16,6 +16,8 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
+    #region Fields
+
     private static readonly ColumnDefinitionCollection HeaderColumnDefinitions = new()
                 {
                     new() { Width = new(1, GridUnitType.Star) },
@@ -23,23 +25,12 @@ public partial class DataGrid
                 };
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
+    private readonly WeakEventManager _refreshingEventManager = new();
 
     private readonly Style _defaultHeaderStyle;
     private readonly Style _defaultSortIconStyle;
 
-    public event EventHandler<SelectionChangedEventArgs> ItemSelected
-    {
-        add => _itemSelectedEventManager.AddEventHandler(value);
-        remove => _itemSelectedEventManager.RemoveEventHandler(value);
-    }
-
-    private readonly WeakEventManager _refreshingEventManager = new();
-
-    public event EventHandler Refreshing
-    {
-        add => _refreshingEventManager.AddEventHandler(value);
-        remove => _refreshingEventManager.RemoveEventHandler(value);
-    }
+    #endregion Fields
 
     #region ctor
 
@@ -51,6 +42,22 @@ public partial class DataGrid
     }
 
     #endregion ctor
+
+    #region Events
+
+    public event EventHandler<SelectionChangedEventArgs> ItemSelected
+    {
+        add => _itemSelectedEventManager.AddEventHandler(value);
+        remove => _itemSelectedEventManager.RemoveEventHandler(value);
+    }
+
+    public event EventHandler Refreshing
+    {
+        add => _refreshingEventManager.AddEventHandler(value);
+        remove => _refreshingEventManager.RemoveEventHandler(value);
+    }
+
+    #endregion Events
 
     #region Sorting methods
 
@@ -986,6 +993,7 @@ public partial class DataGrid
                     {
                         Command = new Command(() =>
                         {
+                            // This is to invert SortOrder when the user taps on a column.
                             var order = column.SortingOrder == SortingOrder.Ascendant
                                 ? SortingOrder.Descendant
                                 : SortingOrder.Ascendant;

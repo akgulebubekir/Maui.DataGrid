@@ -8,9 +8,14 @@ using System.ComponentModel;
 /// </summary>
 public sealed class DataGridColumn : BindableObject, IDefinition
 {
+    #region Fields
+
     private bool? _isSortable;
     private ColumnDefinition? _columnDefinition;
     private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
+    private readonly WeakEventManager _sizeChangedEventManager = new();
+
+    #endregion Fields
 
     public DataGridColumn()
     {
@@ -25,7 +30,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         };
     }
 
-    private readonly WeakEventManager _sizeChangedEventManager = new();
+    #region Events
 
     public event EventHandler SizeChanged
     {
@@ -33,7 +38,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         remove => _sizeChangedEventManager.RemoveEventHandler(value);
     }
 
-    private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
+    #endregion Events
 
     #region Bindable Properties
 
@@ -206,11 +211,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         set => SetValue(CellTemplateProperty, value);
     }
 
-    internal Polygon SortingIcon { get; }
-    internal Label HeaderLabel { get; }
-    internal View SortingIconContainer { get; }
-    internal SortingOrder SortingOrder { get; set; }
-
     /// <summary>
     /// LineBreakModeProperty for the text. WordWrap by default.
     /// </summary>
@@ -249,6 +249,24 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
+    /// Label Style of the header. <c>TargetType</c> must be Label.
+    /// </summary>
+    public Style HeaderLabelStyle
+    {
+        get => (Style)GetValue(HeaderLabelStyleProperty);
+        set => SetValue(HeaderLabelStyleProperty, value);
+    }
+
+    internal Polygon SortingIcon { get; }
+    internal Label HeaderLabel { get; }
+    internal View SortingIconContainer { get; }
+    internal SortingOrder SortingOrder { get; set; }
+
+    #endregion properties
+
+    #region Methods
+
+    /// <summary>
     /// Determines via reflection if the column's data type is sortable.
     /// If you want to disable sorting for specific column please use <c>SortingEnabled</c> property
     /// </summary>
@@ -278,14 +296,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         return _isSortable ?? false;
     }
 
-    /// <summary>
-    /// Label Style of the header. <c>TargetType</c> must be Label.
-    /// </summary>
-    public Style HeaderLabelStyle
-    {
-        get => (Style)GetValue(HeaderLabelStyleProperty);
-        set => SetValue(HeaderLabelStyleProperty, value);
-    }
+    private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
 
-    #endregion properties
+    #endregion Methods
 }
