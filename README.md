@@ -72,3 +72,8 @@ Screenshots
 ----------
 
 ![Screenshots](https://raw.githubusercontent.com/akgulebubekir/Maui.DataGrid/master/Screenshots/windows_landscape.PNG)
+
+
+## Repository Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/850b3036e03f7eff1bb74b4744e42aa3901a8ee7.svg "Repobeats analytics")
