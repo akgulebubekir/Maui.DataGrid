@@ -256,7 +256,7 @@ public partial class DataGrid
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
-                if (self.HeaderBordersVisible && n is Color color)
+                if (self._headerView != null && self.HeaderBordersVisible && n is Color color)
                 {
                     self._headerView.BackgroundColor = color;
                 }
