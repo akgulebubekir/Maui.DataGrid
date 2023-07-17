@@ -971,7 +971,7 @@ public partial class DataGrid
 
     #region Header Creation Methods
 
-    private View GetHeaderViewForColumn(DataGridColumn column, int index)
+    private View GetHeaderViewForColumn(DataGridColumn column)
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? HeaderLabelStyle ?? _defaultHeaderStyle;
 
@@ -997,6 +997,8 @@ public partial class DataGrid
                             var order = column.SortingOrder == SortingOrder.Ascendant
                                 ? SortingOrder.Descendant
                                 : SortingOrder.Ascendant;
+
+                            var index = Columns.IndexOf(column);
 
                             SortedColumnIndex = new(index, order);
                         }, () => column.SortingEnabled)
@@ -1043,7 +1045,7 @@ public partial class DataGrid
                 continue;
             }
 
-            col.HeaderView ??= GetHeaderViewForColumn(col, i);
+            col.HeaderView ??= GetHeaderViewForColumn(col);
 
             col.HeaderView.SetBinding(BackgroundColorProperty, new Binding(nameof(HeaderBackground), source: this));
 
