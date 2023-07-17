@@ -665,7 +665,7 @@ public partial class DataGrid
         {
             _internalItems = value;
 
-            _collectionView.ItemsSource = _internalItems; // TODO: Use efficent CollectionChanged handling with observables
+            _collectionView.ItemsSource = _internalItems; // TODO: Use efficient CollectionChanged handling with observables
         }
     }
 
