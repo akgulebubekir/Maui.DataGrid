@@ -24,6 +24,10 @@
                 <Setter Property="Points" Value="50,0 0,80 100,80" />
                 <Setter Property="Margin" Value="0,0,3,0" />
             </Style>
+            <!--Pagination Stepper Style-->
+            <Style x:Key="PaginationStepperStyle" TargetType="Stepper">
+                <Setter Property="Margin" Value="5" />
+            </Style>
         </ResourceDictionary>
     </ContentView.Resources>
     <Grid CompressedLayout.IsHeadless="True">
@@ -61,7 +65,7 @@
             <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center">
                 <Label Text="Page:" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
                 <Label Text="{Binding PageNumber, Source={Reference self}}" VerticalTextAlignment="Center" TextColor="Black" />
-                <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={x:Reference self}}" Margin="5" BackgroundColor="Black" Minimum="1" />
+                <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={x:Reference self}}" Style="{StaticResource PaginationStepperStyle}" Minimum="1" />
             </HorizontalStackLayout>
         </Grid>
     </Grid>
