@@ -528,6 +528,11 @@ public partial class DataGrid
                 var self = (DataGrid)b;
                 var sortData = (SortData)v;
 
+                if (!self.IsLoaded)
+                {
+                    return true;
+                }
+
                 return self.CanSort(sortData);
             },
             (b, o, n) =>
