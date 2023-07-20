@@ -1,30 +1,43 @@
 namespace Maui.DataGrid.Utils;
 
+using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 
 internal static class ReflectionUtils
 {
     private const char PropertyOfOp = '.';
 
+    private static readonly ConcurrentDictionary<Type, PropertyDescriptorCollection> PropertyTypeCache = new();
+
     public static object? GetValueByPath(object obj, string path)
     {
-        if (obj is null || string.IsNullOrWhiteSpace(path))
+        if (obj == null || string.IsNullOrWhiteSpace(path))
         {
             return null;
         }
 
-        var tokens = path.Split(PropertyOfOp);
+        object? result;
 
-        var result = obj;
-
-        foreach (var token in tokens)
+        if (path.Contains(PropertyOfOp))
         {
-            if (result is null)
-            {
-                break;
-            }
+            var tokens = path.Split(PropertyOfOp);
 
-            result = GetPropertyValue(result, token);
+            result = obj;
+
+            foreach (var token in tokens)
+            {
+                result = GetPropertyValue(result, token);
+
+                if (result == null)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            result = GetPropertyValue(obj, path);
         }
 
         return result;
@@ -32,13 +45,10 @@ internal static class ReflectionUtils
 
     private static object? GetPropertyValue(object obj, string propertyName)
     {
-        var propertyDescriptor = TypeDescriptor.GetProperties(obj)[propertyName];
+        var properties = PropertyTypeCache.GetOrAdd(obj.GetType(), _ => TypeDescriptor.GetProperties(obj));
 
-        if (propertyDescriptor is null)
-        {
-            return null;
-        }
+        var propertyDescriptor = properties.Find(propertyName, false);
 
-        return propertyDescriptor.GetValue(obj);
+        return propertyDescriptor?.GetValue(obj);
     }
 }
