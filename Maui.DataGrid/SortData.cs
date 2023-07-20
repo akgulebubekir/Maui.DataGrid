@@ -53,5 +53,5 @@ public sealed class SortData
     #endregion Properties
 
     /// <inheritdoc/>
-    public override int GetHashCode() => throw new NotImplementedException();
+    public override int GetHashCode() => HashCode.Combine(Index, Order);
 }
