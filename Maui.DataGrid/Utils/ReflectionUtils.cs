@@ -8,7 +8,7 @@ internal static class ReflectionUtils
 
     public static object? GetValueByPath(object obj, string path)
     {
-        if (obj is null || string.IsNullOrWhiteSpace(path))
+        if (obj == null || string.IsNullOrWhiteSpace(path))
         {
             return null;
         }
