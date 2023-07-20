@@ -61,8 +61,14 @@ public partial class DataGrid
 
     #region Sorting methods
 
-    private bool CanSort(SortData sortData)
+    private bool CanSort(SortData? sortData)
     {
+        if (sortData is null)
+        {
+            Console.WriteLine("No sort data");
+            return false;
+        }
+
         if (InternalItems is null)
         {
             Console.WriteLine("There are no items to sort");
