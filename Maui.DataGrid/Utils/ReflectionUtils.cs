@@ -13,18 +13,27 @@ internal static class ReflectionUtils
             return null;
         }
 
+        object? result;
+
+        if (path.Contains(PropertyOfOp))
+        {
         var tokens = path.Split(PropertyOfOp);
 
-        var result = obj;
+            result = obj;
 
         foreach (var token in tokens)
         {
-            if (result is null)
+                result = GetPropertyValue(result, token);
+
+                if (result == null)
             {
                 break;
             }
-
-            result = GetPropertyValue(result, token);
+            }
+        }
+        else
+        {
+            result = GetPropertyValue(obj, path);
         }
 
         return result;
