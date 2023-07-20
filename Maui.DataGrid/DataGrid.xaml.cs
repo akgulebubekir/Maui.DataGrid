@@ -992,6 +992,8 @@ public partial class DataGrid
                             var index = Columns.IndexOf(column);
 
                             SortedColumnIndex = new(index, order);
+
+                            column.SortingOrder = order;
                         }, () => column.SortingEnabled)
                     }
                 }
