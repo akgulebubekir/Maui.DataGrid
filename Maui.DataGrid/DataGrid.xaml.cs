@@ -363,13 +363,11 @@ public partial class DataGrid
 
     private void HandleItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (sender is IEnumerable items)
+        SortAndPaginate();
+
+        if (SelectedItem != null && InternalItems?.Contains(SelectedItem) != true)
         {
-            InternalItems = items.Cast<object>().ToList();
-            if (SelectedItem != null && !InternalItems.Contains(SelectedItem))
-            {
-                SelectedItem = null;
-            }
+            SelectedItem = null;
         }
     }
 
@@ -828,9 +826,9 @@ public partial class DataGrid
     /// <summary>
     /// Column index and sorting order for the DataGrid
     /// </summary>
-    public SortData SortedColumnIndex
+    public SortData? SortedColumnIndex
     {
-        get => (SortData)GetValue(SortedColumnIndexProperty);
+        get => (SortData?)GetValue(SortedColumnIndexProperty);
         set => SetValue(SortedColumnIndexProperty, value);
     }
 
