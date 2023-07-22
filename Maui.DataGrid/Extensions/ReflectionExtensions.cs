@@ -1,16 +1,16 @@
-namespace Maui.DataGrid.Utils;
+namespace Maui.DataGrid.Extensions;
 
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 
-internal static class ReflectionUtils
+internal static class ReflectionExtensions
 {
     private const char PropertyOfOp = '.';
 
     private static readonly ConcurrentDictionary<Type, PropertyDescriptorCollection> PropertyTypeCache = new();
 
-    public static object? GetValueByPath(object obj, string path)
+    public static object? GetValueByPath(this object obj, string path)
     {
         if (obj == null || string.IsNullOrWhiteSpace(path))
         {

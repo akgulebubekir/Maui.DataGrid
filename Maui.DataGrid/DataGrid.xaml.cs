@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Input;
-using Maui.DataGrid.Utils;
+using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
@@ -125,11 +125,11 @@ public partial class DataGrid
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
-                items = unsortedItems.OrderBy(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName)).ToList();
                 _ = columnToSort.SortingIcon.RotateTo(0);
                 break;
             case SortingOrder.Descendant:
-                items = unsortedItems.OrderByDescending(x => ReflectionUtils.GetValueByPath(x, columnToSort.PropertyName)).ToList();
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName)).ToList();
                 _ = columnToSort.SortingIcon.RotateTo(180);
                 break;
             case SortingOrder.None:
