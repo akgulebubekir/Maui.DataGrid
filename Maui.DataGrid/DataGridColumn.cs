@@ -1,5 +1,6 @@
 namespace Maui.DataGrid;
 
+using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls.Shapes;
 using System.ComponentModel;
 
@@ -43,30 +44,29 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     #region Bindable Properties
 
     public static readonly BindableProperty WidthProperty =
-        BindableProperty.Create(nameof(Width), typeof(GridLength), typeof(DataGridColumn),
-            GridLength.Star,
+        BindablePropertyExtensions.Create(GridLength.Star,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && n is GridLength width && b is DataGridColumn self)
+                if (!o.Equals(n) && b is DataGridColumn self)
                 {
-                    self.ColumnDefinition = new(width);
+                    self.ColumnDefinition = new(n);
                     self.OnSizeChanged();
                 }
             });
 
     public static readonly BindableProperty TitleProperty =
-        BindableProperty.Create(nameof(Title), typeof(string), typeof(DataGridColumn), string.Empty,
-            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = (string)n);
+        BindablePropertyExtensions.Create(string.Empty,
+            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = n);
 
     public static readonly BindableProperty FormattedTitleProperty =
-        BindableProperty.Create(nameof(FormattedTitle), typeof(FormattedString), typeof(DataGridColumn),
-            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = (FormattedString)n);
+        BindablePropertyExtensions.Create<FormattedString>(
+            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = n);
 
     public static readonly BindableProperty PropertyNameProperty =
-        BindableProperty.Create(nameof(PropertyName), typeof(string), typeof(DataGridColumn));
+        BindablePropertyExtensions.Create<string>();
 
     public static readonly BindableProperty IsVisibleProperty =
-        BindableProperty.Create(nameof(IsVisible), typeof(bool), typeof(DataGridColumn), true,
+        BindablePropertyExtensions.Create(true,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGridColumn column)
@@ -85,33 +85,30 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             });
 
     public static readonly BindableProperty StringFormatProperty =
-        BindableProperty.Create(nameof(StringFormat), typeof(string), typeof(DataGridColumn));
+        BindablePropertyExtensions.Create<string>();
 
     public static readonly BindableProperty CellTemplateProperty =
-        BindableProperty.Create(nameof(CellTemplate), typeof(DataTemplate), typeof(DataGridColumn));
+        BindablePropertyExtensions.Create<DataTemplate>();
 
     public static readonly BindableProperty LineBreakModeProperty =
-        BindableProperty.Create(nameof(LineBreakMode), typeof(LineBreakMode), typeof(DataGridColumn),
-            LineBreakMode.WordWrap);
+        BindablePropertyExtensions.Create(LineBreakMode.WordWrap);
 
     public static readonly BindableProperty HorizontalContentAlignmentProperty =
-        BindableProperty.Create(nameof(HorizontalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn),
-            LayoutOptions.Center);
+        BindablePropertyExtensions.Create(LayoutOptions.Center);
 
     public static readonly BindableProperty VerticalContentAlignmentProperty =
-        BindableProperty.Create(nameof(VerticalContentAlignment), typeof(LayoutOptions), typeof(DataGridColumn),
-            LayoutOptions.Center);
+        BindablePropertyExtensions.Create(LayoutOptions.Center);
 
     public static readonly BindableProperty SortingEnabledProperty =
-        BindableProperty.Create(nameof(SortingEnabled), typeof(bool), typeof(DataGridColumn), true);
+        BindablePropertyExtensions.Create(true);
 
     public static readonly BindableProperty HeaderLabelStyleProperty =
-        BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGridColumn),
+        BindablePropertyExtensions.Create<Style>(
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGridColumn self && self.HeaderLabel != null)
                 {
-                    self.HeaderLabel.Style = n as Style;
+                    self.HeaderLabel.Style = n;
                 }
             });
 

@@ -216,7 +216,7 @@ public partial class DataGrid
     #region Bindable properties
 
     public static readonly BindableProperty ActiveRowColorProperty =
-        BindableProperty.Create(nameof(ActiveRowColor), typeof(Color), typeof(DataGrid), Color.FromRgb(128, 144, 160),
+        BindablePropertyExtensions.Create(Color.FromRgb(128, 144, 160),
             coerceValue: (b, v) =>
             {
                 if (!((DataGrid)b).SelectionEnabled)
@@ -228,29 +228,29 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty HeaderBackgroundProperty =
-        BindableProperty.Create(nameof(HeaderBackground), typeof(Color), typeof(DataGrid), Colors.White,
+        BindablePropertyExtensions.Create(Colors.White,
             propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
-                if (o != n && self._headerView != null && !self.HeaderBordersVisible && n is Color color)
+                if (o != n && self._headerView != null && !self.HeaderBordersVisible)
                 {
                     foreach (var child in self._headerView.Children.OfType<View>())
                     {
-                        child.BackgroundColor = color;
+                        child.BackgroundColor = n;
                     }
 
-                    self._footerView.BackgroundColor = color;
+                    self._footerView.BackgroundColor = n;
                 }
             });
 
     public static readonly BindableProperty BorderColorProperty =
-        BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(DataGrid), Colors.Black,
+        BindablePropertyExtensions.Create(Colors.Black,
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
-                if (self._headerView != null && self.HeaderBordersVisible && n is Color color)
+                if (self._headerView != null && self.HeaderBordersVisible)
                 {
-                    self._headerView.BackgroundColor = color;
+                    self._headerView.BackgroundColor = n;
                 }
 
                 if (self.Columns != null && self.ItemsSource != null)
@@ -260,14 +260,10 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty ItemSizingStrategyProperty =
-    BindableProperty.Create(nameof(ItemSizingStrategy), typeof(ItemSizingStrategy), typeof(DataGrid), DeviceInfo.Platform == DevicePlatform.Android ? ItemSizingStrategy.MeasureAllItems : ItemSizingStrategy.MeasureFirstItem);
+        BindablePropertyExtensions.Create(DeviceInfo.Platform == DevicePlatform.Android ? ItemSizingStrategy.MeasureAllItems : ItemSizingStrategy.MeasureFirstItem);
 
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
-        BindableProperty.Create(nameof(RowsBackgroundColorPalette), typeof(IColorProvider), typeof(DataGrid),
-            new PaletteCollection
-            {
-                Colors.White
-            },
+        BindablePropertyExtensions.Create<IColorProvider>(new PaletteCollection { Colors.White },
             propertyChanged: (b, _, _) =>
             {
                 var self = (DataGrid)b;
@@ -278,8 +274,7 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty RowsTextColorPaletteProperty =
-        BindableProperty.Create(nameof(RowsTextColorPalette), typeof(IColorProvider), typeof(DataGrid),
-            new PaletteCollection { Colors.Black },
+        BindablePropertyExtensions.Create<IColorProvider>(new PaletteCollection { Colors.Black },
             propertyChanged: (b, _, _) =>
             {
                 var self = (DataGrid)b;
@@ -290,7 +285,7 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty ColumnsProperty =
-        BindableProperty.Create(nameof(Columns), typeof(ObservableCollection<DataGridColumn>), typeof(DataGrid),
+        BindablePropertyExtensions.Create(new ObservableCollection<DataGridColumn>(),
             propertyChanged: (b, o, n) =>
             {
                 if (n == o || b is not DataGrid self)
@@ -298,21 +293,21 @@ public partial class DataGrid
                     return;
                 }
 
-                if (o is ObservableCollection<DataGridColumn> oldColumns)
+                if (o != null)
                 {
-                    oldColumns.CollectionChanged -= self.OnColumnsChanged;
+                    o.CollectionChanged -= self.OnColumnsChanged;
 
-                    foreach (var oldColumn in oldColumns)
+                    foreach (var oldColumn in o)
                     {
                         oldColumn.SizeChanged -= self.OnColumnSizeChanged;
                     }
                 }
 
-                if (n is ObservableCollection<DataGridColumn> newColumns)
+                if (n != null)
                 {
-                    newColumns.CollectionChanged += self.OnColumnsChanged;
+                    n.CollectionChanged += self.OnColumnsChanged;
 
-                    foreach (var newColumn in newColumns)
+                    foreach (var newColumn in n)
                     {
                         newColumn.SizeChanged += self.OnColumnSizeChanged;
                     }
@@ -323,7 +318,7 @@ public partial class DataGrid
             defaultValueCreator: _ => new ObservableCollection<DataGridColumn>());
 
     public static readonly BindableProperty ItemsSourceProperty =
-        BindableProperty.Create(nameof(ItemsSource), typeof(IEnumerable), typeof(DataGrid), null,
+        BindablePropertyExtensions.Create<IEnumerable>(
             propertyChanged: (b, o, n) =>
             {
                 if (n == o || b is not DataGrid self)
@@ -348,7 +343,7 @@ public partial class DataGrid
                         newCollection.CollectionChanged += self.HandleItemsSourceCollectionChanged;
                     }
 
-                    var itemsSource = ((IEnumerable)n).Cast<object>().ToList();
+                    var itemsSource = n.Cast<object>().ToList();
 
                     self.PageCount = (int)Math.Ceiling(itemsSource.Count / (double)self.PageSize);
 
@@ -372,17 +367,17 @@ public partial class DataGrid
     }
 
     public static readonly BindableProperty PageCountProperty =
-        BindableProperty.Create(nameof(PageCount), typeof(int), typeof(DataGrid), 1,
+        BindablePropertyExtensions.Create(1,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGrid self && n is int pageCount && pageCount > 0)
+                if (o != n && b is DataGrid self && n > 0)
                 {
-                    self._paginationStepper.Maximum = pageCount;
+                    self._paginationStepper.Maximum = n;
                 }
             });
 
     public static readonly BindableProperty PageSizeProperty =
-        BindableProperty.Create(nameof(PageSize), typeof(int), typeof(DataGrid), 100,
+        BindablePropertyExtensions.Create(100,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGrid self)
@@ -392,25 +387,25 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty RowHeightProperty =
-        BindableProperty.Create(nameof(RowHeight), typeof(int), typeof(DataGrid), 40);
+        BindablePropertyExtensions.Create(40);
 
     public static readonly BindableProperty FooterHeightProperty =
-        BindableProperty.Create(nameof(FooterHeight), typeof(int), typeof(DataGrid), 40);
+        BindablePropertyExtensions.Create(40);
 
     public static readonly BindableProperty HeaderHeightProperty =
-        BindableProperty.Create(nameof(HeaderHeight), typeof(int), typeof(DataGrid), 40);
+        BindablePropertyExtensions.Create(40);
 
     public static readonly BindableProperty IsSortableProperty =
-        BindableProperty.Create(nameof(IsSortable), typeof(bool), typeof(DataGrid), true);
+        BindablePropertyExtensions.Create(true);
 
     public static readonly BindableProperty FontSizeProperty =
-        BindableProperty.Create(nameof(FontSize), typeof(double), typeof(DataGrid), 13.0);
+        BindablePropertyExtensions.Create(13.0);
 
     public static readonly BindableProperty FontFamilyProperty =
-        BindableProperty.Create(nameof(FontFamily), typeof(string), typeof(DataGrid), Font.Default.Family);
+        BindablePropertyExtensions.Create(Font.Default.Family);
 
     public static readonly BindableProperty SelectedItemProperty =
-        BindableProperty.Create(nameof(SelectedItem), typeof(object), typeof(DataGrid), null, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<object>(null, BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
@@ -441,7 +436,7 @@ public partial class DataGrid
         );
 
     public static readonly BindableProperty PaginationEnabledProperty =
-        BindableProperty.Create(nameof(PaginationEnabled), typeof(bool), typeof(DataGrid), false,
+        BindablePropertyExtensions.Create(false,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n)
@@ -452,10 +447,10 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty SelectionEnabledProperty =
-        BindableProperty.Create(nameof(SelectionEnabled), typeof(bool), typeof(DataGrid), true,
+        BindablePropertyExtensions.Create(true,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && n is bool selectionEnabled && !selectionEnabled)
+                if (o != n && !n)
                 {
                     var self = (DataGrid)b;
                     self.SelectedItem = null;
@@ -463,18 +458,18 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty RefreshingEnabledProperty =
-    BindableProperty.Create(nameof(RefreshingEnabled), typeof(bool), typeof(DataGrid), true,
+        BindablePropertyExtensions.Create(true,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && n is bool refreshingEnabled)
+                if (o != n)
                 {
                     var self = (DataGrid)b;
-                    _ = self.PullToRefreshCommand?.CanExecute(() => refreshingEnabled);
+                    _ = self.PullToRefreshCommand?.CanExecute(() => n);
                 }
             });
 
     public static readonly BindableProperty PullToRefreshCommandProperty =
-        BindableProperty.Create(nameof(PullToRefreshCommand), typeof(ICommand), typeof(DataGrid), null,
+        BindablePropertyExtensions.Create<ICommand>(
             propertyChanged: (b, o, n) =>
             {
                 if (o == n || b is not DataGrid self)
@@ -488,16 +483,16 @@ public partial class DataGrid
                 }
                 else
                 {
-                    self._refreshView.Command = n as ICommand;
+                    self._refreshView.Command = n;
                     _ = self._refreshView.Command?.CanExecute(self.RefreshingEnabled);
                 }
             });
 
     public static readonly BindableProperty IsRefreshingProperty =
-        BindableProperty.Create(nameof(IsRefreshing), typeof(bool), typeof(DataGrid), false, BindingMode.TwoWay);
+        BindablePropertyExtensions.Create(false, BindingMode.TwoWay);
 
     public static readonly BindableProperty BorderThicknessProperty =
-        BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(DataGrid), new Thickness(1),
+        BindablePropertyExtensions.Create(new Thickness(1),
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -507,39 +502,38 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty HeaderBordersVisibleProperty =
-        BindableProperty.Create(nameof(HeaderBordersVisible), typeof(bool), typeof(DataGrid), true,
+        BindablePropertyExtensions.Create(true,
             propertyChanged: (b, _, n) => ((DataGrid)b)._headerView.BackgroundColor =
-                (bool)n ? ((DataGrid)b).BorderColor : ((DataGrid)b).HeaderBackground);
+                n ? ((DataGrid)b).BorderColor : ((DataGrid)b).HeaderBackground);
 
     public static readonly BindableProperty SortedColumnIndexProperty =
-        BindableProperty.Create(nameof(SortedColumnIndex), typeof(SortData), typeof(DataGrid), null, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<SortData>(null, BindingMode.TwoWay,
             (b, v) =>
             {
                 var self = (DataGrid)b;
-                var sortData = (SortData)v;
 
                 if (!self.IsLoaded)
                 {
                     return true;
                 }
 
-                return self.CanSort(sortData);
+                return self.CanSort(v);
             },
             (b, o, n) =>
             {
-                if (o != n && b is DataGrid self && n is SortData sortData)
+                if (o != n && b is DataGrid self)
                 {
-                    self.SortAndPaginate(sortData);
+                    self.SortAndPaginate(n);
                 }
             });
 
     public static readonly BindableProperty PageNumberProperty =
-        BindableProperty.Create(nameof(PageNumber), typeof(int), typeof(DataGrid), 1, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create(1, BindingMode.TwoWay,
             (b, v) =>
             {
-                if (b is DataGrid self && v is int pageNumber)
+                if (b is DataGrid self)
                 {
-                    return pageNumber == 1 || pageNumber <= self.PageCount;
+                    return v == 1 || v <= self.PageCount;
                 }
 
                 return false;
@@ -553,31 +547,31 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty HeaderLabelStyleProperty =
-        BindableProperty.Create(nameof(HeaderLabelStyle), typeof(Style), typeof(DataGrid));
+        BindablePropertyExtensions.Create<Style>();
 
     public static readonly BindableProperty SortIconProperty =
-        BindableProperty.Create(nameof(SortIcon), typeof(Polygon), typeof(DataGrid));
+        BindablePropertyExtensions.Create<Polygon>();
 
     public static readonly BindableProperty SortIconStyleProperty =
-        BindableProperty.Create(nameof(SortIconStyle), typeof(Style), typeof(DataGrid), null,
+        BindablePropertyExtensions.Create<Style>(
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGrid self && n is Style style)
+                if (o != n && b is DataGrid self)
                 {
                     foreach (var column in self.Columns)
                     {
-                        column.SortingIcon.Style = style;
+                        column.SortingIcon.Style = n;
                     }
                 }
             });
 
     public static readonly BindableProperty NoDataViewProperty =
-        BindableProperty.Create(nameof(NoDataView), typeof(View), typeof(DataGrid),
+        BindablePropertyExtensions.Create<View>(
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGrid self)
                 {
-                    self._collectionView.EmptyView = n as View;
+                    self._collectionView.EmptyView = n;
                 }
             });
 
