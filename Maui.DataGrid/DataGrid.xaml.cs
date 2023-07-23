@@ -116,28 +116,9 @@ public partial class DataGrid
         return true;
     }
 
-    private IList<object> GetSortedItems(IEnumerable<object> unsortedItems, SortData sortData)
+    private IList<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
     {
         var columnToSort = Columns[sortData.Index];
-
-        IList<object> items;
-
-        switch (sortData.Order)
-        {
-            case SortingOrder.Ascendant:
-                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName)).ToList();
-                _ = columnToSort.SortingIcon.RotateTo(0);
-                break;
-            case SortingOrder.Descendant:
-                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName)).ToList();
-                _ = columnToSort.SortingIcon.RotateTo(180);
-                break;
-            case SortingOrder.None:
-                items = unsortedItems.ToList();
-                break;
-            default:
-                throw new NotImplementedException();
-        }
 
         foreach (var column in Columns)
         {
@@ -153,7 +134,25 @@ public partial class DataGrid
             }
         }
 
-        return items;
+        IEnumerable<object> items;
+
+        switch (sortData.Order)
+        {
+            case SortingOrder.Ascendant:
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
+                _ = columnToSort.SortingIcon.RotateTo(0);
+                break;
+            case SortingOrder.Descendant:
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
+                _ = columnToSort.SortingIcon.RotateTo(180);
+                break;
+            case SortingOrder.None:
+                return unsortedItems;
+            default:
+                throw new NotImplementedException();
+        }
+
+        return items.ToList();
     }
 
     #endregion Sorting methods
@@ -180,7 +179,7 @@ public partial class DataGrid
 
         IList<object> sortedItems;
 
-        if (CanSort(sortData))
+        if (sortData != null && CanSort(sortData))
         {
             sortedItems = GetSortedItems(originalItems, sortData);
         }
@@ -566,14 +565,15 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty NoDataViewProperty =
-        BindablePropertyExtensions.Create<View>(
-            propertyChanged: (b, o, n) =>
-            {
-                if (o != n && b is DataGrid self)
-                {
-                    self._collectionView.EmptyView = n;
-                }
-            });
+        BindablePropertyExtensions.Create<View>(propertyChanged: OnNoDataViewPropertyChanged);
+
+    private static void OnNoDataViewPropertyChanged(BindableObject bindable, View? oldValue, View? newValue)
+    {
+        if (oldValue != newValue && bindable is DataGrid self)
+        {
+            self._collectionView.EmptyView = newValue;
+        }
+    }
 
     #endregion Bindable properties
 
