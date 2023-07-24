@@ -565,15 +565,14 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty NoDataViewProperty =
-        BindablePropertyExtensions.Create<View>(propertyChanged: OnNoDataViewPropertyChanged);
-
-    private static void OnNoDataViewPropertyChanged(BindableObject bindable, View? oldValue, View? newValue)
+        BindablePropertyExtensions.Create<View>(
+            propertyChanged: (b, o, n) =>
     {
-        if (oldValue != newValue && bindable is DataGrid self)
+                if (o != n && b is DataGrid self)
         {
-            self._collectionView.EmptyView = newValue;
+                    self._collectionView.EmptyView = n;
         }
-    }
+            });
 
     #endregion Bindable properties
 
