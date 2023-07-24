@@ -41,25 +41,25 @@ internal static class BindablePropertyExtensions
         ValidateValueDelegate? untypedValidateValue = null;
         if (validateValue != null)
         {
-            untypedValidateValue = (bindable, value) => validateValue(bindable, value is TType typedValue ? typedValue : default);
+            untypedValidateValue = (b, v) => validateValue(b, v is TType typedValue ? typedValue : default);
         }
 
         BindingPropertyChangedDelegate? untypedPropertyChanged = null;
         if (propertyChanged != null)
         {
-            untypedPropertyChanged = (bindable, o, n) => propertyChanged(bindable, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
+            untypedPropertyChanged = (b, o, n) => propertyChanged(b, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
         }
 
         BindingPropertyChangingDelegate? untypedPropertyChanging = null;
         if (propertyChanging != null)
         {
-            untypedPropertyChanging = (bindable, o, n) => propertyChanging(bindable, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
+            untypedPropertyChanging = (b, o, n) => propertyChanging(b, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
         }
 
         CoerceValueDelegate? untypedCoerceValue = null;
         if (coerceValue != null)
         {
-            untypedCoerceValue = (bindable, value) => coerceValue(bindable, value is TType typedValue ? typedValue : default);
+            untypedCoerceValue = (b, v) => coerceValue(b, v is TType typedValue ? typedValue : default);
         }
 
         return BindableProperty.Create(
