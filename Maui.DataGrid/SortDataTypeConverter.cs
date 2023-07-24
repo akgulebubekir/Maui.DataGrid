@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 
 /// <summary>
-/// Converts string to <c>SortingOrder</c> enum.
+/// Converts string to <c>SortData</c> enum.
 /// </summary>
 public sealed class SortDataTypeConverter : TypeConverter // This needs to be public or it will produce a MethodAccessException
 {
