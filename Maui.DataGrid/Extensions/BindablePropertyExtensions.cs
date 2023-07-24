@@ -47,13 +47,13 @@ internal static class BindablePropertyExtensions
         BindingPropertyChangedDelegate? untypedPropertyChanged = null;
         if (propertyChanged != null)
         {
-            untypedPropertyChanged = (bindable, o, n) => propertyChanged(bindable, o is TType typedo ? typedo : default, n is TType typen ? typen : default);
+            untypedPropertyChanged = (bindable, o, n) => propertyChanged(bindable, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
         }
 
         BindingPropertyChangingDelegate? untypedPropertyChanging = null;
         if (propertyChanging != null)
         {
-            untypedPropertyChanging = (bindable, o, n) => propertyChanging(bindable, o is TType typedo ? typedo : default, n is TType typen ? typen : default);
+            untypedPropertyChanging = (bindable, o, n) => propertyChanging(bindable, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
         }
 
         CoerceValueDelegate? untypedCoerceValue = null;
