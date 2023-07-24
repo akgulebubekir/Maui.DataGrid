@@ -567,11 +567,11 @@ public partial class DataGrid
     public static readonly BindableProperty NoDataViewProperty =
         BindablePropertyExtensions.Create<View>(
             propertyChanged: (b, o, n) =>
-    {
+            {
                 if (o != n && b is DataGrid self)
-        {
+                {
                     self._collectionView.EmptyView = n;
-        }
+                }
             });
 
     #endregion Bindable properties
