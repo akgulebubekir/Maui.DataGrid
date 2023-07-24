@@ -389,7 +389,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create(40);
 
     public static readonly BindableProperty FooterHeightProperty =
-        BindablePropertyExtensions.Create(40);
+        BindablePropertyExtensions.Create(DeviceInfo.Platform == DevicePlatform.Android ? 50 : 40);
 
     public static readonly BindableProperty HeaderHeightProperty =
         BindablePropertyExtensions.Create(40);
