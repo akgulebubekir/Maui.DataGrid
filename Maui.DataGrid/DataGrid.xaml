@@ -15,7 +15,7 @@
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="TextColor" Value="Black" />
-                <Setter Property="LineBreakMode" Value="WordWrap" />
+                <Setter Property="LineBreakMode" Value="TailTruncation" />
             </Style>
             <!--Default Sort Icon Style-->
             <Style x:Key="DefaultSortIconStyle" TargetType="Polygon">
@@ -59,10 +59,15 @@
         </RefreshView>
         <Grid Grid.Row="2" x:Name="_footerView" IsVisible="{Binding PaginationEnabled, Source={Reference self}}" HeightRequest="{Binding FooterHeight, Source={Reference self}}" BackgroundColor="{Binding HeaderBackground, Source={Reference self}}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center">
+            <HorizontalStackLayout VerticalOptions="Center" IsVisible="{Binding PageSizeVisible, Source={Reference self}}">
+                <Label Text="# per page:" Margin="5,0,0,0" VerticalTextAlignment="Center" TextColor="Black" />
+                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=OneTime}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="Black" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
                 <Label Text="Page:" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
                 <Label Text="{Binding PageNumber, Source={Reference self}}" VerticalTextAlignment="Center" TextColor="Black" />
                 <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={x:Reference self}}" Style="{StaticResource PaginationStepperStyle}" Minimum="1" />

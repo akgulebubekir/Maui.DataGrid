@@ -385,11 +385,14 @@ public partial class DataGrid
                 }
             });
 
+    public static readonly BindableProperty PageSizeVisibleProperty =
+        BindablePropertyExtensions.Create(true);
+
     public static readonly BindableProperty RowHeightProperty =
         BindablePropertyExtensions.Create(40);
 
     public static readonly BindableProperty FooterHeightProperty =
-        BindablePropertyExtensions.Create(40);
+        BindablePropertyExtensions.Create(DeviceInfo.Platform == DevicePlatform.Android ? 50 : 40);
 
     public static readonly BindableProperty HeaderHeightProperty =
         BindablePropertyExtensions.Create(40);
@@ -694,6 +697,20 @@ public partial class DataGrid
     {
         get => (int)GetValue(PageSizeProperty);
         set => SetValue(PageSizeProperty, value);
+    }
+
+    /// <summary>
+    /// List of page sizes
+    /// </summary>
+    public List<int> PageSizeList { get; } = new() { 5, 10, 50, 100, 200, 1000 };
+
+    /// <summary>
+    /// Gets or sets whether the page size picker is visible
+    /// </summary>
+    public bool PageSizeVisible
+    {
+        get => (bool)GetValue(PageSizeVisibleProperty);
+        set => SetValue(PageSizeVisibleProperty, value);
     }
 
     /// <summary>
