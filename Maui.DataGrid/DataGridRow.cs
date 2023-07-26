@@ -176,18 +176,11 @@ internal sealed class DataGridRow : Grid
     {
         base.OnParentSet();
 
-        if (DataGrid.SelectionEnabled)
-        {
-            if (Parent != null)
-            {
-                DataGrid.ItemSelected += DataGrid_ItemSelected;
-            }
-            else
+        if (Parent == null)
             {
                 DataGrid.ItemSelected -= DataGrid_ItemSelected;
             }
         }
-    }
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
