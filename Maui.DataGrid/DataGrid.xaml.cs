@@ -988,9 +988,11 @@ public partial class DataGrid
             };
         }
 
+        var sortIconSize = HeaderHeight * 0.3;
+        column.SortingIconContainer.HeightRequest = sortIconSize;
+        column.SortingIconContainer.WidthRequest = sortIconSize;
         column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
-        column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
-        column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
+
 
         var grid = new Grid
         {
