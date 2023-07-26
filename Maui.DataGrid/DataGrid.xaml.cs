@@ -995,7 +995,6 @@ public partial class DataGrid
         column.SortingIconContainer.WidthRequest = sortIconSize;
         column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
 
-
         var grid = new Grid
         {
             ColumnSpacing = 0,
