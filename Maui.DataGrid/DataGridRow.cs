@@ -36,7 +36,7 @@ internal sealed class DataGridRow : Grid
                     oldDataGrid.ItemSelected -= self.DataGrid_ItemSelected;
                 }
 
-                if (n is DataGrid newDataGrid)
+                if (n is DataGrid newDataGrid && newDataGrid.SelectionEnabled)
                 {
                     newDataGrid.ItemSelected += self.DataGrid_ItemSelected;
                 }
