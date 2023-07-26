@@ -980,19 +980,25 @@ public partial class DataGrid
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? HeaderLabelStyle ?? _defaultHeaderStyle;
 
-        if (IsSortable && column.SortingEnabled && column.IsSortable(this))
+        if (!IsSortable || !column.SortingEnabled || !column.IsSortable(this))
         {
-            column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
-            column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
-            column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
-
-            var grid = new Grid
+            return new ContentView
             {
-                ColumnSpacing = 0,
-                Padding = new(0, 0, 4, 0),
-                ColumnDefinitions = HeaderColumnDefinitions,
-                Children = { column.HeaderLabel, column.SortingIconContainer },
-                GestureRecognizers =
+                Content = column.HeaderLabel
+            };
+        }
+
+        column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
+        column.SortingIconContainer.HeightRequest = HeaderHeight * 0.3;
+        column.SortingIconContainer.WidthRequest = HeaderHeight * 0.3;
+
+        var grid = new Grid
+        {
+            ColumnSpacing = 0,
+            Padding = new(0, 0, 4, 0),
+            ColumnDefinitions = HeaderColumnDefinitions,
+            Children = { column.HeaderLabel, column.SortingIconContainer },
+            GestureRecognizers =
                 {
                     new TapGestureRecognizer
                     {
@@ -1011,16 +1017,10 @@ public partial class DataGrid
                         }, () => column.SortingEnabled)
                     }
                 }
-            };
-
-            Grid.SetColumn(column.SortingIconContainer, 1);
-            return grid;
-        }
-
-        return new ContentView
-        {
-            Content = column.HeaderLabel
         };
+
+        Grid.SetColumn(column.SortingIconContainer, 1);
+        return grid;
     }
 
     private void InitHeaderView()
