@@ -145,20 +145,15 @@ internal sealed class DataGridRow : Grid
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
         _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
 
-        ChangeColor(_bgColor, _textColor);
-    }
-
-    private void ChangeColor(Color? bgColor, Color? textColor)
-    {
         foreach (var v in Children)
         {
             if (v is View view)
             {
-                view.BackgroundColor = bgColor;
+                view.BackgroundColor = _bgColor;
 
                 if (view is Label label)
                 {
-                    label.TextColor = textColor;
+                    label.TextColor = _textColor;
                 }
             }
         }
