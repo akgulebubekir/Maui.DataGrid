@@ -73,7 +73,7 @@ internal sealed class DataGridRow : Grid
 
     private void SetStyling()
     {
-        UpdateBackgroundColor();
+        UpdateColors();
 
         // We are using the spacing between rows to generate visible borders, and thus the background color is the border color.
         BackgroundColor = DataGrid.BorderColor;
@@ -130,7 +130,7 @@ internal sealed class DataGridRow : Grid
         return cell;
     }
 
-    private void UpdateBackgroundColor()
+    private void UpdateColors()
     {
         _hasSelected = DataGrid.SelectedItem == BindingContext;
         var rowIndex = DataGrid.InternalItems?.IndexOf(BindingContext) ?? -1;
@@ -177,10 +177,10 @@ internal sealed class DataGridRow : Grid
         base.OnParentSet();
 
         if (Parent == null)
-            {
-                DataGrid.ItemSelected -= DataGrid_ItemSelected;
-            }
+        {
+            DataGrid.ItemSelected -= DataGrid_ItemSelected;
         }
+    }
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
@@ -191,7 +191,7 @@ internal sealed class DataGridRow : Grid
 
         if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection[^1] == BindingContext))
         {
-            UpdateBackgroundColor();
+            UpdateColors();
         }
     }
 
