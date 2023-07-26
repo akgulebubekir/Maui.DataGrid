@@ -654,9 +654,11 @@ public partial class DataGrid
         get => _internalItems;
         set
         {
-            _internalItems = value;
-
-            _collectionView.ItemsSource = _internalItems; // TODO: Use efficient CollectionChanged handling with observables
+            if (_internalItems != value)
+            {
+                _internalItems = value;
+                _collectionView.ItemsSource = _internalItems; // TODO: Are we using the most efficient CollectionChanged handling with observables?
+            }
         }
     }
 
