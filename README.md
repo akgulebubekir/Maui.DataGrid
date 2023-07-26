@@ -17,12 +17,12 @@ DataGrid library for .NET **MAUI** applications.
  xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
 
 <dg:DataGrid ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
-             RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
-             HeaderBackground="{StaticResource GridHeaderBgColor}"
-             PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}"
-             ActiveRowColor="{StaticResource ActiveRowColor}">
+                RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
+                HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
+                PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" PaginationEnabled="{Binding PaginationEnabled}" PageSize="5"
+                ActiveRowColor="{StaticResource ActiveRowColor}">
     <dg:DataGrid.Columns>
-        <dg:DataGridColumn Title="Logo" PropertyName="Logo" Width="150" SortingEnabled="False">
+        <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
             <dg:DataGridColumn.CellTemplate>
                 <DataTemplate>
                     <Image Source="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
@@ -30,19 +30,19 @@ DataGrid library for .NET **MAUI** applications.
                 </DataTemplate>
             </dg:DataGridColumn.CellTemplate>
         </dg:DataGridColumn>
-        <dg:DataGridColumn Title="Team" PropertyName="Name" />
-        <dg:DataGridColumn Title="Won" PropertyName="Won" />
-        <dg:DataGridColumn Title="Lost" PropertyName="Lost" />
+        <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" Width="{Binding TeamColumnWidth}" />
+        <dg:DataGridColumn Title="Won" PropertyName="Won" Width="0.5*" IsVisible="{Binding WonColumnVisible}" />
+        <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*" />
         <dg:DataGridColumn PropertyName="Home">
             <dg:DataGridColumn.FormattedTitle>
                 <FormattedString>
                     <Span Text="Home" TextColor="Black" FontSize="13" FontAttributes="Bold" />
-                    <Span Text=" (win-loose)" TextColor="#333333" FontSize="11" />
+                    <Span Text=" (won-lost)" TextColor="#333333" FontSize="11" />
                 </FormattedString>
             </dg:DataGridColumn.FormattedTitle>
         </dg:DataGridColumn>
-        <dg:DataGridColumn Title="Percentage" PropertyName="Percentage" StringFormat="{}{0:0.00}" />
-        <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.5*">
+        <dg:DataGridColumn Title="Win %" PropertyName="Percentage" Width="0.75*" StringFormat="{}{0:0.00}" />
+        <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.75*">
             <dg:DataGridColumn.CellTemplate>
                 <DataTemplate>
                     <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
@@ -60,11 +60,6 @@ DataGrid library for .NET **MAUI** applications.
             <Color>#FFFFFF</Color>
         </dg:PaletteCollection>
     </dg:DataGrid.RowsBackgroundColorPalette>
-    <dg:DataGrid.Resources>
-        <ResourceDictionary>
-            <conv:StreakToColorConverter x:Key="StreakToColorConverter" />
-        </ResourceDictionary>
-    </dg:DataGrid.Resources>
 </dg:DataGrid>
 ```
 
