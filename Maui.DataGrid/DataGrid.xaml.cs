@@ -1045,6 +1045,8 @@ public partial class DataGrid
 
             col.ColumnDefinition ??= new(col.Width);
 
+            col.DataGrid ??= this;
+
             _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
             if (!col.IsVisible)

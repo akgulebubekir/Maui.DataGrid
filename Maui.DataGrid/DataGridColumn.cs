@@ -73,7 +73,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 {
                     try
                     {
-                        column.DataGrid ??= (DataGrid?)column.HeaderLabel.Parent?.Parent?.Parent?.Parent;
                         column.DataGrid?.Reload();
                     }
                     catch { }
