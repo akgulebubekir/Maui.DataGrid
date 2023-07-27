@@ -237,10 +237,11 @@ public partial class DataGrid
                     {
                         child.BackgroundColor = n;
                     }
-
-                    self._footerView.BackgroundColor = n;
                 }
             });
+
+    public static readonly BindableProperty FooterBackgroundProperty =
+        BindablePropertyExtensions.Create(Colors.White);
 
     public static readonly BindableProperty BorderColorProperty =
         BindablePropertyExtensions.Create(Colors.Black,
@@ -598,6 +599,16 @@ public partial class DataGrid
     {
         get => (Color)GetValue(HeaderBackgroundProperty);
         set => SetValue(HeaderBackgroundProperty, value);
+    }
+
+    /// <summary>
+    /// BackgroundColor of the footer that comtains pagination elements
+    /// Default value is White
+    /// </summary>
+    public Color FooterBackground
+    {
+        get => (Color)GetValue(FooterBackgroundProperty);
+        set => SetValue(FooterBackgroundProperty, value);
     }
 
     /// <summary>
