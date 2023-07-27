@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -43,5 +43,6 @@
 
     <Color x:Key="ActiveRowColor">#8899AA</Color>
     <Color x:Key="GridHeaderBgColor">#E0E6F8</Color>
+    <Color x:Key="GridFooterBgColor">#E0E6F8</Color>
     <Color x:Key="GridBorderColor">#CCCCCC</Color>
 </ResourceDictionary>
