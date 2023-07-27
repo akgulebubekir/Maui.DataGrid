@@ -372,7 +372,15 @@ public partial class DataGrid
             {
                 if (o != n && b is DataGrid self && n > 0)
                 {
-                    self._paginationStepper.Maximum = n;
+                    if (n > 1)
+                    {
+                        self._paginationStepper.IsEnabled = true;
+                        self._paginationStepper.Maximum = n;
+                    }
+                    else
+                    {
+                        self._paginationStepper.IsEnabled = false;
+                    }
                 }
             });
 
@@ -382,6 +390,11 @@ public partial class DataGrid
             {
                 if (o != n && b is DataGrid self)
                 {
+                    self.PageNumber = 1;
+                    if (self.ItemsSource != null)
+                    {
+                        self.PageCount = (int)Math.Ceiling(self.ItemsSource.Cast<object>().Count() / (double)self.PageSize);
+                    }
                     self.SortAndPaginate();
                 }
             });
