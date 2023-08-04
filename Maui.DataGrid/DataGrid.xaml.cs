@@ -329,7 +329,7 @@ public partial class DataGrid
                 //ObservableCollection Tracking
                 if (o is INotifyCollectionChanged oldCollection)
                 {
-                    oldCollection.CollectionChanged -= self.HandleItemsSourceCollectionChanged;
+                    oldCollection.CollectionChanged -= self.OnItemsSourceCollectionChanged;
                 }
 
                 if (n == null)
@@ -340,7 +340,7 @@ public partial class DataGrid
                 {
                     if (n is INotifyCollectionChanged newCollection)
                     {
-                        newCollection.CollectionChanged += self.HandleItemsSourceCollectionChanged;
+                        newCollection.CollectionChanged += self.OnItemsSourceCollectionChanged;
                     }
 
                     var itemsSource = n.Cast<object>().ToList();
@@ -356,7 +356,7 @@ public partial class DataGrid
                 }
             });
 
-    private void HandleItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         SortAndPaginate();
 
