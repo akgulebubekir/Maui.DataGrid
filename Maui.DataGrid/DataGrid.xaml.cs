@@ -924,28 +924,22 @@ public partial class DataGrid
     {
         base.OnParentSet();
 
-        if (SelectionEnabled)
+        if (Parent is null)
         {
-            if (Parent is null)
-            {
-                _collectionView.SelectionChanged -= OnSelectionChanged;
-            }
-            else
-            {
-                _collectionView.SelectionChanged += OnSelectionChanged;
-            }
+            _collectionView.SelectionChanged -= OnSelectionChanged;
+        }
+        else if (SelectionEnabled)
+        {
+            _collectionView.SelectionChanged += OnSelectionChanged;
         }
 
-        if (RefreshingEnabled)
+        if (Parent is null)
         {
-            if (Parent is null)
-            {
-                _refreshView.Refreshing -= OnRefreshing;
-            }
-            else
-            {
-                _refreshView.Refreshing += OnRefreshing;
-            }
+            _refreshView.Refreshing -= OnRefreshing;
+        }
+        else if (RefreshingEnabled)
+        {
+            _refreshView.Refreshing += OnRefreshing;
         }
 
         if (Parent is null)
