@@ -163,7 +163,11 @@ internal sealed class DataGridRow : Grid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        CreateView();
+
+        if (BindingContext != DataGrid.BindingContext)
+        {
+            CreateView();
+        }
     }
 
     /// <inheritdoc/>
