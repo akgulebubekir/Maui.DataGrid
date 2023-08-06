@@ -119,7 +119,7 @@ internal sealed class DataGridRow : Grid
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
                 cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat));
+                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat, source: BindingContext));
             }
             cell.SetBinding(Label.FontSizeProperty,
                 new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
