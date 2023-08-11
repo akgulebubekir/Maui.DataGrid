@@ -509,9 +509,9 @@ public partial class DataGrid
 
     public static readonly BindableProperty BorderThicknessProperty =
         BindablePropertyExtensions.Create(new Thickness(1),
-            propertyChanged: (b, _, _) =>
+            propertyChanged: (b, o, n) =>
             {
-                if (b is DataGrid self)
+                if (o != n && b is DataGrid self && self.IsLoaded)
                 {
                     self.Reload();
                 }
