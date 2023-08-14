@@ -276,12 +276,19 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         try
         {
-            var listItemType = dataGrid.ItemsSource.GetType().GetGenericArguments().Single();
-            var columnDataType = listItemType.GetProperty(PropertyName)?.PropertyType;
-
-            if (columnDataType is not null)
+            if (dataGrid.ItemsSource is null)
             {
-                _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+                _isSortable = false;
+            }
+            else
+            {
+                var listItemType = dataGrid.ItemsSource.GetType().GetGenericArguments().Single();
+                var columnDataType = listItemType.GetProperty(PropertyName)?.PropertyType;
+
+                if (columnDataType is not null)
+                {
+                    _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
+                }
             }
         }
         catch
