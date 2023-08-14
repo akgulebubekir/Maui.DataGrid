@@ -44,10 +44,10 @@
                 <!--  Set all platforms to use MeasureFirstItem when this bug is resolved https://github.com/dotnet/maui/issues/7562  -->
                 <CollectionView
                     x:Name="_collectionView"
-                    WidthRequest="{Binding WidthRequest, Source={Reference self}, Mode=TwoWay}"
-                    BackgroundColor="{Binding BorderColor, Source={Reference self}, Mode=TwoWay}"
+                    WidthRequest="{Binding WidthRequest, Source={Reference self}}"
+                    BackgroundColor="{Binding BorderColor, Source={Reference self}}"
                     SelectedItem="{Binding SelectedItem, Source={Reference self}, Mode=TwoWay}"
-                    ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}, Mode=TwoWay}"
+                    ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}}"
                     SelectionMode="{Binding SelectionEnabled, Source={Reference self}, Converter={StaticResource boolToSelectionMode}}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
