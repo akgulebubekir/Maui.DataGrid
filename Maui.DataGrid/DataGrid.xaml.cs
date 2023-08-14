@@ -615,7 +615,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// BackgroundColor of the footer that comtains pagination elements
+    /// BackgroundColor of the footer that contains pagination elements
     /// Default value is White
     /// </summary>
     public Color FooterBackground
