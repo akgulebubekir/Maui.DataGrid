@@ -109,8 +109,6 @@ internal sealed class DataGridRow : Grid
             {
                 TextColor = _textColor,
                 BackgroundColor = _bgColor,
-                VerticalOptions = LayoutOptions.Fill,
-                HorizontalOptions = LayoutOptions.Fill,
                 VerticalTextAlignment = col.VerticalTextAlignment,
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
