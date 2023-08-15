@@ -114,6 +114,8 @@ internal sealed class DataGridRow : Grid
                 VerticalTextAlignment = col.VerticalTextAlignment,
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
+                FontSize = DataGrid.FontSize,
+                FontFamily = DataGrid.FontFamily
             };
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
@@ -121,10 +123,6 @@ internal sealed class DataGridRow : Grid
                 cell.SetBinding(Label.TextProperty,
                     new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat, source: BindingContext));
             }
-            cell.SetBinding(Label.FontSizeProperty,
-                new Binding(DataGrid.FontSizeProperty.PropertyName, BindingMode.Default, source: DataGrid));
-            cell.SetBinding(Label.FontFamilyProperty,
-                new Binding(DataGrid.FontFamilyProperty.PropertyName, BindingMode.Default, source: DataGrid));
         }
 
         return cell;
