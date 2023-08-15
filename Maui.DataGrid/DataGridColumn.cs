@@ -13,6 +13,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     private bool? _isSortable;
     private ColumnDefinition? _columnDefinition;
+    private TextAlignment? _verticalTextAlignment;
+    private TextAlignment? _horizontalTextAlignment;
     private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
     private readonly WeakEventManager _sizeChangedEventManager = new();
 
@@ -132,6 +134,10 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     internal View? HeaderView { get; set; }
+
+    internal TextAlignment VerticalTextAlignment => _verticalTextAlignment ??= VerticalContentAlignment.ToTextAlignment();
+
+    internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
 
     /// <summary>
     /// Width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.

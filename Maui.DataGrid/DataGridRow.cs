@@ -111,9 +111,9 @@ internal sealed class DataGridRow : Grid
                 BackgroundColor = _bgColor,
                 VerticalOptions = LayoutOptions.Fill,
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalTextAlignment = col.VerticalContentAlignment.ToTextAlignment(),
-                HorizontalTextAlignment = col.HorizontalContentAlignment.ToTextAlignment(),
-                LineBreakMode = col.LineBreakMode
+                VerticalTextAlignment = col.VerticalTextAlignment,
+                HorizontalTextAlignment = col.HorizontalTextAlignment,
+                LineBreakMode = col.LineBreakMode,
             };
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
