@@ -207,9 +207,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// <summary>
     /// Cell template. Default value is <c>Label</c> with binding <c>PropertyName</c>
     /// </summary>
-    public DataTemplate CellTemplate
+    public DataTemplate? CellTemplate
     {
-        get => (DataTemplate)GetValue(CellTemplateProperty);
+        get => (DataTemplate?)GetValue(CellTemplateProperty);
         set => SetValue(CellTemplateProperty, value);
     }
 
