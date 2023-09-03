@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls.Shapes;
@@ -65,31 +66,31 @@ public partial class DataGrid
     {
         if (sortData is null)
         {
-            Console.WriteLine("No sort data");
+            Debug.WriteLine("No sort data");
             return false;
         }
 
         if (InternalItems is null)
         {
-            Console.WriteLine("There are no items to sort");
+            Debug.WriteLine("There are no items to sort");
             return false;
         }
 
         if (!IsSortable)
         {
-            Console.WriteLine("DataGrid is not sortable");
+            Debug.WriteLine("DataGrid is not sortable");
             return false;
         }
 
         if (Columns.Count < 1)
         {
-            Console.WriteLine("There are no columns on this DataGrid.");
+            Debug.WriteLine("There are no columns on this DataGrid.");
             return false;
         }
 
         if (sortData.Index >= Columns.Count)
         {
-            Console.WriteLine("Sort index is out of range");
+            Debug.WriteLine("Sort index is out of range");
             return false;
         }
 
@@ -97,19 +98,19 @@ public partial class DataGrid
 
         if (columnToSort.PropertyName == null)
         {
-            Console.WriteLine($"Please set the {nameof(columnToSort.PropertyName)} of the column");
+            Debug.WriteLine($"Please set the {nameof(columnToSort.PropertyName)} of the column");
             return false;
         }
 
         if (!columnToSort.SortingEnabled)
         {
-            Console.WriteLine($"{columnToSort.PropertyName} column does not have sorting enabled");
+            Debug.WriteLine($"{columnToSort.PropertyName} column does not have sorting enabled");
             return false;
         }
 
         if (!columnToSort.IsSortable(this))
         {
-            Console.WriteLine($"{columnToSort.PropertyName} column is not sortable");
+            Debug.WriteLine($"{columnToSort.PropertyName} column is not sortable");
             return false;
         }
 
