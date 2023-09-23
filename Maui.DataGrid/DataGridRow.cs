@@ -99,8 +99,19 @@ internal sealed class DataGridRow : Grid
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
-                cell.SetBinding(BindingContextProperty,
-                    new Binding(col.PropertyName, source: BindingContext));
+                if (BindingContext is System.Data.DataRowView dataRowView)
+                {
+                    if (dataRowView.Row.Table.Columns.Contains(col.PropertyName))
+                    {
+                        cell.SetBinding(BindingContextProperty,
+                            new Binding($"[{col.PropertyName}]", source: dataRowView));
+                    }
+                }
+                else
+                {
+                    cell.SetBinding(BindingContextProperty,
+                        new Binding(col.PropertyName, source: BindingContext));
+                }
             }
         }
         else
@@ -118,8 +129,19 @@ internal sealed class DataGridRow : Grid
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
-                cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat, source: BindingContext));
+                if (BindingContext is System.Data.DataRowView dataRowView)
+                {
+                    if (dataRowView.Row.Table.Columns.Contains(col.PropertyName))
+                    {
+                        cell.SetBinding(Label.TextProperty,
+                            new Binding($"[{col.PropertyName}]", BindingMode.Default, stringFormat: col.StringFormat, source: dataRowView));
+                    }
+                }
+                else
+                {
+                    cell.SetBinding(Label.TextProperty,
+                        new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat, source: BindingContext));
+                }
             }
         }
 

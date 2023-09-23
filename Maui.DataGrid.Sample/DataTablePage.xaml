@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
+             xmlns:conv="clr-namespace:Maui.DataGrid.Sample.Converters"
+             x:DataType="vm:DataTableViewModel"
+             x:Class="Maui.DataGrid.Sample.DataTablePage">
+    <Grid RowDefinitions="Auto,*" BackgroundColor="White">
+
+        <FlexLayout BackgroundColor="Black" Wrap="Wrap">
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
+                <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding TeamColumnVisible}"  />
+                <Label Text="Team Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding WonColumnVisible}" />
+                <Label Text="Won Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <CheckBox IsChecked="{Binding PaginationEnabled}" />
+                <Label Text="Pagination Enabled?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}" />
+                <Label Text="Team Col Width" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <Button x:Name="_addColumnButton1" Text="Add Column" />
+            <Button Margin="5,0,0,0" Command="{Binding ChangeWonCommand}" Text="Change Selected Won" />
+        </FlexLayout>
+
+        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
+                     RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
+                     HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
+                     PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" PaginationEnabled="{Binding PaginationEnabled}" PageSize="5"
+                     ActiveRowColor="{StaticResource ActiveRowColor}" FooterBackground="{StaticResource GridFooterBgColor}" x:Name="_dataGrid1">
+            <dg:DataGrid.Columns>
+                <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
+                                   Aspect="AspectFit" HeightRequest="60" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" Width="{Binding TeamColumnWidth}" />
+                <dg:DataGridColumn Title="Won" PropertyName="Won" Width="0.5*" IsVisible="{Binding WonColumnVisible}" />
+                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*" />
+                <dg:DataGridColumn PropertyName="Home">
+                    <dg:DataGridColumn.FormattedTitle>
+                        <FormattedString>
+                            <Span Text="Home" TextColor="Black" FontSize="13" FontAttributes="Bold" />
+                            <Span Text=" (won-lost)" TextColor="#333333" FontSize="11" />
+                        </FormattedString>
+                    </dg:DataGridColumn.FormattedTitle>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="Win %" PropertyName="Percentage" Width="0.75*" StringFormat="{}{0:0.00}" />
+                <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.75*">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
+                                         BackgroundColor="{Binding Converter={StaticResource StreakToColorConverter}}">
+                                <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
+                                       TextColor="Black" />
+                            </ContentView>
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+            </dg:DataGrid.Columns>
+            <dg:DataGrid.RowsBackgroundColorPalette>
+                <dg:PaletteCollection>
+                    <Color>#F2F2F2</Color>
+                    <Color>#FFFFFF</Color>
+                </dg:PaletteCollection>
+            </dg:DataGrid.RowsBackgroundColorPalette>
+            <dg:DataGrid.Resources>
+                <ResourceDictionary>
+                    <conv:StreakToColorConverter x:Key="StreakToColorConverter" />
+                </ResourceDictionary>
+            </dg:DataGrid.Resources>
+        </dg:DataGrid>
+    </Grid>
+
+</ContentPage>
