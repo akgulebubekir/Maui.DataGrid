@@ -684,14 +684,14 @@ public partial class DataGrid
         set => SetValue(ItemsSourceProperty, value);
     }
 
-    public List<SwipeItem> LeftSwipeItems
+    public SwipeItems LeftSwipeItems
     {
-        get => (List<SwipeItem>)GetValue(LeftSwipeItemsProperty);
+        get => (SwipeItems)GetValue(LeftSwipeItemsProperty);
         set => SetValue(LeftSwipeItemsProperty, value);
     }
-    public List<SwipeItem> RightSwipeItems
+    public SwipeItems RightSwipeItems
     {
-        get => (List<SwipeItem>)GetValue(RightSwipeItemsProperty);
+        get => (SwipeItems)GetValue(RightSwipeItemsProperty);
         set => SetValue(RightSwipeItemsProperty, value);
     }
 
