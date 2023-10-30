@@ -592,6 +592,18 @@ public partial class DataGrid
                 }
             });
 
+    public static readonly BindableProperty LeftSwipeItemsProperty =
+        BindablePropertyExtensions.Create(new SwipeItems());
+
+    public static readonly BindableProperty RightSwipeItemsProperty =
+        BindablePropertyExtensions.Create(new SwipeItems());
+
+    public static readonly BindableProperty PullToRefreshCommandParameterProperty =
+        BindablePropertyExtensions.Create<object>();
+
+    public static readonly BindableProperty RefreshingColorProperty =
+        BindablePropertyExtensions.Create(Color.Parse("Purple"));
+
     #endregion Bindable properties
 
     #region Properties
@@ -670,6 +682,28 @@ public partial class DataGrid
     {
         get => (IEnumerable)GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
+    }
+
+    public List<SwipeItem> LeftSwipeItems
+    {
+        get => (List<SwipeItem>)GetValue(LeftSwipeItemsProperty);
+        set => SetValue(LeftSwipeItemsProperty, value);
+    }
+    public List<SwipeItem> RightSwipeItems
+    {
+        get => (List<SwipeItem>)GetValue(RightSwipeItemsProperty);
+        set => SetValue(RightSwipeItemsProperty, value);
+    }
+
+    public object PullToRefreshCommandParameter
+    {
+        get => GetValue(PullToRefreshCommandParameterProperty);
+        set => SetValue(PullToRefreshCommandParameterProperty, value);
+    }
+    public Color RefreshingColor
+    {
+        get => (Color)GetValue(RefreshingColorProperty);
+        set => SetValue(RefreshingColorProperty, value);
     }
 
     private IList<object>? _internalItems;
