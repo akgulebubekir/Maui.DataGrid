@@ -19,8 +19,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <Version>3.0.0</Version>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <Version>4.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md">
