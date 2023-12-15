@@ -50,13 +50,7 @@
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" Width="{Binding TeamColumnWidth}" />
                 <dg:DataGridColumn Title="Won" PropertyName="Won" Width="0.5*" IsVisible="{Binding WonColumnVisible}" />
-                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*">
-                    <dg:DataGridColumn.EditCellTemplate>
-                        <DataTemplate>
-                            <Entry Text="{Binding}" />
-                        </DataTemplate>
-                    </dg:DataGridColumn.EditCellTemplate>
-                </dg:DataGridColumn>
+                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*" />
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
                         <FormattedString>
