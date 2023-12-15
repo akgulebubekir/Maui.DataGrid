@@ -32,7 +32,7 @@ internal sealed class DataGridRow : Grid
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
-        BindablePropertyExtensions.Create<DataGrid>(null, BindingMode.OneTime,
+        BindablePropertyExtensions.Create<DataGrid, DataGrid>(null, BindingMode.OneTime,
             propertyChanged: (b, o, n) =>
             {
                 var self = (DataGridRow)b;
@@ -49,7 +49,7 @@ internal sealed class DataGridRow : Grid
             });
 
     public static readonly BindableProperty RowToEditProperty =
-        BindablePropertyExtensions.Create<object>(null, BindingMode.OneWay,
+        BindablePropertyExtensions.Create<DataGrid, object>(null, BindingMode.OneWay,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGridRow row)
