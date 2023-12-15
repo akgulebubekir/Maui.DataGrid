@@ -9,6 +9,7 @@ using Maui.DataGrid.Sample.Utils;
 public class MainViewModel : INotifyPropertyChanged
 {
     private List<Team> _teams;
+    private Team _teamToEdit;
     private Team _selectedItem;
     private bool _isRefreshing;
     private bool _teamColumnVisible = true;
@@ -20,7 +21,19 @@ public class MainViewModel : INotifyPropertyChanged
     public MainViewModel()
     {
         Teams = DummyDataProvider.GetTeams();
+        CancelEditCommand = new Command(CmdCancelEdit);
+        EditCommand = new Command<Team>(CmdEdit);
         RefreshCommand = new Command(CmdRefresh);
+    }
+
+    public Team TeamToEdit
+    {
+        get => _teamToEdit;
+        set
+        {
+            _teamToEdit = value;
+            OnPropertyChanged(nameof(TeamToEdit));
+        }
     }
 
     public List<Team> Teams
@@ -103,7 +116,23 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public ICommand RefreshCommand { get; set; }
+    public ICommand CancelEditCommand { get; }
+
+    public ICommand EditCommand { get; }
+
+    public ICommand RefreshCommand { get; }
+
+    private void CmdCancelEdit()
+    {
+        TeamToEdit = null;
+    }
+
+    private void CmdEdit(Team teamToEdit)
+    {
+        ArgumentNullException.ThrowIfNull(teamToEdit);
+
+        TeamToEdit = teamToEdit;
+    }
 
     private async void CmdRefresh()
     {

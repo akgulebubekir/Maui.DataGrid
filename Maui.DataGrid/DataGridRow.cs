@@ -21,6 +21,12 @@ internal sealed class DataGridRow : Grid
         set => SetValue(DataGridProperty, value);
     }
 
+    public object RowToEdit
+    {
+        get => GetValue(RowToEditProperty);
+        set => SetValue(RowToEditProperty, value);
+    }
+
     #endregion Properties
 
     #region Bindable Properties
@@ -39,6 +45,16 @@ internal sealed class DataGridRow : Grid
                 if (n is DataGrid newDataGrid && newDataGrid.SelectionEnabled)
                 {
                     newDataGrid.ItemSelected += self.DataGrid_ItemSelected;
+                }
+            });
+
+    public static readonly BindableProperty RowToEditProperty =
+        BindablePropertyExtensions.Create<object>(null, BindingMode.OneWay,
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n && b is DataGridRow row)
+                {
+                    row.CreateView();
                 }
             });
 
@@ -89,6 +105,22 @@ internal sealed class DataGridRow : Grid
     {
         View cell;
 
+        if (RowToEdit == BindingContext)
+        {
+            cell = CreateEditCell(col);
+        }
+        else
+        {
+            cell = CreateViewCell(col);
+        }
+
+        return cell;
+    }
+
+    private View CreateViewCell(DataGridColumn col)
+    {
+        View cell;
+
         if (col.CellTemplate != null)
         {
             cell = new ContentView
@@ -125,6 +157,47 @@ internal sealed class DataGridRow : Grid
 
         return cell;
     }
+
+    private View CreateEditCell(DataGridColumn col)
+    {
+        View cell;
+
+        if (col.EditCellTemplate != null)
+        {
+            cell = new ContentView
+            {
+                BackgroundColor = _bgColor,
+                Content = col.EditCellTemplate.CreateContent() as View
+            };
+
+            if (!string.IsNullOrWhiteSpace(col.PropertyName))
+            {
+                cell.SetBinding(BindingContextProperty,
+                    new Binding(col.PropertyName, source: BindingContext));
+            }
+        }
+        else
+        {
+            cell = new Entry
+            {
+                TextColor = _textColor,
+                BackgroundColor = _bgColor,
+                VerticalTextAlignment = col.VerticalTextAlignment,
+                HorizontalTextAlignment = col.HorizontalTextAlignment,
+                FontSize = DataGrid.FontSize,
+                FontFamily = DataGrid.FontFamily
+            };
+
+            if (!string.IsNullOrWhiteSpace(col.PropertyName))
+            {
+                cell.SetBinding(Entry.TextProperty,
+                    new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
+            }
+        }
+
+        return cell;
+    }
+
 
     private void UpdateColors()
     {

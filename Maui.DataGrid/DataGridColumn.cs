@@ -91,6 +91,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty CellTemplateProperty =
         BindablePropertyExtensions.Create<DataTemplate>();
 
+    public static readonly BindableProperty EditCellTemplateProperty =
+        BindablePropertyExtensions.Create<DataTemplate>();
+
     public static readonly BindableProperty LineBreakModeProperty =
         BindablePropertyExtensions.Create(LineBreakMode.WordWrap);
 
@@ -211,6 +214,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         get => (DataTemplate?)GetValue(CellTemplateProperty);
         set => SetValue(CellTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Edit cell template. Default value is <c>Entry</c> with binding <c>PropertyName</c>
+    /// </summary>
+    public DataTemplate? EditCellTemplate
+    {
+        get => (DataTemplate?)GetValue(EditCellTemplateProperty);
+        set => SetValue(EditCellTemplateProperty, value);
     }
 
     /// <summary>

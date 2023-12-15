@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
              xmlns:conv="clr-namespace:Maui.DataGrid.Sample.Converters"
              x:DataType="vm:MainViewModel"
+             x:Name="self"
              x:Class="Maui.DataGrid.Sample.MainPage">
     <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
@@ -34,7 +35,7 @@
         </FlexLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
-                     RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}"
+                     RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}" RowToEdit="{Binding TeamToEdit}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
                      PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" PaginationEnabled="{Binding PaginationEnabled}" PageSize="5"
                      ActiveRowColor="{StaticResource ActiveRowColor}" FooterBackground="{StaticResource GridFooterBgColor}" x:Name="_dataGrid1">
@@ -49,7 +50,13 @@
                 </dg:DataGridColumn>
                 <dg:DataGridColumn Title="Team" PropertyName="Name" IsVisible="{Binding TeamColumnVisible}" Width="{Binding TeamColumnWidth}" />
                 <dg:DataGridColumn Title="Won" PropertyName="Won" Width="0.5*" IsVisible="{Binding WonColumnVisible}" />
-                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*" />
+                <dg:DataGridColumn Title="Lost" PropertyName="Lost" Width="0.5*">
+                    <dg:DataGridColumn.EditCellTemplate>
+                        <DataTemplate>
+                            <Entry Text="{Binding}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.EditCellTemplate>
+                </dg:DataGridColumn>
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
                         <FormattedString>
@@ -69,6 +76,18 @@
                             </ContentView>
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
+                </dg:DataGridColumn>
+                <dg:DataGridColumn PropertyName="." Width="0.75*">
+                    <dg:DataGridColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding BindingContext.EditCommand, Source={Reference self}}" CommandParameter="{Binding .}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.CellTemplate>
+                    <dg:DataGridColumn.EditCellTemplate>
+                        <DataTemplate>
+                            <Button Text="Cancel" BackgroundColor="Orange" Command="{Binding BindingContext.CancelEditCommand, Source={Reference self}}" CommandParameter="{Binding .}" />
+                        </DataTemplate>
+                    </dg:DataGridColumn.EditCellTemplate>
                 </dg:DataGridColumn>
             </dg:DataGrid.Columns>
             <dg:DataGrid.RowsBackgroundColorPalette>
