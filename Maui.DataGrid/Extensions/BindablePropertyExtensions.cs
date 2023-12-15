@@ -1,22 +1,20 @@
 namespace Maui.DataGrid.Extensions;
 
 using System;
-using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Maui.Controls;
 using static Microsoft.Maui.Controls.BindableProperty;
 
 internal static class BindablePropertyExtensions
 {
-    public static BindableProperty Create<TType>(
-        TType? defaultValue = default,
+    public static BindableProperty Create<TDeclaringType, TReturnType>(
+        TReturnType? defaultValue = default,
         BindingMode defaultBindingMode = BindingMode.OneWay,
-        ValidateValueDelegate<TType?>? validateValue = null,
-        BindingPropertyChangedDelegate<TType?>? propertyChanged = null,
-        BindingPropertyChangingDelegate<TType?>? propertyChanging = null,
-        CoerceValueDelegate<TType?>? coerceValue = null,
-        CreateDefaultValueDelegate? defaultValueCreator = null,
+        ValidateValueDelegate<TReturnType?>? validateValue = null,
+        BindingPropertyChangedDelegate<TReturnType?>? propertyChanged = null,
+        BindingPropertyChangingDelegate<TReturnType?>? propertyChanging = null,
+        CoerceValueDelegate<TReturnType?>? coerceValue = null,
+        CreateDefaultValueDelegate<TDeclaringType?, TReturnType?>? defaultValueCreator = null,
         [CallerMemberName] string propertyName = "")
     {
         if (!propertyName.EndsWith("Property", StringComparison.Ordinal))
@@ -26,52 +24,66 @@ internal static class BindablePropertyExtensions
 
         var trimmedPropertyName = propertyName[..^8];
 
-        if (new StackTrace().GetFrame(1) is not StackFrame callerFrame)
-        {
-            throw new ArgumentException("StackFrame not found");
-        }
-
-        if (callerFrame.GetMethod() is not MethodBase callerMethod)
-        {
-            throw new ArgumentException("Caller method not found");
-        }
-
-        var callerType = callerMethod.DeclaringType;
-
-        ValidateValueDelegate? untypedValidateValue = null;
+        ValidateValueDelegate? untypedValidateValue;
         if (validateValue != null)
         {
-            untypedValidateValue = (b, v) => validateValue(b, v is TType typedValue ? typedValue : default);
+            untypedValidateValue = (bindable, value) => validateValue(bindable, value is TReturnType typedValue ? typedValue : default);
+        }
+        else
+        {
+            untypedValidateValue = null;
         }
 
-        BindingPropertyChangedDelegate? untypedPropertyChanged = null;
+        BindingPropertyChangedDelegate? untypedPropertyChanged;
         if (propertyChanged != null)
         {
-            untypedPropertyChanged = (b, o, n) => propertyChanged(b, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
+            untypedPropertyChanged = (bindable, o, n) => propertyChanged(bindable, o is TReturnType typedOldValue ? typedOldValue : default, n is TReturnType typedNewValue ? typedNewValue : default);
+        }
+        else
+        {
+            untypedPropertyChanged = null;
         }
 
-        BindingPropertyChangingDelegate? untypedPropertyChanging = null;
+        BindingPropertyChangingDelegate? untypedPropertyChanging;
         if (propertyChanging != null)
         {
-            untypedPropertyChanging = (b, o, n) => propertyChanging(b, o is TType typedOldValue ? typedOldValue : default, n is TType typedNewValue ? typedNewValue : default);
+            untypedPropertyChanging = (bindable, o, n) => propertyChanging(bindable, o is TReturnType typedOldValue ? typedOldValue : default, n is TReturnType typedNewValue ? typedNewValue : default);
+        }
+        else
+        {
+            untypedPropertyChanging = null;
         }
 
-        CoerceValueDelegate? untypedCoerceValue = null;
+        CoerceValueDelegate? untypedCoerceValue;
         if (coerceValue != null)
         {
-            untypedCoerceValue = (b, v) => coerceValue(b, v is TType typedValue ? typedValue : default);
+            untypedCoerceValue = (bindable, value) => coerceValue(bindable, value is TReturnType typedValue ? typedValue : default);
+        }
+        else
+        {
+            untypedCoerceValue = null;
+        }
+
+        CreateDefaultValueDelegate? untypedDefaultValueCreator;
+        if (defaultValueCreator != null)
+        {
+            untypedDefaultValueCreator = (bindable) => defaultValueCreator(bindable is TDeclaringType typedBindable ? typedBindable : default);
+        }
+        else
+        {
+            untypedDefaultValueCreator = null;
         }
 
         return BindableProperty.Create(
             trimmedPropertyName,
-            typeof(TType),
-            callerType,
+            typeof(TReturnType),
+            typeof(TDeclaringType),
             defaultValue,
             defaultBindingMode,
             untypedValidateValue,
             untypedPropertyChanged,
             untypedPropertyChanging,
             untypedCoerceValue,
-            defaultValueCreator);
+            untypedDefaultValueCreator);
     }
 }
