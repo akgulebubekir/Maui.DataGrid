@@ -263,7 +263,6 @@ public partial class DataGrid
     public static readonly BindableProperty ItemSizingStrategyProperty =
         BindablePropertyExtensions.Create<DataGrid, ItemSizingStrategy>(DeviceInfo.Platform == DevicePlatform.Android ? ItemSizingStrategy.MeasureAllItems : ItemSizingStrategy.MeasureFirstItem);
 
-
     public static readonly BindableProperty RowToEditProperty =
         BindablePropertyExtensions.Create<DataGrid, object>();
 
@@ -657,7 +656,6 @@ public partial class DataGrid
         get => GetValue(RowToEditProperty);
         set => SetValue(RowToEditProperty, value);
     }
-
 
     /// <summary>
     /// Background color of the rows. It repeats colors consecutively for rows.

@@ -198,7 +198,6 @@ internal sealed class DataGridRow : Grid
         return cell;
     }
 
-
     private void UpdateColors()
     {
         _hasSelected = DataGrid.SelectedItem == BindingContext;
