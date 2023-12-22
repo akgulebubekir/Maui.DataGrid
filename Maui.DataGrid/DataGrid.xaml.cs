@@ -19,11 +19,11 @@ public partial class DataGrid
 {
     #region Fields
 
-    private static readonly ColumnDefinitionCollection HeaderColumnDefinitions = new()
-                {
+    private static readonly ColumnDefinitionCollection HeaderColumnDefinitions =
+                [
                     new() { Width = new(1, GridUnitType.Star) },
                     new() { Width = new(1, GridUnitType.Auto) }
-                };
+                ];
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
@@ -289,7 +289,7 @@ public partial class DataGrid
             });
 
     public static readonly BindableProperty ColumnsProperty =
-        BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>(new(),
+        BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>([],
             propertyChanged: (b, o, n) =>
             {
                 if (n == o || b is not DataGrid self)
@@ -741,7 +741,7 @@ public partial class DataGrid
     /// <summary>
     /// List of page sizes
     /// </summary>
-    public List<int> PageSizeList { get; } = new() { 5, 10, 50, 100, 200, 1000 };
+    public List<int> PageSizeList { get; } = [5, 10, 50, 100, 200, 1000];
 
     /// <summary>
     /// Gets or sets whether the page size picker is visible
