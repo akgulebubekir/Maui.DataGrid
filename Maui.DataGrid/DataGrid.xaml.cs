@@ -541,6 +541,11 @@ public partial class DataGrid
             {
                 if (o != n && b is DataGrid self)
                 {
+                    if (n != null)
+                    {
+                        self._sortedColumn = self.Columns[n.Index];
+                    }
+
                     self.SortAndPaginate(n);
                 }
             });
@@ -683,6 +688,7 @@ public partial class DataGrid
     }
 
     private IList<object>? _internalItems;
+    private DataGridColumn? _sortedColumn;
 
     internal IList<object>? InternalItems
     {
@@ -1020,30 +1026,21 @@ public partial class DataGrid
         oldColumns?.ForEach(oldColumn => oldColumn.SizeChanged -= OnColumnSizeChanged);
         newColumns?.ForEach(newColumn => newColumn.SizeChanged += OnColumnSizeChanged);
 
-        DataGridColumn? oldSortedColumn = null;
-
-        if (oldColumns != null && SortedColumnIndex != null)
-        {
-            oldSortedColumn = oldColumns[SortedColumnIndex.Index];
-        }
-
         int? newSortedColumnIndex = null;
 
-        if (newColumns != null && oldSortedColumn != null)
+        if (newColumns != null && _sortedColumn != null)
         {
-            newSortedColumnIndex = newColumns.IndexOf(oldSortedColumn);
+            newSortedColumnIndex = newColumns.IndexOf(_sortedColumn);
         }
 
-        if (oldSortedColumn != null && SortedColumnIndex != null)
+        if (_sortedColumn != null && SortedColumnIndex != null)
         {
-            if (newSortedColumnIndex == null)
+            if (newSortedColumnIndex is null or -1)
             {
                 return null;
             }
-            else
-            {
-                return new(newSortedColumnIndex.Value, SortedColumnIndex.Order);
-            }
+
+            return new(newSortedColumnIndex.Value, SortedColumnIndex.Order);
         }
 
         return SortedColumnIndex;
