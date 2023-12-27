@@ -1072,8 +1072,7 @@ public partial class DataGrid
                             SortedColumnIndex = new(index, order);
 
                             column.SortingOrder = order;
-                        },
-                        column => column.SortingEnabled && Columns.Contains(column)),
+                        }, column => column.SortingEnabled && Columns.Contains(column)),
                         CommandParameter = column
                     }
                 }
