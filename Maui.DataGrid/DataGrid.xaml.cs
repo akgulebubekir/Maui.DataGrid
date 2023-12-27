@@ -33,6 +33,7 @@ public partial class DataGrid
     private readonly Style _defaultSortIconStyle;
 
     private bool _isReloading;
+    private readonly object _reloadLock = new();
     private IList<object>? _internalItems;
     private DataGridColumn? _sortedColumn;
 
@@ -1034,25 +1035,28 @@ public partial class DataGrid
 
     internal void Reload()
     {
-        if (_isReloading)
+        lock (_reloadLock)
         {
-            return;
-        }
-
-        _isReloading = true;
-
-        try
-        {
-            InitHeaderView();
-
-            if (_internalItems is not null)
+            if (_isReloading)
             {
-                InternalItems = new List<object>(_internalItems);
+                return;
             }
-        }
-        finally
-        {
-            _isReloading = false;
+
+            _isReloading = true;
+
+            try
+            {
+                InitHeaderView();
+
+                if (_internalItems is not null)
+                {
+                    InternalItems = new List<object>(_internalItems);
+                }
+            }
+            finally
+            {
+                _isReloading = false;
+            }
         }
     }
 
