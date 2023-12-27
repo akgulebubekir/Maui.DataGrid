@@ -665,7 +665,7 @@ public partial class DataGrid
             {
                 if (o != n && b is DataGrid self)
                 {
-                    if (n != null)
+                    if (n != null && Math.Abs(n.Index) < self.Columns.Count)
                     {
                         self._sortedColumn = self.Columns[n.Index];
                     }
