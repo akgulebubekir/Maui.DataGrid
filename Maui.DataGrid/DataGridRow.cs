@@ -103,18 +103,12 @@ internal sealed class DataGridRow : Grid
 
     private View CreateCell(DataGridColumn col)
     {
-        View cell;
-
         if (RowToEdit == BindingContext)
         {
-            cell = CreateEditCell(col);
-        }
-        else
-        {
-            cell = CreateViewCell(col);
+            return CreateEditCell(col);
         }
 
-        return cell;
+        return CreateViewCell(col);
     }
 
     private View CreateViewCell(DataGridColumn col)
