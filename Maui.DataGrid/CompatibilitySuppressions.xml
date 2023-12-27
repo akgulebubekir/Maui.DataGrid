@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_PageSizeList</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.SortData.#ctor</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>PKV006</DiagnosticId>
+    <Target>net6.0</Target>
+  </Suppression>
+</Suppressions>
