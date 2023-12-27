@@ -2,6 +2,7 @@ namespace Maui.DataGrid;
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -741,7 +742,7 @@ public partial class DataGrid
     /// <summary>
     /// List of page sizes
     /// </summary>
-    public List<int> PageSizeList { get; } = [5, 10, 50, 100, 200, 1000];
+    public IReadOnlyCollection<int> PageSizeList { get; } = ImmutableArray.Create(5, 10, 50, 100, 200, 1000);
 
     /// <summary>
     /// Gets or sets whether the page size picker is visible
