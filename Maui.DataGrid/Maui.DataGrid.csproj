@@ -17,6 +17,9 @@
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
+    <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
     <Title>Maui.DataGrid</Title>
     <Authors>Ebubekir Akgul</Authors>
     <Description>Datagrid component for Maui</Description>
