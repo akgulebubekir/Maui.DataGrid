@@ -992,7 +992,7 @@ public partial class DataGrid
 
     private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        var newSortedColumnIndex = RegenerateSortedColumnIndex(e);
+        var newSortedColumnIndex = RegenerateSortedColumnIndex();
 
         if (newSortedColumnIndex != SortedColumnIndex)
         {
@@ -1014,29 +1014,18 @@ public partial class DataGrid
         _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
     }
 
-    private SortData? RegenerateSortedColumnIndex(NotifyCollectionChangedEventArgs e)
+    private SortData? RegenerateSortedColumnIndex()
     {
-        var oldColumns = e.OldItems?.Cast<DataGridColumn>().ToList();
-        var newColumns = e.NewItems?.Cast<DataGridColumn>().ToList();
-
-        oldColumns?.ForEach(oldColumn => oldColumn.SizeChanged -= OnColumnSizeChanged);
-        newColumns?.ForEach(newColumn => newColumn.SizeChanged += OnColumnSizeChanged);
-
-        int? newSortedColumnIndex = null;
-
-        if (newColumns != null && _sortedColumn != null)
-        {
-            newSortedColumnIndex = newColumns.IndexOf(_sortedColumn);
-        }
-
         if (_sortedColumn != null && SortedColumnIndex != null)
         {
-            if (newSortedColumnIndex is null or -1)
+            var newSortedColumnIndex = Columns.IndexOf(_sortedColumn);
+
+            if (newSortedColumnIndex == -1)
             {
                 return null;
             }
 
-            return new(newSortedColumnIndex.Value, SortedColumnIndex.Order);
+            return new(newSortedColumnIndex, SortedColumnIndex.Order);
         }
 
         return SortedColumnIndex;
