@@ -3,7 +3,7 @@
 using System.Globalization;
 using Maui.DataGrid.Sample.Models;
 
-internal class StreakToColorConverter : IValueConverter
+internal sealed class StreakToColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
