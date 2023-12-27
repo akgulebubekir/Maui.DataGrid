@@ -16,9 +16,6 @@
                 <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
-                <Button Text="Remove Teams" Clicked="OnRemoveTeamColumn" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
                 <CheckBox IsChecked="{Binding WonColumnVisible}" />
                 <Label Text="Won Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
@@ -30,7 +27,8 @@
                 <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}" />
                 <Label Text="Team Col Width" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <Button x:Name="_addColumnButton1" Text="Add Column" />
+            <Button Text="Remove Column" Clicked="OnRemoveColumn" />
+            <Button Text="Add Column" Clicked="OnAddColumn" />
         </FlexLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"

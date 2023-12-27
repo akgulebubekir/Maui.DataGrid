@@ -9,7 +9,6 @@ public partial class MainPage
     {
         InitializeComponent();
         BindingContext = new MainViewModel();
-        _addColumnButton1.Clicked += OnAddColumn;
     }
 
     private void OnAddColumn(object sender, EventArgs e)
@@ -17,13 +16,19 @@ public partial class MainPage
         _dataGrid1.Columns.Add(new DataGridColumn() { Title = "Test", Width = new(100) });
     }
 
-    private void OnRemoveTeamColumn(object sender, EventArgs e)
+    private async void OnRemoveColumn(object sender, EventArgs e)
     {
-        var teamColumn = _dataGrid1.Columns.FirstOrDefault(c => c.Title == "Team");
+        var columnTitle = await Shell.Current.DisplayPromptAsync("Which column should be removed?", "Remove column");
+
+        var teamColumn = _dataGrid1.Columns.FirstOrDefault(c => c.Title == columnTitle);
 
         if (teamColumn != null)
         {
             _ = _dataGrid1.Columns.Remove(teamColumn);
+        }
+        else
+        {
+            await Shell.Current.DisplayAlert("Column not found", "No column by that title", "Ok");
         }
     }
 }
