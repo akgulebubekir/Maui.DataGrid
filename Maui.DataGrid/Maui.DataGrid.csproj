@@ -9,6 +9,14 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Features>strict</Features>
+    <Deterministic>true</Deterministic>
+	  <WarningLevel>9999</WarningLevel>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <Title>Maui.DataGrid</Title>
     <Authors>Ebubekir Akgul</Authors>
     <Description>Datagrid component for Maui</Description>
