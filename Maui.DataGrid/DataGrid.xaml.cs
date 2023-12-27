@@ -710,7 +710,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Font size of the cells.
-    /// It does not sets header font size. Use <c>HeaderLabelStyle</c> to set header font size.
+    /// It does not sets header font size. Use <see cref="HeaderLabelStyle"/> to set header font size.
     /// </summary>
     [TypeConverter(typeof(FontSizeConverter))]
     public double FontSize
@@ -721,7 +721,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Sets the font family.
-    /// It does not sets header font family. Use <c>HeaderLabelStyle</c> to set header font size.
+    /// It does not sets header font family. Use <see cref="HeaderLabelStyle"/> to set header font size.
     /// </summary>
     public string FontFamily
     {
@@ -782,7 +782,7 @@ public partial class DataGrid
     /// <summary>
     /// Gets or sets if the grid is sortable. Default value is true.
     /// Sortable columns must implement <see cref="IComparable"/>
-    /// If you want to enable or disable sorting for specific column please use <c>SortingEnabled</c> property
+    /// If you want to enable or disable sorting for specific column please use <see cref="DataGridColumn.SortingEnabled"/> property
     /// </summary>
     public bool IsSortable
     {
@@ -864,7 +864,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Determines to show the borders of header cells.
-    /// Default value is <c>true</c>
+    /// Default value is true
     /// </summary>
     public bool HeaderBordersVisible
     {
@@ -883,7 +883,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Style of the header label.
-    /// Style's <c>TargetType</c> must be Label.
+    /// Style's <see cref="Style.TargetType"/> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
     {
@@ -902,7 +902,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Style of the sort icon
-    /// Style's <c>TargetType</c> must be Polygon.
+    /// Style's <see cref="Style.TargetType"/> must be Polygon.
     /// </summary>
     public Style SortIconStyle
     {

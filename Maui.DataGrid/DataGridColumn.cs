@@ -143,7 +143,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
 
     /// <summary>
-    /// Width of the column. Like Grid, you can use <c>Absolute, star, Auto</c> as unit.
+    /// Width of the column. Like Grid, you can use <see cref="GridUnitType.Absolute"/>, <see cref="GridUnitType.Star"/>, or <see cref="GridUnitType.Auto"/>.
     /// </summary>
     [TypeConverter(typeof(GridLengthTypeConverter))]
     public GridLength Width
@@ -208,7 +208,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Cell template. Default value is <c>Label</c> with binding <c>PropertyName</c>
+    /// Cell template. Default value is <see cref="Label"/> with binding <see cref="PropertyName"/>
     /// </summary>
     public DataTemplate? CellTemplate
     {
@@ -217,7 +217,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Edit cell template. Default value is <c>Entry</c> with binding <c>PropertyName</c>
+    /// Edit cell template. Default value is <see cref="Entry"/> with binding <see cref="PropertyName"/>
     /// </summary>
     public DataTemplate? EditCellTemplate
     {
@@ -263,7 +263,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Label Style of the header. <c>TargetType</c> must be Label.
+    /// Label Style of the header. <see cref="Style.TargetType"/> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
     {

@@ -8,6 +8,11 @@ using System.ComponentModel;
 [TypeConverter(typeof(SortDataTypeConverter))]
 public sealed class SortData
 {
+    /// <summary>
+    /// Implicitly converts an integer to a SortData object.
+    /// </summary>
+    /// <param name="index">The column index.</param>
+    /// <returns>A SortData object.</returns>
     public static implicit operator SortData(int index) => new()
     {
         Index = Math.Abs(index),
