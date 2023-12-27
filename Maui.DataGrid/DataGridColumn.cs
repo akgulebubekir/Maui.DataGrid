@@ -294,7 +294,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         try
         {
-            if (dataGrid.ItemsSource is null)
+            if (dataGrid?.ItemsSource is null)
             {
                 _isSortable = false;
             }
