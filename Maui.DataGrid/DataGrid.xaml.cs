@@ -382,6 +382,9 @@ public partial class DataGrid
             },
             defaultValueCreator: _ => new ObservableCollection<DataGridColumn>());
 
+    /// <summary>
+    /// Gets or sets the ItemsSource for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty ItemsSourceProperty =
         BindablePropertyExtensions.Create<DataGrid, IEnumerable>(
             propertyChanged: (b, o, n) =>
@@ -417,16 +420,6 @@ public partial class DataGrid
                     self.SelectedItem = null;
                 }
             });
-
-    private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        SortAndPaginate();
-
-        if (SelectedItem != null && InternalItems?.Contains(SelectedItem) != true)
-        {
-            SelectedItem = null;
-        }
-    }
 
     /// <summary>
     /// Gets or sets the ItemsSource for the DataGrid.
@@ -1072,6 +1065,16 @@ public partial class DataGrid
         SelectedItem = _collectionView.SelectedItem;
 
         _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
+    }
+
+    private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        SortAndPaginate();
+
+        if (SelectedItem != null && InternalItems?.Contains(SelectedItem) != true)
+        {
+            SelectedItem = null;
+        }
     }
 
     private SortData? RegenerateSortedColumnIndex()
