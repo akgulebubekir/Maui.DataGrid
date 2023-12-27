@@ -33,8 +33,6 @@ public partial class DataGrid
     private readonly Style _defaultHeaderStyle;
     private readonly Style _defaultSortIconStyle;
 
-    private bool _isReloading;
-    private bool _isSortingAndPaginating;
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
     private IList<object>? _internalItems;
@@ -207,47 +205,33 @@ public partial class DataGrid
     {
         lock (_sortAndPaginateLock)
         {
-            if (_isSortingAndPaginating)
+            if (ItemsSource is null)
             {
                 return;
             }
 
-            _isSortingAndPaginating = true;
+            sortData ??= SortedColumnIndex;
 
-            try
+            var originalItems = ItemsSource.Cast<object>().ToList();
+
+            IList<object> sortedItems;
+
+            if (sortData != null && CanSort(sortData))
             {
-                if (ItemsSource is null)
-                {
-                    return;
-                }
-
-                sortData ??= SortedColumnIndex;
-
-                var originalItems = ItemsSource.Cast<object>().ToList();
-
-                IList<object> sortedItems;
-
-                if (sortData != null && CanSort(sortData))
-                {
-                    sortedItems = GetSortedItems(originalItems, sortData);
-                }
-                else
-                {
-                    sortedItems = originalItems;
-                }
-
-                if (PaginationEnabled)
-                {
-                    InternalItems = GetPaginatedItems(sortedItems).ToList();
-                }
-                else
-                {
-                    InternalItems = sortedItems;
-                }
+                sortedItems = GetSortedItems(originalItems, sortData);
             }
-            finally
+            else
             {
-                _isSortingAndPaginating = false;
+                sortedItems = originalItems;
+            }
+
+            if (PaginationEnabled)
+            {
+                InternalItems = GetPaginatedItems(sortedItems).ToList();
+            }
+            else
+            {
+                InternalItems = sortedItems;
             }
         }
     }
@@ -1201,33 +1185,19 @@ public partial class DataGrid
     {
         lock (_reloadLock)
         {
-            if (_isReloading)
+            // Check if PageSizeList contains the new PageSize value, so that it shows in the dropdown
+            if (!PageSizeList.Contains(PageSize))
             {
-                return;
+                PageSizeList.Add(PageSize);
+                OnPropertyChanged(nameof(PageSizeList));
+                OnPropertyChanged(nameof(PageSize));
             }
 
-            _isReloading = true;
+            InitHeaderView();
 
-            try
+            if (_internalItems is not null)
             {
-                // Check if PageSizeList contains the new PageSize value, so that it shows in the dropdown
-                if (!PageSizeList.Contains(PageSize))
-                {
-                    PageSizeList.Add(PageSize);
-                    OnPropertyChanged(nameof(PageSizeList));
-                    OnPropertyChanged(nameof(PageSize));
-                }
-
-                InitHeaderView();
-
-                if (_internalItems is not null)
-                {
-                    InternalItems = new List<object>(_internalItems);
-                }
-            }
-            finally
-            {
-                _isReloading = false;
+                InternalItems = new List<object>(_internalItems);
             }
         }
     }
