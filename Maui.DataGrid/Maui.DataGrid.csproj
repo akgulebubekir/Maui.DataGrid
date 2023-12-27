@@ -20,6 +20,7 @@
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
+    <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
     <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
     <Title>Maui.DataGrid</Title>
     <Authors>Ebubekir Akgul</Authors>
