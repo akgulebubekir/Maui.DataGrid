@@ -986,23 +986,19 @@ public partial class DataGrid
 
     private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.OldItems != null)
-        {
-            foreach (DataGridColumn oldColumn in e.OldItems)
-            {
-                oldColumn.SizeChanged -= OnColumnSizeChanged;
-            }
-        }
+        var newSortedColumnIndex = RegenerateSortedColumnIndex(e);
 
-        if (e.NewItems != null)
+        if (newSortedColumnIndex != SortedColumnIndex)
         {
-            foreach (DataGridColumn newColumn in e.NewItems)
-            {
-                newColumn.SizeChanged += OnColumnSizeChanged;
-            }
-        }
+            // This will do a SortAndPaginate via the propertyChanged event of the SortedColumnIndexProperty
+            SortedColumnIndex = newSortedColumnIndex;
 
-        Reload();
+            InitHeaderView();
+        }
+        else
+        {
+            Reload();
+        }
     }
 
     private void OnColumnSizeChanged(object? sender, EventArgs e) => Reload();
@@ -1014,6 +1010,43 @@ public partial class DataGrid
         SelectedItem = _collectionView.SelectedItem;
 
         _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
+    }
+
+    private SortData? RegenerateSortedColumnIndex(NotifyCollectionChangedEventArgs e)
+    {
+        var oldColumns = e.OldItems?.Cast<DataGridColumn>().ToList();
+        var newColumns = e.NewItems?.Cast<DataGridColumn>().ToList();
+
+        oldColumns?.ForEach(oldColumn => oldColumn.SizeChanged -= OnColumnSizeChanged);
+        newColumns?.ForEach(newColumn => newColumn.SizeChanged += OnColumnSizeChanged);
+
+        DataGridColumn? oldSortedColumn = null;
+
+        if (oldColumns != null && SortedColumnIndex != null)
+        {
+            oldSortedColumn = oldColumns[SortedColumnIndex.Index];
+        }
+
+        int? newSortedColumnIndex = null;
+
+        if (newColumns != null && oldSortedColumn != null)
+        {
+            newSortedColumnIndex = newColumns.IndexOf(oldSortedColumn);
+        }
+
+        if (oldSortedColumn != null && SortedColumnIndex != null)
+        {
+            if (newSortedColumnIndex == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new(newSortedColumnIndex.Value, SortedColumnIndex.Order);
+            }
+        }
+
+        return SortedColumnIndex;
     }
 
     internal void Reload()
