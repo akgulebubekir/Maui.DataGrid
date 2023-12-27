@@ -33,6 +33,8 @@ public partial class DataGrid
     private readonly Style _defaultSortIconStyle;
 
     private bool _isReloading;
+    private IList<object>? _internalItems;
+    private DataGridColumn? _sortedColumn;
 
     #endregion Fields
 
@@ -688,9 +690,6 @@ public partial class DataGrid
         get => (IEnumerable)GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
     }
-
-    private IList<object>? _internalItems;
-    private DataGridColumn? _sortedColumn;
 
     internal IList<object>? InternalItems
     {
