@@ -1185,13 +1185,7 @@ public partial class DataGrid
     {
         lock (_reloadLock)
         {
-            // Check if PageSizeList contains the new PageSize value, so that it shows in the dropdown
-            if (!PageSizeList.Contains(PageSize))
-            {
-                PageSizeList.Add(PageSize);
-                OnPropertyChanged(nameof(PageSizeList));
-                OnPropertyChanged(nameof(PageSize));
-            }
+            UpdatePageSizeList();
 
             InitHeaderView();
 
