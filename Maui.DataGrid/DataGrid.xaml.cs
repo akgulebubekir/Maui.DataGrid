@@ -331,30 +331,27 @@ public partial class DataGrid
                     return;
                 }
 
-                //ObservableCollection Tracking
+                // Unsubscribe from old collection's change event
                 if (o is INotifyCollectionChanged oldCollection)
                 {
                     oldCollection.CollectionChanged -= self.OnItemsSourceCollectionChanged;
                 }
 
-                if (n == null)
-                {
-                    self.InternalItems = null;
-                }
-                else
+                self.InternalItems = n?.Cast<object>().ToList();
+
+                // Subscribe to new collection's change event and update properties
+                if (self.InternalItems != null)
                 {
                     if (n is INotifyCollectionChanged newCollection)
                     {
                         newCollection.CollectionChanged += self.OnItemsSourceCollectionChanged;
                     }
 
-                    var itemsSource = n.Cast<object>().ToList();
-
-                    self.PageCount = (int)Math.Ceiling(itemsSource.Count / (double)self.PageSize);
-
+                    self.PageCount = (int)Math.Ceiling(self.InternalItems.Count / (double)self.PageSize);
                     self.SortAndPaginate();
                 }
 
+                // Reset SelectedItem if it's not in the new collection
                 if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
                 {
                     self.SelectedItem = null;
