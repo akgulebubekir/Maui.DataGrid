@@ -33,7 +33,6 @@ public sealed class SortData(int index, SortingOrder order)
 
     public static SortData FromInt32(int index)
     {
-        // TODO: Why is this needed? Maybe it should just be ascending, if only passed an index?
         var order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant;
 
         return new(Math.Abs(index), order);
