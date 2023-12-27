@@ -998,13 +998,9 @@ public partial class DataGrid
         {
             // This will do a SortAndPaginate via the propertyChanged event of the SortedColumnIndexProperty
             SortedColumnIndex = newSortedColumnIndex;
+        }
 
-            InitHeaderView();
-        }
-        else
-        {
-            Reload();
-        }
+        Reload();
     }
 
     private void OnColumnSizeChanged(object? sender, EventArgs e) => Reload();
