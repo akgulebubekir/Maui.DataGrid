@@ -32,6 +32,8 @@ public partial class DataGrid
     private readonly Style _defaultHeaderStyle;
     private readonly Style _defaultSortIconStyle;
 
+    private bool _isReloading;
+
     #endregion Fields
 
     #region ctor
@@ -1033,11 +1035,25 @@ public partial class DataGrid
 
     internal void Reload()
     {
-        InitHeaderView();
-
-        if (_internalItems is not null)
+        if (_isReloading)
         {
-            InternalItems = new List<object>(_internalItems);
+            return;
+        }
+
+        _isReloading = true;
+
+        try
+        {
+            InitHeaderView();
+
+            if (_internalItems is not null)
+            {
+                InternalItems = new List<object>(_internalItems);
+            }
+        }
+        finally
+        {
+            _isReloading = false;
         }
     }
 
