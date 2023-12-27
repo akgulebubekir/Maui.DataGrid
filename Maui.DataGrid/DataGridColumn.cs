@@ -46,7 +46,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     #region Bindable Properties
 
     public static readonly BindableProperty WidthProperty =
-        BindablePropertyExtensions.Create<DataGrid, GridLength>(GridLength.Star,
+        BindablePropertyExtensions.Create<DataGridColumn, GridLength>(GridLength.Star,
             propertyChanged: (b, o, n) =>
             {
                 if (!o.Equals(n) && b is DataGridColumn self)
@@ -57,18 +57,18 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             });
 
     public static readonly BindableProperty TitleProperty =
-        BindablePropertyExtensions.Create<DataGrid, string>(string.Empty,
+        BindablePropertyExtensions.Create<DataGridColumn, string>(string.Empty,
             propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = n);
 
     public static readonly BindableProperty FormattedTitleProperty =
-        BindablePropertyExtensions.Create<DataGrid, FormattedString>(
+        BindablePropertyExtensions.Create<DataGridColumn, FormattedString>(
             propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = n);
 
     public static readonly BindableProperty PropertyNameProperty =
-        BindablePropertyExtensions.Create<DataGrid, string>();
+        BindablePropertyExtensions.Create<DataGridColumn, string>();
 
     public static readonly BindableProperty IsVisibleProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(true,
+        BindablePropertyExtensions.Create<DataGridColumn, bool>(true,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGridColumn column)
@@ -86,28 +86,28 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             });
 
     public static readonly BindableProperty StringFormatProperty =
-        BindablePropertyExtensions.Create<DataGrid, string>();
+        BindablePropertyExtensions.Create<DataGridColumn, string>();
 
     public static readonly BindableProperty CellTemplateProperty =
-        BindablePropertyExtensions.Create<DataGrid, DataTemplate>();
+        BindablePropertyExtensions.Create<DataGridColumn, DataTemplate>();
 
     public static readonly BindableProperty EditCellTemplateProperty =
-        BindablePropertyExtensions.Create<DataGrid, DataTemplate>();
+        BindablePropertyExtensions.Create<DataGridColumn, DataTemplate>();
 
     public static readonly BindableProperty LineBreakModeProperty =
-        BindablePropertyExtensions.Create<DataGrid, LineBreakMode>(LineBreakMode.WordWrap);
+        BindablePropertyExtensions.Create<DataGridColumn, LineBreakMode>(LineBreakMode.WordWrap);
 
     public static readonly BindableProperty HorizontalContentAlignmentProperty =
-        BindablePropertyExtensions.Create<DataGrid, LayoutOptions>(LayoutOptions.Center);
+        BindablePropertyExtensions.Create<DataGridColumn, LayoutOptions>(LayoutOptions.Center);
 
     public static readonly BindableProperty VerticalContentAlignmentProperty =
-        BindablePropertyExtensions.Create<DataGrid, LayoutOptions>(LayoutOptions.Center);
+        BindablePropertyExtensions.Create<DataGridColumn, LayoutOptions>(LayoutOptions.Center);
 
     public static readonly BindableProperty SortingEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(true);
+        BindablePropertyExtensions.Create<DataGridColumn, bool>(true);
 
     public static readonly BindableProperty HeaderLabelStyleProperty =
-        BindablePropertyExtensions.Create<DataGrid, Style>(
+        BindablePropertyExtensions.Create<DataGridColumn, Style>(
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGridColumn self && self.HeaderLabel != null)
