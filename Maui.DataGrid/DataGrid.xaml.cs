@@ -2,7 +2,6 @@ namespace Maui.DataGrid;
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -19,6 +18,7 @@ using Font = Microsoft.Maui.Font;
 public partial class DataGrid
 {
     #region Fields
+    private static readonly SortedSet<int> DefaultPageSizeList = [5, 10, 50, 100, 200, 1000];
 
     private static readonly ColumnDefinitionCollection HeaderColumnDefinitions =
                 [
@@ -29,6 +29,7 @@ public partial class DataGrid
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
 
+    private readonly SortedSet<int> _pageSizeList = DefaultPageSizeList;
     private readonly Style _defaultHeaderStyle;
     private readonly Style _defaultSortIconStyle;
 
@@ -182,6 +183,24 @@ public partial class DataGrid
         var skip = (PageNumber - 1) * PageSize;
 
         return unpaginatedItems.Skip(skip).Take(PageSize);
+    }
+
+    /// <summary>
+    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown
+    /// </summary>
+    private void UpdatePageSizeList()
+    {
+        if (PageSizeList.Contains(PageSize))
+        {
+            return;
+        }
+
+        if (_pageSizeList.Add(PageSize))
+        {
+            PageSizeList = new(_pageSizeList);
+            OnPropertyChanged(nameof(PageSizeList));
+            OnPropertyChanged(nameof(PageSize));
+        }
     }
 
     private void SortAndPaginate(SortData? sortData = null)
@@ -457,8 +476,22 @@ public partial class DataGrid
                         self.PageCount = (int)Math.Ceiling(self.ItemsSource.Cast<object>().Count() / (double)self.PageSize);
                     }
                     self.SortAndPaginate();
+                    self.UpdatePageSizeList();
                 }
             });
+
+    /// <summary>
+    /// Gets or sets the list of available page sizes for the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty PageSizeListProperty =
+        BindablePropertyExtensions.Create<DataGrid, ObservableCollection<int>>(new(DefaultPageSizeList),
+                        propertyChanged: (b, o, n) =>
+                        {
+                            if (o != n && b is DataGrid self)
+                            {
+                                self.UpdatePageSizeList();
+                            }
+                        });
 
     /// <summary>
     /// Gets or sets a value indicating whether the page size is visible in the DataGrid.
@@ -862,9 +895,13 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// List of page sizes
+    /// Gets or sets the list of available page sizes
     /// </summary>
-    public IReadOnlyCollection<int> PageSizeList { get; } = ImmutableArray.Create(5, 10, 50, 100, 200, 1000);
+    public ObservableCollection<int> PageSizeList
+    {
+        get => (ObservableCollection<int>)GetValue(PageSizeListProperty);
+        set => SetValue(PageSizeListProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets whether the page size picker is visible
@@ -1173,6 +1210,14 @@ public partial class DataGrid
 
             try
             {
+                // Check if PageSizeList contains the new PageSize value, so that it shows in the dropdown
+                if (!PageSizeList.Contains(PageSize))
+                {
+                    PageSizeList.Add(PageSize);
+                    OnPropertyChanged(nameof(PageSizeList));
+                    OnPropertyChanged(nameof(PageSize));
+                }
+
                 InitHeaderView();
 
                 if (_internalItems is not null)
