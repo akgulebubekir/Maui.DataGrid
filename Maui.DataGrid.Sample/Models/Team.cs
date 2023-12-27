@@ -37,6 +37,61 @@ public class Streak : IComparable
     {
         return $"{Enum.GetName(typeof(Result), Result)} {NumStreak}";
     }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        if (obj is null)
+        {
+            return false;
+        }
+
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Streak left, Streak right)
+    {
+        if (left is null)
+        {
+            return right is null;
+        }
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Streak left, Streak right)
+    {
+        return !(left == right);
+    }
+
+    public static bool operator <(Streak left, Streak right)
+    {
+        return left is null ? right is not null : left.CompareTo(right) < 0;
+    }
+
+    public static bool operator <=(Streak left, Streak right)
+    {
+        return left is null || left.CompareTo(right) <= 0;
+    }
+
+    public static bool operator >(Streak left, Streak right)
+    {
+        return left?.CompareTo(right) > 0;
+    }
+
+    public static bool operator >=(Streak left, Streak right)
+    {
+        return left is null ? right is null : left.CompareTo(right) >= 0;
+    }
 }
 
 public enum Result
