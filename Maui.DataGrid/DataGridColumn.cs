@@ -314,7 +314,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             _isSortable = false;
         }
 
-        return _isSortable ?? false;
+        return _isSortable ??= false;
     }
 
     private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
