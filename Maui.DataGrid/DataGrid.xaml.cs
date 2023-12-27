@@ -1060,7 +1060,7 @@ public partial class DataGrid
                 {
                     new TapGestureRecognizer
                     {
-                        Command = new Command(() =>
+                        Command = new Command<DataGridColumn>(column =>
                         {
                             // This is to invert SortOrder when the user taps on a column.
                             var order = column.SortingOrder == SortingOrder.Ascendant
@@ -1072,7 +1072,9 @@ public partial class DataGrid
                             SortedColumnIndex = new(index, order);
 
                             column.SortingOrder = order;
-                        }, () => column.SortingEnabled && Columns.Contains(column))
+                        },
+                        column => column.SortingEnabled && Columns.Contains(column)),
+                        CommandParameter = column
                     }
                 }
         };
