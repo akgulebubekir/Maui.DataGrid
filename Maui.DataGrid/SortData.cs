@@ -13,11 +13,7 @@ public sealed class SortData
     /// </summary>
     /// <param name="index">The column index.</param>
     /// <returns>A SortData object.</returns>
-    public static implicit operator SortData(int index) => new()
-    {
-        Index = Math.Abs(index),
-        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant
-    };
+    public static implicit operator SortData(int index) => FromInt32(index);
 
     /// <inheritdoc/>
     public override bool Equals(object? obj)
@@ -56,6 +52,12 @@ public sealed class SortData
     public int Index { get; set; }
 
     #endregion Properties
+
+    public static SortData FromInt32(int index) => new()
+    {
+        Index = Math.Abs(index),
+        Order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant
+    };
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Index, Order);
