@@ -13,7 +13,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
 /// <summary>
-/// DataGrid component for Maui
+/// DataGrid component for .NET MAUI
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
