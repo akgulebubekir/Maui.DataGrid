@@ -20,6 +20,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #endregion Fields
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataGridColumn"/> class.
+    /// </summary>
     public DataGridColumn()
     {
         HeaderLabel = new();
@@ -35,6 +38,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region Events
 
+    /// <summary>
+    /// Occurs when the size of the column changes.
+    /// </summary>
     public event EventHandler SizeChanged
     {
         add => _sizeChangedEventManager.AddEventHandler(value);
@@ -45,6 +51,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region Bindable Properties
 
+    /// <summary>
+    /// Gets or sets the width of the column.
+    /// </summary>
     public static readonly BindableProperty WidthProperty =
         BindablePropertyExtensions.Create<DataGridColumn, GridLength>(GridLength.Star,
             propertyChanged: (b, o, n) =>
@@ -56,17 +65,29 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the title of the column.
+    /// </summary>
     public static readonly BindableProperty TitleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, string>(string.Empty,
             propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = n);
 
+    /// <summary>
+    /// Gets or sets the formatted title of the column.
+    /// </summary>
     public static readonly BindableProperty FormattedTitleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, FormattedString>(
             propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = n);
 
+    /// <summary>
+    /// Gets or sets the name of the property associated with the column.
+    /// </summary>
     public static readonly BindableProperty PropertyNameProperty =
         BindablePropertyExtensions.Create<DataGridColumn, string>();
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the column is visible.
+    /// </summary>
     public static readonly BindableProperty IsVisibleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, bool>(true,
             propertyChanged: (b, o, n) =>
@@ -85,27 +106,51 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the string format for the column.
+    /// </summary>
     public static readonly BindableProperty StringFormatProperty =
         BindablePropertyExtensions.Create<DataGridColumn, string>();
 
+    /// <summary>
+    /// Gets or sets the cell template for the column.
+    /// </summary>
     public static readonly BindableProperty CellTemplateProperty =
         BindablePropertyExtensions.Create<DataGridColumn, DataTemplate>();
 
+    /// <summary>
+    /// Gets or sets the cell template for editing the column.
+    /// </summary>
     public static readonly BindableProperty EditCellTemplateProperty =
         BindablePropertyExtensions.Create<DataGridColumn, DataTemplate>();
 
+    /// <summary>
+    /// Gets or sets the line break mode for the column.
+    /// </summary>
     public static readonly BindableProperty LineBreakModeProperty =
         BindablePropertyExtensions.Create<DataGridColumn, LineBreakMode>(LineBreakMode.WordWrap);
 
+    /// <summary>
+    /// Gets or sets the horizontal content alignment for the column.
+    /// </summary>
     public static readonly BindableProperty HorizontalContentAlignmentProperty =
         BindablePropertyExtensions.Create<DataGridColumn, LayoutOptions>(LayoutOptions.Center);
 
+    /// <summary>
+    /// Gets or sets the vertical content alignment for the column.
+    /// </summary>
     public static readonly BindableProperty VerticalContentAlignmentProperty =
         BindablePropertyExtensions.Create<DataGridColumn, LayoutOptions>(LayoutOptions.Center);
 
+    /// <summary>
+    /// Gets or sets a value indicating whether sorting is enabled for the column.
+    /// </summary>
     public static readonly BindableProperty SortingEnabledProperty =
         BindablePropertyExtensions.Create<DataGridColumn, bool>(true);
 
+    /// <summary>
+    /// Gets or sets the style for the header label of the column.
+    /// </summary>
     public static readonly BindableProperty HeaderLabelStyleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, Style>(
             propertyChanged: (b, o, n) =>

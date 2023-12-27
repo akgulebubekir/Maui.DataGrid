@@ -442,6 +442,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the page size for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty PageSizeProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(100,
             propertyChanged: (b, o, n) =>
@@ -457,27 +460,51 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the page size is visible in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty PageSizeVisibleProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true);
 
+    /// <summary>
+    /// Gets or sets the row height for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty RowHeightProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(40);
 
+    /// <summary>
+    /// Gets or sets the height of the footer in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty FooterHeightProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(DeviceInfo.Platform == DevicePlatform.Android ? 50 : 40);
 
+    /// <summary>
+    /// Gets or sets the height of the header in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty HeaderHeightProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(40);
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the DataGrid is sortable.
+    /// </summary>
     public static readonly BindableProperty IsSortableProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true);
 
+    /// <summary>
+    /// Gets or sets the font size for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty FontSizeProperty =
         BindablePropertyExtensions.Create<DataGrid, double>(13.0);
 
+    /// <summary>
+    /// Gets or sets the font family for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty FontFamilyProperty =
         BindablePropertyExtensions.Create<DataGrid, string>(Font.Default.Family);
 
+    /// <summary>
+    /// Gets or sets the selected item in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty SelectedItemProperty =
         BindablePropertyExtensions.Create<DataGrid, object>(null, BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
@@ -509,6 +536,9 @@ public partial class DataGrid
             }
         );
 
+    /// <summary>
+    /// Gets or sets a value indicating whether pagination is enabled in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty PaginationEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(false,
             propertyChanged: (b, o, n) =>
@@ -520,6 +550,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty SelectionEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true,
             propertyChanged: (b, o, n) =>
@@ -531,6 +564,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets a value indicating whether refreshing is enabled in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty RefreshingEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true,
             propertyChanged: (b, o, n) =>
@@ -542,6 +578,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the command to execute when the data grid is pulled to refresh.
+    /// </summary>
     public static readonly BindableProperty PullToRefreshCommandProperty =
         BindablePropertyExtensions.Create<DataGrid, ICommand>(
             propertyChanged: (b, o, n) =>
@@ -562,9 +601,15 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the DataGrid is refreshing.
+    /// </summary>
     public static readonly BindableProperty IsRefreshingProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(false, BindingMode.TwoWay);
 
+    /// <summary>
+    /// Gets or sets the thickness of the border around the DataGrid.
+    /// </summary>
     public static readonly BindableProperty BorderThicknessProperty =
         BindablePropertyExtensions.Create<DataGrid, Thickness>(new Thickness(1),
             propertyChanged: (b, o, n) =>
@@ -575,11 +620,17 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the header borders are visible in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty HeaderBordersVisibleProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true,
             propertyChanged: (b, _, n) => ((DataGrid)b)._headerView.BackgroundColor =
                 n ? ((DataGrid)b).BorderColor : ((DataGrid)b).HeaderBackground);
 
+    /// <summary>
+    /// Gets or sets the index of the sorted column in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty SortedColumnIndexProperty =
         BindablePropertyExtensions.Create<DataGrid, SortData>(null, BindingMode.TwoWay,
             (b, v) =>
@@ -606,6 +657,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the current page number in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty PageNumberProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(1, BindingMode.TwoWay,
             (b, v) =>
@@ -625,12 +679,21 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the style for the header labels in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty HeaderLabelStyleProperty =
         BindablePropertyExtensions.Create<DataGrid, Style>();
 
+    /// <summary>
+    /// Gets or sets the sort icons for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty SortIconProperty =
         BindablePropertyExtensions.Create<DataGrid, Polygon>();
 
+    /// <summary>
+    /// Gets or sets the style for the sort icons in the DataGrid.
+    /// </summary>
     public static readonly BindableProperty SortIconStyleProperty =
         BindablePropertyExtensions.Create<DataGrid, Style>(
             propertyChanged: (b, o, n) =>
@@ -644,6 +707,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the view to be displayed when the DataGrid has no data.
+    /// </summary>
     public static readonly BindableProperty NoDataViewProperty =
         BindablePropertyExtensions.Create<DataGrid, View>(
             propertyChanged: (b, o, n) =>
