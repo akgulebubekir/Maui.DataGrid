@@ -38,6 +38,7 @@ public class Streak : IComparable
         return $"{Enum.GetName(typeof(Result), Result)} {NumStreak}";
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object obj)
     {
         if (ReferenceEquals(this, obj))
@@ -53,6 +54,7 @@ public class Streak : IComparable
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public override int GetHashCode()
     {
         throw new NotImplementedException();
