@@ -33,7 +33,9 @@ public partial class DataGrid
     private readonly Style _defaultSortIconStyle;
 
     private bool _isReloading;
+    private bool _isSortingAndPaginating;
     private readonly object _reloadLock = new();
+    private readonly object _sortAndPaginateLock = new();
     private IList<object>? _internalItems;
     private DataGridColumn? _sortedColumn;
 
@@ -175,33 +177,50 @@ public partial class DataGrid
 
     private void SortAndPaginate(SortData? sortData = null)
     {
-        if (ItemsSource is null)
+        lock (_sortAndPaginateLock)
         {
-            return;
-        }
+            if (_isSortingAndPaginating)
+            {
+                return;
+            }
 
-        sortData ??= SortedColumnIndex;
+            _isSortingAndPaginating = true;
 
-        var originalItems = ItemsSource.Cast<object>().ToList();
+            try
+            {
+                if (ItemsSource is null)
+                {
+                    return;
+                }
 
-        IList<object> sortedItems;
+                sortData ??= SortedColumnIndex;
 
-        if (sortData != null && CanSort(sortData))
-        {
-            sortedItems = GetSortedItems(originalItems, sortData);
-        }
-        else
-        {
-            sortedItems = originalItems;
-        }
+                var originalItems = ItemsSource.Cast<object>().ToList();
 
-        if (PaginationEnabled)
-        {
-            InternalItems = GetPaginatedItems(sortedItems).ToList();
-        }
-        else
-        {
-            InternalItems = sortedItems;
+                IList<object> sortedItems;
+
+                if (sortData != null && CanSort(sortData))
+                {
+                    sortedItems = GetSortedItems(originalItems, sortData);
+                }
+                else
+                {
+                    sortedItems = originalItems;
+                }
+
+                if (PaginationEnabled)
+                {
+                    InternalItems = GetPaginatedItems(sortedItems).ToList();
+                }
+                else
+                {
+                    InternalItems = sortedItems;
+                }
+            }
+            finally
+            {
+                _isSortingAndPaginating = false;
+            }
         }
     }
 
