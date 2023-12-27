@@ -618,7 +618,7 @@ public partial class DataGrid
 
     /// <summary>
     /// BackgroundColor of the column header
-    /// Default value is White
+    /// Default value is <see cref="Colors.White"/>
     /// </summary>
     public Color HeaderBackground
     {
@@ -628,7 +628,7 @@ public partial class DataGrid
 
     /// <summary>
     /// BackgroundColor of the footer that contains pagination elements
-    /// Default value is White
+    /// Default value is <see cref="Colors.White"/>
     /// </summary>
     public Color FooterBackground
     {
@@ -648,7 +648,7 @@ public partial class DataGrid
 
     /// <summary>
     /// ItemSizingStrategy
-    /// Default Value is MeasureFirstItem, except on Android
+    /// Default Value is <see cref="ItemSizingStrategy.MeasureFirstItem"/>, except on Android
     /// </summary>
     public ItemSizingStrategy ItemSizingStrategy
     {
