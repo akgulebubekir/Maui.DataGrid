@@ -65,7 +65,7 @@
             </Grid.ColumnDefinitions>
             <HorizontalStackLayout VerticalOptions="Center" IsVisible="{Binding PageSizeVisible, Source={Reference self}}">
                 <Label Text="# per page:" Margin="5,0,0,0" VerticalTextAlignment="Center" TextColor="Black" />
-                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=OneTime}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="Black" />
+                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=TwoWay}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="Black" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
                 <Label Text="Page:" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
