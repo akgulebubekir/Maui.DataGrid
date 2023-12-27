@@ -43,6 +43,9 @@ public partial class DataGrid
 
     #region ctor
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataGrid"/> class.
+    /// </summary>
     public DataGrid()
     {
         InitializeComponent();
@@ -54,12 +57,18 @@ public partial class DataGrid
 
     #region Events
 
+    /// <summary>
+    /// Occurs when an item is selected in the DataGrid.
+    /// </summary>
     public event EventHandler<SelectionChangedEventArgs> ItemSelected
     {
         add => _itemSelectedEventManager.AddEventHandler(value);
         remove => _itemSelectedEventManager.RemoveEventHandler(value);
     }
 
+    /// <summary>
+    /// Occurs when the DataGrid is being refreshed.
+    /// </summary>
     public event EventHandler Refreshing
     {
         add => _refreshingEventManager.AddEventHandler(value);
@@ -240,6 +249,9 @@ public partial class DataGrid
 
     #region Bindable properties
 
+    /// <summary>
+    /// Gets or sets the color of the active row.
+    /// </summary>
     public static readonly BindableProperty ActiveRowColorProperty =
         BindablePropertyExtensions.Create<DataGrid, Color>(Color.FromRgb(128, 144, 160),
             coerceValue: (b, v) =>
@@ -252,6 +264,9 @@ public partial class DataGrid
                 return v;
             });
 
+    /// <summary>
+    /// Gets or sets the background color of the header.
+    /// </summary>
     public static readonly BindableProperty HeaderBackgroundProperty =
         BindablePropertyExtensions.Create<DataGrid, Color>(Colors.White,
             propertyChanged: (b, o, n) =>
@@ -266,9 +281,15 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the background color of the footer.
+    /// </summary>
     public static readonly BindableProperty FooterBackgroundProperty =
         BindablePropertyExtensions.Create<DataGrid, Color>(Colors.White);
 
+    /// <summary>
+    /// Gets or sets the color of the border.
+    /// </summary>
     public static readonly BindableProperty BorderColorProperty =
         BindablePropertyExtensions.Create<DataGrid, Color>(Colors.Black,
             propertyChanged: (b, _, n) =>
@@ -285,12 +306,21 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the ItemSizingStrategy for the data grid.
+    /// </summary>
     public static readonly BindableProperty ItemSizingStrategyProperty =
         BindablePropertyExtensions.Create<DataGrid, ItemSizingStrategy>(DeviceInfo.Platform == DevicePlatform.Android ? ItemSizingStrategy.MeasureAllItems : ItemSizingStrategy.MeasureFirstItem);
 
+    /// <summary>
+    /// Gets or sets the row to edit.
+    /// </summary>
     public static readonly BindableProperty RowToEditProperty =
         BindablePropertyExtensions.Create<DataGrid, object>();
 
+    /// <summary>
+    /// Gets or sets the background color palette for the rows.
+    /// </summary>
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White },
             propertyChanged: (b, _, _) =>
@@ -302,6 +332,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the text color palette for the rows.
+    /// </summary>
     public static readonly BindableProperty RowsTextColorPaletteProperty =
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black },
             propertyChanged: (b, _, _) =>
@@ -313,6 +346,9 @@ public partial class DataGrid
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the Columns for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty ColumnsProperty =
         BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>([],
             propertyChanged: (b, o, n) =>
@@ -392,6 +428,9 @@ public partial class DataGrid
         }
     }
 
+    /// <summary>
+    /// Gets or sets the ItemsSource for the DataGrid.
+    /// </summary>
     public static readonly BindableProperty PageCountProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(1,
             propertyChanged: (b, o, n) =>
