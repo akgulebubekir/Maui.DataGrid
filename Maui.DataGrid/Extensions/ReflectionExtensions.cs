@@ -19,7 +19,7 @@ internal static class ReflectionExtensions
 
         object? result;
 
-        if (path.Contains(PropertyOfOp))
+        if (path.Contains(PropertyOfOp, StringComparison.Ordinal))
         {
             var tokens = path.Split(PropertyOfOp);
 
