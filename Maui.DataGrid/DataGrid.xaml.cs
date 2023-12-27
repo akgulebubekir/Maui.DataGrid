@@ -944,6 +944,7 @@ public partial class DataGrid
         }
         else if (SelectionEnabled)
         {
+            _collectionView.SelectionChanged -= OnSelectionChanged;
             _collectionView.SelectionChanged += OnSelectionChanged;
         }
 
@@ -953,26 +954,29 @@ public partial class DataGrid
         }
         else if (RefreshingEnabled)
         {
+            _refreshView.Refreshing -= OnRefreshing;
             _refreshView.Refreshing += OnRefreshing;
         }
 
         if (Parent is null)
         {
-            Columns.CollectionChanged -= OnColumnsChanged;
-
             foreach (var column in Columns)
             {
                 column.SizeChanged -= OnColumnSizeChanged;
             }
+
+            Columns.CollectionChanged -= OnColumnsChanged;
         }
         else
         {
-            Columns.CollectionChanged += OnColumnsChanged;
-
             foreach (var column in Columns)
             {
+                column.SizeChanged -= OnColumnSizeChanged;
                 column.SizeChanged += OnColumnSizeChanged;
             }
+
+            Columns.CollectionChanged -= OnColumnsChanged;
+            Columns.CollectionChanged += OnColumnsChanged;
         }
     }
 
@@ -983,7 +987,26 @@ public partial class DataGrid
         InitHeaderView();
     }
 
-    private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e) => Reload();
+    private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.OldItems != null)
+        {
+            foreach (DataGridColumn oldColumn in e.OldItems)
+            {
+                oldColumn.SizeChanged -= OnColumnSizeChanged;
+            }
+        }
+
+        if (e.NewItems != null)
+        {
+            foreach (DataGridColumn newColumn in e.NewItems)
+            {
+                newColumn.SizeChanged += OnColumnSizeChanged;
+            }
+        }
+
+        Reload();
+    }
 
     private void OnColumnSizeChanged(object? sender, EventArgs e) => Reload();
 
