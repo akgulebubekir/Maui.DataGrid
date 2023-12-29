@@ -356,7 +356,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         ArgumentNullException.ThrowIfNull(DataGrid);
 
-        if (DataType == null && EditCellTemplate == null)
+        if (DataType == null)
         {
             var rowDataType = DataGrid.ItemsSource.GetType().GetGenericArguments().Single();
             DataType = rowDataType.GetProperty(PropertyName)?.PropertyType;
