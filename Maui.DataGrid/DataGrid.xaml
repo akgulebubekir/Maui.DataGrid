@@ -38,7 +38,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={Reference self}}" />
         <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={Reference self}}"
-                     IsRefreshing="{Binding IsRefreshing, Source={x:Reference self}, Mode=TwoWay}" IsEnabled="{Binding RefreshingEnabled, Source={Reference self}}">
+                     IsRefreshing="{Binding IsRefreshing, Source={Reference self}, Mode=TwoWay}" IsEnabled="{Binding RefreshingEnabled, Source={Reference self}}">
             <!--  Remove ContentView when this pull request is merged https://github.com/dotnet/maui/pull/14302  -->
             <ContentView>
                 <!--  Set all platforms to use MeasureFirstItem when this bug is resolved https://github.com/dotnet/maui/issues/7562  -->
@@ -70,7 +70,7 @@
             <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
                 <Label Text="Page:" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
                 <Label Text="{Binding PageNumber, Source={Reference self}}" VerticalTextAlignment="Center" TextColor="Black" />
-                <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={x:Reference self}}" Style="{StaticResource PaginationStepperStyle}" Minimum="1" />
+                <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={Reference self}}" Style="{StaticResource PaginationStepperStyle}" Minimum="1" />
             </HorizontalStackLayout>
         </Grid>
     </Grid>
