@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 /// <summary>
 /// Represents the sorting orders for <see cref="DataGrid"/>
