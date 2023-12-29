@@ -26,8 +26,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public DataGridColumn()
     {
-        HeaderLabel = new();
-        SortingIcon = new();
         SortingIconContainer = new ContentView
         {
             IsVisible = false,
@@ -173,9 +171,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region Properties
 
-    internal Polygon SortingIcon { get; }
+    internal Polygon SortingIcon { get; } = new();
 
-    internal Label HeaderLabel { get; }
+    internal Label HeaderLabel { get; } = new();
 
     internal View SortingIconContainer { get; }
 
