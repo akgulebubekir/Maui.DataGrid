@@ -10,6 +10,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGrid.PaginationStepperStyleProperty</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.RowToEditProperty</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
@@ -31,6 +38,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_PaginationStepperStyle</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGrid.get_RowToEdit</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
@@ -39,6 +53,13 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGrid.set_PageSizeList(System.Collections.ObjectModel.ObservableCollection{System.Int32})</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.set_PaginationStepperStyle(Microsoft.Maui.Controls.Style)</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
