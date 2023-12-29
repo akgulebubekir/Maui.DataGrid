@@ -218,6 +218,12 @@ public partial class DataGrid
 
             PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
 
+            if (originalItems.Count == 0)
+            {
+                InternalItems.Clear();
+                return;
+            }
+
             IList<object> sortedItems;
 
             if (sortData != null && CanSort(sortData))
