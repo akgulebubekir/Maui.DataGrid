@@ -425,6 +425,20 @@ public partial class DataGrid
             });
 
     /// <summary>
+    /// Gets or sets a value indicating whether pagination is enabled in the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty PaginationEnabledProperty =
+        BindablePropertyExtensions.Create<DataGrid, bool>(false,
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n)
+                {
+                    var self = (DataGrid)b;
+                    self.SortAndPaginate();
+                }
+            });
+
+    /// <summary>
     /// Gets or sets the ItemsSource for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageCountProperty =
@@ -484,6 +498,12 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, bool>(true);
 
     /// <summary>
+    /// Gets or sets the list of available page sizes for the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty PaginationStepperStyleProperty =
+        BindablePropertyExtensions.Create<DataGrid, Style>(defaultValueCreator: x => x?.Resources["DefaultPaginationStepperStyle"] as Style);
+
+    /// <summary>
     /// Gets or sets the row height for the DataGrid.
     /// </summary>
     public static readonly BindableProperty RowHeightProperty =
@@ -519,6 +539,7 @@ public partial class DataGrid
     public static readonly BindableProperty FontFamilyProperty =
         BindablePropertyExtensions.Create<DataGrid, string>(Font.Default.Family);
 
+
     /// <summary>
     /// Gets or sets the selected item in the DataGrid.
     /// </summary>
@@ -552,20 +573,6 @@ public partial class DataGrid
                 return null;
             }
         );
-
-    /// <summary>
-    /// Gets or sets a value indicating whether pagination is enabled in the DataGrid.
-    /// </summary>
-    public static readonly BindableProperty PaginationEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(false,
-            propertyChanged: (b, o, n) =>
-            {
-                if (o != n)
-                {
-                    var self = (DataGrid)b;
-                    self.SortAndPaginate();
-                }
-            });
 
     /// <summary>
     /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
@@ -894,6 +901,15 @@ public partial class DataGrid
     {
         get => (bool)GetValue(PageSizeVisibleProperty);
         set => SetValue(PageSizeVisibleProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the pagination stepper style
+    /// </summary>
+    public Style? PaginationStepperStyle
+    {
+        get => (Style?)GetValue(PaginationStepperStyleProperty);
+        set => SetValue(PaginationStepperStyleProperty, value);
     }
 
     /// <summary>
