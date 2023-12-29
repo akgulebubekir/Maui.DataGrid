@@ -32,7 +32,7 @@ public sealed class SortData(int index, SortingOrder order)
     public static implicit operator SortData(int index) => FromInt32(index);
 
     /// <summary>
-    /// Creates a SortData object from an integer index.
+    /// Creates a SortData object from an integer index. Negative indicies mean a descending sort.
     /// </summary>
     /// <param name="index">The column index.</param>
     /// <returns>A SortData object.</returns>
