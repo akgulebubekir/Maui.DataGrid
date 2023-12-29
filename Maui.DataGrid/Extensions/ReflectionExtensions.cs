@@ -45,7 +45,13 @@ internal static class ReflectionExtensions
 
     private static object? GetPropertyValue(object obj, string propertyName)
     {
-        var properties = PropertyTypeCache.GetOrAdd(obj.GetType(), _ => TypeDescriptor.GetProperties(obj));
+        var type = obj.GetType();
+
+        if (!PropertyTypeCache.TryGetValue(type, out var properties))
+        {
+            properties = TypeDescriptor.GetProperties(obj);
+            PropertyTypeCache[type] = properties;
+        }
 
         var propertyDescriptor = properties.Find(propertyName, false);
 
