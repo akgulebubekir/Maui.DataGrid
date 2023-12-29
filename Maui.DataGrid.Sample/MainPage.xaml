@@ -13,19 +13,19 @@
         <FlexLayout BackgroundColor="Black" Wrap="Wrap">
             <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
                 <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
-                <Label Text="Header Borders Visible?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Label Text="Header Borders Visible?" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
                 <CheckBox IsChecked="{Binding WonColumnVisible}" />
-                <Label Text="Won Column" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Label Text="Won Column" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
                 <CheckBox IsChecked="{Binding PaginationEnabled}" />
-                <Label Text="Pagination Enabled?" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Label Text="Pagination Enabled?" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
-                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}" />
-                <Label Text="Team Col Width" TextColor="White" Margin="0,0,5,0" VerticalOptions="Center" />
+                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}" BackgroundColor="{OnPlatform WinUI=Gray}" />
+                <Label Text="Team Col Width" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <Button Text="Remove Column" Clicked="OnRemoveColumn" />
             <Button Text="Add Column" Clicked="OnAddColumn" />
