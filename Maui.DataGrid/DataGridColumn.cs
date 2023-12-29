@@ -169,15 +169,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal ColumnDefinition? ColumnDefinition
     {
-        get
-        {
-            if (!IsVisible)
-            {
-                return _invisibleColumnDefinition;
-            }
-
-            return _columnDefinition;
-        }
+        get => IsVisible ? _columnDefinition : _invisibleColumnDefinition;
         set => _columnDefinition = value;
     }
 
