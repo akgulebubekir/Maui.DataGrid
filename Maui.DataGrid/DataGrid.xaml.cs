@@ -18,6 +18,7 @@ using Font = Microsoft.Maui.Font;
 public partial class DataGrid
 {
     #region Fields
+
     private static readonly SortedSet<int> DefaultPageSizeList = [5, 10, 50, 100, 200, 1000];
 
     private static readonly ColumnDefinitionCollection HeaderColumnDefinitions =
@@ -834,19 +835,6 @@ public partial class DataGrid
         set => SetValue(ItemsSourceProperty, value);
     }
 
-    internal IList<object>? InternalItems
-    {
-        get => _internalItems;
-        set
-        {
-            if (_internalItems != value)
-            {
-                _internalItems = value;
-                _collectionView.ItemsSource = _internalItems; // TODO: Are we using the most efficient CollectionChanged handling with observables?
-            }
-        }
-    }
-
     /// <summary>
     /// Columns
     /// </summary>
@@ -1091,6 +1079,18 @@ public partial class DataGrid
 
 #pragma warning restore CA2227 // Collection properties should be read only
 
+    internal IList<object>? InternalItems
+    {
+        get => _internalItems;
+        set
+        {
+            if (_internalItems != value)
+            {
+                _internalItems = value;
+                _collectionView.ItemsSource = _internalItems; // TODO: Are we using the most efficient CollectionChanged handling with observables?
+            }
+        }
+    }
 
     #endregion Properties
 
