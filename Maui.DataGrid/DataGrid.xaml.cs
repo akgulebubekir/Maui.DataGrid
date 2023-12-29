@@ -215,6 +215,8 @@ public partial class DataGrid
 
             var originalItems = ItemsSource.Cast<object>().ToList();
 
+            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
+
             IList<object> sortedItems;
 
             if (sortData != null && CanSort(sortData))
@@ -404,19 +406,13 @@ public partial class DataGrid
                     oldCollection.CollectionChanged -= self.OnItemsSourceCollectionChanged;
                 }
 
-                self.InternalItems = n?.Cast<object>().ToList();
-
                 // Subscribe to new collection's change event and update properties
-                if (self.InternalItems != null)
+                if (n is INotifyCollectionChanged newCollection)
                 {
-                    if (n is INotifyCollectionChanged newCollection)
-                    {
-                        newCollection.CollectionChanged += self.OnItemsSourceCollectionChanged;
-                    }
-
-                    self.PageCount = (int)Math.Ceiling(self.InternalItems.Count / (double)self.PageSize);
-                    self.SortAndPaginate();
+                    newCollection.CollectionChanged += self.OnItemsSourceCollectionChanged;
                 }
+
+                self.SortAndPaginate();
 
                 // Reset SelectedItem if it's not in the new collection
                 if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
@@ -455,10 +451,6 @@ public partial class DataGrid
                 if (o != n && b is DataGrid self)
                 {
                     self.PageNumber = 1;
-                    if (self.ItemsSource != null)
-                    {
-                        self.PageCount = (int)Math.Ceiling(self.ItemsSource.Cast<object>().Count() / (double)self.PageSize);
-                    }
                     self.SortAndPaginate();
                     self.UpdatePageSizeList();
                 }
@@ -682,7 +674,7 @@ public partial class DataGrid
             },
             (b, o, n) =>
             {
-                if (o != n && b is DataGrid self && self.ItemsSource?.Cast<object>().Any() == true)
+                if (o != n && b is DataGrid self)
                 {
                     self.SortAndPaginate();
                 }
