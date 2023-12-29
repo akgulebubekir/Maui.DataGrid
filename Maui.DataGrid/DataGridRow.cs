@@ -42,11 +42,13 @@ internal sealed class DataGridRow : Grid
                 if (o is DataGrid oldDataGrid)
                 {
                     oldDataGrid.ItemSelected -= self.DataGrid_ItemSelected;
+                    oldDataGrid.Columns.CollectionChanged += self.OnColumnsChanged;
                 }
 
                 if (n is DataGrid newDataGrid && newDataGrid.SelectionEnabled)
                 {
                     newDataGrid.ItemSelected += self.DataGrid_ItemSelected;
+                    newDataGrid.Columns.CollectionChanged += self.OnColumnsChanged;
                 }
             });
 
@@ -381,6 +383,11 @@ internal sealed class DataGridRow : Grid
         {
             DataGrid.ItemSelected -= DataGrid_ItemSelected;
         }
+    }
+
+    private void OnColumnsChanged(object? sender, EventArgs e)
+    {
+        CreateView();
     }
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)

@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using Maui.DataGrid.Extensions;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
@@ -36,7 +37,6 @@ public partial class DataGrid
 
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
-    private IList<object>? _internalItems;
     private DataGridColumn? _sortedColumn;
 
     #endregion Fields
@@ -49,6 +49,7 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
+        _collectionView.ItemsSource = InternalItems;
         _defaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
         _defaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
     }
@@ -230,11 +231,12 @@ public partial class DataGrid
 
             if (PaginationEnabled)
             {
-                InternalItems = GetPaginatedItems(sortedItems).ToList();
+                var paginatedItems = GetPaginatedItems(sortedItems);
+                InternalItems.ReplaceRange(paginatedItems);
             }
             else
             {
-                InternalItems = sortedItems;
+                InternalItems.ReplaceRange(sortedItems);
             }
         }
     }
@@ -542,7 +544,7 @@ public partial class DataGrid
                     throw new InvalidOperationException("DataGrid must have SelectionEnabled=true to set SelectedItem");
                 }
 
-                if (self.InternalItems?.Contains(v) == true)
+                if (self.InternalItems.Contains(v))
                 {
                     return v;
                 }
@@ -1063,6 +1065,8 @@ public partial class DataGrid
 
 #pragma warning restore CA2227 // Collection properties should be read only
 
+    internal ObservableRangeCollection<object> InternalItems { get; } = [];
+
     #endregion Properties
 
     #region UI Methods
@@ -1179,11 +1183,6 @@ public partial class DataGrid
             UpdatePageSizeList();
 
             InitHeaderView();
-
-            if (_internalItems is not null)
-            {
-                InternalItems = new List<object>(_internalItems);
-            }
         }
     }
 
