@@ -54,7 +54,12 @@ internal sealed class DataGridRow : Grid
         BindablePropertyExtensions.Create<DataGridRow, object>(null, BindingMode.OneWay,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGridRow row)
+                if (o == n || b is not DataGridRow row)
+                {
+                    return;
+                }
+
+                if (o == row.BindingContext || n == row.BindingContext)
                 {
                     row.CreateView();
                 }
