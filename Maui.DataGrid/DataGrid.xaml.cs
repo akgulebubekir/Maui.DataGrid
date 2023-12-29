@@ -1285,11 +1285,11 @@ public partial class DataGrid
         {
             var col = Columns[i];
 
+            col.DataGrid ??= this;
+
             col.InitializeDataType();
 
             col.ColumnDefinition ??= new(col.Width);
-
-            col.DataGrid ??= this;
 
             _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
 
