@@ -3,6 +3,7 @@ namespace Maui.DataGrid;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls.Shapes;
 using System.ComponentModel;
+using System.Reflection;
 
 /// <summary>
 /// Specifies each column of the DataGrid.

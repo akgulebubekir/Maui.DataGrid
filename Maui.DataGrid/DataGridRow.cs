@@ -1,7 +1,9 @@
 namespace Maui.DataGrid;
 
+using System.Globalization;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Layouts;
 
 internal sealed class DataGridRow : Grid
 {
@@ -154,42 +156,167 @@ internal sealed class DataGridRow : Grid
 
     private View CreateEditCell(DataGridColumn col)
     {
-        View cell;
+        var cell = GenerateTemplatedEditCell(col);
 
-        if (col.EditCellTemplate != null)
+        if (cell != null)
         {
-            cell = new ContentView
-            {
-                BackgroundColor = _bgColor,
-                Content = col.EditCellTemplate.CreateContent() as View
-            };
-
-            if (!string.IsNullOrWhiteSpace(col.PropertyName))
-            {
-                cell.SetBinding(BindingContextProperty,
-                    new Binding(col.PropertyName, source: BindingContext));
-            }
+            return cell;
         }
-        else
-        {
-            cell = new Entry
-            {
-                TextColor = _textColor,
-                BackgroundColor = _bgColor,
-                VerticalTextAlignment = col.VerticalTextAlignment,
-                HorizontalTextAlignment = col.HorizontalTextAlignment,
-                FontSize = DataGrid.FontSize,
-                FontFamily = DataGrid.FontFamily
-            };
 
-            if (!string.IsNullOrWhiteSpace(col.PropertyName))
-            {
-                cell.SetBinding(Entry.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
-            }
+        switch (Type.GetTypeCode(col.DataType))
+        {
+            case TypeCode.String:
+                return GenerateTextEditCell(col);
+            case TypeCode.Boolean:
+                return GenerateBooleanEditCell(col);
+            case TypeCode.Decimal:
+            case TypeCode.Double:
+            case TypeCode.Int16:
+            case TypeCode.Int32:
+            case TypeCode.Int64:
+            case TypeCode.SByte:
+            case TypeCode.Single:
+            case TypeCode.UInt16:
+            case TypeCode.UInt32:
+            case TypeCode.UInt64:
+                return GenerateNumericEditCell(col);
+            case TypeCode.DateTime:
+                return GenerateDateTimeEditCell(col);;
+        }
+
+        return new TemplatedView { BackgroundColor = _bgColor };
+    }
+
+    private ContentView? GenerateTemplatedEditCell(DataGridColumn col)
+    {
+        if (col.EditCellTemplate == null)
+        {
+            return null;
+        }
+
+        var cell = new ContentView
+        {
+            BackgroundColor = _bgColor,
+            Content = col.EditCellTemplate.CreateContent() as View
+        };
+
+        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        {
+            cell.SetBinding(BindingContextProperty,
+                new Binding(col.PropertyName, source: BindingContext));
         }
 
         return cell;
+    }
+
+    private Grid GenerateTextEditCell(DataGridColumn col)
+    {
+        var entry = new Entry
+        {
+            TextColor = _textColor,
+            BackgroundColor = _bgColor,
+            VerticalTextAlignment = col.VerticalTextAlignment,
+            HorizontalTextAlignment = col.HorizontalTextAlignment,
+            FontSize = DataGrid.FontSize,
+            FontFamily = DataGrid.FontFamily
+        };
+
+        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        {
+            entry.SetBinding(Entry.TextProperty,
+                new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
+        }
+
+        return WrapViewInGrid(entry);
+    }
+
+    private Grid GenerateBooleanEditCell(DataGridColumn col)
+    {
+        var checkBox = new CheckBox
+        {
+            Color = _textColor,
+            BackgroundColor = _bgColor,
+        };
+
+        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        {
+            checkBox.SetBinding(CheckBox.IsCheckedProperty,
+                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+        }
+
+        return WrapViewInGrid(checkBox);
+    }
+
+    private Grid GenerateNumericEditCell(DataGridColumn col)
+    {
+        var stackLayout = new FlexLayout
+        {
+            Wrap = FlexWrap.Wrap,
+            Direction = FlexDirection.Row,
+            AlignContent = FlexAlignContent.Center,
+            AlignItems = FlexAlignItems.Center,
+            JustifyContent = FlexJustify.Center,
+        };
+
+        var label = new Label
+        {
+            TextColor = _textColor,
+            VerticalTextAlignment = TextAlignment.Center,
+        };
+
+        var stepper = new Stepper
+        {
+            BackgroundColor = DeviceInfo.Platform == DevicePlatform.WinUI ? _textColor : null,
+        };
+
+        stepper.ValueChanged += (b, e) =>
+        {
+            if (b is Stepper s)
+            {
+                label.Text = s.Value.ToString(CultureInfo.InvariantCulture);
+            }
+        };
+
+        stackLayout.Add(label);
+        stackLayout.Add(stepper);
+
+        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        {
+            label.SetBinding(Label.TextProperty,
+                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            stepper.SetBinding(Stepper.ValueProperty,
+                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+        }
+
+        return WrapViewInGrid(stackLayout);
+    }
+
+    private Grid GenerateDateTimeEditCell(DataGridColumn col)
+    {
+        var datePicker = new DatePicker
+        {
+            TextColor = _textColor,
+        };
+
+        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        {
+            datePicker.SetBinding(DatePicker.DateProperty,
+                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+        }
+
+        return WrapViewInGrid(datePicker);
+    }
+
+    private Grid WrapViewInGrid(View view)
+    {
+        var grid = new Grid
+        {
+            BackgroundColor = _bgColor,
+        };
+
+        grid.Add(view);
+
+        return grid;
     }
 
     private void UpdateColors()
