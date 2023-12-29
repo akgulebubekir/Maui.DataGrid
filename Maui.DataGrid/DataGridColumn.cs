@@ -61,7 +61,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             {
                 if (!o.Equals(n) && b is DataGridColumn self)
                 {
-                    self.ColumnDefinition = new(n);
+                    if (self.ColumnDefinition == null)
+                    {
+                        self.ColumnDefinition = new(n);
+                    }
+                    else
+                    {
+                        self.ColumnDefinition.Width = n;
+                    }
+
                     self.OnSizeChanged();
                 }
             });
