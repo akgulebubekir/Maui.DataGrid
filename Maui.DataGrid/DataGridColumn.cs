@@ -1,8 +1,9 @@
 namespace Maui.DataGrid;
 
+using System.ComponentModel;
+using System.Diagnostics;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls.Shapes;
-using System.ComponentModel;
 
 /// <summary>
 /// Specifies each column of the DataGrid.
@@ -333,20 +334,13 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             return _isSortable.Value;
         }
 
-        try
-        {
-            if (DataGrid?.ItemsSource is null)
-            {
-                _isSortable = false;
-            }
-            else if (DataType is not null)
-            {
-                _isSortable = typeof(IComparable).IsAssignableFrom(DataType);
-            }
-        }
-        catch
+        if (DataGrid?.ItemsSource is null)
         {
             _isSortable = false;
+        }
+        else if (DataType is not null)
+        {
+            _isSortable = typeof(IComparable).IsAssignableFrom(DataType);
         }
 
         return _isSortable ??= false;
