@@ -326,8 +326,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Determines via reflection if the column's data type is sortable.
     /// If you want to disable sorting for specific column please use <see cref="SortingEnabled"/> property
     /// </summary>
-    /// <param name="dataGrid">The <see cref="DataGrid"/> to sort for.</param>
-    public bool IsSortable(DataGrid dataGrid)
+    public bool IsSortable()
     {
         if (_isSortable is not null)
         {
@@ -336,7 +335,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         try
         {
-            if (dataGrid?.ItemsSource is null)
+            if (DataGrid?.ItemsSource is null)
             {
                 _isSortable = false;
             }

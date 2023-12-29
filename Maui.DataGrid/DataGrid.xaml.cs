@@ -124,7 +124,7 @@ public partial class DataGrid
             return false;
         }
 
-        if (!columnToSort.IsSortable(this))
+        if (!columnToSort.IsSortable())
         {
             Debug.WriteLine($"{columnToSort.PropertyName} column is not sortable");
             return false;
@@ -1220,7 +1220,7 @@ public partial class DataGrid
     {
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? HeaderLabelStyle ?? _defaultHeaderStyle;
 
-        if (!IsSortable || !column.SortingEnabled || !column.IsSortable(this))
+        if (!IsSortable || !column.SortingEnabled || !column.IsSortable())
         {
             return new ContentView
             {

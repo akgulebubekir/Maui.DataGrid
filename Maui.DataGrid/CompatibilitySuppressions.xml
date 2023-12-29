@@ -80,6 +80,20 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGridColumn.IsSortable</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGridColumn.IsSortable(Maui.DataGrid.DataGrid)</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGridColumn.set_EditCellTemplate(Microsoft.Maui.Controls.DataTemplate)</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
