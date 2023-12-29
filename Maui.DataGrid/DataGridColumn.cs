@@ -165,6 +165,14 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #region Properties
 
+    internal Polygon SortingIcon { get; }
+
+    internal Label HeaderLabel { get; }
+
+    internal View SortingIconContainer { get; }
+
+    internal SortingOrder SortingOrder { get; set; }
+
     internal DataGrid? DataGrid { get; set; }
 
     internal ColumnDefinition? ColumnDefinition
@@ -307,11 +315,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         get => (Style)GetValue(HeaderLabelStyleProperty);
         set => SetValue(HeaderLabelStyleProperty, value);
     }
-
-    internal Polygon SortingIcon { get; }
-    internal Label HeaderLabel { get; }
-    internal View SortingIconContainer { get; }
-    internal SortingOrder SortingOrder { get; set; }
 
     #endregion Properties
 
