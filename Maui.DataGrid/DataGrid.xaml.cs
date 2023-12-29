@@ -747,6 +747,8 @@ public partial class DataGrid
 
     #region Properties
 
+#pragma warning disable CA2227 // Collection properties should be read only
+
     /// <summary>
     /// Selected Row color
     /// </summary>
@@ -1086,6 +1088,9 @@ public partial class DataGrid
         get => (int)GetValue(PageCountProperty);
         private set => SetValue(PageCountProperty, value);
     }
+
+#pragma warning restore CA2227 // Collection properties should be read only
+
 
     #endregion Properties
 
