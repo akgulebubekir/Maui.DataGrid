@@ -265,6 +265,7 @@ internal sealed class DataGridRow : Grid
 
         var label = new Label
         {
+            Margin = new(0, 0, 3, 0),
             TextColor = _textColor,
             VerticalTextAlignment = TextAlignment.Center,
         };
