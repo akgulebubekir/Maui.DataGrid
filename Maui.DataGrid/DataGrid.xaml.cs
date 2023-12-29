@@ -1292,12 +1292,9 @@ public partial class DataGrid
             _headerView.Children.Add(col.HeaderView);
         }
 
-        if (_headerView.ColumnDefinitions.Count > Columns.Count)
+        for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
         {
-            for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
-            {
-                _headerView.ColumnDefinitions.RemoveAt(i);
-            }
+            _headerView.ColumnDefinitions.RemoveAt(i);
         }
     }
 
