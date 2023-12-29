@@ -443,22 +443,7 @@ public partial class DataGrid
     /// Gets or sets the page count for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageCountProperty =
-        BindablePropertyExtensions.Create<DataGrid, int>(1,
-            propertyChanged: (b, o, n) =>
-            {
-                if (o != n && b is DataGrid self && n > 0)
-                {
-                    if (n > 1)
-                    {
-                        self._paginationStepper.IsEnabled = true;
-                        self._paginationStepper.Maximum = n;
-                    }
-                    else
-                    {
-                        self._paginationStepper.IsEnabled = false;
-                    }
-                }
-            });
+        BindablePropertyExtensions.Create<DataGrid, int>(1, BindingMode.OneWayToSource);
 
     /// <summary>
     /// Gets or sets the page size for the DataGrid.
@@ -1073,24 +1058,18 @@ public partial class DataGrid
     /// </summary>
     public int PageCount
     {
-        get => (int)GetValue(PageCountProperty);
-        private set => SetValue(PageCountProperty, value);
-    }
-
-#pragma warning restore CA2227 // Collection properties should be read only
-
-    internal IList<object>? InternalItems
-    {
-        get => _internalItems;
-        set
+        get => (int)_paginationStepper.Maximum;
+        private set
         {
-            if (_internalItems != value)
+            if (value > 0)
             {
-                _internalItems = value;
-                _collectionView.ItemsSource = _internalItems; // TODO: Are we using the most efficient CollectionChanged handling with observables?
+                _paginationStepper.Maximum = value;
+                _paginationStepper.IsEnabled = value > 1;
             }
         }
     }
+
+#pragma warning restore CA2227 // Collection properties should be read only
 
     #endregion Properties
 
