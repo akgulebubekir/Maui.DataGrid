@@ -31,6 +31,8 @@ public partial class DataGrid
     private readonly WeakEventManager _refreshingEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = DefaultPageSizeList;
+    private readonly Style _defaultHeaderStyle;
+    private readonly Style _defaultSortIconStyle;
 
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
@@ -47,6 +49,8 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
+        _defaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
+        _defaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
     }
 
     #endregion ctor
@@ -498,7 +502,7 @@ public partial class DataGrid
     /// Gets or sets the list of available page sizes for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PaginationStepperStyleProperty =
-        BindablePropertyExtensions.Create<DataGrid, Style>(defaultValueCreator: x => x?._defaultPaginationStepperStyle);
+        BindablePropertyExtensions.Create<DataGrid, Style>(defaultValueCreator: x => x?.Resources["DefaultPaginationStepperStyle"] as Style);
 
     /// <summary>
     /// Gets or sets the row height for the DataGrid.

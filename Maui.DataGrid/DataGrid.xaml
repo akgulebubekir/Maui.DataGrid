@@ -10,7 +10,7 @@
         <ResourceDictionary>
             <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
             <!--Default Header Style-->
-            <Style x:Key="DefaultHeaderStyle" x:Name="_defaultHeaderStyle" TargetType="Label">
+            <Style x:Key="DefaultHeaderStyle" TargetType="Label">
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="VerticalOptions" Value="Center" />
@@ -18,14 +18,14 @@
                 <Setter Property="LineBreakMode" Value="TailTruncation" />
             </Style>
             <!--Default Sort Icon Style-->
-            <Style x:Key="DefaultSortIconStyle" x:Name="_defaultSortIconStyle" TargetType="Polygon">
+            <Style x:Key="DefaultSortIconStyle" TargetType="Polygon">
                 <Setter Property="Aspect" Value="Uniform" />
                 <Setter Property="Fill" Value="Black" />
                 <Setter Property="Points" Value="50,0 0,80 100,80" />
                 <Setter Property="Margin" Value="0,0,3,0" />
             </Style>
             <!--Default Pagination Stepper Style-->
-            <Style x:Key="DefaultPaginationStepperStyle" x:Name="_defaultPaginationStepperStyle" TargetType="Stepper">
+            <Style x:Key="DefaultPaginationStepperStyle" TargetType="Stepper">
                 <Setter Property="Margin" Value="5" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="BackgroundColor" Value="{OnPlatform WinUI=Black}" />
