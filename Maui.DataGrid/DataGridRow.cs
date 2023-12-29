@@ -186,7 +186,7 @@ internal sealed class DataGridRow : Grid
             case TypeCode.UInt64:
                 return GenerateNumericEditCell(col);
             case TypeCode.DateTime:
-                return GenerateDateTimeEditCell(col);;
+                return GenerateDateTimeEditCell(col);
         }
 
         return new TemplatedView { BackgroundColor = _bgColor };

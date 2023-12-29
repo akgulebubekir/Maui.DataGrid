@@ -539,7 +539,6 @@ public partial class DataGrid
     public static readonly BindableProperty FontFamilyProperty =
         BindablePropertyExtensions.Create<DataGrid, string>(Font.Default.Family);
 
-
     /// <summary>
     /// Gets or sets the selected item in the DataGrid.
     /// </summary>
