@@ -31,6 +31,11 @@ public sealed class SortData(int index, SortingOrder order)
     /// <returns>A SortData object.</returns>
     public static implicit operator SortData(int index) => FromInt32(index);
 
+    /// <summary>
+    /// Creates a SortData object from an integer index.
+    /// </summary>
+    /// <param name="index">The column index.</param>
+    /// <returns>A SortData object.</returns>
     public static SortData FromInt32(int index)
     {
         var order = index < 0 ? SortingOrder.Descendant : SortingOrder.Ascendant;
