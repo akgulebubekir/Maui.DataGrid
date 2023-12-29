@@ -1253,7 +1253,6 @@ public partial class DataGrid
         SetColumnsBindingContext();
 
         _headerView.Children.Clear();
-        _headerView.ColumnDefinitions.Clear();
         ResetSortingOrders();
 
         _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
@@ -1274,7 +1273,14 @@ public partial class DataGrid
 
             col.ColumnDefinition ??= new(col.Width);
 
-            _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
+            if (i > _headerView.ColumnDefinitions.Count - 1)
+            {
+                _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
+            }
+            else if (_headerView.ColumnDefinitions[i] != col.ColumnDefinition)
+            {
+                _headerView.ColumnDefinitions[i] = col.ColumnDefinition;
+            }
 
             if (!col.IsVisible)
             {
@@ -1287,6 +1293,14 @@ public partial class DataGrid
 
             Grid.SetColumn(col.HeaderView, i);
             _headerView.Children.Add(col.HeaderView);
+        }
+
+        if (_headerView.ColumnDefinitions.Count > Columns.Count)
+        {
+            for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
+            {
+                _headerView.ColumnDefinitions.RemoveAt(i);
+            }
         }
     }
 

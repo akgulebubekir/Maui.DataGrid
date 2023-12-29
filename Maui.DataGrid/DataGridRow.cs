@@ -71,7 +71,6 @@ internal sealed class DataGridRow : Grid
 
     private void CreateView()
     {
-        ColumnDefinitions.Clear();
         Children.Clear();
 
         SetStyling();
@@ -80,7 +79,14 @@ internal sealed class DataGridRow : Grid
         {
             var col = DataGrid.Columns[i];
 
-            ColumnDefinitions.Add(col.ColumnDefinition);
+            if (i > ColumnDefinitions.Count - 1)
+            {
+                ColumnDefinitions.Add(col.ColumnDefinition);
+            }
+            else if (ColumnDefinitions[i] != col.ColumnDefinition)
+            {
+                ColumnDefinitions[i] = col.ColumnDefinition;
+            }
 
             if (!col.IsVisible)
             {
@@ -91,6 +97,11 @@ internal sealed class DataGridRow : Grid
 
             SetColumn((BindableObject)cell, i);
             Children.Add(cell);
+        }
+
+        for (var i = ColumnDefinitions.Count - 1; i > DataGrid.Columns.Count - 1; i--)
+        {
+            ColumnDefinitions.RemoveAt(i);
         }
     }
 
