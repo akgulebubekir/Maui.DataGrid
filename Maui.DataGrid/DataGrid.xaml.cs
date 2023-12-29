@@ -440,7 +440,7 @@ public partial class DataGrid
             });
 
     /// <summary>
-    /// Gets or sets the ItemsSource for the DataGrid.
+    /// Gets or sets the page count for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageCountProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(1,
