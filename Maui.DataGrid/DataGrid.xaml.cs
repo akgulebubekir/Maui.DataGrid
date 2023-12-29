@@ -1285,6 +1285,8 @@ public partial class DataGrid
         {
             var col = Columns[i];
 
+            col.InitializeDataType();
+
             col.ColumnDefinition ??= new(col.Width);
 
             col.DataGrid ??= this;

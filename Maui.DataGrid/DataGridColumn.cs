@@ -173,6 +173,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal SortingOrder SortingOrder { get; set; }
 
+    internal Type? DataType { get; private set; }
+
     internal DataGrid? DataGrid { get; set; }
 
     internal ColumnDefinition? ColumnDefinition
@@ -338,15 +340,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             {
                 _isSortable = false;
             }
-            else
+            else if (DataType is not null)
             {
-                var listItemType = dataGrid.ItemsSource.GetType().GetGenericArguments().Single();
-                var columnDataType = listItemType.GetProperty(PropertyName)?.PropertyType;
-
-                if (columnDataType is not null)
-                {
-                    _isSortable = typeof(IComparable).IsAssignableFrom(columnDataType);
-                }
+                _isSortable = typeof(IComparable).IsAssignableFrom(DataType);
             }
         }
         catch
@@ -355,6 +351,17 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         }
 
         return _isSortable ??= false;
+    }
+
+    internal void InitializeDataType()
+    {
+        ArgumentNullException.ThrowIfNull(DataGrid);
+
+        if (DataType == null && EditCellTemplate == null)
+        {
+            var rowDataType = DataGrid.ItemsSource.GetType().GetGenericArguments().Single();
+            DataType = rowDataType.GetProperty(PropertyName)?.PropertyType;
+        }
     }
 
     private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
