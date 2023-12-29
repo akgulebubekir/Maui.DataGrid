@@ -99,7 +99,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                     {
                         column.DataGrid?.Reload();
                     }
-                    catch { }
                     finally
                     {
                         column.OnSizeChanged();
