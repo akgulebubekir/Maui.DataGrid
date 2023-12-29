@@ -352,8 +352,16 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         if (DataType == null && PropertyName != null)
         {
-            var rowDataType = DataGrid.ItemsSource.GetType().GetGenericArguments().Single();
-            DataType = rowDataType.GetProperty(PropertyName)?.PropertyType;
+            try
+            {
+                var rowDataType = DataGrid.ItemsSource.GetType().GetGenericArguments().Single();
+                DataType = rowDataType.GetProperty(PropertyName)?.PropertyType;
+            }
+            catch (Exception ex)
+                when (ex is NotSupportedException or ArgumentNullException or InvalidOperationException)
+            {
+                Debug.WriteLine($"Initializing the data type for the column '{Title}' resulted in the following error: {ex.Message}");
+            }
         }
     }
 
