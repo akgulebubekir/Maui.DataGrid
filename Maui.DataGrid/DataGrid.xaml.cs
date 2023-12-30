@@ -1270,6 +1270,7 @@ public partial class DataGrid
 
             col.ColumnDefinition ??= new(col.Width);
 
+            // Add or update columns as needed
             if (i > _headerView.ColumnDefinitions.Count - 1)
             {
                 _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
@@ -1292,6 +1293,7 @@ public partial class DataGrid
             _headerView.Children.Add(col.HeaderView);
         }
 
+        // Remove extra columns
         for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
         {
             _headerView.ColumnDefinitions.RemoveAt(i);
