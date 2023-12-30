@@ -42,7 +42,7 @@ internal sealed class DataGridRow : Grid
                 if (o is DataGrid oldDataGrid)
                 {
                     oldDataGrid.ItemSelected -= self.DataGrid_ItemSelected;
-                    oldDataGrid.Columns.CollectionChanged += self.OnColumnsChanged;
+                    oldDataGrid.Columns.CollectionChanged -= self.OnColumnsChanged;
                 }
 
                 if (n is DataGrid newDataGrid && newDataGrid.SelectionEnabled)
@@ -382,6 +382,7 @@ internal sealed class DataGridRow : Grid
         if (Parent == null)
         {
             DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
         }
     }
 
