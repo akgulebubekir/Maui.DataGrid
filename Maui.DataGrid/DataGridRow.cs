@@ -97,6 +97,7 @@ internal sealed class DataGridRow : Grid
         {
             var col = DataGrid.Columns[i];
 
+            // Add or update columns as needed
             if (i > ColumnDefinitions.Count - 1)
             {
                 ColumnDefinitions.Add(col.ColumnDefinition);
@@ -117,6 +118,7 @@ internal sealed class DataGridRow : Grid
             Children.Add(cell);
         }
 
+        // Remove extra columns
         for (var i = ColumnDefinitions.Count - 1; i > DataGrid.Columns.Count - 1; i--)
         {
             ColumnDefinitions.RemoveAt(i);
