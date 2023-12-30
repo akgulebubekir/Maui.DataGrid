@@ -1254,8 +1254,9 @@ public partial class DataGrid
         _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
         _headerView.ColumnSpacing = BorderThickness.HorizontalThickness;
 
-        if (Columns == null)
+        if (Columns == null || Columns.Count == 0)
         {
+            _headerView.ColumnDefinitions.Clear();
             return;
         }
 

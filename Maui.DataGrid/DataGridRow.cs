@@ -87,6 +87,12 @@ internal sealed class DataGridRow : Grid
 
         SetStyling();
 
+        if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
+        {
+            ColumnDefinitions.Clear();
+            return;
+        }
+
         for (var i = 0; i < DataGrid.Columns.Count; i++)
         {
             var col = DataGrid.Columns[i];
