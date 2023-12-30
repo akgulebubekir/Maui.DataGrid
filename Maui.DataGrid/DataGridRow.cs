@@ -46,7 +46,7 @@ internal sealed class DataGridRow : Grid
 
                     foreach (var column in oldDataGrid.Columns)
                     {
-                        column.SizeChanged -= self.OnSizeChanged;
+                        column.VisibilityChanged -= self.OnVisibilityChanged;
                     }
                 }
 
@@ -57,7 +57,7 @@ internal sealed class DataGridRow : Grid
 
                     foreach (var column in newDataGrid.Columns)
                     {
-                        column.SizeChanged += self.OnSizeChanged;
+                        column.VisibilityChanged += self.OnVisibilityChanged;
                     }
                 }
             });
@@ -393,6 +393,11 @@ internal sealed class DataGridRow : Grid
         {
             DataGrid.ItemSelected -= DataGrid_ItemSelected;
             DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+
+            foreach (var column in DataGrid.Columns)
+            {
+                column.VisibilityChanged -= OnVisibilityChanged;
+            }
         }
     }
 
@@ -401,7 +406,7 @@ internal sealed class DataGridRow : Grid
         CreateView();
     }
 
-    private void OnSizeChanged(object? sender, EventArgs e)
+    private void OnVisibilityChanged(object? sender, EventArgs e)
     {
         CreateView();
     }

@@ -73,6 +73,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGridColumn.add_VisibilityChanged(System.EventHandler)</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGridColumn.get_EditCellTemplate</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
@@ -88,6 +95,13 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGridColumn.IsSortable(Maui.DataGrid.DataGrid)</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGridColumn.remove_VisibilityChanged(System.EventHandler)</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>

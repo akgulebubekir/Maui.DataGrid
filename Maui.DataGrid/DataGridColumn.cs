@@ -18,6 +18,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     private TextAlignment? _horizontalTextAlignment;
     private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
     private readonly WeakEventManager _sizeChangedEventManager = new();
+    private readonly WeakEventManager _visibilityChangedEventManager = new();
 
     #endregion Fields
 
@@ -44,6 +45,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         add => _sizeChangedEventManager.AddEventHandler(value);
         remove => _sizeChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the visibility of the column changes.
+    /// </summary>
+    public event EventHandler VisibilityChanged
+    {
+        add => _visibilityChangedEventManager.AddEventHandler(value);
+        remove => _visibilityChangedEventManager.RemoveEventHandler(value);
     }
 
     #endregion Events
@@ -107,7 +117,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                     }
                     finally
                     {
-                        column.OnSizeChanged();
+                        column.OnVisibilityChanged();
                     }
                 }
             });
@@ -371,6 +381,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
+
+    private void OnVisibilityChanged() => _visibilityChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(VisibilityChanged));
 
     #endregion Methods
 }
