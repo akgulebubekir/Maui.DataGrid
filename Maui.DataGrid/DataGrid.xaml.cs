@@ -1250,7 +1250,6 @@ public partial class DataGrid
         SetColumnsBindingContext();
 
         _headerView.Children.Clear();
-        ResetSortingOrders();
 
         _headerView.Padding = new(BorderThickness.Left, BorderThickness.Top, BorderThickness.Right, 0);
         _headerView.ColumnSpacing = BorderThickness.HorizontalThickness;
@@ -1297,14 +1296,6 @@ public partial class DataGrid
         for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
         {
             _headerView.ColumnDefinitions.RemoveAt(i);
-        }
-    }
-
-    private void ResetSortingOrders()
-    {
-        foreach (var column in Columns)
-        {
-            column.SortingOrder = SortingOrder.None;
         }
     }
 
