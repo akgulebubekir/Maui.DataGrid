@@ -363,20 +363,38 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal void InitializeDataType()
     {
+        if (DataType != null || string.IsNullOrEmpty(PropertyName))
+        {
+            return;
+        }
+
         ArgumentNullException.ThrowIfNull(DataGrid);
 
-        if (DataType == null && PropertyName != null)
+        try
         {
-            try
+            Type? rowDataType = null;
+
+            var genericArguments = DataGrid.ItemsSource.GetType().GetGenericArguments();
+
+            if (genericArguments.Length == 1)
             {
-                var rowDataType = DataGrid.ItemsSource.GetType().GetGenericArguments().Single();
-                DataType = rowDataType.GetProperty(PropertyName)?.PropertyType;
+                rowDataType = genericArguments[0];
             }
-            catch (Exception ex)
-                when (ex is NotSupportedException or ArgumentNullException or InvalidOperationException)
+            else
             {
-                Debug.WriteLine($"Initializing the data type for the column '{Title}' resulted in the following error: {ex.Message}");
+                var firstItem = DataGrid.ItemsSource.OfType<object>().FirstOrDefault(i => i != null);
+                if (firstItem != default)
+                {
+                    rowDataType = firstItem.GetType();
+                }
             }
+
+            DataType = rowDataType?.GetPropertyTypeByPath(PropertyName);
+        }
+        catch (Exception ex)
+            when (ex is NotSupportedException or ArgumentNullException or InvalidCastException)
+        {
+            Debug.WriteLine($"Attempting to obtain the data type for the column '{Title}' resulted in the following error: {ex.Message}");
         }
     }
 

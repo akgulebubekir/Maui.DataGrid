@@ -43,18 +43,63 @@ internal static class ReflectionExtensions
         return result;
     }
 
+    public static Type? GetPropertyTypeByPath(this Type type, string path)
+    {
+        if (type == null || string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        Type? resultType;
+
+        if (path.Contains(PropertyOfOp, StringComparison.Ordinal))
+        {
+            var tokens = path.Split(PropertyOfOp);
+
+            resultType = type;
+
+            foreach (var token in tokens)
+            {
+                resultType = resultType.GetPropertyType(token);
+
+                if (resultType == null)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            resultType = type.GetPropertyType(path);
+        }
+
+        return resultType;
+    }
+
+    private static Type? GetPropertyType(this Type type, string propertyName)
+    {
+        var propertyDescriptor = GetPropertyDescriptor(type, propertyName);
+
+        return propertyDescriptor?.PropertyType;
+    }
+
     private static object? GetPropertyValue(object obj, string propertyName)
     {
         var type = obj.GetType();
 
+        var propertyDescriptor = GetPropertyDescriptor(type, propertyName);
+
+        return propertyDescriptor?.GetValue(obj);
+    }
+
+    private static PropertyDescriptor? GetPropertyDescriptor(Type type, string propertyName)
+    {
         if (!PropertyTypeCache.TryGetValue(type, out var properties))
         {
-            properties = TypeDescriptor.GetProperties(obj);
+            properties = TypeDescriptor.GetProperties(type);
             PropertyTypeCache[type] = properties;
         }
 
-        var propertyDescriptor = properties.Find(propertyName, false);
-
-        return propertyDescriptor?.GetValue(obj);
+        return properties.Find(propertyName, false);
     }
 }
