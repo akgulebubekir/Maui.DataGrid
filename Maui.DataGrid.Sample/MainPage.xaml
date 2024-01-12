@@ -8,27 +8,38 @@
              x:DataType="vm:MainViewModel"
              x:Name="self"
              x:Class="Maui.DataGrid.Sample.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="SampleContainerStyle" TargetType="HorizontalStackLayout">
+                <Setter Property="Padding" Value="10,2"/>
+                <Setter Property="Spacing" Value="3"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
-        <FlexLayout BackgroundColor="Black" Wrap="Wrap">
-            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+        <FlexLayout Background="Black" AlignItems="Start" Direction="Row" Wrap="Wrap">
+            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                 <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
-                <Label Text="Header Borders Visible?" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
+                <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                 <CheckBox IsChecked="{Binding WonColumnVisible}" />
-                <Label Text="Won Column" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
+                <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
+            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                 <CheckBox IsChecked="{Binding PaginationEnabled}" />
-                <Label Text="Pagination Enabled?" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
+                <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout HeightRequest="50" Margin="0,0,15,0">
-                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}" BackgroundColor="{OnPlatform WinUI=Gray}" />
-                <Label Text="Team Col Width" TextColor="White" Margin="3,0,0,0" VerticalOptions="Center" />
+            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}"
+                         BackgroundColor="{OnPlatform WinUI=Gray}"/>
+                <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <Button Text="Remove Column" Clicked="OnRemoveColumn" />
-            <Button Text="Add Column" Clicked="OnAddColumn" />
+            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                <Button Text="Remove Column" Clicked="OnRemoveColumn"/>
+                <Button Text="Add Column" Clicked="OnAddColumn"/>
+            </HorizontalStackLayout>
         </FlexLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
