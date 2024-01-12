@@ -1,12 +1,12 @@
 namespace Maui.DataGrid;
 
-using System.Globalization;
-using Maui.DataGrid.Extensions;
+using Extensions;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Layouts;
 
 internal sealed class DataGridRow : Grid
 {
+    private delegate bool ParserDelegate(string value);
+
     #region Fields
 
     private Color? _bgColor;
@@ -183,7 +183,7 @@ internal sealed class DataGridRow : Grid
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
                 cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, BindingMode.Default, stringFormat: col.StringFormat, source: BindingContext));
+                    new Binding(col.PropertyName, stringFormat: col.StringFormat, source: BindingContext));
             }
         }
 
@@ -199,28 +199,23 @@ internal sealed class DataGridRow : Grid
             return cell;
         }
 
-        switch (Type.GetTypeCode(col.DataType))
+        return Type.GetTypeCode(col.DataType) switch
         {
-            case TypeCode.String:
-                return GenerateTextEditCell(col);
-            case TypeCode.Boolean:
-                return GenerateBooleanEditCell(col);
-            case TypeCode.Decimal:
-            case TypeCode.Double:
-            case TypeCode.Int16:
-            case TypeCode.Int32:
-            case TypeCode.Int64:
-            case TypeCode.SByte:
-            case TypeCode.Single:
-            case TypeCode.UInt16:
-            case TypeCode.UInt32:
-            case TypeCode.UInt64:
-                return GenerateNumericEditCell(col);
-            case TypeCode.DateTime:
-                return GenerateDateTimeEditCell(col);
-        }
-
-        return new TemplatedView { BackgroundColor = _bgColor };
+            TypeCode.String => GenerateTextEditCell(col),
+            TypeCode.Boolean => GenerateBooleanEditCell(col),
+            TypeCode.Decimal => GenerateNumericEditCell(col, v => decimal.TryParse(v.TrimEnd(',', '.'), out _)),
+            TypeCode.Double => GenerateNumericEditCell(col, v => double.TryParse(v.TrimEnd(',', '.'), out _)),
+            TypeCode.Int16 => GenerateNumericEditCell(col, v => short.TryParse(v, out _)),
+            TypeCode.Int32 => GenerateNumericEditCell(col, v => int.TryParse(v, out _)),
+            TypeCode.Int64 => GenerateNumericEditCell(col, v => long.TryParse(v, out _)),
+            TypeCode.SByte => GenerateNumericEditCell(col, v => sbyte.TryParse(v, out _)),
+            TypeCode.Single => GenerateNumericEditCell(col, v => float.TryParse(v.TrimEnd(',', '.'), out _)),
+            TypeCode.UInt16 => GenerateNumericEditCell(col, v => ushort.TryParse(v, out _)),
+            TypeCode.UInt32 => GenerateNumericEditCell(col, v => uint.TryParse(v, out _)),
+            TypeCode.UInt64 => GenerateNumericEditCell(col, v => ulong.TryParse(v, out _)),
+            TypeCode.DateTime => GenerateDateTimeEditCell(col),
+            _ => new TemplatedView { BackgroundColor = _bgColor },
+        };
     }
 
     private ContentView? GenerateTemplatedEditCell(DataGridColumn col)
@@ -283,49 +278,34 @@ internal sealed class DataGridRow : Grid
         return WrapViewInGrid(checkBox);
     }
 
-    private Grid GenerateNumericEditCell(DataGridColumn col)
+    private Grid GenerateNumericEditCell(DataGridColumn col, ParserDelegate parserDelegate)
     {
-        var stackLayout = new FlexLayout
+        var entry = new Entry
         {
-            Wrap = FlexWrap.Wrap,
-            Direction = FlexDirection.Row,
-            AlignContent = FlexAlignContent.Center,
-            AlignItems = FlexAlignItems.Center,
-            JustifyContent = FlexJustify.Center,
-        };
-
-        var label = new Label
-        {
-            Margin = new(0, 0, 3, 0),
             TextColor = _textColor,
-            VerticalTextAlignment = TextAlignment.Center,
+            BackgroundColor = _bgColor,
+            VerticalTextAlignment = col.VerticalTextAlignment,
+            HorizontalTextAlignment = col.HorizontalTextAlignment,
+            FontSize = DataGrid.FontSize,
+            FontFamily = DataGrid.FontFamily,
+            Keyboard = Keyboard.Numeric
         };
 
-        var stepper = new Stepper
+        entry.TextChanged += (s, e) =>
         {
-            BackgroundColor = DeviceInfo.Platform == DevicePlatform.WinUI ? _textColor : null,
-        };
-
-        stepper.ValueChanged += (b, e) =>
-        {
-            if (b is Stepper s)
+            if (!string.IsNullOrEmpty(e.NewTextValue) && !parserDelegate(e.NewTextValue))
             {
-                label.Text = s.Value.ToString(CultureInfo.InvariantCulture);
+                ((Entry)s!).Text = e.OldTextValue;
             }
         };
 
-        stackLayout.Add(label);
-        stackLayout.Add(stepper);
-
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            label.SetBinding(Label.TextProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
-            stepper.SetBinding(Stepper.ValueProperty,
+            entry.SetBinding(Entry.TextProperty,
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(stackLayout);
+        return WrapViewInGrid(entry);
     }
 
     private Grid GenerateDateTimeEditCell(DataGridColumn col)
