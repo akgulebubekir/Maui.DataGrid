@@ -70,7 +70,7 @@
             <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
                 <Label Text="Page:" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
                 <Label Text="{Binding PageNumber, Source={Reference self}}" VerticalTextAlignment="Center" TextColor="Black" />
-                <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={Reference self}}" Style="{StaticResource PaginationStepperStyle}" Minimum="1" />
+                <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={Reference self}}" Style="{Binding PaginationStepperStyle, Source={Reference self}}" Minimum="1" />
             </HorizontalStackLayout>
         </Grid>
     </Grid>
