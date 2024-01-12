@@ -3,6 +3,7 @@
       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+      xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
       x:Class="Maui.DataGrid.DataGrid"
       x:DataType="local:DataGrid"
       CompressedLayout.IsHeadless="True">
@@ -67,7 +68,7 @@
             </Grid.ColumnDefinitions>
             <HorizontalStackLayout VerticalOptions="Center" IsVisible="{Binding PageSizeVisible, Source={Reference self}}">
                 <Label Text="# per page:" Margin="5,0,0,0" VerticalTextAlignment="Center" TextColor="Black" />
-                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=TwoWay}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="Black" />
+                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=TwoWay}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="Black"  MinimumWidthRequest="50" ios:Picker.UpdateMode="WhenFinished"/>
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
                 <Label Text="Page:" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
