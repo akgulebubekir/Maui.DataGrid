@@ -45,7 +45,7 @@
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}" RowToEdit="{Binding TeamToEdit}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
-                     PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" PaginationEnabled="{Binding PaginationEnabled}" PageSize="6"
+                     PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}" PaginationEnabled="{Binding PaginationEnabled}" PageSize="6"
                      ActiveRowColor="{StaticResource ActiveRowColor}" FooterBackground="{StaticResource GridFooterBgColor}" x:Name="_dataGrid1">
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
@@ -82,12 +82,12 @@
                 <dg:DataGridColumn PropertyName="." Width="0.75*">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding BindingContext.EditCommand, Source={Reference self}}" CommandParameter="{Binding .}" />
+                            <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding BindingContext.Commands[Edit], Source={Reference self}}" CommandParameter="{Binding .}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                     <dg:DataGridColumn.EditCellTemplate>
                         <DataTemplate>
-                            <Button Text="Cancel" BackgroundColor="Orange" Command="{Binding BindingContext.CancelEditCommand, Source={Reference self}}" CommandParameter="{Binding .}" />
+                            <Button Text="Done" BackgroundColor="MediumSeaGreen" Command="{Binding BindingContext.Commands[CompleteEdit], Source={Reference self}}" CommandParameter="{Binding .}" />
                         </DataTemplate>
                     </dg:DataGridColumn.EditCellTemplate>
                 </dg:DataGridColumn>
