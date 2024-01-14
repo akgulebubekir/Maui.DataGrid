@@ -194,11 +194,11 @@ internal sealed class DataGridRow : Grid
     {
         var cell = GenerateTemplatedEditCell(col);
 
-        if (cell != null)
-        {
-            return cell;
-        }
+        return cell ?? CreateDefaultEditCell(col);
+    }
 
+    private View CreateDefaultEditCell(DataGridColumn col)
+    {
         return Type.GetTypeCode(col.DataType) switch
         {
             TypeCode.String => GenerateTextEditCell(col),
