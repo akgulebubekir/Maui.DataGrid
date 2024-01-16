@@ -22,7 +22,7 @@ public partial class SettingsPopup
         }
         else
         {
-            _viewModel.Columns.Add(new DataGridColumn() { Title = newColumnTitle, Width = new(100) });
+            _viewModel.Columns.Add(new DataGridColumn() { Title = newColumnTitle, PropertyName = newColumnTitle, Width = new(100) });
         }
     }
 
