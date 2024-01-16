@@ -1,5 +1,6 @@
 namespace Maui.DataGrid.Sample.ViewModels;
 
+using System.Collections.ObjectModel;
 using Models;
 using Utils;
 
@@ -18,6 +19,8 @@ public class MainViewModel : ViewModelBase
         Commands.Add("Edit", new Command<Team>(CmdEdit));
         Commands.Add("Refresh", new Command(CmdRefresh));
     }
+
+    public ObservableCollection<DataGridColumn> Columns { get; set; }
 
     public Team TeamToEdit
     {

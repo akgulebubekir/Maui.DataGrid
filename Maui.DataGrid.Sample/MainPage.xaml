@@ -8,39 +8,11 @@
              x:DataType="vm:MainViewModel"
              x:Name="self"
              x:Class="Maui.DataGrid.Sample.MainPage">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="SampleContainerStyle" TargetType="HorizontalStackLayout">
-                <Setter Property="Padding" Value="10,2"/>
-                <Setter Property="Spacing" Value="3"/>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <Grid RowDefinitions="Auto,*" BackgroundColor="White">
 
-        <FlexLayout Background="Black" AlignItems="Start" Direction="Row" Wrap="Wrap">
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
-                <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding WonColumnVisible}" />
-                <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding PaginationEnabled}" />
-                <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}"
-                         BackgroundColor="{OnPlatform WinUI=Gray}"/>
-                <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <Button Text="Remove Column" Clicked="OnRemoveColumn"/>
-                <Button Text="Add Column" Clicked="OnAddColumn"/>
-            </HorizontalStackLayout>
-        </FlexLayout>
+        <Grid BackgroundColor="Black">
+            <Button Text="Settings" WidthRequest="100" Clicked="OnSettingsClicked" />
+        </Grid>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="True" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}" RowToEdit="{Binding TeamToEdit}"

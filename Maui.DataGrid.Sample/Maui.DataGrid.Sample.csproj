@@ -79,8 +79,15 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="SettingsPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
   </ItemGroup>
 
 </Project>
