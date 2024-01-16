@@ -453,7 +453,7 @@ public partial class DataGrid
     /// Gets or sets the page size for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageSizeProperty =
-        BindablePropertyExtensions.Create<DataGrid, int>(100,
+        BindablePropertyExtensions.Create<DataGrid, int>(100, BindingMode.TwoWay,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGrid self)
