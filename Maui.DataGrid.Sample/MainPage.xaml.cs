@@ -21,6 +21,5 @@ public partial class MainPage
         var vm = (MainViewModel)BindingContext;
         var settingsPopup = new SettingsPopup(vm);
         _ = await Shell.Current.ShowPopupAsync(settingsPopup);
-        settingsPopup.Close();
     }
 }
