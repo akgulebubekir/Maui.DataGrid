@@ -3,7 +3,7 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-                x:Class="Maui.DataGrid.Sample.SettingsPopup">
+                x:Class="Maui.DataGrid.Sample.SettingsPopup" Color="Black">
 
     <toolkit:Popup.Resources>
         <ResourceDictionary>
@@ -14,8 +14,8 @@
         </ResourceDictionary>
     </toolkit:Popup.Resources>
 
-    <Grid ColumnDefinitions="*,*" Background="Black">
-        <FlexLayout Background="Black" AlignItems="Start" Direction="Row" Wrap="Wrap">
+    <FlexLayout Background="Black" Direction="Column" Wrap="Wrap">
+        <VerticalStackLayout Background="Black">
             <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                 <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
                 <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
@@ -33,11 +33,7 @@
                          BackgroundColor="{OnPlatform WinUI=Gray}"/>
                 <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <Button Text="Remove Column" Clicked="OnRemoveColumn"/>
-                <Button Text="Add Column" Clicked="OnAddColumn"/>
-            </HorizontalStackLayout>
-        </FlexLayout>
+        </VerticalStackLayout>
         <VerticalStackLayout Grid.Column="1" Background="Black">
             <Label Text="Column Order (drag to reorder):" />
             <CollectionView ItemsSource="{Binding Columns, Mode=TwoWay}" CanReorderItems="True" Background="Black">
@@ -47,7 +43,11 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                <Button Text="Remove Column" Clicked="OnRemoveColumn"/>
+                <Button Text="Add Column" Clicked="OnAddColumn"/>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
-    </Grid>
+    </FlexLayout>
 
 </toolkit:Popup>
