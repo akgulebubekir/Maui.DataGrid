@@ -29,7 +29,7 @@
                 <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <Stepper Minimum="0" Maximum="100" Increment="10" Value="{Binding TeamColumnWidth}"
+                <Stepper Minimum="0" Maximum="200" Increment="10" Value="{Binding TeamColumnWidth}"
                          BackgroundColor="{OnPlatform WinUI=Gray}"/>
                 <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
             </HorizontalStackLayout>
