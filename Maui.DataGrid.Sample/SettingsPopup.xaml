@@ -34,8 +34,8 @@
                     <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                    <CheckBox IsChecked="{Binding SelectionEnabled}" />
-                    <Label Text="Selection Enabled?" TextColor="White" VerticalOptions="Center" />
+                    <Picker SelectedItem="{Binding SelectionMode}" ItemsSource="{Binding SelectionModes}" />
+                    <Label Text="Selection Mode" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <Stepper Minimum="0" Maximum="200" Increment="10" Value="{Binding TeamColumnWidth}"

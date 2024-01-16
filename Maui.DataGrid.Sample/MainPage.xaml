@@ -14,7 +14,7 @@
             <Button Text="Settings" WidthRequest="100" Clicked="OnSettingsClicked" />
         </Grid>
 
-        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="{Binding SelectionEnabled}" SelectedItem="{Binding SelectedTeam}"
+        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}" RowToEdit="{Binding TeamToEdit}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
                      PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"

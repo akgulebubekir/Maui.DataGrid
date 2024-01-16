@@ -13,14 +13,16 @@ public class MainViewModel : ViewModelBase
         WonColumnVisible = true;
         HeaderBordersVisible = true;
         PaginationEnabled = true;
-        SelectionEnabled = true;
         TeamColumnWidth = 70;
+        SelectionMode = SelectionMode.Single;
         PageSize = 6;
 
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
         Commands.Add("Refresh", new Command(CmdRefresh));
     }
+
+    public IEnumerable<SelectionMode> SelectionModes => Enum.GetValues<SelectionMode>().Cast<SelectionMode>();
 
     public ObservableCollection<DataGridColumn> Columns { get; set; }
 
@@ -72,9 +74,9 @@ public class MainViewModel : ViewModelBase
         set => SetValue(value);
     }
 
-    public bool SelectionEnabled
+    public SelectionMode SelectionMode
     {
-        get => GetValue<bool>();
+        get => GetValue<SelectionMode>();
         set => SetValue(value);
     }
 
