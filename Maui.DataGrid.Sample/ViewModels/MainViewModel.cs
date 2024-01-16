@@ -15,6 +15,7 @@ public class MainViewModel : ViewModelBase
         PaginationEnabled = true;
         SelectionEnabled = true;
         TeamColumnWidth = 70;
+        PageSize = 6;
 
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
@@ -56,6 +57,12 @@ public class MainViewModel : ViewModelBase
     public ushort TeamColumnWidth
     {
         get => GetValue<ushort>();
+        set => SetValue(value);
+    }
+
+    public int PageSize
+    {
+        get => GetValue<int>();
         set => SetValue(value);
     }
 

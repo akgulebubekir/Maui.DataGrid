@@ -26,6 +26,11 @@
                     <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <Label Text="{Binding PageSize}" TextColor="White"/>
+                    <Stepper Value="{Binding PageSize}" BackgroundColor="{OnPlatform WinUI=Gray}" />
+                    <Label Text="Page Size" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding PaginationEnabled}" />
                     <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>

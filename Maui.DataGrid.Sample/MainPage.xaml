@@ -17,7 +17,8 @@
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionEnabled="{Binding SelectionEnabled}" SelectedItem="{Binding SelectedTeam}"
                      RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}" RowToEdit="{Binding TeamToEdit}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
-                     PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}" PaginationEnabled="{Binding PaginationEnabled}" PageSize="6"
+                     PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
+                     PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}"
                      ActiveRowColor="{StaticResource ActiveRowColor}" FooterBackground="{StaticResource GridFooterBgColor}" x:Name="_dataGrid1">
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
