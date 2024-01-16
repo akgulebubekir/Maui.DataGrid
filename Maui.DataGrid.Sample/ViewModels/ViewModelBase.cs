@@ -8,8 +8,7 @@ using System.Windows.Input;
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler PropertyChanged;
-    private readonly Dictionary<string, object> _properties = new();
-
+    private readonly Dictionary<string, object> _properties = [];
 
     public Dictionary<string, ICommand> Commands
     {
@@ -19,8 +18,9 @@ public abstract class ViewModelBase : INotifyPropertyChanged
 
     protected ViewModelBase()
     {
-        Commands = new();
+        Commands = [];
     }
+
     protected void SetValue(object value, [CallerMemberName] string propertyName = null)
     {
         if (_properties.TryGetValue(propertyName!, out var item) && item == value)
