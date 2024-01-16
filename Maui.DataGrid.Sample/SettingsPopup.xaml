@@ -14,44 +14,46 @@
         </ResourceDictionary>
     </toolkit:Popup.Resources>
 
-    <FlexLayout Background="Black" Direction="Column" Wrap="Wrap">
-        <VerticalStackLayout Background="Black">
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
-                <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding WonColumnVisible}" />
-                <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding PaginationEnabled}" />
-                <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <CheckBox IsChecked="{Binding SelectionEnabled}" />
-                <Label Text="Selection Enabled?" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <Stepper Minimum="0" Maximum="200" Increment="10" Value="{Binding TeamColumnWidth}"
-                         BackgroundColor="{OnPlatform WinUI=Gray}"/>
-                <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-        <VerticalStackLayout Grid.Column="1" Background="Black">
-            <Label Text="Column Order (drag to reorder):" FontAttributes="Bold" />
-            <CollectionView ItemsSource="{Binding Columns, Mode=TwoWay}" CanReorderItems="True" Background="Black">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dg:DataGridColumn">
-                        <Label Text="{Binding PropertyName}" FontSize="Medium" />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                <Button Text="Remove Column" Clicked="OnRemoveColumn"/>
-                <Button Text="Add Column" Clicked="OnAddColumn"/>
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-    </FlexLayout>
+    <Border Padding="20" StrokeShape="RoundRectangle 10 10 10 10" VerticalOptions="Center" Background="Black" Stroke="White">
+        <FlexLayout Background="Black" Direction="Column" Wrap="Wrap">
+            <VerticalStackLayout Background="Black">
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
+                    <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <CheckBox IsChecked="{Binding WonColumnVisible}" />
+                    <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <CheckBox IsChecked="{Binding PaginationEnabled}" />
+                    <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <CheckBox IsChecked="{Binding SelectionEnabled}" />
+                    <Label Text="Selection Enabled?" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <Stepper Minimum="0" Maximum="200" Increment="10" Value="{Binding TeamColumnWidth}"
+                             BackgroundColor="{OnPlatform WinUI=Gray}"/>
+                    <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Column="1" Background="Black">
+                <Label Text="Column Order (drag to reorder):" BackgroundColor="#333" />
+                <CollectionView ItemsSource="{Binding Columns, Mode=TwoWay}" CanReorderItems="True" Background="Black">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dg:DataGridColumn">
+                            <Label Text="{Binding PropertyName}" FontSize="Medium" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <Button Text="Remove Column" Clicked="OnRemoveColumn"/>
+                    <Button Text="Add Column" Clicked="OnAddColumn"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </FlexLayout>
+    </Border>
 
 </toolkit:Popup>
