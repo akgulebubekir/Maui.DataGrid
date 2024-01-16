@@ -9,7 +9,6 @@
       CompressedLayout.IsHeadless="True">
     <ContentView.Resources>
         <ResourceDictionary>
-            <local:BoolToSelectionModeConverter x:Key="boolToSelectionMode" />
             <!--Default Header Style-->
             <Style x:Key="DefaultHeaderStyle" TargetType="Label">
                 <Setter Property="FontAttributes" Value="Bold" />
@@ -43,14 +42,15 @@
         <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={Reference self}}"
                      IsRefreshing="{Binding IsRefreshing, Source={Reference self}, Mode=TwoWay}" IsEnabled="{Binding RefreshingEnabled, Source={Reference self}}">
                 <!--  Set all platforms to use MeasureFirstItem when this bug is resolved https://github.com/dotnet/maui/issues/7562  -->
-                <CollectionView
+            <CollectionView
                     x:Name="_collectionView"
                     WidthRequest="{Binding WidthRequest, Source={Reference self}}"
                     BackgroundColor="{Binding BorderColor, Source={Reference self}}"
                     SelectedItem="{Binding SelectedItem, Source={Reference self}, Mode=TwoWay}"
+                    SelectedItems="{Binding SelectedItems, Source={Reference self}, Mode=TwoWay}"
                     ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}}"
-                    SelectionMode="{Binding SelectionEnabled, Source={Reference self}, Converter={StaticResource boolToSelectionMode}}">
-                    <CollectionView.ItemTemplate>
+                    SelectionMode="{Binding SelectionMode, Source={Reference self}}">
+                <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
                         </DataTemplate>

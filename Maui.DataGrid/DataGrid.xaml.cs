@@ -270,7 +270,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, Color>(Color.FromRgb(128, 144, 160),
             coerceValue: (b, v) =>
             {
-                if (!((DataGrid)b).SelectionEnabled)
+                if (((DataGrid)b).SelectionMode == SelectionMode.None)
                 {
                     throw new InvalidOperationException("DataGrid must have SelectionEnabled to set ActiveRowColor");
                 }
@@ -540,7 +540,7 @@ public partial class DataGrid
             },
             coerceValue: (b, v) =>
             {
-                if (v is null || b is not DataGrid self || !self.SelectionEnabled)
+                if (v is null || b is not DataGrid self || self.SelectionMode == SelectionMode.None)
                 {
                     return null;
                 }
@@ -548,6 +548,38 @@ public partial class DataGrid
                 if (self.InternalItems.Contains(v))
                 {
                     return v;
+                }
+
+                return null;
+            }
+        );
+
+    /// <summary>
+    /// Gets or sets the selected items in the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty SelectedItemsProperty =
+        BindablePropertyExtensions.Create<DataGrid, ObservableRangeCollection<object>>([], BindingMode.TwoWay,
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+                if (self._collectionView.SelectedItems != n)
+                {
+                    self._collectionView.SelectedItems = n;
+                }
+            },
+            coerceValue: (b, v) =>
+            {
+                if (v is null || b is not DataGrid self || self.SelectionMode == SelectionMode.None)
+                {
+                    return null;
+                }
+
+                foreach (var selectedItem in v)
+                {
+                    if (!self.InternalItems.Contains(selectedItem))
+                    {
+                        return null;
+                    }
                 }
 
                 return null;
@@ -566,6 +598,32 @@ public partial class DataGrid
                     var self = (DataGrid)b;
                     self.SelectedItem = null;
                 }
+            });
+
+    /// <summary>
+    /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty SelectionModeProperty =
+        BindablePropertyExtensions.Create<DataGrid, SelectionMode>(SelectionMode.Single, BindingMode.TwoWay,
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGrid)b;
+
+                switch (n)
+                {
+                    case SelectionMode.None:
+                        self.SelectedItem = null;
+                        self.SelectedItems.Clear();
+                        break;
+                    case SelectionMode.Single:
+                        self.SelectedItems.Clear();
+                        break;
+                    case SelectionMode.Multiple:
+                        self.SelectedItem = null;
+                        break;
+                }
+
+                self._collectionView.SelectionMode = n;
             });
 
     /// <summary>
@@ -938,12 +996,12 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables selection in dataGrid. Default value is True
+    /// Set the SelectionMode for the DataGrid. Default value is Single
     /// </summary>
-    public bool SelectionEnabled
+    public SelectionMode SelectionMode
     {
-        get => (bool)GetValue(SelectionEnabledProperty);
-        set => SetValue(SelectionEnabledProperty, value);
+        get => (SelectionMode)GetValue(SelectionModeProperty);
+        set => SetValue(SelectionModeProperty, value);
     }
 
     /// <summary>
@@ -953,6 +1011,15 @@ public partial class DataGrid
     {
         get => GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
+    }
+
+    /// <summary>
+    /// Selected items
+    /// </summary>
+    public ObservableCollection<object> SelectedItems
+    {
+        get => (ObservableCollection<object>)GetValue(SelectedItemsProperty);
+        set => SetValue(SelectedItemsProperty, value);
     }
 
     /// <summary>
@@ -1081,7 +1148,7 @@ public partial class DataGrid
         {
             _collectionView.SelectionChanged -= OnSelectionChanged;
         }
-        else if (SelectionEnabled)
+        else
         {
             _collectionView.SelectionChanged -= OnSelectionChanged;
             _collectionView.SelectionChanged += OnSelectionChanged;
@@ -1145,7 +1212,49 @@ public partial class DataGrid
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        SelectedItem = _collectionView.SelectedItem;
+        switch (SelectionMode)
+        {
+            case SelectionMode.Single:
+                var collectionView = sender as CollectionView;
+
+                if (e.CurrentSelection.Count > 1)
+                {
+                    collectionView?.SelectedItems.Clear();
+                }
+
+                SelectedItem = collectionView?.SelectedItem;
+
+                break;
+
+            case SelectionMode.Multiple:
+                var isChanged = false;
+
+                if (e.CurrentSelection.Count == SelectedItems.Count)
+                {
+                    for (var i = 0; i < e.CurrentSelection.Count; i++)
+                    {
+                        if (SelectedItems[i] != e.CurrentSelection[i])
+                        {
+                            isChanged = true;
+                        }
+                    }
+                }
+
+                if (isChanged && SelectedItems is ObservableRangeCollection<object> selectedItems)
+                {
+                    selectedItems.ReplaceRange(e.CurrentSelection);
+                }
+
+                break;
+
+            case SelectionMode.None:
+                if (e.CurrentSelection.Count != 0)
+                {
+                    throw new InvalidOperationException("Item(s) selected when SelectionMode is None");
+                }
+
+                break;
+        }
 
         _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
     }
@@ -1154,9 +1263,28 @@ public partial class DataGrid
     {
         SortAndPaginate();
 
-        if (SelectedItem != null && InternalItems?.Contains(SelectedItem) != true)
+        switch (SelectionMode)
         {
-            SelectedItem = null;
+            case SelectionMode.Single:
+                if (SelectedItem != null && InternalItems?.Contains(SelectedItem) != true)
+                {
+                    SelectedItem = null;
+                }
+
+                break;
+            case SelectionMode.Multiple:
+                if (SelectedItems != null)
+                {
+                    foreach (var selectedItem in SelectedItems)
+                    {
+                        if (!InternalItems.Contains(selectedItem))
+                        {
+                            SelectedItems.Clear();
+                        }
+                    }
+                }
+
+                break;
         }
     }
 

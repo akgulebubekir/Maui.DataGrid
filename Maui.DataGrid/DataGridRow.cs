@@ -50,7 +50,7 @@ internal sealed class DataGridRow : Grid
                     }
                 }
 
-                if (n is DataGrid newDataGrid && newDataGrid.SelectionEnabled)
+                if (n is DataGrid newDataGrid)
                 {
                     newDataGrid.ItemSelected += self.DataGrid_ItemSelected;
                     newDataGrid.Columns.CollectionChanged += self.OnColumnsChanged;
@@ -338,7 +338,7 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateColors()
     {
-        _hasSelected = DataGrid.SelectedItem == BindingContext;
+        _hasSelected = DataGrid.SelectedItem == BindingContext || DataGrid.SelectedItems.Contains(BindingContext);
         var rowIndex = DataGrid.InternalItems?.IndexOf(BindingContext) ?? -1;
 
         if (rowIndex < 0)
@@ -346,7 +346,7 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        _bgColor = DataGrid.SelectionEnabled && _hasSelected
+        _bgColor = DataGrid.SelectionMode != SelectionMode.None && _hasSelected
                 ? DataGrid.ActiveRowColor
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
         _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
@@ -401,7 +401,7 @@ internal sealed class DataGridRow : Grid
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection[^1] == BindingContext))
+        if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection.Any(s => s == BindingContext)))
         {
             UpdateColors();
         }
