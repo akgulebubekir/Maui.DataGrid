@@ -39,7 +39,7 @@
             </HorizontalStackLayout>
         </VerticalStackLayout>
         <VerticalStackLayout Grid.Column="1" Background="Black">
-            <Label Text="Column Order (drag to reorder):" />
+            <Label Text="Column Order (drag to reorder):" FontAttributes="Bold" />
             <CollectionView ItemsSource="{Binding Columns, Mode=TwoWay}" CanReorderItems="True" Background="Black">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="dg:DataGridColumn">
