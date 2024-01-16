@@ -664,6 +664,18 @@ public partial class DataGrid
             });
 
     /// <summary>
+    /// Gets or sets the parameter to pass to the <see cref="PullToRefreshCommand"/>
+    /// </summary>
+    public static readonly BindableProperty PullToRefreshCommandParameterProperty =
+        BindablePropertyExtensions.Create<DataGrid, object>();
+
+    /// <summary>
+    /// Gets or sets the spinner color to use while refreshing.
+    /// </summary>
+    public static readonly BindableProperty RefreshColorProperty =
+        BindablePropertyExtensions.Create<DataGrid, Color>(Colors.Purple);
+
+    /// <summary>
     /// Gets or sets a value indicating whether the DataGrid is refreshing.
     /// </summary>
     public static readonly BindableProperty IsRefreshingProperty =
@@ -1029,6 +1041,18 @@ public partial class DataGrid
     {
         get => (ICommand)GetValue(PullToRefreshCommandProperty);
         set => SetValue(PullToRefreshCommandProperty, value);
+    }
+
+    public object PullToRefreshCommandParameter
+    {
+        get => GetValue(PullToRefreshCommandParameterProperty);
+        set => SetValue(PullToRefreshCommandParameterProperty, value);
+    }
+
+    public Color RefreshColor
+    {
+        get => (Color)GetValue(RefreshColorProperty);
+        set => SetValue(RefreshColorProperty, value);
     }
 
     /// <summary>
