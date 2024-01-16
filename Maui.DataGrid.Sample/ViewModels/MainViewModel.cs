@@ -13,6 +13,7 @@ public class MainViewModel : ViewModelBase
         WonColumnVisible = true;
         HeaderBordersVisible = true;
         PaginationEnabled = true;
+        SelectionEnabled = true;
         TeamColumnWidth = 70;
 
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
@@ -59,6 +60,12 @@ public class MainViewModel : ViewModelBase
     }
 
     public bool PaginationEnabled
+    {
+        get => GetValue<bool>();
+        set => SetValue(value);
+    }
+
+    public bool SelectionEnabled
     {
         get => GetValue<bool>();
         set => SetValue(value);
