@@ -401,11 +401,6 @@ internal sealed class DataGridRow : Grid
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (!DataGrid.SelectionEnabled)
-        {
-            return;
-        }
-
         if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection[^1] == BindingContext))
         {
             UpdateColors();

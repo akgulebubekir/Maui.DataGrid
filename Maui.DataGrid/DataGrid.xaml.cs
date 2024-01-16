@@ -540,14 +540,9 @@ public partial class DataGrid
             },
             coerceValue: (b, v) =>
             {
-                if (v is null || b is not DataGrid self)
+                if (v is null || b is not DataGrid self || !self.SelectionEnabled)
                 {
                     return null;
-                }
-
-                if (!self.SelectionEnabled)
-                {
-                    throw new InvalidOperationException("DataGrid must have SelectionEnabled=true to set SelectedItem");
                 }
 
                 if (self.InternalItems.Contains(v))
