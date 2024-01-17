@@ -1043,12 +1043,18 @@ public partial class DataGrid
         set => SetValue(PullToRefreshCommandProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the parameter to pass to the <see cref="PullToRefreshCommand"/>
+    /// </summary>
     public object PullToRefreshCommandParameter
     {
         get => GetValue(PullToRefreshCommandParameterProperty);
         set => SetValue(PullToRefreshCommandParameterProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the spinner color to use while refreshing.
+    /// </summary>
     public Color RefreshColor
     {
         get => (Color)GetValue(RefreshColorProperty);
