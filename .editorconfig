@@ -425,6 +425,7 @@ end_of_line = crlf
 
 # IDE0010: Add missing cases
 dotnet_diagnostic.IDE0010.severity = silent
+dotnet_diagnostic.IDE0072.severity = silent
 
 ##########################################
 # License
