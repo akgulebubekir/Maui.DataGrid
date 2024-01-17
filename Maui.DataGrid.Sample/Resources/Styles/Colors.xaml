@@ -45,4 +45,5 @@
     <Color x:Key="GridHeaderBgColor">#E0E6F8</Color>
     <Color x:Key="GridFooterBgColor">#E0E6F8</Color>
     <Color x:Key="GridBorderColor">#CCCCCC</Color>
+    <Color x:Key="GridBgColor">#CCCCCC</Color>
 </ResourceDictionary>

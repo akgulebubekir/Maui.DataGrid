@@ -85,7 +85,7 @@ internal sealed class DataGridRow : Grid
     {
         Children.Clear();
 
-        SetStyling();
+        UpdateColors();
 
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
         {
@@ -112,10 +112,14 @@ internal sealed class DataGridRow : Grid
                 continue;
             }
 
-            var cell = CreateCell(col);
+            var cellContent = CreateCell(col);
 
-            SetColumn((BindableObject)cell, i);
-            Children.Add(cell);
+            var dataGridCell = new DataGridCell(cellContent, _bgColor);
+
+            dataGridCell.UpdateBindings(DataGrid);
+
+            SetColumn((BindableObject)dataGridCell, i);
+            Children.Add(dataGridCell);
         }
 
         // Remove extra columns
@@ -123,20 +127,6 @@ internal sealed class DataGridRow : Grid
         {
             ColumnDefinitions.RemoveAt(i);
         }
-    }
-
-    private void SetStyling()
-    {
-        UpdateColors();
-
-        // We are using the spacing between rows to generate visible borders, and thus the background color is the border color.
-        BackgroundColor = DataGrid.BorderColor;
-
-        var borderThickness = DataGrid.BorderThickness;
-
-        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
-        ColumnSpacing = borderThickness.HorizontalThickness;
-        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
     }
 
     private View CreateCell(DataGridColumn col)
@@ -155,11 +145,7 @@ internal sealed class DataGridRow : Grid
 
         if (col.CellTemplate != null)
         {
-            cell = new ContentView
-            {
-                BackgroundColor = _bgColor,
-                Content = col.CellTemplate.CreateContent() as View
-            };
+            cell = (View)col.CellTemplate.CreateContent();
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
@@ -172,7 +158,6 @@ internal sealed class DataGridRow : Grid
             cell = new Label
             {
                 TextColor = _textColor,
-                BackgroundColor = _bgColor,
                 VerticalTextAlignment = col.VerticalTextAlignment,
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
@@ -214,22 +199,18 @@ internal sealed class DataGridRow : Grid
             TypeCode.UInt32 => GenerateNumericEditCell(col, v => uint.TryParse(v, out _)),
             TypeCode.UInt64 => GenerateNumericEditCell(col, v => ulong.TryParse(v, out _)),
             TypeCode.DateTime => GenerateDateTimeEditCell(col),
-            _ => new TemplatedView { BackgroundColor = _bgColor },
+            _ => new TemplatedView(),
         };
     }
 
-    private ContentView? GenerateTemplatedEditCell(DataGridColumn col)
+    private View? GenerateTemplatedEditCell(DataGridColumn col)
     {
         if (col.EditCellTemplate == null)
         {
             return null;
         }
 
-        var cell = new ContentView
-        {
-            BackgroundColor = _bgColor,
-            Content = col.EditCellTemplate.CreateContent() as View
-        };
+        var cell = (View)col.EditCellTemplate.CreateContent();
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
@@ -240,12 +221,11 @@ internal sealed class DataGridRow : Grid
         return cell;
     }
 
-    private Grid GenerateTextEditCell(DataGridColumn col)
+    private Entry GenerateTextEditCell(DataGridColumn col)
     {
         var entry = new Entry
         {
             TextColor = _textColor,
-            BackgroundColor = _bgColor,
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
@@ -258,10 +238,10 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
         }
 
-        return WrapViewInGrid(entry);
+        return entry;
     }
 
-    private Grid GenerateBooleanEditCell(DataGridColumn col)
+    private CheckBox GenerateBooleanEditCell(DataGridColumn col)
     {
         var checkBox = new CheckBox
         {
@@ -275,15 +255,14 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(checkBox);
+        return checkBox;
     }
 
-    private Grid GenerateNumericEditCell(DataGridColumn col, ParserDelegate parserDelegate)
+    private Entry GenerateNumericEditCell(DataGridColumn col, ParserDelegate parserDelegate)
     {
         var entry = new Entry
         {
             TextColor = _textColor,
-            BackgroundColor = _bgColor,
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
@@ -305,10 +284,10 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(entry);
+        return entry;
     }
 
-    private Grid GenerateDateTimeEditCell(DataGridColumn col)
+    private DatePicker GenerateDateTimeEditCell(DataGridColumn col)
     {
         var datePicker = new DatePicker
         {
@@ -321,19 +300,7 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(datePicker);
-    }
-
-    private Grid WrapViewInGrid(View view)
-    {
-        var grid = new Grid
-        {
-            BackgroundColor = _bgColor,
-        };
-
-        grid.Add(view);
-
-        return grid;
+        return datePicker;
     }
 
     private void UpdateColors()
@@ -351,17 +318,9 @@ internal sealed class DataGridRow : Grid
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
         _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
 
-        foreach (var v in Children)
+        foreach (var cell in Children.OfType<DataGridCell>())
         {
-            if (v is View view)
-            {
-                view.BackgroundColor = _bgColor;
-
-                if (view is Label label)
-                {
-                    label.TextColor = _textColor;
-                }
-            }
+            cell.UpdateCellColors(_bgColor, _textColor);
         }
     }
 
