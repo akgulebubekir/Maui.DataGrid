@@ -3,6 +3,20 @@
 <Suppressions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGrid.PullToRefreshCommandParameterProperty</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGrid.RefreshColorProperty</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.SelectedItemsProperty</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
@@ -11,6 +25,20 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.SelectionModeProperty</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_PullToRefreshCommandParameter</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_RefreshColor</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
@@ -32,6 +60,20 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGrid.get_SelectionMode</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.set_PullToRefreshCommandParameter(System.Object)</Target>
+    <Left>lib/net7.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net7.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.set_RefreshColor(Microsoft.Maui.Graphics.Color)</Target>
     <Left>lib/net7.0/Maui.DataGrid.dll</Left>
     <Right>lib/net7.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
@@ -59,6 +101,20 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGrid.PullToRefreshCommandParameterProperty</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGrid.RefreshColorProperty</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.SelectedItemsProperty</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
     <Right>lib/net8.0/Maui.DataGrid.dll</Right>
@@ -67,6 +123,20 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.SelectionModeProperty</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_PullToRefreshCommandParameter</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_RefreshColor</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
     <Right>lib/net8.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
@@ -88,6 +158,20 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGrid.get_SelectionMode</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.set_PullToRefreshCommandParameter(System.Object)</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.set_RefreshColor(Microsoft.Maui.Graphics.Color)</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
     <Right>lib/net8.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
