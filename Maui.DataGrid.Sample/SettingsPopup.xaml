@@ -24,6 +24,11 @@
                     <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <Stepper Minimum="0" Maximum="10" Value="{Binding BorderThicknessNumeric}"
+                             BackgroundColor="{OnPlatform WinUI=Gray}"/>
+                    <Label Text="Border Thickness" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding WonColumnVisible}" />
                     <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>

@@ -21,15 +21,17 @@ public abstract class ViewModelBase : INotifyPropertyChanged
         Commands = [];
     }
 
-    protected void SetValue(object value, [CallerMemberName] string propertyName = null)
+    protected bool SetValue(object value, [CallerMemberName] string propertyName = null)
     {
         if (_properties.TryGetValue(propertyName!, out var item) && item == value)
         {
-            return;
+            return false;
         }
 
         _properties[propertyName!] = value;
         OnPropertyChanged(propertyName);
+
+        return true;
     }
 
     protected T GetValue<T>([CallerMemberName] string propertyName = null)

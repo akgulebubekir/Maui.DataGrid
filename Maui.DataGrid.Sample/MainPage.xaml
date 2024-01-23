@@ -14,12 +14,15 @@
             <Button Text="Settings" WidthRequest="100" Clicked="OnSettingsClicked" />
         </Grid>
 
-        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}" SelectedItem="{Binding SelectedTeam}"
-                     RowHeight="70" HeaderHeight="50" BorderColor="{StaticResource GridBorderColor}" RowToEdit="{Binding TeamToEdit}"
+        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}"
+                     SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}"
+                     BorderColor="{StaticResource GridBorderColor}" BorderThickness="{Binding BorderThickness}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
-                     PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
+                     BackgroundColor="{StaticResource GridBgColor}" ActiveRowColor="{StaticResource ActiveRowColor}" 
+                     FooterBackground="{StaticResource GridFooterBgColor}"
                      PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}"
-                     ActiveRowColor="{StaticResource ActiveRowColor}" FooterBackground="{StaticResource GridFooterBgColor}" x:Name="_dataGrid1">
+                     PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
+                     RowHeight="70" HeaderHeight="50" x:Name="_dataGrid1">
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
                     <dg:DataGridColumn.CellTemplate>

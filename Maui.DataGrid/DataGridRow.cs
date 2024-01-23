@@ -83,9 +83,7 @@ internal sealed class DataGridRow : Grid
 
     private void CreateView()
     {
-        Children.Clear();
-
-        SetStyling();
+        UpdateColors();
 
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
         {
@@ -112,10 +110,25 @@ internal sealed class DataGridRow : Grid
                 continue;
             }
 
-            var cell = CreateCell(col);
+            if (Children.TryGetItem(i, out var existingChild))
+            {
+                if (existingChild is not DataGridCell existingCell)
+                {
+                    throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
+                }
 
-            SetColumn((BindableObject)cell, i);
-            Children.Add(cell);
+                var isEditing = RowToEdit == BindingContext;
+
+                if (existingCell.Column != col || existingCell.IsEditing != isEditing)
+                {
+                    Children[i] = GenerateCellForColumn(col, i);
+                }
+            }
+            else
+            {
+                var newCell = GenerateCellForColumn(col, i);
+                Children.Add(newCell);
+            }
         }
 
         // Remove extra columns
@@ -125,28 +138,34 @@ internal sealed class DataGridRow : Grid
         }
     }
 
-    private void SetStyling()
+    private DataGridCell GenerateCellForColumn(DataGridColumn col, int columnIndex)
     {
-        UpdateColors();
+        var dataGridCell = CreateCell(col);
 
-        // We are using the spacing between rows to generate visible borders, and thus the background color is the border color.
-        BackgroundColor = DataGrid.BorderColor;
+        dataGridCell.UpdateBindings(DataGrid);
 
-        var borderThickness = DataGrid.BorderThickness;
+        SetColumn((BindableObject)dataGridCell, columnIndex);
 
-        Padding = new(borderThickness.Left, borderThickness.Top, borderThickness.Right, 0);
-        ColumnSpacing = borderThickness.HorizontalThickness;
-        Margin = new Thickness(0, 0, 0, borderThickness.Bottom); // Row Spacing
+        return dataGridCell;
     }
 
-    private View CreateCell(DataGridColumn col)
+    private DataGridCell CreateCell(DataGridColumn col)
     {
-        if (RowToEdit == BindingContext)
+        View cellContent;
+
+        var isEditing = RowToEdit == BindingContext;
+
+        if (isEditing)
         {
-            return CreateEditCell(col);
+            cellContent = CreateEditCell(col);
+        }
+        else
+        {
+            cellContent = CreateViewCell(col);
+
         }
 
-        return CreateViewCell(col);
+        return new DataGridCell(cellContent, _bgColor, col, isEditing);
     }
 
     private View CreateViewCell(DataGridColumn col)
@@ -155,11 +174,7 @@ internal sealed class DataGridRow : Grid
 
         if (col.CellTemplate != null)
         {
-            cell = new ContentView
-            {
-                BackgroundColor = _bgColor,
-                Content = col.CellTemplate.CreateContent() as View
-            };
+            cell = (View)col.CellTemplate.CreateContent();
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
@@ -172,7 +187,6 @@ internal sealed class DataGridRow : Grid
             cell = new Label
             {
                 TextColor = _textColor,
-                BackgroundColor = _bgColor,
                 VerticalTextAlignment = col.VerticalTextAlignment,
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
@@ -214,22 +228,18 @@ internal sealed class DataGridRow : Grid
             TypeCode.UInt32 => GenerateNumericEditCell(col, v => uint.TryParse(v, out _)),
             TypeCode.UInt64 => GenerateNumericEditCell(col, v => ulong.TryParse(v, out _)),
             TypeCode.DateTime => GenerateDateTimeEditCell(col),
-            _ => new TemplatedView { BackgroundColor = _bgColor },
+            _ => new TemplatedView(),
         };
     }
 
-    private ContentView? GenerateTemplatedEditCell(DataGridColumn col)
+    private View? GenerateTemplatedEditCell(DataGridColumn col)
     {
         if (col.EditCellTemplate == null)
         {
             return null;
         }
 
-        var cell = new ContentView
-        {
-            BackgroundColor = _bgColor,
-            Content = col.EditCellTemplate.CreateContent() as View
-        };
+        var cell = (View)col.EditCellTemplate.CreateContent();
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
@@ -240,12 +250,11 @@ internal sealed class DataGridRow : Grid
         return cell;
     }
 
-    private Grid GenerateTextEditCell(DataGridColumn col)
+    private Entry GenerateTextEditCell(DataGridColumn col)
     {
         var entry = new Entry
         {
             TextColor = _textColor,
-            BackgroundColor = _bgColor,
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
@@ -258,10 +267,10 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
         }
 
-        return WrapViewInGrid(entry);
+        return entry;
     }
 
-    private Grid GenerateBooleanEditCell(DataGridColumn col)
+    private CheckBox GenerateBooleanEditCell(DataGridColumn col)
     {
         var checkBox = new CheckBox
         {
@@ -275,15 +284,14 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(checkBox);
+        return checkBox;
     }
 
-    private Grid GenerateNumericEditCell(DataGridColumn col, ParserDelegate parserDelegate)
+    private Entry GenerateNumericEditCell(DataGridColumn col, ParserDelegate parserDelegate)
     {
         var entry = new Entry
         {
             TextColor = _textColor,
-            BackgroundColor = _bgColor,
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
@@ -305,10 +313,10 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(entry);
+        return entry;
     }
 
-    private Grid GenerateDateTimeEditCell(DataGridColumn col)
+    private DatePicker GenerateDateTimeEditCell(DataGridColumn col)
     {
         var datePicker = new DatePicker
         {
@@ -321,19 +329,7 @@ internal sealed class DataGridRow : Grid
                 new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
         }
 
-        return WrapViewInGrid(datePicker);
-    }
-
-    private Grid WrapViewInGrid(View view)
-    {
-        var grid = new Grid
-        {
-            BackgroundColor = _bgColor,
-        };
-
-        grid.Add(view);
-
-        return grid;
+        return datePicker;
     }
 
     private void UpdateColors()
@@ -351,17 +347,9 @@ internal sealed class DataGridRow : Grid
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
         _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
 
-        foreach (var v in Children)
+        foreach (var cell in Children.OfType<DataGridCell>())
         {
-            if (v is View view)
-            {
-                view.BackgroundColor = _bgColor;
-
-                if (view is Label label)
-                {
-                    label.TextColor = _textColor;
-                }
-            }
+            cell.UpdateCellColors(_bgColor, _textColor);
         }
     }
 

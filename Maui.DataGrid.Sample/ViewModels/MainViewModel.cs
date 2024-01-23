@@ -18,6 +18,7 @@ public class MainViewModel : ViewModelBase
         TeamColumnWidth = 70;
         SelectionMode = SelectionMode.Single;
         PageSize = 6;
+        BorderThicknessNumeric = 1;
 
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
@@ -59,6 +60,20 @@ public class MainViewModel : ViewModelBase
         get => GetValue<bool>();
         set => SetValue(value);
     }
+
+    public double BorderThicknessNumeric
+    {
+        get => GetValue<double>();
+        set
+        {
+            if (SetValue(value))
+            {
+                OnPropertyChanged(nameof(BorderThickness));
+            }
+        }
+    }
+
+    public Thickness BorderThickness => new(BorderThicknessNumeric);
 
     public ushort TeamColumnWidth
     {
