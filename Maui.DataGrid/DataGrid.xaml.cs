@@ -272,7 +272,7 @@ public partial class DataGrid
             {
                 if (((DataGrid)b).SelectionMode == SelectionMode.None)
                 {
-                    throw new InvalidOperationException("DataGrid must have SelectionEnabled to set ActiveRowColor");
+                    throw new InvalidOperationException($"{nameof(SelectionMode)} for DataGrid cannot be None when attempting to set ActiveRowColor");
                 }
 
                 return v;
