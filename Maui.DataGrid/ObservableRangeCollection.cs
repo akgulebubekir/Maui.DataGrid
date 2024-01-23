@@ -153,7 +153,7 @@ internal sealed class ObservableRangeCollection<T> : ObservableCollection<T>
     /// Clears the current collection and replaces it with the specified item.
     /// </summary>
     /// <param name="item">The item to replace the collection with.</param>
-    public void Replace(T item) => ReplaceRange(new T[] { item });
+    public void Replace(T item) => ReplaceRange([item]);
 
     /// <summary>
     /// Clears the current collection and replaces it with the specified collection.
