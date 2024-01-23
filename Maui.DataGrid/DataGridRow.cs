@@ -83,8 +83,6 @@ internal sealed class DataGridRow : Grid
 
     private void CreateView()
     {
-        Children.Clear();
-
         UpdateColors();
 
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
@@ -112,14 +110,25 @@ internal sealed class DataGridRow : Grid
                 continue;
             }
 
-            var cellContent = CreateCell(col);
+            if (Children.TryGetItem(i, out var existingChild))
+            {
+                if (existingChild is not DataGridCell existingCell)
+                {
+                    throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
+                }
 
-            var dataGridCell = new DataGridCell(cellContent, _bgColor);
+                var isEditing = RowToEdit == BindingContext;
 
-            dataGridCell.UpdateBindings(DataGrid);
-
-            SetColumn((BindableObject)dataGridCell, i);
-            Children.Add(dataGridCell);
+                if (existingCell.Column != col || existingCell.IsEditing != isEditing)
+                {
+                    Children[i] = GenerateCellForColumn(col, i);
+                }
+            }
+            else
+            {
+                var newCell = GenerateCellForColumn(col, i);
+                Children.Add(newCell);
+            }
         }
 
         // Remove extra columns
@@ -129,14 +138,34 @@ internal sealed class DataGridRow : Grid
         }
     }
 
-    private View CreateCell(DataGridColumn col)
+    private DataGridCell GenerateCellForColumn(DataGridColumn col, int columnIndex)
     {
-        if (RowToEdit == BindingContext)
+        var dataGridCell = CreateCell(col);
+
+        dataGridCell.UpdateBindings(DataGrid);
+
+        SetColumn((BindableObject)dataGridCell, columnIndex);
+
+        return dataGridCell;
+    }
+
+    private DataGridCell CreateCell(DataGridColumn col)
+    {
+        View cellContent;
+
+        var isEditing = RowToEdit == BindingContext;
+
+        if (isEditing)
         {
-            return CreateEditCell(col);
+            cellContent = CreateEditCell(col);
+        }
+        else
+        {
+            cellContent = CreateViewCell(col);
+
         }
 
-        return CreateViewCell(col);
+        return new DataGridCell(cellContent, _bgColor, col, isEditing);
     }
 
     private View CreateViewCell(DataGridColumn col)

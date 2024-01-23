@@ -7,7 +7,8 @@ using Microsoft.Maui.Controls;
 /// </summary>
 internal sealed class DataGridCell : Grid
 {
-    internal DataGridCell(View cellContent, Color? backgroundColor)
+    internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing)
+
     {
         var colorfulCellContent = new ContentView
         {
@@ -15,8 +16,18 @@ internal sealed class DataGridCell : Grid
             Content = cellContent,
         };
 
+        Content = cellContent;
+        Column = column;
+        IsEditing = isEditing;
+
         Children.Add(colorfulCellContent);
     }
+
+    public View Content { get; }
+
+    public DataGridColumn Column { get; }
+    public bool IsEditing { get; }
+
 
     internal void UpdateBindings(DataGrid dataGrid, bool bordersVisible = true)
     {

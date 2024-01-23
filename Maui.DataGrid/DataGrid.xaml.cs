@@ -1395,7 +1395,7 @@ public partial class DataGrid
             Grid.SetColumn(column.SortingIconContainer, 1);
         }
 
-        return new DataGridCell(cellContent, HeaderBackground);
+        return new DataGridCell(cellContent, HeaderBackground, column, false);
     }
 
     private void InitHeaderView()
@@ -1406,8 +1406,6 @@ public partial class DataGrid
         }
 
         SetColumnsBindingContext();
-
-        _headerView.Children.Clear();
 
         if (Columns == null)
         {
@@ -1440,12 +1438,28 @@ public partial class DataGrid
                 continue;
             }
 
-            col.HeaderView ??= CreateHeaderCell(col);
+            col.HeaderCell ??= CreateHeaderCell(col);
 
-            col.HeaderView.UpdateBindings(this, HeaderBordersVisible);
+            col.HeaderCell.UpdateBindings(this, HeaderBordersVisible);
 
-            Grid.SetColumn(col.HeaderView, i);
-            _headerView.Children.Add(col.HeaderView);
+            if (_headerView.Children.TryGetItem(i, out var existingCell))
+            {
+                if (existingCell is not DataGridCell cell)
+                {
+                    throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
+                }
+
+                if (cell.Column != col)
+                {
+                    Grid.SetColumn(col.HeaderCell, i);
+                }
+            }
+            else
+            {
+                Grid.SetColumn(col.HeaderCell, i);
+                _headerView.Children.Add(col.HeaderCell);
+            }
+
         }
 
         // Remove extra columns
