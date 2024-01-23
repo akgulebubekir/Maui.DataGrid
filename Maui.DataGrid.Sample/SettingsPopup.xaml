@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
                 xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
                 x:Class="Maui.DataGrid.Sample.SettingsPopup" Color="Black">
 
     <toolkit:Popup.Resources>
@@ -34,7 +36,7 @@
                     <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                    <Picker SelectedItem="{Binding SelectionMode}" ItemsSource="{Binding SelectionModes}" ItemDisplayBinding="{Binding .}" />
+                    <Picker SelectedItem="{Binding SelectionMode}" ItemsSource="{Static vm:MainViewModel.SelectionModes}" ItemDisplayBinding="{Binding .}" />
                     <Label Text="Selection Mode" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">

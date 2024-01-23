@@ -1,5 +1,6 @@
 namespace Maui.DataGrid.Sample.ViewModels;
 
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using Models;
 using Utils;
@@ -21,9 +22,11 @@ public class MainViewModel : ViewModelBase
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
         Commands.Add("Refresh", new Command(CmdRefresh));
+
+        var picker = new Picker();
     }
 
-    public IEnumerable<SelectionMode> SelectionModes => Enum.GetValues<SelectionMode>().Cast<SelectionMode>();
+    public static ImmutableList<SelectionMode> SelectionModes => Enum.GetValues<SelectionMode>().Cast<SelectionMode>().ToImmutableList();
 
     public ObservableCollection<DataGridColumn> Columns { get; set; }
 
