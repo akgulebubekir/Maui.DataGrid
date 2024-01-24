@@ -2,7 +2,7 @@ namespace Maui.DataGrid.Extensions;
 
 internal static class ListExtensions
 {
-    public static bool TryGetItem<T>(this IList<T> list, int index, out T? item)
+    public static bool TryGetItem(this IList<IView> list, int index, out IView? item)
     {
         if (index >= 0 && index < list.Count)
         {
