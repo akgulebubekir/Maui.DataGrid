@@ -33,18 +33,15 @@ internal sealed class DataGridCell : Grid
     {
         if (bordersVisible)
         {
-            BackgroundColor = dataGrid.BorderColor;
-            Padding = dataGrid.BorderThickness;
-
             SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
             SetBinding(PaddingProperty, new Binding(nameof(DataGrid.BorderThickness), source: dataGrid));
         }
         else
         {
-            Padding = 0;
-
             RemoveBinding(BackgroundColorProperty);
             RemoveBinding(PaddingProperty);
+
+            Padding = 0;
         }
     }
 
