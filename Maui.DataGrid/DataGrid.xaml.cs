@@ -1443,15 +1443,14 @@ public partial class DataGrid
 
                 if (cell.Column != col)
                 {
-                    Grid.SetColumn(col.HeaderCell, i);
+                    _headerView.SetColumn(col.HeaderCell, i);
                 }
             }
             else
             {
-                Grid.SetColumn(col.HeaderCell, i);
+                _headerView.SetColumn(col.HeaderCell, i);
                 _headerView.Children.Add(col.HeaderCell);
             }
-
         }
 
         // Remove extra columns, if any
