@@ -30,7 +30,7 @@ public partial class SettingsPopup
     {
         var columnTitle = await Shell.Current.DisplayPromptAsync("Remove column", "Which column should be removed?");
 
-        var columnToRemove = _viewModel.Columns.FirstOrDefault(c => c.Title == columnTitle);
+        var columnToRemove = _viewModel.Columns.FirstOrDefault(c => c.Title.Equals(columnTitle, StringComparison.OrdinalIgnoreCase));
 
         if (columnToRemove == null)
         {
