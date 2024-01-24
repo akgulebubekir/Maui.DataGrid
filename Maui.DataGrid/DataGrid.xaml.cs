@@ -1466,14 +1466,14 @@ public partial class DataGrid
 
             col.HeaderCell.UpdateBindings(this, HeaderBordersVisible);
 
-            if (_headerView.Children.TryGetItem(i, out var existingCell))
+            if (_headerView.Children.TryGetItem(i, out var existingCHild))
             {
-                if (existingCell is not DataGridCell cell)
+                if (existingCHild is not DataGridCell existingCell)
                 {
                     throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
                 }
 
-                if (cell.Column != col)
+                if (existingCell.Column != col)
                 {
                     _headerView.SetColumn(col.HeaderCell, i);
                 }
