@@ -51,11 +51,11 @@
                     ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}}"
                     SelectionMode="{Binding SelectionMode, Source={Reference self}}">
                 <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="object">
-                            <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    <DataTemplate x:DataType="object">
+                        <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </RefreshView>
         <Grid Grid.Row="2" x:Name="_footerView" IsVisible="{Binding PaginationEnabled, Source={Reference self}}" HeightRequest="{Binding FooterHeight, Source={Reference self}}" BackgroundColor="{Binding FooterBackground, Source={Reference self}}">
             <Grid.ColumnDefinitions>
