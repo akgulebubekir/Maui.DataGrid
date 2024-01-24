@@ -1364,7 +1364,7 @@ public partial class DataGrid
             column.SortingIconContainer.WidthRequest = sortIconSize;
             column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
 
-            cellContent = new Grid
+            var sortableCell = new Grid
             {
                 Padding = new(0, 0, 4, 0),
                 ColumnDefinitions = HeaderColumnDefinitions,
@@ -1391,7 +1391,9 @@ public partial class DataGrid
                 }
             };
 
-            Grid.SetColumn(column.SortingIconContainer, 1);
+            sortableCell.SetColumn(column.SortingIconContainer, 1);
+
+            cellContent = sortableCell;
         }
 
         return new DataGridCell(cellContent, HeaderBackground, column, false);
