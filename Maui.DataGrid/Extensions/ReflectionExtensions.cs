@@ -48,9 +48,14 @@ internal static class ReflectionExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Type? GetPropertyTypeByPath(this Type type, string path)
     {
-        if (type == null || string.IsNullOrWhiteSpace(path))
+        if (type == null)
         {
             return null;
+        }
+
+        if (path == "." || string.IsNullOrWhiteSpace(path))
+        {
+            return type;
         }
 
         Type? resultType;
