@@ -1439,7 +1439,7 @@ public partial class DataGrid
             return;
         }
 
-        if (Columns == null)
+        if (Columns == null || Columns.Count == 0)
         {
             _headerView.ColumnDefinitions.Clear();
             return;
