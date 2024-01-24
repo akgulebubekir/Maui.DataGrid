@@ -38,6 +38,7 @@ public partial class DataGrid
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
     private DataGridColumn? _sortedColumn;
+    private static HashSet<object>? _internalItemsHashSet;
 
     #endregion Fields
 
@@ -405,6 +406,8 @@ public partial class DataGrid
                     return;
                 }
 
+                _internalItemsHashSet = null;
+
                 // Unsubscribe from old collection's change event
                 if (o is INotifyCollectionChanged oldCollection)
                 {
@@ -420,7 +423,7 @@ public partial class DataGrid
                 self.SortAndPaginate();
 
                 // Reset SelectedItem if it's not in the new collection
-                if (self.SelectedItem != null && self.InternalItems?.Contains(self.SelectedItem) != true)
+                if (self.SelectedItem != null && self.GetInternalItems().Contains(self.SelectedItem) != true)
                 {
                     self.SelectedItem = null;
                 }
@@ -542,7 +545,7 @@ public partial class DataGrid
                     return null;
                 }
 
-                if (self.InternalItems.Contains(v))
+                if (self.GetInternalItems().Contains(v))
                 {
                     return v;
                 }
@@ -571,9 +574,11 @@ public partial class DataGrid
                     return null;
                 }
 
+                var internalItems = self.GetInternalItems(v.Count);
+
                 foreach (var selectedItem in v)
                 {
-                    if (!self.InternalItems.Contains(selectedItem))
+                    if (!internalItems.Contains(selectedItem))
                     {
                         return null;
                     }
@@ -1288,29 +1293,57 @@ public partial class DataGrid
     {
         SortAndPaginate();
 
+        ICollection<object> internalItems;
+
         switch (SelectionMode)
         {
             case SelectionMode.Single:
-                if (SelectedItem != null && InternalItems?.Contains(SelectedItem) != true)
+                if (SelectedItem == null)
+                {
+                    break;
+                }
+
+                internalItems = GetInternalItems(SelectedItems.Count);
+
+                if (internalItems.Contains(SelectedItem) != true)
                 {
                     SelectedItem = null;
                 }
 
                 break;
             case SelectionMode.Multiple:
-                if (SelectedItems != null)
+                if (SelectedItems == null)
                 {
-                    foreach (var selectedItem in SelectedItems)
+                    break;
+                }
+
+                internalItems = GetInternalItems(SelectedItems.Count);
+
+                foreach (var selectedItem in SelectedItems)
+                {
+                    if (!internalItems.Contains(selectedItem))
                     {
-                        if (!InternalItems.Contains(selectedItem))
-                        {
-                            SelectedItems.Clear();
-                        }
+                        SelectedItems.Clear();
                     }
                 }
 
                 break;
         }
+    }
+
+    private ICollection<object> GetInternalItems(int lookupCount = 1)
+    {
+        if (_internalItemsHashSet != null)
+        {
+            return _internalItemsHashSet;
+        }
+
+        if (lookupCount <= 1)
+        {
+            return InternalItems;
+        }
+
+        return _internalItemsHashSet = new HashSet<object>(InternalItems);
     }
 
     private SortData? RegenerateSortedColumnIndex()
