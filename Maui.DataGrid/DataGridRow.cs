@@ -325,9 +325,9 @@ internal sealed class DataGridRow : Grid
     private void UpdateColors()
     {
         _hasSelected = DataGrid.SelectedItem == BindingContext || DataGrid.SelectedItems.Contains(BindingContext);
-        var rowIndex = DataGrid.InternalItems?.IndexOf(BindingContext) ?? -1;
+        var rowIndex = DataGrid.InternalItems.IndexOf(BindingContext);
 
-        if (rowIndex < 0)
+        if (rowIndex == -1)
         {
             return;
         }
