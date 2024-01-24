@@ -1470,7 +1470,7 @@ public partial class DataGrid
             {
                 if (existingCHild is not DataGridCell existingCell)
                 {
-                    throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
+                    throw new InvalidDataException($"Header row should only contain {nameof(DataGridCell)}s");
                 }
 
                 if (existingCell.Column != col)
