@@ -1242,17 +1242,19 @@ public partial class DataGrid
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        ArgumentNullException.ThrowIfNull(sender);
+
         switch (SelectionMode)
         {
             case SelectionMode.Single:
-                var collectionView = sender as CollectionView;
+                var collectionView = (CollectionView)sender;
 
                 if (e.CurrentSelection.Count > 1)
                 {
-                    collectionView?.SelectedItems.Clear();
+                    collectionView.SelectedItems.Clear();
                 }
 
-                SelectedItem = collectionView?.SelectedItem;
+                SelectedItem = collectionView.SelectedItem;
 
                 break;
 
