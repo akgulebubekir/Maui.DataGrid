@@ -9,8 +9,7 @@ public class MainViewModel : ViewModelBase
 {
     public MainViewModel()
     {
-        var teams = DummyDataProvider.GetTeams();
-        Teams = [.. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams, .. teams];
+        Teams = DummyDataProvider.GetTeams();
         TeamColumnVisible = true;
         WonColumnVisible = true;
         HeaderBordersVisible = true;
