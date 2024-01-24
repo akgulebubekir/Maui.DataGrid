@@ -1423,14 +1423,7 @@ public partial class DataGrid
             col.ColumnDefinition ??= new(col.Width);
 
             // Add or update columns as needed
-            if (i > _headerView.ColumnDefinitions.Count - 1)
-            {
-                _headerView.ColumnDefinitions.Add(col.ColumnDefinition);
-            }
-            else if (_headerView.ColumnDefinitions[i] != col.ColumnDefinition)
-            {
-                _headerView.ColumnDefinitions[i] = col.ColumnDefinition;
-            }
+            _headerView.ColumnDefinitions.AddOrUpdate(col.ColumnDefinition, i);
 
             if (!col.IsVisible)
             {
@@ -1461,11 +1454,8 @@ public partial class DataGrid
 
         }
 
-        // Remove extra columns
-        for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
-        {
-            _headerView.ColumnDefinitions.RemoveAt(i);
-        }
+        // Remove extra columns, if any
+        _headerView.ColumnDefinitions.RemoveAfter(Columns.Count);
     }
 
     #endregion Header Creation Methods
