@@ -1434,11 +1434,6 @@ public partial class DataGrid
 
     private void InitHeaderView()
     {
-        if (_headerView == null)
-        {
-            return;
-        }
-
         if (Columns == null || Columns.Count == 0)
         {
             _headerView.ColumnDefinitions.Clear();
