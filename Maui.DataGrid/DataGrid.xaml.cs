@@ -89,7 +89,7 @@ public partial class DataGrid
             return false;
         }
 
-        if (InternalItems is null)
+        if (InternalItems.Count == 0)
         {
             Debug.WriteLine("There are no items to sort");
             return false;
