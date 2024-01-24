@@ -1404,8 +1404,6 @@ public partial class DataGrid
             return;
         }
 
-        SetColumnsBindingContext();
-
         if (Columns == null)
         {
             _headerView.ColumnDefinitions.Clear();
@@ -1417,6 +1415,8 @@ public partial class DataGrid
             var col = Columns[i];
 
             col.DataGrid ??= this;
+
+            col.BindingContext ??= BindingContext;
 
             col.InitializeDataType();
 
@@ -1465,17 +1465,6 @@ public partial class DataGrid
         for (var i = _headerView.ColumnDefinitions.Count - 1; i > Columns.Count - 1; i--)
         {
             _headerView.ColumnDefinitions.RemoveAt(i);
-        }
-    }
-
-    private void SetColumnsBindingContext()
-    {
-        if (Columns != null)
-        {
-            foreach (var c in Columns)
-            {
-                c.BindingContext = BindingContext;
-            }
         }
     }
 
