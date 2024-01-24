@@ -3,6 +3,7 @@ namespace Maui.DataGrid.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 internal static class ReflectionExtensions
 {
@@ -10,6 +11,7 @@ internal static class ReflectionExtensions
 
     private static readonly ConcurrentDictionary<Type, PropertyDescriptorCollection> PropertyTypeCache = new();
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static object? GetValueByPath(this object obj, string path)
     {
         if (obj == null || string.IsNullOrWhiteSpace(path))
@@ -43,6 +45,7 @@ internal static class ReflectionExtensions
         return result;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Type? GetPropertyTypeByPath(this Type type, string path)
     {
         if (type == null || string.IsNullOrWhiteSpace(path))
@@ -76,6 +79,7 @@ internal static class ReflectionExtensions
         return resultType;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Type? GetPropertyType(this Type type, string propertyName)
     {
         var propertyDescriptor = GetPropertyDescriptor(type, propertyName);
@@ -83,6 +87,7 @@ internal static class ReflectionExtensions
         return propertyDescriptor?.PropertyType;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static object? GetPropertyValue(object obj, string propertyName)
     {
         var type = obj.GetType();
@@ -92,6 +97,7 @@ internal static class ReflectionExtensions
         return propertyDescriptor?.GetValue(obj);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static PropertyDescriptor? GetPropertyDescriptor(Type type, string propertyName)
     {
         if (!PropertyTypeCache.TryGetValue(type, out var properties))
