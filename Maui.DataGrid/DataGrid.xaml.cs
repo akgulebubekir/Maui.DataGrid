@@ -469,13 +469,13 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
         BindablePropertyExtensions.Create<DataGrid, ObservableCollection<int>>(new(DefaultPageSizeList),
-                        propertyChanged: (b, o, n) =>
-                        {
-                            if (o != n && b is DataGrid self)
-                            {
-                                self.UpdatePageSizeList();
-                            }
-                        });
+            propertyChanged: (b, o, n) =>
+            {
+                if (o != n && b is DataGrid self)
+                {
+                    self.UpdatePageSizeList();
+                }
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether the page size is visible in the DataGrid.
