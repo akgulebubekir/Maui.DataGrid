@@ -1367,6 +1367,11 @@ public partial class DataGrid
 
     internal void Reload()
     {
+        if (!IsLoaded)
+        {
+            return;
+        }
+
         lock (_reloadLock)
         {
             UpdatePageSizeList();
