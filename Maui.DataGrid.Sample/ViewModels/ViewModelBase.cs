@@ -7,21 +7,12 @@ using System.Windows.Input;
 
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-    private readonly Dictionary<string, object> _properties = [];
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private readonly Dictionary<string, object?> _properties = [];
 
-    public Dictionary<string, ICommand> Commands
-    {
-        get => GetValue<Dictionary<string, ICommand>>();
-        private init => SetValue(value);
-    }
+    public Dictionary<string, ICommand> Commands { get; } = [];
 
-    protected ViewModelBase()
-    {
-        Commands = [];
-    }
-
-    protected bool SetValue(object value, [CallerMemberName] string propertyName = null)
+    protected bool SetValue(object? value, [CallerMemberName] string propertyName = null!)
     {
         if (_properties.TryGetValue(propertyName!, out var item) && item == value)
         {
@@ -34,16 +25,16 @@ public abstract class ViewModelBase : INotifyPropertyChanged
         return true;
     }
 
-    protected T GetValue<T>([CallerMemberName] string propertyName = null)
+    protected T? GetValue<T>([CallerMemberName] string propertyName = null!)
     {
         if (_properties.TryGetValue(propertyName!, out var value))
         {
-            return (T)value;
+            return (T?)value;
         }
 
         return default;
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null!) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

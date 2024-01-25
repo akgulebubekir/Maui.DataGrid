@@ -30,13 +30,13 @@ public class MainViewModel : ViewModelBase
 
     public ObservableCollection<DataGridColumn> Columns { get; set; }
 
-    public Team TeamToEdit
+    public Team? TeamToEdit
     {
         get => GetValue<Team>();
         set => SetValue(value);
     }
 
-    public List<Team> Teams
+    public List<Team>? Teams
     {
         get => GetValue<List<Team>>();
         set => SetValue(value);
@@ -98,7 +98,7 @@ public class MainViewModel : ViewModelBase
         set => SetValue(value);
     }
 
-    public Team SelectedTeam
+    public Team? SelectedTeam
     {
         get => GetValue<Team>();
         set => SetValue(value);
