@@ -11,7 +11,7 @@ internal sealed class DataGridRow : Grid
 
     private Color? _bgColor;
     private Color? _textColor;
-    private bool _hasSelected;
+    private bool _wasSelected;
 
     #endregion Fields
 
@@ -57,6 +57,8 @@ internal sealed class DataGridRow : Grid
 
     private void InitializeRow()
     {
+        UpdateSelectedState();
+
         UpdateColors();
 
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
@@ -131,7 +133,6 @@ internal sealed class DataGridRow : Grid
         else
         {
             cellContent = CreateViewCell(col);
-
         }
 
         return new DataGridCell(cellContent, _bgColor, col, isEditing);
@@ -303,7 +304,6 @@ internal sealed class DataGridRow : Grid
 
     private void UpdateColors()
     {
-        _hasSelected = DataGrid.SelectedItem == BindingContext || DataGrid.SelectedItems.Contains(BindingContext);
         var rowIndex = DataGrid.InternalItems.IndexOf(BindingContext);
 
         if (rowIndex == -1)
@@ -311,7 +311,7 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        _bgColor = DataGrid.SelectionMode != SelectionMode.None && _hasSelected
+        _bgColor = DataGrid.SelectionMode != SelectionMode.None && _wasSelected
                 ? DataGrid.ActiveRowColor
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
         _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
@@ -368,10 +368,16 @@ internal sealed class DataGridRow : Grid
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (_hasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection.Any(s => s == BindingContext)))
+        if (_wasSelected || (e.CurrentSelection.Count > 0 && e.CurrentSelection.Any(s => s == BindingContext)))
         {
+            UpdateSelectedState();
             UpdateColors();
         }
+    }
+
+    private void UpdateSelectedState()
+    {
+        _wasSelected = DataGrid.SelectedItem == BindingContext || DataGrid.SelectedItems.Contains(BindingContext);
     }
 
     #endregion Methods
