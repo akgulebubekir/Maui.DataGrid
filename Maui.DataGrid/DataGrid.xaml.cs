@@ -385,7 +385,8 @@ public partial class DataGrid
                 }
 
                 self.Reload();
-            });
+            }
+            defaultValueCreator: _ => new ObservableCollection<DataGridColumn>());
 
     /// <summary>
     /// Gets or sets the ItemsSource for the DataGrid.
