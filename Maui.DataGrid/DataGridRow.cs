@@ -34,33 +34,7 @@ internal sealed class DataGridRow : Grid
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
-        BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime,
-            propertyChanged: (b, o, n) =>
-            {
-                var self = (DataGridRow)b;
-
-                if (o is DataGrid oldDataGrid)
-                {
-                    oldDataGrid.ItemSelected -= self.DataGrid_ItemSelected;
-                    oldDataGrid.Columns.CollectionChanged -= self.OnColumnsChanged;
-
-                    foreach (var column in oldDataGrid.Columns)
-                    {
-                        column.VisibilityChanged -= self.OnVisibilityChanged;
-                    }
-                }
-
-                if (n is DataGrid newDataGrid)
-                {
-                    newDataGrid.ItemSelected += self.DataGrid_ItemSelected;
-                    newDataGrid.Columns.CollectionChanged += self.OnColumnsChanged;
-
-                    foreach (var column in newDataGrid.Columns)
-                    {
-                        column.VisibilityChanged += self.OnVisibilityChanged;
-                    }
-                }
-            });
+        BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime);
 
     public static readonly BindableProperty RowToEditProperty =
         BindablePropertyExtensions.Create<DataGridRow, object>(null, BindingMode.OneWay,
@@ -368,6 +342,16 @@ internal sealed class DataGridRow : Grid
             foreach (var column in DataGrid.Columns)
             {
                 column.VisibilityChanged -= OnVisibilityChanged;
+            }
+        }
+        else
+        {
+            DataGrid.ItemSelected += DataGrid_ItemSelected;
+            DataGrid.Columns.CollectionChanged += OnColumnsChanged;
+
+            foreach (var column in DataGrid.Columns)
+            {
+                column.VisibilityChanged += OnVisibilityChanged;
             }
         }
     }
