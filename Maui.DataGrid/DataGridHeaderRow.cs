@@ -48,13 +48,13 @@ internal sealed class DataGridHeaderRow : Grid
             return;
         }
 
+        Children.Clear(); // TODO: Would be nice to remove this one day.
+
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
         {
             ColumnDefinitions.Clear();
             return;
         }
-
-        Children.Clear(); // TODO: Would be nice to remove this one day.
 
         var columnCount = DataGrid.Columns.Count;
 
