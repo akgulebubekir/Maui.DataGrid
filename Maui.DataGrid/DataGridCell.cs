@@ -31,6 +31,9 @@ internal sealed class DataGridCell : Grid
 
     internal void UpdateBindings(DataGrid dataGrid, bool bordersVisible = true)
     {
+        // The DataGridCell is a grid, and the padding constitutes the cell's border
+        // And the Background constitutes the border color of the cell.
+
         if (bordersVisible)
         {
             SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
