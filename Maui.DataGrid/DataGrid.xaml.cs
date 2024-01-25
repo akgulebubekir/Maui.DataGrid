@@ -1471,9 +1471,9 @@ public partial class DataGrid
 
             col.HeaderCell.UpdateBindings(this, HeaderBordersVisible);
 
-            if (_headerView.Children.TryGetItem(i, out var existingCHild))
+            if (_headerView.Children.TryGetItem(i, out var existingChild))
             {
-                if (existingCHild is not DataGridCell existingCell)
+                if (existingChild is not DataGridCell existingCell)
                 {
                     throw new InvalidDataException($"Header row should only contain {nameof(DataGridCell)}s");
                 }
