@@ -12,16 +12,19 @@ internal static class DummyDataProvider
 
     public static List<Team> GetTeams(int numberOfCopies = 1)
     {
-        var assembly = typeof(DummyDataProvider).GetTypeInfo().Assembly;
+        if (_realTeams == null)
+        {
+            var assembly = typeof(DummyDataProvider).GetTypeInfo().Assembly;
 
-        using var stream = assembly.GetManifestResourceStream("Maui.DataGrid.Sample.teams.json")
-            ?? throw new FileNotFoundException("Could not load teams.json");
+            using var stream = assembly.GetManifestResourceStream("Maui.DataGrid.Sample.teams.json")
+                ?? throw new FileNotFoundException("Could not load teams.json");
 
-        using var reader = new StreamReader(stream);
-        var json = reader.ReadToEnd();
+            using var reader = new StreamReader(stream);
+            var json = reader.ReadToEnd();
 
-        _realTeams = JsonSerializer.Deserialize<List<Team>>(json)
-            ?? throw new InvalidOperationException("Could not deserialize teams.json");
+            _realTeams = JsonSerializer.Deserialize<List<Team>>(json)
+                ?? throw new InvalidOperationException("Could not deserialize teams.json");
+        }
 
         if (numberOfCopies == 1)
         {
@@ -36,10 +39,10 @@ internal static class DummyDataProvider
             {
                 var randomTeam = new Team
                 {
-                    Name = $"{realTeam.Name} {RandomNumber.Next(1, numberOfCopies)}",
+                    Name = $"{realTeam.Name} {i}",
                     Won = RandomNumber.Next(0, 50),
                     Lost = RandomNumber.Next(0, 50),
-                    Percentage = RandomNumber.NextDouble(),
+                    Percentage = Math.Round(RandomNumber.NextDouble() * 100) / 100,
                     Conf = $"{realTeam.Conf} {RandomNumber.Next(1, 10)}",
                     Div = $"{realTeam.Div} {RandomNumber.Next(1, 10)}",
                     Home = $"{RandomNumber.Next(1, 10)}",
