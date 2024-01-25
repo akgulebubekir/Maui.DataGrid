@@ -28,7 +28,7 @@ public class MainViewModel : ViewModelBase
 
     public static ImmutableList<SelectionMode> SelectionModes => Enum.GetValues<SelectionMode>().Cast<SelectionMode>().ToImmutableList();
 
-    public ObservableCollection<DataGridColumn> Columns { get; set; }
+    public required ObservableCollection<DataGridColumn> Columns { get; set; }
 
     public Team? TeamToEdit
     {

@@ -2,17 +2,17 @@ namespace Maui.DataGrid.Sample.Models;
 
 public class Team
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public int Won { get; set; }
     public int Lost { get; set; }
     public double Percentage { get; set; }
-    public string Conf { get; set; }
-    public string Div { get; set; }
-    public string Home { get; set; }
-    public string Road { get; set; }
-    public string Last10 { get; set; }
-    public Streak Streak { get; set; }
-    public string Logo { get; set; }
+    public required string Conf { get; set; }
+    public required string Div { get; set; }
+    public required string Home { get; set; }
+    public required string Road { get; set; }
+    public required string Last10 { get; set; }
+    public required Streak Streak { get; set; }
+    public required string Logo { get; set; }
 }
 
 public class Streak : IComparable
@@ -20,7 +20,7 @@ public class Streak : IComparable
     public Result Result { get; set; }
     public int NumStreak { get; set; }
 
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         var score = Result == Result.Won ? NumStreak : -NumStreak;
         if (obj is Streak s)
@@ -39,7 +39,7 @@ public class Streak : IComparable
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (ReferenceEquals(this, obj))
         {
