@@ -385,7 +385,7 @@ public partial class DataGrid
                 }
 
                 self.Reload();
-            }
+            },
             defaultValueCreator: _ => new ObservableCollection<DataGridColumn>());
 
     /// <summary>
