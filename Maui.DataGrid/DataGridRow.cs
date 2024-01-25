@@ -95,6 +95,11 @@ internal sealed class DataGridRow : Grid
         {
             var col = DataGrid.Columns[i];
 
+            if (col.ColumnDefinition == null)
+            {
+                continue;
+            }
+
             // Add or update columns as needed
             ColumnDefinitions.AddOrUpdate(col.ColumnDefinition, i);
 

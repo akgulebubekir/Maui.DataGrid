@@ -20,7 +20,7 @@ internal static class ListExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void AddOrUpdate(this ColumnDefinitionCollection columnDefinitions, ColumnDefinition? columnDefinition, int columnIndex)
+    public static void AddOrUpdate(this ColumnDefinitionCollection columnDefinitions, ColumnDefinition columnDefinition, int columnIndex)
     {
         if (columnIndex > columnDefinitions.Count - 1)
         {
