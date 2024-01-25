@@ -1299,7 +1299,7 @@ public partial class DataGrid
 
                 internalItems = GetInternalItems(SelectedItems.Count);
 
-                if (internalItems.Contains(SelectedItem) != true)
+                if (!internalItems.Contains(SelectedItem))
                 {
                     SelectedItem = null;
                 }
