@@ -25,7 +25,7 @@ public partial class DataGrid
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
 
-    private readonly SortedSet<int> _pageSizeList = DefaultPageSizeList;
+    private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeList);
 
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
