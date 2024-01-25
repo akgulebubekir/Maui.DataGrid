@@ -51,7 +51,7 @@
                     ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}}"
                     SelectionMode="{Binding SelectionMode, Source={Reference self}}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="object">
+                    <DataTemplate x:DataType="x:Object">
                         <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
