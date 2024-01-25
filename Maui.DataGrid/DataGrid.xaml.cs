@@ -22,18 +22,10 @@ public partial class DataGrid
 
     private static readonly SortedSet<int> DefaultPageSizeList = [5, 10, 50, 100, 200, 1000];
 
-    private static readonly ColumnDefinitionCollection HeaderColumnDefinitions =
-                [
-                    new() { Width = new(1, GridUnitType.Star) },
-                    new() { Width = new(1, GridUnitType.Auto) }
-                ];
-
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = DefaultPageSizeList;
-    private readonly Style _defaultHeaderStyle;
-    private readonly Style _defaultSortIconStyle;
 
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
@@ -51,8 +43,6 @@ public partial class DataGrid
     {
         InitializeComponent();
         _collectionView.ItemsSource = InternalItems;
-        _defaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
-        _defaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
     }
 
     #endregion ctor
@@ -287,9 +277,9 @@ public partial class DataGrid
             propertyChanged: (b, o, n) =>
             {
                 var self = (DataGrid)b;
-                if (o != n && self._headerView != null && !self.HeaderBordersVisible)
+                if (o != n && self._headerRow != null && !self.HeaderBordersVisible)
                 {
-                    foreach (var cell in self._headerView.Children.OfType<DataGridCell>())
+                    foreach (var cell in self._headerRow.Children.OfType<DataGridCell>())
                     {
                         cell.UpdateCellColors(n);
                     }
@@ -311,9 +301,9 @@ public partial class DataGrid
             {
                 var self = (DataGrid)b;
 
-                if (self._headerView != null && self.HeaderBordersVisible)
+                if (self._headerRow != null && self.HeaderBordersVisible)
                 {
-                    self.InitializeHeaderRow();
+                    self._headerRow.InitializeHeaderRow();
                 }
 
                 self.Reload();
@@ -421,10 +411,11 @@ public partial class DataGrid
                     newCollection.CollectionChanged += self.OnItemsSourceCollectionChanged;
                 }
 
+                self._headerRow.InitializeHeaderRow(true);
                 self.SortAndPaginate();
 
                 // Reset SelectedItem if it's not in the new collection
-                if (self.SelectedItem != null && self.GetInternalItems().Contains(self.SelectedItem) != true)
+                if (self.SelectedItem != null && !self.GetInternalItems().Contains(self.SelectedItem))
                 {
                     self.SelectedItem = null;
                 }
@@ -699,7 +690,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.InitializeHeaderRow();
+                    self._headerRow.InitializeHeaderRow();
                 }
             });
 
@@ -1221,7 +1212,7 @@ public partial class DataGrid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        InitializeHeaderRow();
+        _headerRow.InitializeHeaderRow();
     }
 
     private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -1377,123 +1368,9 @@ public partial class DataGrid
         {
             UpdatePageSizeList();
 
-            InitializeHeaderRow();
+            _headerRow.InitializeHeaderRow();
         }
     }
 
     #endregion UI Methods
-
-    #region Header Creation Methods
-
-    private DataGridCell CreateHeaderCell(DataGridColumn column)
-    {
-        View cellContent;
-
-        column.HeaderLabel.Style = column.HeaderLabelStyle ?? HeaderLabelStyle ?? _defaultHeaderStyle;
-
-        if (!IsSortable || !column.SortingEnabled || !column.IsSortable())
-        {
-            cellContent = new ContentView
-            {
-                Content = column.HeaderLabel
-            };
-        }
-        else
-        {
-            var sortIconSize = HeaderHeight * 0.3;
-            column.SortingIconContainer.HeightRequest = sortIconSize;
-            column.SortingIconContainer.WidthRequest = sortIconSize;
-            column.SortingIcon.Style = SortIconStyle ?? _defaultSortIconStyle;
-
-            var sortableCell = new Grid
-            {
-                Padding = new(0, 0, 4, 0),
-                ColumnDefinitions = HeaderColumnDefinitions,
-                Children = { column.HeaderLabel, column.SortingIconContainer },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer
-                    {
-                        Command = new Command<DataGridColumn>(c =>
-                        {
-                            // This is to invert SortOrder when the user taps on a column.
-                            var order = c.SortingOrder == SortingOrder.Ascendant
-                                ? SortingOrder.Descendant
-                                : SortingOrder.Ascendant;
-
-                            var index = Columns.IndexOf(c);
-
-                            SortedColumnIndex = new(index, order);
-
-                            c.SortingOrder = order;
-                        }, c => c.SortingEnabled && Columns.Contains(c)),
-                        CommandParameter = column
-                    }
-                }
-            };
-
-            sortableCell.SetColumn(column.SortingIconContainer, 1);
-
-            cellContent = sortableCell;
-        }
-
-        return new DataGridCell(cellContent, HeaderBackground, column, false);
-    }
-
-    private void InitializeHeaderRow()
-    {
-        if (Columns == null || Columns.Count == 0)
-        {
-            _headerView.ColumnDefinitions.Clear();
-            return;
-        }
-
-        for (var i = 0; i < Columns.Count; i++)
-        {
-            var col = Columns[i];
-
-            col.DataGrid ??= this;
-
-            col.BindingContext ??= BindingContext;
-
-            col.InitializeDataType();
-
-            col.ColumnDefinition ??= new(col.Width);
-
-            // Add or update columns as needed
-            _headerView.ColumnDefinitions.AddOrUpdate(col.ColumnDefinition, i);
-
-            if (!col.IsVisible)
-            {
-                continue;
-            }
-
-            col.HeaderCell ??= CreateHeaderCell(col);
-
-            col.HeaderCell.UpdateBindings(this, HeaderBordersVisible);
-
-            if (_headerView.Children.TryGetItem(i, out var existingChild))
-            {
-                if (existingChild is not DataGridCell existingCell)
-                {
-                    throw new InvalidDataException($"Header row should only contain {nameof(DataGridCell)}s");
-                }
-
-                if (existingCell.Column != col)
-                {
-                    _headerView.SetColumn(col.HeaderCell, i);
-                }
-            }
-            else
-            {
-                _headerView.SetColumn(col.HeaderCell, i);
-                _headerView.Children.Add(col.HeaderCell);
-            }
-        }
-
-        // Remove extra columns, if any
-        _headerView.ColumnDefinitions.RemoveAfter(Columns.Count);
-    }
-
-    #endregion Header Creation Methods
 }

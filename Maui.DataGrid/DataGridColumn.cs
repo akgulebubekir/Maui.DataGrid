@@ -370,6 +370,11 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         ArgumentNullException.ThrowIfNull(DataGrid);
 
+        if (DataGrid.ItemsSource == null)
+        {
+            return;
+        }
+
         try
         {
             Type? rowDataType = null;

@@ -38,7 +38,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" x:Name="_headerView" HeightRequest="{Binding HeaderHeight, Source={Reference self}}" />
+        <local:DataGridHeaderRow Grid.Row="0" x:Name="_headerRow" DataGrid="{Reference self}" HeightRequest="{Binding HeaderHeight, Source={Reference self}}" />
         <RefreshView Grid.Row="1" x:Name="_refreshView" Grid.RowSpan="2" Command="{Binding PullToRefreshCommand, Source={Reference self}}" CommandParameter="{Binding PullToRefreshCommandParameter, Source={Reference self}}"
                      RefreshColor="{Binding RefreshColor, Source={Reference self}}" IsRefreshing="{Binding IsRefreshing, Source={Reference self}, Mode=TwoWay}" IsEnabled="{Binding RefreshingEnabled, Source={Reference self}}">
                 <!--  Set all platforms to use MeasureFirstItem when this bug is resolved https://github.com/dotnet/maui/issues/7562  -->
