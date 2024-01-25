@@ -1189,7 +1189,7 @@ public partial class DataGrid
         {
             _refreshView.Refreshing -= OnRefreshing;
         }
-        else if (RefreshingEnabled)
+        else
         {
             _refreshView.Refreshing -= OnRefreshing;
             _refreshView.Refreshing += OnRefreshing;
