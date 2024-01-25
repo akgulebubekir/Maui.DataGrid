@@ -3,6 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             xmlns:m="clr-namespace:Maui.DataGrid.Sample.Models"
              xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
              xmlns:conv="clr-namespace:Maui.DataGrid.Sample.Converters"
              x:DataType="vm:MainViewModel"
@@ -18,7 +19,7 @@
                      SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}"
                      BorderColor="{StaticResource GridBorderColor}" BorderThickness="{Binding BorderThickness}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
-                     BackgroundColor="{StaticResource GridBgColor}" ActiveRowColor="{StaticResource ActiveRowColor}" 
+                     BackgroundColor="{StaticResource GridBgColor}" ActiveRowColor="{StaticResource ActiveRowColor}"
                      FooterBackground="{StaticResource GridFooterBgColor}"
                      PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}"
                      PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
@@ -26,7 +27,7 @@
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="ImageSource">
                             <Image Source="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
                                    Aspect="AspectFit" HeightRequest="60" />
                         </DataTemplate>
@@ -46,7 +47,7 @@
                 <dg:DataGridColumn Title="Win %" PropertyName="Percentage" Width="0.75*" StringFormat="{}{0:P1}" />
                 <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.75*">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="m:Streak">
                             <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
                                          BackgroundColor="{Binding Converter={StaticResource StreakToColorConverter}}">
                                 <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
