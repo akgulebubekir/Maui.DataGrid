@@ -34,9 +34,6 @@ internal sealed class DataGridHeaderRow : Grid
     public static readonly BindableProperty DataGridProperty =
         BindablePropertyExtensions.Create<DataGridHeaderRow, DataGrid>(null, BindingMode.OneTime);
 
-    public static readonly BindableProperty HeaderBordersVisibleProperty =
-        BindablePropertyExtensions.Create<DataGridHeaderRow, bool>(true);
-
     #endregion Bindable Properties
 
     #region Methods
