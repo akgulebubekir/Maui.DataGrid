@@ -38,7 +38,7 @@ public partial class DataGrid
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
     private DataGridColumn? _sortedColumn;
-    private static HashSet<object>? _internalItemsHashSet;
+    private HashSet<object>? _internalItemsHashSet;
 
     #endregion Fields
 
@@ -406,7 +406,8 @@ public partial class DataGrid
                     return;
                 }
 
-                _internalItemsHashSet = null;
+                // Reset internal hash set, used for fast lookups
+                self._internalItemsHashSet = null;
 
                 // Unsubscribe from old collection's change event
                 if (o is INotifyCollectionChanged oldCollection)
