@@ -42,7 +42,10 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
-        _collectionView.ItemsSource = InternalItems;
+        if (_collectionView != null)
+        {
+            _collectionView.ItemsSource = InternalItems;
+        }
     }
 
     #endregion ctor
