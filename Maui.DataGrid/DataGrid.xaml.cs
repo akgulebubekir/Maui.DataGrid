@@ -617,7 +617,10 @@ public partial class DataGrid
                         break;
                 }
 
-                self._collectionView.SelectionMode = n;
+                if (self._collectionView != null)
+                {
+                    self._collectionView.SelectionMode = n;
+                }
             });
 
     /// <summary>
