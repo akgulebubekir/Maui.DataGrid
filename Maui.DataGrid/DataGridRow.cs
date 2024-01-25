@@ -47,7 +47,7 @@ internal sealed class DataGridRow : Grid
 
                 if (o == row.BindingContext || n == row.BindingContext)
                 {
-                    row.CreateView();
+                    row.InitializeRow();
                 }
             });
 
@@ -55,7 +55,7 @@ internal sealed class DataGridRow : Grid
 
     #region Methods
 
-    private void CreateView()
+    private void InitializeRow()
     {
         UpdateColors();
 
@@ -326,7 +326,7 @@ internal sealed class DataGridRow : Grid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        CreateView();
+        InitializeRow();
     }
 
     /// <inheritdoc/>
@@ -358,12 +358,12 @@ internal sealed class DataGridRow : Grid
 
     private void OnColumnsChanged(object? sender, EventArgs e)
     {
-        CreateView();
+        InitializeRow();
     }
 
     private void OnVisibilityChanged(object? sender, EventArgs e)
     {
-        CreateView();
+        InitializeRow();
     }
 
     private void DataGrid_ItemSelected(object? sender, SelectionChangedEventArgs e)

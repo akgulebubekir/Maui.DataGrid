@@ -313,7 +313,7 @@ public partial class DataGrid
 
                 if (self._headerView != null && self.HeaderBordersVisible)
                 {
-                    self.InitHeaderView();
+                    self.InitializeHeaderRow();
                 }
 
                 self.Reload();
@@ -698,7 +698,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.InitHeaderView();
+                    self.InitializeHeaderRow();
                 }
             });
 
@@ -1220,7 +1220,7 @@ public partial class DataGrid
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
-        InitHeaderView();
+        InitializeHeaderRow();
     }
 
     private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -1376,7 +1376,7 @@ public partial class DataGrid
         {
             UpdatePageSizeList();
 
-            InitHeaderView();
+            InitializeHeaderRow();
         }
     }
 
@@ -1439,7 +1439,7 @@ public partial class DataGrid
         return new DataGridCell(cellContent, HeaderBackground, column, false);
     }
 
-    private void InitHeaderView()
+    private void InitializeHeaderRow()
     {
         if (Columns == null || Columns.Count == 0)
         {
