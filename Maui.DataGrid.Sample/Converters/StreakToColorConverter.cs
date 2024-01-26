@@ -1,11 +1,11 @@
-﻿namespace Maui.DataGrid.Sample.Converters;
+namespace Maui.DataGrid.Sample.Converters;
 
 using System.Globalization;
 using Maui.DataGrid.Sample.Models;
 
 internal sealed class StreakToColorConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is Streak s)
         {
@@ -16,5 +16,5 @@ internal sealed class StreakToColorConverter : IValueConverter
         return Colors.Transparent;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
 }
