@@ -571,6 +571,11 @@ public partial class DataGrid
                     return null;
                 }
 
+                if (v is not IList<object> selectedItems)
+                {
+                    throw new InvalidCastException($"{nameof(SelectedItems)} must be of type IList<object>");
+                }
+
                 var internalItems = self.GetInternalItems(v.Count);
 
                 foreach (var selectedItem in selectedItems)
