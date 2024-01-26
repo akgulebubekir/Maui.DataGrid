@@ -566,9 +566,15 @@ public partial class DataGrid
             },
             coerceValue: (b, v) =>
             {
-                if (v is null || b is not DataGrid self || self.SelectionMode == SelectionMode.None)
+                if (b is not DataGrid self)
                 {
-                    return null;
+                    throw new InvalidOperationException("SelectedItems can only be set on a DataGrid");
+                }
+
+                if (v is null || self.SelectionMode == SelectionMode.None)
+                {
+                    self.SelectedItems.Clear();
+                    return self.SelectedItems;
                 }
 
                 if (v is not IList<object> selectedItems)
@@ -582,11 +588,11 @@ public partial class DataGrid
                 {
                     if (!internalItems.Contains(selectedItem))
                     {
-                        return null;
+                        _ = selectedItems.Remove(selectedItem);
                     }
                 }
 
-                return null;
+                return selectedItems;
             }
         );
 
