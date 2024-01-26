@@ -191,7 +191,7 @@ public partial class DataGrid
 
         if (_pageSizeList.Add(PageSize))
         {
-            PageSizeList = new(_pageSizeList);
+            PageSizeList = new List<int>(_pageSizeList);
             OnPropertyChanged(nameof(PageSizeList));
             OnPropertyChanged(nameof(PageSize));
         }
@@ -464,7 +464,7 @@ public partial class DataGrid
     /// Gets or sets the list of available page sizes for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
-        BindablePropertyExtensions.Create<DataGrid, ObservableCollection<int>>(new(DefaultPageSizeList),
+        BindablePropertyExtensions.Create<DataGrid, IList<int>>(new List<int>(DefaultPageSizeList),
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGrid self)
@@ -554,11 +554,12 @@ public partial class DataGrid
     /// Gets or sets the selected items in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SelectedItemsProperty =
-        BindablePropertyExtensions.Create<DataGrid, ObservableRangeCollection<object>>([], BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, IList<object>>([], BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
-                if (self._collectionView.SelectedItems != n)
+
+                if (self._collectionView != null && self._collectionView.SelectedItems != n)
                 {
                     self._collectionView.SelectedItems = n;
                 }
@@ -572,7 +573,7 @@ public partial class DataGrid
 
                 var internalItems = self.GetInternalItems(v.Count);
 
-                foreach (var selectedItem in v)
+                foreach (var selectedItem in selectedItems)
                 {
                     if (!internalItems.Contains(selectedItem))
                     {
@@ -926,9 +927,9 @@ public partial class DataGrid
     /// <summary>
     /// Gets or sets the list of available page sizes
     /// </summary>
-    public ObservableCollection<int> PageSizeList
+    public IList<int> PageSizeList
     {
-        get => (ObservableCollection<int>)GetValue(PageSizeListProperty);
+        get => (IList<int>)GetValue(PageSizeListProperty);
         set => SetValue(PageSizeListProperty, value);
     }
 
@@ -1027,9 +1028,9 @@ public partial class DataGrid
     /// <summary>
     /// Selected items
     /// </summary>
-    public ObservableCollection<object> SelectedItems
+    public IList<object> SelectedItems
     {
-        get => (ObservableCollection<object>)GetValue(SelectedItemsProperty);
+        get => (IList<object>)GetValue(SelectedItemsProperty);
         set => SetValue(SelectedItemsProperty, value);
     }
 
