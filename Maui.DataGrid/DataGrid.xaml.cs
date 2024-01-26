@@ -1272,7 +1272,10 @@ public partial class DataGrid
 
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        ArgumentNullException.ThrowIfNull(sender);
+        if (sender == null)
+        {
+            return;
+        }
 
         switch (SelectionMode)
         {
