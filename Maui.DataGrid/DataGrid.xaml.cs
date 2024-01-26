@@ -592,7 +592,9 @@ public partial class DataGrid
 
     /// <summary>
     /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
+    /// Default value is true.
     /// </summary>
+    [Obsolete($"SelectionEnabled is obsolete. Please use {nameof(SelectionMode)} instead.")]
     public static readonly BindableProperty SelectionEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true,
             propertyChanged: (b, o, n) =>
@@ -600,7 +602,13 @@ public partial class DataGrid
                 if (o != n && !n)
                 {
                     var self = (DataGrid)b;
+
                     self.SelectedItem = null;
+
+                    if (self.SelectionMode != SelectionMode.None)
+                    {
+                        self.SelectionMode = SelectionMode.None;
+                    }
                 }
             });
 
@@ -1010,6 +1018,16 @@ public partial class DataGrid
     {
         get => (bool)GetValue(PaginationEnabledProperty);
         set => SetValue(PaginationEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// Sets whether selection is enabled for the DataGrid. Default value is true
+    /// </summary>
+    [Obsolete($"SelectionEnabled is obsolete. Please use {nameof(SelectionMode)} instead.")]
+    public bool SelectionEnabled
+    {
+        get => (bool)GetValue(SelectionEnabledProperty);
+        set => SetValue(SelectionEnabledProperty, value);
     }
 
     /// <summary>
