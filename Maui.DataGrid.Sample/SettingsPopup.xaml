@@ -37,6 +37,10 @@
                     <Label Text="Page Size" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
+                    <CheckBox IsChecked="{Binding RefreshingEnabled}" />
+                    <Label Text="Refreshing Enabled?" TextColor="White" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding PaginationEnabled}" />
                     <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>

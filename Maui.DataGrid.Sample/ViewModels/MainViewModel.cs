@@ -14,6 +14,7 @@ public class MainViewModel : ViewModelBase
         WonColumnVisible = true;
         HeaderBordersVisible = true;
         PaginationEnabled = true;
+        RefreshingEnabled = true;
         TeamColumnWidth = 70;
         SelectionMode = SelectionMode.Single;
         PageSize = 6;
@@ -87,6 +88,12 @@ public class MainViewModel : ViewModelBase
     }
 
     public bool PaginationEnabled
+    {
+        get => GetValue<bool>();
+        set => SetValue(value);
+    }
+
+    public bool RefreshingEnabled
     {
         get => GetValue<bool>();
         set => SetValue(value);

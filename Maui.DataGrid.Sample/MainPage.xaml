@@ -16,7 +16,7 @@
         </Grid>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}"
-                     SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}"
+                     SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}" RefreshingEnabled="{Binding RefreshingEnabled}"
                      BorderColor="{StaticResource GridBorderColor}" BorderThickness="{Binding BorderThickness}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
                      BackgroundColor="{StaticResource GridBgColor}" ActiveRowColor="{StaticResource ActiveRowColor}"
