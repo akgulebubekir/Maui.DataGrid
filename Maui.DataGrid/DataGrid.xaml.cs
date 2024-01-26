@@ -604,6 +604,7 @@ public partial class DataGrid
                     var self = (DataGrid)b;
 
                     self.SelectedItem = null;
+                    self.SelectedItems.Clear();
 
                     if (self.SelectionMode != SelectionMode.None)
                     {
