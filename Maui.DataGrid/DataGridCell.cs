@@ -26,8 +26,8 @@ internal sealed class DataGridCell : Grid
     public View Content { get; }
 
     public DataGridColumn Column { get; }
-    public bool IsEditing { get; }
 
+    public bool IsEditing { get; }
 
     internal void UpdateBindings(DataGrid dataGrid, bool bordersVisible = true)
     {
