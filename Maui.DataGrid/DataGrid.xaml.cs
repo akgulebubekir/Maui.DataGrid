@@ -261,16 +261,7 @@ public partial class DataGrid
     /// Gets or sets the color of the active row.
     /// </summary>
     public static readonly BindableProperty ActiveRowColorProperty =
-        BindablePropertyExtensions.Create<DataGrid, Color>(Color.FromRgb(128, 144, 160),
-            coerceValue: (b, v) =>
-            {
-                if (((DataGrid)b).SelectionMode == SelectionMode.None)
-                {
-                    throw new InvalidOperationException($"{nameof(SelectionMode)} for DataGrid cannot be None when attempting to set ActiveRowColor");
-                }
-
-                return v;
-            });
+        BindablePropertyExtensions.Create<DataGrid, Color>(Color.FromRgb(128, 144, 160));
 
     /// <summary>
     /// Gets or sets the background color of the header.
