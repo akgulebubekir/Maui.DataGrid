@@ -14,8 +14,6 @@ internal sealed class DataGridHeaderRow : Grid
                 ];
 
     private Thickness _headerCellPadding = new(0, 0, 4, 0);
-    private Style? _defaultHeaderStyle;
-    private Style? _defaultSortIconStyle;
 
     #endregion Fields
 
@@ -132,9 +130,6 @@ internal sealed class DataGridHeaderRow : Grid
             {
                 column.VisibilityChanged += OnVisibilityChanged;
             }
-
-            _defaultHeaderStyle ??= (Style)DataGrid.Resources["DefaultHeaderStyle"];
-            _defaultSortIconStyle ??= (Style)DataGrid.Resources["DefaultSortIconStyle"];
         }
     }
 
@@ -152,7 +147,7 @@ internal sealed class DataGridHeaderRow : Grid
     {
         Grid cellContent;
 
-        column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? _defaultHeaderStyle;
+        column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderStyle;
 
         if (!DataGrid.IsSortable || !column.SortingEnabled || !column.IsSortable())
         {
@@ -164,7 +159,7 @@ internal sealed class DataGridHeaderRow : Grid
             var sortIconSize = DataGrid.HeaderHeight * 0.3;
             column.SortingIconContainer.HeightRequest = sortIconSize;
             column.SortingIconContainer.WidthRequest = sortIconSize;
-            column.SortingIcon.Style = DataGrid.SortIconStyle ?? _defaultSortIconStyle;
+            column.SortingIcon.Style = DataGrid.SortIconStyle ?? DataGrid.DefaultSortIconStyle;
 
             cellContent = new Grid
             {

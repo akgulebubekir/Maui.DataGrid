@@ -42,6 +42,10 @@ public partial class DataGrid
     public DataGrid()
     {
         InitializeComponent();
+
+        DefaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
+        DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
+
         if (_collectionView != null)
         {
             _collectionView.ItemsSource = InternalItems;
@@ -1184,6 +1188,10 @@ public partial class DataGrid
     }
 
 #pragma warning restore CA2227 // Collection properties should be read only
+
+    internal Style DefaultHeaderStyle { get; }
+
+    internal Style DefaultSortIconStyle { get; }
 
     internal ObservableRangeCollection<object> InternalItems { get; } = [];
 
