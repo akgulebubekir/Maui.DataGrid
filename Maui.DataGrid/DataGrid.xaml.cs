@@ -1270,59 +1270,7 @@ public partial class DataGrid
 
     private void OnRefreshing(object? sender, EventArgs e) => _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
 
-    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (sender == null)
-        {
-            return;
-        }
-
-        switch (SelectionMode)
-        {
-            case SelectionMode.Single:
-                var collectionView = (CollectionView)sender;
-
-                if (e.CurrentSelection.Count > 1)
-                {
-                    collectionView.SelectedItems.Clear();
-                }
-
-                SelectedItem = collectionView.SelectedItem;
-
-                break;
-
-            case SelectionMode.Multiple:
-                var isChanged = false;
-
-                if (e.CurrentSelection.Count == SelectedItems.Count)
-                {
-                    for (var i = 0; i < e.CurrentSelection.Count; i++)
-                    {
-                        if (SelectedItems[i] != e.CurrentSelection[i])
-                        {
-                            isChanged = true;
-                        }
-                    }
-                }
-
-                if (isChanged && SelectedItems is ObservableRangeCollection<object> selectedItems)
-                {
-                    selectedItems.ReplaceRange(e.CurrentSelection);
-                }
-
-                break;
-
-            case SelectionMode.None:
-                if (e.CurrentSelection.Count != 0)
-                {
-                    throw new InvalidOperationException("Item(s) selected when SelectionMode is None");
-                }
-
-                break;
-        }
-
-        _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
-    }
+    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e) => _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
 
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
