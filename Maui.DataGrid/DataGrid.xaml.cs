@@ -549,7 +549,7 @@ public partial class DataGrid
     /// Gets or sets the selected items in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SelectedItemsProperty =
-        BindablePropertyExtensions.Create<DataGrid, IList<object>>(new ObservableRangeCollection<object>(), BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, IList<object>>([], BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
@@ -588,8 +588,7 @@ public partial class DataGrid
                 }
 
                 return selectedItems;
-            },
-            defaultValueCreator: _ => new ObservableRangeCollection<object>()
+            }
         );
 
     /// <summary>
