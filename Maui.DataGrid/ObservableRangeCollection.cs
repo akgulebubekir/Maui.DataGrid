@@ -117,8 +117,10 @@ internal sealed class ObservableRangeCollection<T> : ObservableCollection<T>
             var raiseEvents = false;
             foreach (var item in collection)
             {
-                _ = Items.Remove(item);
-                raiseEvents = true;
+                if (Items.Remove(item))
+                {
+                    raiseEvents = true;
+                }
             }
 
             if (raiseEvents)
