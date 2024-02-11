@@ -1183,6 +1183,11 @@ public partial class DataGrid
                 _paginationStepper.Maximum = value;
                 _paginationStepper.IsEnabled = value > 1;
             }
+
+            if (PageNumber > value)
+            {
+                PageNumber = value;
+            }
         }
     }
 
@@ -1274,43 +1279,6 @@ public partial class DataGrid
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         SortAndPaginate();
-
-        ICollection<object> internalItems;
-
-        switch (SelectionMode)
-        {
-            case SelectionMode.Single:
-                if (SelectedItem == null)
-                {
-                    break;
-                }
-
-                internalItems = GetInternalItems(SelectedItems.Count);
-
-                if (!internalItems.Contains(SelectedItem))
-                {
-                    SelectedItem = null;
-                }
-
-                break;
-            case SelectionMode.Multiple:
-                if (SelectedItems == null)
-                {
-                    break;
-                }
-
-                internalItems = GetInternalItems(SelectedItems.Count);
-
-                foreach (var selectedItem in SelectedItems)
-                {
-                    if (!internalItems.Contains(selectedItem))
-                    {
-                        SelectedItems.Clear();
-                    }
-                }
-
-                break;
-        }
     }
 
     private ICollection<object> GetInternalItems(int lookupCount = 1)
