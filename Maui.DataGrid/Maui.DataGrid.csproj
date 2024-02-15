@@ -37,6 +37,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <AssemblyVersion>4.0.0.1</AssemblyVersion>
     <Version>4.0.1</Version>
+    <Configurations>Debug;Release;Test</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md">

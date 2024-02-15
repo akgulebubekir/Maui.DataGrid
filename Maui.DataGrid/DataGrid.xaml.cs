@@ -1,3 +1,9 @@
+
+#if TEST
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Maui.DataGrid.Sample")]
+#endif
+
 namespace Maui.DataGrid;
 
 using System.Collections;

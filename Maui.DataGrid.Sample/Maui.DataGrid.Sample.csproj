@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
@@ -32,6 +32,7 @@
 		<Title>Maui DataGrid Example</Title>
 		<AssemblyName></AssemblyName>
 		<Authors>Ebubekir Akgul</Authors>
+		<Configurations>Debug;Release;Test</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -87,6 +88,7 @@
     <PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+    <PackageReference Include="Shiny.Xunit.Runners.Maui" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
