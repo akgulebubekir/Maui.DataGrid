@@ -445,6 +445,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageSizeProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(100, BindingMode.TwoWay,
+            (_, v) => v > 0,
             propertyChanged: (b, o, n) =>
             {
                 if (o != n && b is DataGrid self)
@@ -721,12 +722,12 @@ public partial class DataGrid
     /// Gets or sets the index of the sorted column in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SortedColumnIndexProperty =
-        BindablePropertyExtensions.Create<DataGrid, SortData>(null, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, SortData?>(null, BindingMode.TwoWay,
             (b, v) =>
             {
                 var self = (DataGrid)b;
 
-                if (!self.IsLoaded)
+                if (!self.IsLoaded && self.Columns == null)
                 {
                     return true;
                 }
@@ -753,7 +754,11 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, int>(1, BindingMode.TwoWay,
             (b, v) =>
             {
-                if (b is DataGrid self)
+                if (v < 0)
+                {
+                    return false;
+                }
+                else if (b is DataGrid self)
                 {
                     return v == 1 || v <= self.PageCount;
                 }
