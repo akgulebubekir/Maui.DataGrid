@@ -23,7 +23,8 @@
                      FooterBackground="{StaticResource GridFooterBgColor}"
                      PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}"
                      PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
-                     RowHeight="70" HeaderHeight="50" x:Name="_dataGrid1">
+                     RowHeight="70" HeaderHeight="50" x:Name="_dataGrid1"
+                     RowTappedCommand="{Binding Commands[Tapped]}">
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
                     <dg:DataGridColumn.CellTemplate>
