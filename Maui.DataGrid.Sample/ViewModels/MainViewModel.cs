@@ -140,7 +140,8 @@ public class MainViewModel : ViewModelBase
         IsRefreshing = false;
     }
 
-    private void Tapped(object item)
+    private void CmdTapped(object item)
+
     {
         if (item is Team team)
         {
