@@ -291,10 +291,10 @@ public partial class DataGrid
             });
     
     /// <summary>
-    /// Gets or sets the Row Tapped Command.
+    /// Gets or sets the Row Tapped Command.'0
     /// </summary>
     public static readonly BindableProperty RowTappedCommandProperty =
-        BindableProperty.Create(nameof(RowTappedCommand), typeof(ICommand), typeof(DataGrid), null);
+        BindablePropertyExtensions.Create<DataGrid, ICommand>();
 
     /// <summary>
     /// Gets or sets the background color of the footer.
