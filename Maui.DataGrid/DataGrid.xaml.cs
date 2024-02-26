@@ -289,6 +289,12 @@ public partial class DataGrid
                     }
                 }
             });
+    
+    /// <summary>
+    /// Gets or sets the Row Tapped Command.
+    /// </summary>
+    public static readonly BindableProperty RowTappedCommandProperty =
+        BindablePropertyExtensions.Create<DataGrid, ICommand>();
 
     /// <summary>
     /// Gets or sets the background color of the footer.
@@ -900,6 +906,15 @@ public partial class DataGrid
     {
         get => (IColorProvider)GetValue(RowsTextColorPaletteProperty);
         set => SetValue(RowsTextColorPaletteProperty, value);
+    }
+
+    /// <summary>
+    /// Executes the command when a row is tapped. Works with selection disabled.
+    /// </summary>
+    public ICommand RowTappedCommand
+    {
+        get => (ICommand)GetValue(RowTappedCommandProperty);
+        set => SetValue(RowTappedCommandProperty, value);
     }
 
     /// <summary>
