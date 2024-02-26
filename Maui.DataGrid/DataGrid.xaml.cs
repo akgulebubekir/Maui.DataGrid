@@ -291,7 +291,7 @@ public partial class DataGrid
             });
     
     /// <summary>
-    /// Gets or sets the Row Tapped Command.'0
+    /// Gets or sets the Row Tapped Command.
     /// </summary>
     public static readonly BindableProperty RowTappedCommandProperty =
         BindablePropertyExtensions.Create<DataGrid, ICommand>();
