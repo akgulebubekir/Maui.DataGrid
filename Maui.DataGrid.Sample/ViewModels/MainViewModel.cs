@@ -24,7 +24,8 @@ public class MainViewModel : ViewModelBase
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
         Commands.Add("Refresh", new Command(CmdRefresh));
-        Commands.Add("Tapped", new Command(Tapped));
+        Commands.Add("Tapped", new Command(CmdTapped));
+
 
         var picker = new Picker();
     }
