@@ -26,7 +26,6 @@ public class MainViewModel : ViewModelBase
         Commands.Add("Refresh", new Command(CmdRefresh));
         Commands.Add("Tapped", new Command(CmdTapped));
 
-
         var picker = new Picker();
     }
 

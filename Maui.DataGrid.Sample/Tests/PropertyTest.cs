@@ -50,5 +50,4 @@ public class PropertyTest
         var anotherDataGrid = new DataGrid();
         anotherDataGrid.CheckStyleSettingWorks(property, testValue);
     }
-
 }

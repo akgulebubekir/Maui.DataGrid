@@ -46,7 +46,6 @@ public class ColumnsTest
         Assert.Equal("Won", dataGrid.Columns[1].Title);
     }
 
-
     [Fact]
     public async void SortOrderBindingOnlyWorksWhenLoaded()
     {

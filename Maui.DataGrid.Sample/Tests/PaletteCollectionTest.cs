@@ -1,4 +1,5 @@
 namespace Maui.DataGrid.Sample.Tests;
+
 using Xunit;
 
 public class PaletteCollectionTest
@@ -10,7 +11,6 @@ public class PaletteCollectionTest
 
         Assert.Empty(palette);
         Assert.Equal(palette.GetColor(0, "item"), Colors.White);
-
     }
 
     [Fact]

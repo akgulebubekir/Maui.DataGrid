@@ -1,4 +1,5 @@
 namespace Maui.DataGrid.Sample.Tests;
+
 using System.Collections.Generic;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Tests.TestUtils;
@@ -20,7 +21,6 @@ public class PaginationTest
 
         countViewModel.Item = 1;
         Assert.Equal(2, dataGrid.PageCount);
-
     }
 
     [Fact]
@@ -30,13 +30,11 @@ public class PaginationTest
 
         Assert.Equal(1, dataGrid.PageNumber);
 
-
         dataGrid.PageNumber = 2;
         Assert.Equal(2, dataGrid.PageNumber);
 
         dataGrid.PageNumber = 3;
         Assert.Equal(2, dataGrid.PageNumber);
-
     }
 
     [Fact]
@@ -86,7 +84,6 @@ public class PaginationTest
         Assert.Equal(3, dataGrid.PageNumber);
         dataGrid.PageSize = 5;
         Assert.Equal(1, dataGrid.PageNumber);
-
     }
 
     [Fact]
@@ -97,7 +94,5 @@ public class PaginationTest
         Assert.DoesNotContain(7, dataGrid.PageSizeList);
         dataGrid.PageSize = 7;
         Assert.Contains(7, dataGrid.PageSizeList);
-
     }
 }
-

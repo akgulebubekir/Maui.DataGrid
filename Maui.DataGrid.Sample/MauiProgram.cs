@@ -22,7 +22,6 @@ public static class MauiProgram
 .UseVisualRunner();
 #else
 
-
         _ = builder
             .UseMauiApp<App>()
 #if DEBUG
@@ -41,7 +40,6 @@ public static class MauiProgram
                 _ = fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 #endif
-
 
         return builder.Build();
     }

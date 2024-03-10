@@ -1,4 +1,5 @@
 namespace Maui.DataGrid.Sample.Tests;
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Maui.DataGrid.Sample.Models;
@@ -33,7 +34,6 @@ public class ItemsSourceTest
         var datagrid = new DataGrid { ItemsSource = _teams };
         datagrid.CheckPropertyBindingWorks(DataGrid.SelectedItemProperty, _teams.ElementAt(2), _teams.ElementAt(3));
     }
-
 
     [Fact]
     public async void SelectNonExistingItemNotPossible()
