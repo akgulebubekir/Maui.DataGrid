@@ -32,7 +32,7 @@ public class ItemsSourceTest
     public void BindsSelectedItem()
     {
         var datagrid = new DataGrid { ItemsSource = _teams };
-        datagrid.CheckPropertyBindingWorks(DataGrid.SelectedItemProperty, _teams.ElementAt(2), _teams.ElementAt(3));
+        datagrid.CheckPropertyBindingWorks(DataGrid.SelectedItemProperty, _teams[2], _teams[3]);
     }
 
     [Fact]
@@ -43,8 +43,8 @@ public class ItemsSourceTest
 
         datagrid.SetBinding(DataGrid.SelectedItemProperty, new Binding("Item", source: viewModel));
 
-        viewModel.Item = _teams.First();
-        Assert.Equal(_teams.First(), await datagrid.GetValueSafe(DataGrid.SelectedItemProperty));
+        viewModel.Item = _teams[0];
+        Assert.Equal(_teams[0], await datagrid.GetValueSafe(DataGrid.SelectedItemProperty));
 
         viewModel.Item = _dummyTeam;
         Assert.Null(await datagrid.GetValueSafe(DataGrid.SelectedItemProperty));
@@ -61,7 +61,7 @@ public class ItemsSourceTest
         var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
         Assert.NotNull(itemsSource);
         Assert.Equal(_teams.Count - 1, itemsSource!.Count);
-        Assert.DoesNotContain(_teams.ElementAt(2), itemsSource);
+        Assert.DoesNotContain(_teams[2], itemsSource);
     }
 
     [Fact]
