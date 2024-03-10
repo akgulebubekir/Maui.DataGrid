@@ -31,8 +31,10 @@ public class Streak : IComparable
                 return resultComparison;
             }
 
+            var winLossIndicator = Result == Result.Won ? 1 : -1;
+
             // If Result is the same, then compare the NumStreak
-            return NumStreak.CompareTo(s.NumStreak);
+            return winLossIndicator * NumStreak.CompareTo(s.NumStreak);
         }
 
         throw new ArgumentException("Object is not a Streak");
