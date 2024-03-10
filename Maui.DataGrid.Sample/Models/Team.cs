@@ -22,14 +22,20 @@ public class Streak : IComparable
 
     public int CompareTo(object? obj)
     {
-        var score = Result == Result.Won ? NumStreak : -NumStreak;
         if (obj is Streak s)
         {
-            var otherScore = s.Result == Result.Won ? s.NumStreak : -s.NumStreak;
-            return score - otherScore;
+            // First compare the Result
+            var resultComparison = Result.CompareTo(s.Result);
+            if (resultComparison != 0)
+            {
+                return resultComparison;
+            }
+
+            // If Result is the same, then compare the NumStreak
+            return NumStreak.CompareTo(s.NumStreak);
         }
 
-        return score;
+        throw new ArgumentException("Object is not a Streak");
     }
 
     /// <inheritdoc/>
