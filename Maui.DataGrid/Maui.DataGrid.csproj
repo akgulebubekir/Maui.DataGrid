@@ -38,6 +38,12 @@
     <AssemblyVersion>4.0.0.1</AssemblyVersion>
     <Version>4.0.1</Version>
     <Configurations>Debug;Release;Test</Configurations>
+
+    <!-- Generate the lock file -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+
+    <!-- Restore the exact packages as listed in the lock file -->
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md">
