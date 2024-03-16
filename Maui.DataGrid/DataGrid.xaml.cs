@@ -1,4 +1,3 @@
-
 #if TEST
 using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Maui.DataGrid.Sample")]
@@ -289,7 +288,7 @@ public partial class DataGrid
                     }
                 }
             });
-    
+
     /// <summary>
     /// Gets or sets the Row Tapped Command.
     /// </summary>
@@ -555,8 +554,7 @@ public partial class DataGrid
                 }
 
                 return null;
-            }
-        );
+            });
 
     /// <summary>
     /// Gets or sets the selected items in the DataGrid.
@@ -601,8 +599,7 @@ public partial class DataGrid
                 }
 
                 return selectedItems;
-            }
-        );
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
