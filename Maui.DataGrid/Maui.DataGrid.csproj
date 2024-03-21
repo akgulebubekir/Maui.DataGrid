@@ -38,6 +38,7 @@
     <AssemblyVersion>4.0.0.1</AssemblyVersion>
     <Version>4.0.1</Version>
     <Configurations>Debug;Release;Test</Configurations>
+    <MauiVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.6</MauiVersion>
 
     <!-- Generate the lock file -->
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
