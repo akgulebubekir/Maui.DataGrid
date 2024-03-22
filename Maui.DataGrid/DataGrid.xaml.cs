@@ -161,12 +161,12 @@ public partial class DataGrid
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
-                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
                 _ = columnToSort.SortingIcon.RotateTo(0);
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
                 break;
             case SortingOrder.Descendant:
-                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
                 _ = columnToSort.SortingIcon.RotateTo(180);
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
                 break;
             case SortingOrder.None:
                 return unsortedItems;
