@@ -43,7 +43,7 @@ internal sealed class DataGridHeaderRow : Grid
             return;
         }
 
-        Children.Clear(); // TODO: Would be nice to remove this one day.
+        Children.Clear(); // TODO: Use ObservableRangeCollection instead?
 
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
         {
