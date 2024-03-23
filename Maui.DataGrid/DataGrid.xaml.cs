@@ -511,10 +511,16 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, int>(40);
 
     /// <summary>
-    /// Gets or sets a value indicating whether the DataGrid is sortable.
+    /// Gets or sets a value indicating whether the DataGrid allows sorting.
     /// </summary>
-    public static readonly BindableProperty IsSortableProperty =
+    public static readonly BindableProperty SortingEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(true);
+
+    /// <summary>
+    /// Obsolete. Use <see cref="SortingEnabledProperty"/> instead.
+    /// </summary>
+    [Obsolete("IsSortableProperty is obsolete. Please use SortingEnabledProperty instead.")]
+    public static readonly BindableProperty IsSortableProperty = SortingEnabledProperty;
 
     /// <summary>
     /// Gets or sets the font size for the DataGrid.
@@ -1017,14 +1023,24 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets if the grid is sortable. Default value is true.
+    /// Obsolete. Use <see cref="SortingEnabled"/> instead.
+    /// </summary>
+    [Obsolete("IsSortable is obsolete. Please use SortingEnabled instead.")]
+    public bool IsSortable
+    {
+        get => (bool)GetValue(SortingEnabledProperty);
+        set => SetValue(SortingEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets if the grid allows sorting. Default value is true.
     /// Sortable columns must implement <see cref="IComparable"/>
     /// If you want to enable or disable sorting for specific column please use <see cref="DataGridColumn.SortingEnabled"/> property
     /// </summary>
-    public bool IsSortable
+    public bool SortingEnabled
     {
-        get => (bool)GetValue(IsSortableProperty);
-        set => SetValue(IsSortableProperty, value);
+        get => (bool)GetValue(SortingEnabledProperty);
+        set => SetValue(SortingEnabledProperty, value);
     }
 
     /// <summary>

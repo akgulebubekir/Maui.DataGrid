@@ -23,7 +23,7 @@ public class PropertyTest
         TestProperty(DataGrid.HeaderBordersVisibleProperty, true, false);
         TestProperty(DataGrid.HeaderHeightProperty, 42, 44);
         TestProperty(DataGrid.IsRefreshingProperty, true, false);
-        TestProperty(DataGrid.IsSortableProperty, true, false);
+        TestProperty(DataGrid.SortingEnabledProperty, true, false);
         TestProperty(DataGrid.ItemSizingStrategyProperty, ItemSizingStrategy.MeasureAllItems, ItemSizingStrategy.MeasureFirstItem);
         TestProperty(DataGrid.ItemsSourceProperty, new[] { "a", "b", "c" }, new[] { "d", "e" });
         TestProperty(DataGrid.NoDataViewProperty, new ContentView { Background = Colors.Aqua }, new ContentView { Background = Colors.Lime });
