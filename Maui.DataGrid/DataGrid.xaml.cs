@@ -97,7 +97,7 @@ public partial class DataGrid
             return false;
         }
 
-        if (!IsSortable)
+        if (!SortingEnabled)
         {
             Debug.WriteLine("DataGrid is not sortable");
             return false;

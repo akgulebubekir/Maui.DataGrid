@@ -149,7 +149,7 @@ internal sealed class DataGridHeaderRow : Grid
 
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderStyle;
 
-        if (!DataGrid.IsSortable || !column.SortingEnabled || !column.IsSortable())
+        if (!DataGrid.SortingEnabled || !column.SortingEnabled || !column.IsSortable())
         {
             cellContent = [column.HeaderLabel];
             cellContent.Padding = _headerCellPadding;
