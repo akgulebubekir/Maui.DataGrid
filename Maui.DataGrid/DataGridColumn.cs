@@ -109,7 +109,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         BindablePropertyExtensions.Create<DataGridColumn, bool>(true,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGridColumn column)
+                if (b is DataGridColumn column)
                 {
                     try
                     {
@@ -171,7 +171,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         BindablePropertyExtensions.Create<DataGridColumn, Style>(
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGridColumn self && self.HeaderLabel != null)
+                if (b is DataGridColumn self && self.HeaderLabel != null)
                 {
                     self.HeaderLabel.Style = n;
                 }

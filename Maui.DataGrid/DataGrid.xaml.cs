@@ -279,8 +279,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, Color>(Colors.White,
             propertyChanged: (b, o, n) =>
             {
-                var self = (DataGrid)b;
-                if (o != n && self._headerRow != null && !self.HeaderBordersVisible)
+                if (b is DataGrid self && self._headerRow != null && !self.HeaderBordersVisible)
                 {
                     foreach (var cell in self._headerRow.Children.OfType<DataGridCell>())
                     {
@@ -365,7 +364,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>([],
             propertyChanged: (b, o, n) =>
             {
-                if (n == o || b is not DataGrid self)
+                if (b is not DataGrid self)
                 {
                     return;
                 }
@@ -401,7 +400,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, IEnumerable>(
             propertyChanged: (b, o, n) =>
             {
-                if (n == o || b is not DataGrid self)
+                if (b is not DataGrid self)
                 {
                     return;
                 }
@@ -438,9 +437,8 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, bool>(false,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n)
+                if (b is DataGrid self)
                 {
-                    var self = (DataGrid)b;
                     self.SortAndPaginate();
                 }
             });
@@ -459,7 +457,7 @@ public partial class DataGrid
             (_, v) => v > 0,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (b is DataGrid self)
                 {
                     self.PageNumber = 1;
                     self.SortAndPaginate();
@@ -474,7 +472,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, IList<int>>(new List<int>(DefaultPageSizeList),
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (b is DataGrid self)
                 {
                     self.UpdatePageSizeList();
                 }
@@ -616,10 +614,8 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, bool>(true,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && !n)
+                if (!n && b is DataGrid self)
                 {
-                    var self = (DataGrid)b;
-
                     self.SelectedItem = null;
                     self.SelectedItems.Clear();
 
@@ -666,9 +662,8 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, bool>(true,
             propertyChanged: (b, o, n) =>
             {
-                if (o != n)
+                if (b is DataGrid self)
                 {
-                    var self = (DataGrid)b;
                     _ = self.PullToRefreshCommand?.CanExecute(() => n);
                 }
             });
@@ -751,7 +746,7 @@ public partial class DataGrid
             },
             (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (b is DataGrid self)
                 {
                     if (n != null && Math.Abs(n.Index) < self.Columns.Count)
                     {
@@ -782,7 +777,7 @@ public partial class DataGrid
             },
             (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (b is DataGrid self)
                 {
                     self.SortAndPaginate();
                 }
@@ -807,7 +802,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, Style>(
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (b is DataGrid self)
                 {
                     foreach (var column in self.Columns)
                     {
@@ -823,7 +818,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, View>(
             propertyChanged: (b, o, n) =>
             {
-                if (o != n && b is DataGrid self)
+                if (b is DataGrid self)
                 {
                     self._collectionView.EmptyView = n;
                 }
