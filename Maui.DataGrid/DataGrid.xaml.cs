@@ -334,8 +334,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White },
             propertyChanged: (b, _, _) =>
             {
-                var self = (DataGrid)b;
-                if (self.Columns != null && self.ItemsSource != null)
+                if (b is DataGrid self)
                 {
                     self.Reload();
                 }
@@ -348,8 +347,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black },
             propertyChanged: (b, _, _) =>
             {
-                var self = (DataGrid)b;
-                if (self.Columns != null && self.ItemsSource != null)
+                if (b is DataGrid self)
                 {
                     self.Reload();
                 }
@@ -537,8 +535,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, object>(null, BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
-                var self = (DataGrid)b;
-                if (self._collectionView.SelectedItem != n)
+                if (b is DataGrid self && self._collectionView.SelectedItem != n)
                 {
                     self._collectionView.SelectedItem = n;
                 }
