@@ -8,7 +8,6 @@ using Microsoft.Maui.Controls;
 internal sealed class DataGridCell : Grid
 {
     internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing)
-
     {
         var colorfulCellContent = new ContentView
         {
