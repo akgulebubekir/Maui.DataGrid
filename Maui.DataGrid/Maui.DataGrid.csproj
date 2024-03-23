@@ -3,26 +3,10 @@
 
   <PropertyGroup>
     <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
-    <InternalsVisibleTo Condition="'$(Configuration)' == 'Test'">Maui.DataGrid.Sample</InternalsVisibleTo>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Features>strict</Features>
-    <Deterministic>true</Deterministic>
-	  <WarningLevel>9999</WarningLevel>
-    <AnalysisLevel>latest-all</AnalysisLevel>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <EnablePackageValidation>true</EnablePackageValidation>
-    <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
-    <PackageValidationBaselineVersion>4.0.1</PackageValidationBaselineVersion>
-    <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
-    <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
+    <InternalsVisibleTo Condition="'$(Configuration)' == 'Test'">Maui.DataGrid.Sample</InternalsVisibleTo>
     <Title>Maui.DataGrid</Title>
     <Authors>Ebubekir Akgul</Authors>
     <Description>Datagrid component for Maui</Description>
@@ -47,6 +31,27 @@
     <!-- Restore the exact packages as listed in the lock file -->
     <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
+
+  <!-- Static Analysis Settings -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Features>strict</Features>
+    <Deterministic>true</Deterministic>
+	  <WarningLevel>9999</WarningLevel>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
+    <PackageValidationBaselineVersion>4.0.1</PackageValidationBaselineVersion>
+    <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
+    <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\README.md">
       <Pack>True</Pack>
