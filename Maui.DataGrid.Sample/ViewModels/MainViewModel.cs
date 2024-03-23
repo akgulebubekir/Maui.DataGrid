@@ -144,7 +144,7 @@ public class MainViewModel : ViewModelBase
     {
         if (item is Team team)
         {
-            Debug.WriteLine($@"Item Tapped: {team.Name}");
+            Debug.WriteLine($"Item Tapped: {team.Name}");
         }
     }
 }
