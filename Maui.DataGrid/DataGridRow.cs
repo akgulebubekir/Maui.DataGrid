@@ -40,7 +40,7 @@ internal sealed class DataGridRow : Grid
         BindablePropertyExtensions.Create<DataGridRow, object>(null, BindingMode.OneWay,
             propertyChanged: (b, o, n) =>
             {
-                if (o == n || b is not DataGridRow row)
+                if (b is not DataGridRow row)
                 {
                     return;
                 }

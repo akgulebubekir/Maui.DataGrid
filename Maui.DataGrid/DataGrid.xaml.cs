@@ -678,7 +678,7 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, ICommand>(
             propertyChanged: (b, o, n) =>
             {
-                if (o == n || b is not DataGrid self)
+                if (b is not DataGrid self)
                 {
                     return;
                 }
