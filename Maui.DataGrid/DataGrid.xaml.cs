@@ -757,7 +757,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageNumberProperty =
         BindablePropertyExtensions.Create<DataGrid, int>(1, BindingMode.TwoWay,
-            (b, v) =>
+            validateValue: (b, v) =>
             {
                 if (v < 0)
                 {
@@ -770,7 +770,7 @@ public partial class DataGrid
 
                 return false;
             },
-            (b, o, n) =>
+            propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
                 {
