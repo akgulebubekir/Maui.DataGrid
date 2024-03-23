@@ -316,9 +316,12 @@ internal sealed class DataGridRow : Grid
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
         _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
 
-        foreach (var cell in Children.OfType<DataGridCell>())
+        foreach (var child in Children)
         {
-            cell.UpdateCellColors(_bgColor, _textColor);
+            if (child is DataGridCell cell)
+            {
+                cell.UpdateCellColors(_bgColor, _textColor);
+            }
         }
     }
 

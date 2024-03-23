@@ -281,9 +281,12 @@ public partial class DataGrid
             {
                 if (b is DataGrid self && self._headerRow != null && !self.HeaderBordersVisible)
                 {
-                    foreach (var cell in self._headerRow.Children.OfType<DataGridCell>())
+                    foreach (var child in self._headerRow.Children)
                     {
-                        cell.UpdateCellColors(n);
+                        if (child is DataGridCell cell)
+                        {
+                            cell.UpdateCellColors(n);
+                        }
                     }
                 }
             });
