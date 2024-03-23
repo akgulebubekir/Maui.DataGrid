@@ -728,7 +728,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty SortedColumnIndexProperty =
         BindablePropertyExtensions.Create<DataGrid, SortData?>(null, BindingMode.TwoWay,
-            (b, v) =>
+            validateValue: (b, v) =>
             {
                 var self = (DataGrid)b;
 
@@ -739,7 +739,7 @@ public partial class DataGrid
 
                 return self.CanSort(v);
             },
-            (b, o, n) =>
+            propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
                 {
