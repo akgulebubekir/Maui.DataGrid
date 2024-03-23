@@ -5,8 +5,6 @@ using Microsoft.Maui.Controls;
 
 internal sealed class DataGridRow : Grid
 {
-    private delegate bool ParserDelegate(string value);
-
     #region Fields
 
     private Color? _bgColor;
@@ -257,7 +255,7 @@ internal sealed class DataGridRow : Grid
         return checkBox;
     }
 
-    private Entry GenerateNumericEditCell(DataGridColumn col, ParserDelegate parserDelegate)
+    private Entry GenerateNumericEditCell(DataGridColumn col, Func<string, bool> numericParser)
     {
         var entry = new Entry
         {
@@ -271,7 +269,7 @@ internal sealed class DataGridRow : Grid
 
         entry.TextChanged += (s, e) =>
         {
-            if (!string.IsNullOrEmpty(e.NewTextValue) && !parserDelegate(e.NewTextValue))
+            if (!string.IsNullOrEmpty(e.NewTextValue) && !numericParser(e.NewTextValue))
             {
                 ((Entry)s!).Text = e.OldTextValue;
             }
