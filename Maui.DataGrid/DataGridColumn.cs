@@ -228,12 +228,14 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Formatted title for column
     /// <example>
     /// <code>
-    ///  &lt;DataGridColumn.FormattedTitle &gt;
-    ///     &lt;FormattedString &gt;
-    ///       &lt;Span Text = "Home" TextColor="Black" FontSize="13" FontAttributes="Bold" / &gt;
-    ///       &lt;Span Text = " (won-lost)" TextColor="#333333" FontSize="11" / &gt;
-    ///     &lt;/FormattedString &gt;
-    ///  &lt;/DataGridColumn.FormattedTitle &gt;
+    /// <![CDATA[
+    /// <DataGridColumn.FormattedTitle>
+    ///     <FormattedString>
+    ///       <Span Text="Home" TextColor="Black" FontSize="13" FontAttributes="Bold" />
+    ///       <Span Text=" (won-lost)" TextColor="#333333" FontSize="11" />
+    ///     </FormattedString>
+    /// </DataGridColumn.FormattedTitle>
+    /// ]]>
     /// </code>
     /// </example>
     /// </summary>
