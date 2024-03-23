@@ -50,13 +50,16 @@ internal sealed class DataGridCell : Grid
 
     internal void UpdateCellColors(Color? bgColor, Color? textColor = null)
     {
-        foreach (var cellContent in Children.OfType<ContentView>())
+        foreach (var child in Children)
         {
-            cellContent.BackgroundColor = bgColor;
-
-            if (cellContent.Content is Label label && textColor != null)
+            if (child is ContentView cellContent)
             {
-                label.TextColor = textColor;
+                cellContent.BackgroundColor = bgColor;
+
+                if (cellContent.Content is Label label && textColor != null)
+                {
+                    label.TextColor = textColor;
+                }
             }
         }
     }
