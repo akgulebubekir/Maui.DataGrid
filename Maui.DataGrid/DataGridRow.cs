@@ -65,7 +65,9 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        for (var i = 0; i < DataGrid.Columns.Count; i++)
+        var columnCount = DataGrid.Columns.Count;
+
+        for (var i = 0; i < columnCount; i++)
         {
             var col = DataGrid.Columns[i];
 
