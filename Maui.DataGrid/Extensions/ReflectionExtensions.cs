@@ -105,11 +105,7 @@ internal static class ReflectionExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static PropertyDescriptor? GetPropertyDescriptor(Type type, string propertyName)
     {
-        if (!PropertyTypeCache.TryGetValue(type, out var properties))
-        {
-            properties = TypeDescriptor.GetProperties(type);
-            PropertyTypeCache[type] = properties;
-        }
+        var properties = PropertyTypeCache.GetOrAdd(type, TypeDescriptor.GetProperties);
 
         return properties.Find(propertyName, false);
     }
