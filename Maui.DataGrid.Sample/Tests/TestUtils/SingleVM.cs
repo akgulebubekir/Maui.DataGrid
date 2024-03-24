@@ -5,8 +5,9 @@ internal sealed class SingleVM<T> : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private T _item;
-    public T Item
+    private T? _item;
+
+    public T? Item
     {
         get => _item;
         set
