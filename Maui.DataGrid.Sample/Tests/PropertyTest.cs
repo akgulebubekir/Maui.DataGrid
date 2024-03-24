@@ -8,6 +8,8 @@ public class PropertyTest
 {
     private static readonly PaletteCollection Palette1 = [Colors.Orange, Colors.Red];
     private static readonly PaletteCollection Palette2 = [Colors.Lime, Colors.Green];
+    private static readonly string[] TestStringArray = ["a", "b", "c"];
+    private static readonly string[] UpdatedStringArray = ["d", "e"];
 
     [Fact]
     public void TestPropertiesSetsProperly()
@@ -25,7 +27,7 @@ public class PropertyTest
         TestProperty(DataGrid.IsRefreshingProperty, true, false);
         TestProperty(DataGrid.SortingEnabledProperty, true, false);
         TestProperty(DataGrid.ItemSizingStrategyProperty, ItemSizingStrategy.MeasureAllItems, ItemSizingStrategy.MeasureFirstItem);
-        TestProperty(DataGrid.ItemsSourceProperty, new[] { "a", "b", "c" }, new[] { "d", "e" });
+        TestProperty(DataGrid.ItemsSourceProperty, TestStringArray, UpdatedStringArray);
         TestProperty(DataGrid.NoDataViewProperty, new ContentView { Background = Colors.Aqua }, new ContentView { Background = Colors.Lime });
         TestProperty(DataGrid.PageSizeVisibleProperty, true, false);
         TestProperty(DataGrid.PaginationEnabledProperty, true, false);
