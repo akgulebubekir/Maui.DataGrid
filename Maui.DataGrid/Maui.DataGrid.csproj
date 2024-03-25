@@ -2,7 +2,7 @@
   <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -23,7 +23,7 @@
     <AssemblyVersion>4.0.0.1</AssemblyVersion>
     <Version>4.0.1</Version>
     <Configurations>Debug;Release;Test</Configurations>
-    <MauiVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.6</MauiVersion>
+    <MauiVersion>8.0.6</MauiVersion>
 
     <!-- Generate the lock file -->
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -64,7 +64,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
   </ItemGroup>
