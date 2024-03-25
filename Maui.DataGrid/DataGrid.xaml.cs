@@ -50,6 +50,11 @@ public partial class DataGrid
         {
             _collectionView.ItemsSource = InternalItems;
         }
+
+        this.Loaded += (sender, e) =>
+        {
+            Reload();
+        };
     }
 
     #endregion ctor
