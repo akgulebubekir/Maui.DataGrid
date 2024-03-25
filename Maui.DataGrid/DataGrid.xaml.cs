@@ -316,8 +316,6 @@ public partial class DataGrid
                 {
                     self._headerRow.InitializeHeaderRow();
                 }
-
-                self.Initialize();
             });
 
     /// <summary>
@@ -336,27 +334,13 @@ public partial class DataGrid
     /// Gets or sets the background color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
-        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White },
-            propertyChanged: (b, _, _) =>
-            {
-                if (b is DataGrid self)
-                {
-                    self.Initialize();
-                }
-            });
+        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White });
 
     /// <summary>
     /// Gets or sets the text color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsTextColorPaletteProperty =
-        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black },
-            propertyChanged: (b, _, _) =>
-            {
-                if (b is DataGrid self)
-                {
-                    self.Initialize();
-                }
-            });
+        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black });
 
     /// <summary>
     /// Gets or sets the Columns for the DataGrid.
