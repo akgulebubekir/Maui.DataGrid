@@ -50,11 +50,6 @@ public partial class DataGrid
         {
             _collectionView.ItemsSource = InternalItems;
         }
-
-        Loaded += (sender, e) =>
-        {
-            Initialize();
-        };
     }
 
     #endregion ctor
@@ -1228,6 +1223,16 @@ public partial class DataGrid
 
         if (Parent is null)
         {
+            Loaded -= OnLoaded;
+        }
+        else
+        {
+            Loaded -= OnLoaded;
+            Loaded += OnLoaded;
+        }
+
+        if (Parent is null)
+        {
             _collectionView.SelectionChanged -= OnSelectionChanged;
         }
         else
@@ -1267,6 +1272,8 @@ public partial class DataGrid
             Columns.CollectionChanged += OnColumnsChanged;
         }
     }
+
+    private void OnLoaded(object? sender, EventArgs e) => Initialize();
 
     /// <inheritdoc/>
     protected override void OnBindingContextChanged()
