@@ -113,7 +113,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 {
                     try
                     {
-                        column.DataGrid?.Reload();
+                        column.DataGrid?.Initialize();
                     }
                     finally
                     {

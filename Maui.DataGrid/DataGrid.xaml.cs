@@ -53,7 +53,7 @@ public partial class DataGrid
 
         Loaded += (sender, e) =>
         {
-            Reload();
+            Initialize();
         };
     }
 
@@ -317,7 +317,7 @@ public partial class DataGrid
                     self._headerRow.InitializeHeaderRow();
                 }
 
-                self.Reload();
+                self.Initialize();
             });
 
     /// <summary>
@@ -341,7 +341,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.Reload();
+                    self.Initialize();
                 }
             });
 
@@ -354,7 +354,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.Reload();
+                    self.Initialize();
                 }
             });
 
@@ -390,7 +390,7 @@ public partial class DataGrid
                     }
                 }
 
-                self.Reload();
+                self.Initialize();
             },
             defaultValueCreator: _ => []); // Note: defaultValueCreator needed to prevent errors during navigation
 
@@ -1301,10 +1301,10 @@ public partial class DataGrid
             SortedColumnIndex = newSortedColumnIndex;
         }
 
-        Reload();
+        Initialize();
     }
 
-    private void OnColumnSizeChanged(object? sender, EventArgs e) => Reload();
+    private void OnColumnSizeChanged(object? sender, EventArgs e) => Initialize();
 
     private void OnRefreshing(object? sender, EventArgs e) => _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
 
@@ -1347,7 +1347,7 @@ public partial class DataGrid
         return SortedColumnIndex;
     }
 
-    internal void Reload()
+    internal void Initialize()
     {
         if (!IsLoaded)
         {
