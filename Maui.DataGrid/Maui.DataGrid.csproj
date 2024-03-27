@@ -47,7 +47,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
-    <PackageValidationBaselineVersion>4.0.1</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.0.2</PackageValidationBaselineVersion>
     <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
     <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
   </PropertyGroup>
