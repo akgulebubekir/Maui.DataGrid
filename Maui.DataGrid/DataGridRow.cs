@@ -65,6 +65,8 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
+        var isEditing = RowToEdit == BindingContext;
+
         var columnCount = DataGrid.Columns.Count;
 
         for (var i = 0; i < columnCount; i++)
@@ -90,8 +92,6 @@ internal sealed class DataGridRow : Grid
                 {
                     throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
                 }
-
-                var isEditing = RowToEdit == BindingContext;
 
                 if (existingCell.Column != col || existingCell.IsEditing != isEditing)
                 {
