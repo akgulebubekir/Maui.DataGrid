@@ -1303,6 +1303,7 @@ public partial class DataGrid
 
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        _internalItemsHashSet = null;
         SortAndPaginate();
     }
 
