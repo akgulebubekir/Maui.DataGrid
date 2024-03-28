@@ -15,26 +15,7 @@ internal sealed class DataGridHeaderRow : Grid
 
     private readonly Thickness _headerCellPadding = new(0, 0, 4, 0);
 
-    private readonly Command<DataGridColumn> _sortCommand = new(c =>
-        {
-            ArgumentNullException.ThrowIfNull(c.DataGrid);
-
-            // This is to invert SortOrder when the user taps on a column.
-            var order = c.SortingOrder == SortingOrder.Ascendant
-                ? SortingOrder.Descendant
-                : SortingOrder.Ascendant;
-
-            var index = c.DataGrid.Columns.IndexOf(c);
-
-            c.DataGrid.SortedColumnIndex = new(index, order);
-
-            c.SortingOrder = order;
-        }, c =>
-        {
-            ArgumentNullException.ThrowIfNull(c.DataGrid);
-
-            return c.SortingEnabled && c.DataGrid.Columns.Contains(c);
-        });
+    private readonly Command<DataGridColumn> _sortCommand = new(OnSort, CanSort);
 
     #endregion Fields
 
@@ -162,6 +143,29 @@ internal sealed class DataGridHeaderRow : Grid
     private void OnVisibilityChanged(object? sender, EventArgs e)
     {
         InitializeHeaderRow();
+    }
+
+    private static void OnSort(DataGridColumn column)
+    {
+        ArgumentNullException.ThrowIfNull(column.DataGrid);
+
+        // This is to invert SortOrder when the user taps on a column.
+        var order = column.SortingOrder == SortingOrder.Ascendant
+            ? SortingOrder.Descendant
+            : SortingOrder.Ascendant;
+
+        var index = column.DataGrid.Columns.IndexOf(column);
+
+        column.DataGrid.SortedColumnIndex = new(index, order);
+
+        column.SortingOrder = order;
+    }
+
+    private static bool CanSort(DataGridColumn column)
+    {
+        ArgumentNullException.ThrowIfNull(column.DataGrid);
+
+        return column.SortingEnabled && column.DataGrid.Columns.Contains(column);
     }
 
     private DataGridCell CreateHeaderCell(DataGridColumn column)
