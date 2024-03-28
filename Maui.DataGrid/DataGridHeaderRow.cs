@@ -156,6 +156,7 @@ internal sealed class DataGridHeaderRow : Grid
 
         var index = column.DataGrid.Columns.IndexOf(column);
 
+        // This actually does the sorting, via the propertyChanged event.
         column.DataGrid.SortedColumnIndex = new(index, order);
 
         column.SortingOrder = order;
