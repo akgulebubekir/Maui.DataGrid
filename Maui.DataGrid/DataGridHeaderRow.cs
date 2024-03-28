@@ -13,7 +13,7 @@ internal sealed class DataGridHeaderRow : Grid
                     new() { Width = new(1, GridUnitType.Auto) }
                 ];
 
-    private Thickness _headerCellPadding = new(0, 0, 4, 0);
+    private readonly Thickness _headerCellPadding = new(0, 0, 4, 0);
 
     #endregion Fields
 
