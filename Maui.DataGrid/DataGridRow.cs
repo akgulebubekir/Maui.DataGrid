@@ -59,7 +59,9 @@ internal sealed class DataGridRow : Grid
 
         UpdateColors();
 
-        if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
+        var columns = DataGrid.Columns;
+
+        if (columns == null || columns.Count == 0)
         {
             ColumnDefinitions.Clear();
             return;
@@ -67,7 +69,7 @@ internal sealed class DataGridRow : Grid
 
         var isEditing = RowToEdit == BindingContext;
 
-        var columnCount = DataGrid.Columns.Count;
+        var columnCount = columns.Count;
 
         for (var i = 0; i < columnCount; i++)
         {
@@ -106,7 +108,7 @@ internal sealed class DataGridRow : Grid
         }
 
         // Remove extra columns, if any
-        ColumnDefinitions.RemoveAfter(DataGrid.Columns.Count);
+        ColumnDefinitions.RemoveAfter(columnCount);
     }
 
     private DataGridCell GenerateCellForColumn(DataGridColumn col, int columnIndex)
