@@ -15,6 +15,27 @@ internal sealed class DataGridHeaderRow : Grid
 
     private readonly Thickness _headerCellPadding = new(0, 0, 4, 0);
 
+    private readonly Command<DataGridColumn> _sortCommand = new(c =>
+        {
+            ArgumentNullException.ThrowIfNull(c.DataGrid);
+
+            // This is to invert SortOrder when the user taps on a column.
+            var order = c.SortingOrder == SortingOrder.Ascendant
+                ? SortingOrder.Descendant
+                : SortingOrder.Ascendant;
+
+            var index = c.DataGrid.Columns.IndexOf(c);
+
+            c.DataGrid.SortedColumnIndex = new(index, order);
+
+            c.SortingOrder = order;
+        }, c =>
+        {
+            ArgumentNullException.ThrowIfNull(c.DataGrid);
+
+            return c.SortingEnabled && c.DataGrid.Columns.Contains(c);
+        });
+
     #endregion Fields
 
     #region Properties
@@ -170,21 +191,7 @@ internal sealed class DataGridHeaderRow : Grid
                 {
                     new TapGestureRecognizer
                     {
-                        Command = new Command<DataGridColumn>(c =>
-                        {
-                            ArgumentNullException.ThrowIfNull(c.DataGrid);
-
-                            // This is to invert SortOrder when the user taps on a column.
-                            var order = c.SortingOrder == SortingOrder.Ascendant
-                                ? SortingOrder.Descendant
-                                : SortingOrder.Ascendant;
-
-                            var index = c.DataGrid.Columns.IndexOf(c);
-
-                            c.DataGrid.SortedColumnIndex = new(index, order);
-
-                            c.SortingOrder = order;
-                        }, c => c.SortingEnabled && DataGrid.Columns.Contains(c)),
+                        Command = _sortCommand,
                         CommandParameter = column
                     }
                 }
