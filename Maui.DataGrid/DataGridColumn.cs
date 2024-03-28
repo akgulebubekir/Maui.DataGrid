@@ -266,9 +266,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// <summary>
     /// String format for the cell
     /// </summary>
-    public string StringFormat
+    public string? StringFormat
     {
-        get => (string)GetValue(StringFormatProperty);
+        get => (string?)GetValue(StringFormatProperty);
         set => SetValue(StringFormatProperty, value);
     }
 
