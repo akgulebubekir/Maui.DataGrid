@@ -183,7 +183,9 @@ internal sealed class DataGridRow : Grid
 
     private View CreateDefaultEditCell(DataGridColumn col)
     {
-        return Type.GetTypeCode(col.DataType) switch
+        var typeCode = Type.GetTypeCode(col.DataType);
+
+        return typeCode switch
         {
             TypeCode.String => GenerateTextEditCell(col),
             TypeCode.Boolean => GenerateBooleanEditCell(col),
