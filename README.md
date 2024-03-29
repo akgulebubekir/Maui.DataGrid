@@ -5,13 +5,13 @@ DataGrid library for .NET **MAUI** applications.
 [![NuGet](https://img.shields.io/badge/nuget-v4.0.2-blue.svg?style=plastic)](https://www.nuget.org/packages/akgul.Maui.Datagrid) [![CodeQL](https://github.com/akgulebubekir/Maui.DataGrid/actions/workflows/codeql.yml/badge.svg)](https://github.com/akgulebubekir/Maui.DataGrid/actions/workflows/codeql.yml)
 
 > **Supported Platforms**
+  >
   >- Android
   >- iOS
   >- MacCatalyst
   >- Tizen
   >- Windows
   >- and any other platform that MAUI runs on
-
 
 ```xaml
  xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
@@ -63,11 +63,10 @@ DataGrid library for .NET **MAUI** applications.
 </dg:DataGrid>
 ```
 
-Screenshots
+## Screenshots
 ----------
 
 ![Screenshots](https://raw.githubusercontent.com/akgulebubekir/Maui.DataGrid/master/Screenshots/windows_landscape.PNG)
-
 
 ## Repository Activity
 
