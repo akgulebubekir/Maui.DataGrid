@@ -2,7 +2,8 @@
 
 DataGrid library for .NET **MAUI** applications.
 
-[![NuGet](https://img.shields.io/badge/nuget-v4.0.2-blue.svg?style=plastic)](https://www.nuget.org/packages/akgul.Maui.Datagrid) [![CodeQL](https://github.com/akgulebubekir/Maui.DataGrid/actions/workflows/codeql.yml/badge.svg)](https://github.com/akgulebubekir/Maui.DataGrid/actions/workflows/codeql.yml)
+[![NuGet version (akgul.Maui.Datagrid)](https://img.shields.io/nuget/v/akgul.Maui.Datagrid.svg)](https://www.nuget.org/packages/akgul.Maui.Datagrid)
+[![CodeQL](https://github.com/akgulebubekir/Maui.DataGrid/actions/workflows/codeql.yml/badge.svg)](https://github.com/akgulebubekir/Maui.DataGrid/actions/workflows/codeql.yml)
 
 > **Supported Platforms**
   >
