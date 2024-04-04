@@ -72,3 +72,8 @@ DataGrid library for .NET **MAUI** applications.
 ## Repository Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/850b3036e03f7eff1bb74b4744e42aa3901a8ee7.svg "Repobeats analytics")
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fakgulebubekir%2FMaui.DataGrid.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fakgulebubekir%2FMaui.DataGrid?ref=badge_shield)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fakgulebubekir%2FMaui.DataGrid.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fakgulebubekir%2FMaui.DataGrid?ref=badge_large)
