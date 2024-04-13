@@ -59,12 +59,12 @@
                 </dg:DataGridColumn>
                 <dg:DataGridColumn PropertyName="." Width="0.75*">
                     <dg:DataGridColumn.CellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="m:Team">
                             <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding BindingContext.Commands[Edit], Source={Reference self}}" CommandParameter="{Binding .}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                     <dg:DataGridColumn.EditCellTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="m:Team">
                             <Button Text="Done" BackgroundColor="MediumSeaGreen" Command="{Binding BindingContext.Commands[CompleteEdit], Source={Reference self}}" CommandParameter="{Binding .}" />
                         </DataTemplate>
                     </dg:DataGridColumn.EditCellTemplate>
