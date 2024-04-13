@@ -133,7 +133,7 @@ public partial class DataGrid
         return true;
     }
 
-    private IList<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
+    private IEnumerable<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
     {
         var columnToSort = Columns[sortData.Index];
 
@@ -169,7 +169,7 @@ public partial class DataGrid
                 throw new NotImplementedException();
         }
 
-        return items.ToList();
+        return items;
     }
 
     #endregion Sorting methods
@@ -222,7 +222,7 @@ public partial class DataGrid
                 return;
             }
 
-            IList<object> sortedItems;
+            IEnumerable<object> sortedItems;
 
             if (sortData != null && CanSort(sortData))
             {
