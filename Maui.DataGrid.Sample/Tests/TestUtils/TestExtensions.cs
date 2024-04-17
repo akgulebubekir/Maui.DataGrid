@@ -16,6 +16,7 @@ internal static class TestExtensions
     }
 
     public static async void CheckPropertyBindingWorks<T>(this BindableObject bindableObject, BindableProperty property, T testValue, T updatedValue)
+        where T : notnull
     {
         Assert.Equal(property.DefaultValue, await bindableObject.GetValueSafe(property));
 
@@ -52,6 +53,7 @@ internal static class TestExtensions
     }
 
     internal static void CheckStyleSettingWorks<T>(this NavigableElement element, BindableProperty property, T value)
+        where T : notnull
     {
         var style = new Style(element.GetType())
         {
