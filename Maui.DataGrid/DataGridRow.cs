@@ -67,6 +67,8 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
+        Children.Clear(); // TODO: Revisit this if and when virtualization is straightened out
+
         var isEditing = RowToEdit == BindingContext;
 
         var columnCount = columns.Count;
