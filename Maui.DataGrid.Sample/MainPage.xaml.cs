@@ -15,11 +15,4 @@ public partial class MainPage
             Columns = _dataGrid1.Columns
         };
     }
-
-    private async void OnSettingsClicked(object sender, EventArgs e)
-    {
-        var vm = (MainViewModel)BindingContext;
-        var settingsPopup = new SettingsPopup(vm);
-        _ = await Shell.Current.ShowPopupAsync(settingsPopup);
-    }
 }

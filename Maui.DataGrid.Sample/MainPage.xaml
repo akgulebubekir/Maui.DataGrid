@@ -12,8 +12,7 @@
     <Grid RowDefinitions="Auto,*">
 
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Button Text="Settings" WidthRequest="100" Clicked="OnSettingsClicked" />
-        </Grid>
+            <Button Text="Settings" WidthRequest="100" Clicked="Commands[Settings]" />
         </HorizontalStackLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}"

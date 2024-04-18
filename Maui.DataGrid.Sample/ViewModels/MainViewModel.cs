@@ -3,6 +3,7 @@ namespace Maui.DataGrid.Sample.ViewModels;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommunityToolkit.Maui.Views;
 using Models;
 using Utils;
 
@@ -25,6 +26,7 @@ public class MainViewModel : ViewModelBase
         Commands.Add("Edit", new Command<Team>(CmdEdit));
         Commands.Add("Refresh", new Command(CmdRefresh));
         Commands.Add("Tapped", new Command(CmdTapped));
+        Commands.Add("Settings", new Command(CmdSettings));
 
         var picker = new Picker();
     }
@@ -137,6 +139,12 @@ public class MainViewModel : ViewModelBase
         // wait 3 secs for demo
         await Task.Delay(3000);
         IsRefreshing = false;
+    }
+
+    private async void CmdSettings()
+    {
+        var settingsPopup = new SettingsPopup(this);
+        _ = await Shell.Current.ShowPopupAsync(settingsPopup);
     }
 
     private void CmdTapped(object item)
