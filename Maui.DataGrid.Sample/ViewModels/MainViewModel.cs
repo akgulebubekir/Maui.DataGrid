@@ -10,7 +10,7 @@ public class MainViewModel : ViewModelBase
 {
     public MainViewModel()
     {
-        Teams = DummyDataProvider.GetTeams();
+        Teams = new(DummyDataProvider.GetTeams());
         TeamColumnVisible = true;
         WonColumnVisible = true;
         HeaderBordersVisible = true;
@@ -39,9 +39,9 @@ public class MainViewModel : ViewModelBase
         set => SetValue(value);
     }
 
-    public List<Team>? Teams
+    public ObservableCollection<Team>? Teams
     {
-        get => GetValue<List<Team>>();
+        get => GetValue<ObservableCollection<Team>>();
         set => SetValue(value);
     }
 
