@@ -367,7 +367,7 @@ internal sealed class DataGridRow : Grid
 
     private void OnColumnsChanged(object? sender, EventArgs e)
     {
-        UpdateColors();
+        InitializeRow();
     }
 
     private void OnVisibilityChanged(object? sender, EventArgs e)
