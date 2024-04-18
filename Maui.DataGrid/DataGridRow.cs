@@ -131,7 +131,7 @@ internal sealed class DataGridRow : Grid
 
         for (var i = 0; i < columnCount; i++)
         {
-            var col = DataGrid.Columns[i];
+            var col = columns[i];
 
             if (col.ColumnDefinition == null)
             {
