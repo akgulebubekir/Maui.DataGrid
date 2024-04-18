@@ -9,11 +9,12 @@
              x:DataType="vm:MainViewModel"
              x:Name="self"
              x:Class="Maui.DataGrid.Sample.MainPage">
-    <Grid RowDefinitions="Auto,*" BackgroundColor="White">
+    <Grid RowDefinitions="Auto,*">
 
-        <Grid BackgroundColor="Black">
+        <HorizontalStackLayout HorizontalOptions="Center">
             <Button Text="Settings" WidthRequest="100" Clicked="OnSettingsClicked" />
         </Grid>
+        </HorizontalStackLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}"
                      SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}" RefreshingEnabled="{Binding RefreshingEnabled}"
