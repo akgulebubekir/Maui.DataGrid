@@ -395,6 +395,8 @@ internal sealed class DataGridRow : Grid
         {
             DataGrid.ItemSelected -= DataGrid_ItemSelected;
             DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+            DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
+            DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
 
             foreach (var column in DataGrid.Columns)
             {
@@ -405,12 +407,24 @@ internal sealed class DataGridRow : Grid
         {
             DataGrid.ItemSelected += DataGrid_ItemSelected;
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
+            DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
+            DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
 
             foreach (var column in DataGrid.Columns)
             {
                 column.VisibilityChanged += OnVisibilityChanged;
             }
         }
+    }
+
+    private void OnRowsTextColorPaletteChanged(object? sender, EventArgs e)
+    {
+        UpdateColors();
+    }
+
+    private void OnRowsBackgroundColorPaletteChanged(object? sender, EventArgs e)
+    {
+        UpdateColors();
     }
 
     private void OnColumnsChanged(object? sender, EventArgs e)

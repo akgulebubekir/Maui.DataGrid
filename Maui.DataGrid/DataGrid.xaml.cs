@@ -24,6 +24,8 @@ public partial class DataGrid
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
+    private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
+    private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeList);
 
@@ -72,6 +74,24 @@ public partial class DataGrid
     {
         add => _refreshingEventManager.AddEventHandler(value);
         remove => _refreshingEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the RowsBackgroundColorPalette of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler RowsBackgroundColorPaletteChanged
+    {
+        add => _rowsBackgroundColorPaletteChangedEventManager.AddEventHandler(value);
+        remove => _rowsBackgroundColorPaletteChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the RowsTextColorPalette of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler RowsTextColorPaletteChanged
+    {
+        add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
+        remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
     }
 
     #endregion Events
@@ -329,13 +349,27 @@ public partial class DataGrid
     /// Gets or sets the background color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
-        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White });
+        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White },
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._rowsBackgroundColorPaletteChangedEventManager.HandleEvent(self, EventArgs.Empty, nameof(RowsBackgroundColorPaletteChanged));
+                }
+            });
 
     /// <summary>
     /// Gets or sets the text color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsTextColorPaletteProperty =
-        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black });
+        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black },
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._rowsTextColorPaletteChangedEventManager.HandleEvent(self, EventArgs.Empty, nameof(RowsTextColorPaletteChanged));
+                }
+            });
 
     /// <summary>
     /// Gets or sets the Columns for the DataGrid.
