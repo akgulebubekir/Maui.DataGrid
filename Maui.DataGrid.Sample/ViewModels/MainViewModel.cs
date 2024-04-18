@@ -144,7 +144,10 @@ public class MainViewModel : ViewModelBase
 
     private void CmdRemoveTeam()
     {
-        Teams?.RemoveAt(0);
+        if (Teams?.Count > 0)
+        {
+            Teams?.RemoveAt(0);
+        }
     }
 
     private async void CmdSettings()
@@ -154,7 +157,6 @@ public class MainViewModel : ViewModelBase
     }
 
     private void CmdTapped(object item)
-
     {
         if (item is Team team)
         {
