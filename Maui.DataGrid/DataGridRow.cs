@@ -373,10 +373,20 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        CellBackgroundColor = DataGrid.SelectionMode != SelectionMode.None && _wasSelected
+        var isSelected = DataGrid.SelectionMode != SelectionMode.None && _wasSelected;
+
+        CellBackgroundColor = isSelected
                 ? DataGrid.ActiveRowColor
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
-        CellTextColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
+        CellTextColor = isSelected
+                ? InverseColor(DataGrid.ActiveRowColor)
+                : DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
+    }
+
+    private static Color InverseColor(Color color)
+    {
+        var brightness = (0.299 * color.Red) + (0.587 * color.Green) + (0.114 * color.Blue);
+        return brightness < 0.5 ? Colors.White : Colors.Black;
     }
 
     /// <inheritdoc/>
