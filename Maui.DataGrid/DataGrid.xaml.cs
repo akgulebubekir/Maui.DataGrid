@@ -280,7 +280,7 @@ public partial class DataGrid
                     {
                         if (child is DataGridCell cell)
                         {
-                            cell.UpdateCellColors(n);
+                            cell.UpdateCellBackgroundColor(n);
                         }
                     }
                 }

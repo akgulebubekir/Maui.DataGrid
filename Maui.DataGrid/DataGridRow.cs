@@ -7,11 +7,55 @@ internal sealed class DataGridRow : Grid
 {
     #region Fields
 
-    private Color? _bgColor;
-    private Color? _textColor;
     private bool _wasSelected;
 
     #endregion Fields
+
+    #region Bindable Properties
+
+    /// <summary>
+    /// Gets or sets the background color of the cells within this DataGridRow.
+    /// </summary>
+    public static readonly BindableProperty CellBackgroundColorProperty =
+        BindablePropertyExtensions.Create<DataGridRow, Color>(Colors.White,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not DataGridRow self)
+                {
+                    return;
+                }
+
+                foreach (var child in self.Children)
+                {
+                    if (child is DataGridCell cell)
+                    {
+                        cell.UpdateCellBackgroundColor(n);
+                    }
+                }
+            });
+
+    /// <summary>
+    /// Gets or sets the text color of the cells within this DataGridRow.
+    /// </summary>
+    public static readonly BindableProperty CellTextColorProperty =
+        BindablePropertyExtensions.Create<DataGridRow, Color>(Colors.White,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not DataGridRow self)
+                {
+                    return;
+                }
+
+                foreach (var child in self.Children)
+                {
+                    if (child is DataGridCell cell)
+                    {
+                        cell.UpdateCellTextColor(n);
+                    }
+                }
+            });
+
+    #endregion Bindable Properties
 
     #region Properties
 
@@ -25,6 +69,18 @@ internal sealed class DataGridRow : Grid
     {
         get => GetValue(RowToEditProperty);
         set => SetValue(RowToEditProperty, value);
+    }
+
+    public Color CellBackgroundColor
+    {
+        get => (Color)GetValue(CellBackgroundColorProperty);
+        set => SetValue(CellBackgroundColorProperty, value);
+    }
+
+    public Color CellTextColor
+    {
+        get => (Color)GetValue(CellTextColorProperty);
+        set => SetValue(CellTextColorProperty, value);
     }
 
     #endregion Properties
@@ -139,7 +195,7 @@ internal sealed class DataGridRow : Grid
             cellContent = CreateViewCell(col);
         }
 
-        return new DataGridCell(cellContent, _bgColor, col, isEditing);
+        return new DataGridCell(cellContent, CellBackgroundColor, col, isEditing);
     }
 
     private View CreateViewCell(DataGridColumn col)
@@ -160,7 +216,7 @@ internal sealed class DataGridRow : Grid
         {
             cell = new Label
             {
-                TextColor = _textColor,
+                TextColor = CellTextColor,
                 VerticalTextAlignment = col.VerticalTextAlignment,
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
@@ -230,7 +286,7 @@ internal sealed class DataGridRow : Grid
     {
         var entry = new Entry
         {
-            TextColor = _textColor,
+            TextColor = CellTextColor,
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
@@ -250,8 +306,8 @@ internal sealed class DataGridRow : Grid
     {
         var checkBox = new CheckBox
         {
-            Color = _textColor,
-            BackgroundColor = _bgColor,
+            Color = CellTextColor,
+            BackgroundColor = CellBackgroundColor,
         };
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
@@ -267,7 +323,7 @@ internal sealed class DataGridRow : Grid
     {
         var entry = new Entry
         {
-            TextColor = _textColor,
+            TextColor = CellTextColor,
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
@@ -296,7 +352,7 @@ internal sealed class DataGridRow : Grid
     {
         var datePicker = new DatePicker
         {
-            TextColor = _textColor,
+            TextColor = CellTextColor,
         };
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
@@ -317,18 +373,10 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        _bgColor = DataGrid.SelectionMode != SelectionMode.None && _wasSelected
+        CellBackgroundColor = DataGrid.SelectionMode != SelectionMode.None && _wasSelected
                 ? DataGrid.ActiveRowColor
                 : DataGrid.RowsBackgroundColorPalette.GetColor(rowIndex, BindingContext);
-        _textColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
-
-        foreach (var child in Children)
-        {
-            if (child is DataGridCell cell)
-            {
-                cell.UpdateCellColors(_bgColor, _textColor);
-            }
-        }
+        CellTextColor = DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
     }
 
     /// <inheritdoc/>
