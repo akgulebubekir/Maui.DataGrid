@@ -26,6 +26,7 @@ public class MainViewModel : ViewModelBase
         Commands.Add("Edit", new Command<Team>(CmdEdit));
         Commands.Add("Refresh", new Command(CmdRefresh));
         Commands.Add("Tapped", new Command(CmdTapped));
+        Commands.Add("RemoveTeam", new Command(CmdRemoveTeam));
         Commands.Add("Settings", new Command(CmdSettings));
 
         var picker = new Picker();
@@ -139,6 +140,11 @@ public class MainViewModel : ViewModelBase
         // wait 3 secs for demo
         await Task.Delay(3000);
         IsRefreshing = false;
+    }
+
+    private void CmdRemoveTeam()
+    {
+        Teams?.RemoveAt(0);
     }
 
     private async void CmdSettings()
