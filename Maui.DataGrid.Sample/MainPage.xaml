@@ -12,8 +12,8 @@
     <Grid RowDefinitions="Auto,*">
 
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Button Text="Settings" WidthRequest="100" Clicked="Commands[Settings]" />
-            <Button Text="Remove Team" WidthRequest="140" Command="Commands[RemoveTeam]" />
+            <Button Text="Settings" WidthRequest="100" Command="{Binding Commands[Settings]}" />
+            <Button Text="Remove Team" WidthRequest="140" Command="{Binding Commands[RemoveTeam]}" />
         </HorizontalStackLayout>
 
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}"
