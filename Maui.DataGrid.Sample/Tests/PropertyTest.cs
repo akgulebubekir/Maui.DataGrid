@@ -45,6 +45,7 @@ public class PropertyTest
     private void Command2() { }
 
     internal static void TestProperty<T>(BindableProperty property, T testValue, T updatedValue)
+        where T : notnull
     {
         var dataGrid = new DataGrid();
         dataGrid.CheckPropertyBindingWorks(property, testValue, updatedValue);

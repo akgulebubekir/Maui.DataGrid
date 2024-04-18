@@ -15,7 +15,7 @@ internal static class TestExtensions
         return bindableObject.GetValue(property);
     }
 
-    public static async void CheckPropertyBindingWorks<T>(this BindableObject bindableObject, BindableProperty property, T testValue, T updatedValue)
+    public static async void CheckPropertyBindingWorks<T>(this BindableObject bindableObject, BindableProperty property, T testValue, T? updatedValue)
         where T : notnull
     {
         Assert.Equal(property.DefaultValue, await bindableObject.GetValueSafe(property));
