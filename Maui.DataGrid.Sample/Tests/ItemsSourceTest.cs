@@ -36,7 +36,7 @@ public class ItemsSourceTest
     }
 
     [Fact]
-    public async void SelectNonExistingItemNotPossible()
+    public async Task SelectNonExistingItemNotPossible()
     {
         var viewModel = new SingleVM<Team>();
         var datagrid = new DataGrid { ItemsSource = _teams };
@@ -51,7 +51,7 @@ public class ItemsSourceTest
     }
 
     [Fact]
-    public async void RemovingItemInObservableCollectionUpdatesItemsSource()
+    public async Task RemovingItemInObservableCollectionUpdatesItemsSource()
     {
         var viewModel = new SingleVM<ObservableCollection<Team>> { Item = new ObservableCollection<Team>(_teams) };
         var datagrid = new DataGrid();
@@ -65,7 +65,7 @@ public class ItemsSourceTest
     }
 
     [Fact]
-    public async void AddingItemInObservableCollectionUpdatesItemsSource()
+    public async Task AddingItemInObservableCollectionUpdatesItemsSource()
     {
         var viewModel = new SingleVM<ObservableCollection<Team>> { Item = new ObservableCollection<Team>(_teams) };
         var datagrid = new DataGrid();

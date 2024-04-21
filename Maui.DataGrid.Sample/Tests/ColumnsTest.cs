@@ -14,7 +14,7 @@ public class ColumnsTest
     ];
 
     [Fact]
-    public async void TestColumnsBindingFromViewModel()
+    public async Task TestColumnsBindingFromViewModel()
     {
         var columns = new ObservableCollection<DataGridColumn>(_columns);
 
@@ -47,7 +47,7 @@ public class ColumnsTest
     }
 
     [Fact]
-    public async void SortOrderBindingOnlyWorksWhenLoaded()
+    public async Task SortOrderBindingOnlyWorksWhenLoaded()
     {
         var dataGrid = new DataGrid
         {
