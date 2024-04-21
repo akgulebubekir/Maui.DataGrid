@@ -111,6 +111,8 @@ internal sealed class DataGridRow : Grid
 
     private void InitializeRow()
     {
+        Children.Clear(); // TODO: Revisit this if and when virtualization is straightened out
+
         UpdateSelectedState();
 
         UpdateColors();
@@ -122,8 +124,6 @@ internal sealed class DataGridRow : Grid
             ColumnDefinitions.Clear();
             return;
         }
-
-        Children.Clear(); // TODO: Revisit this if and when virtualization is straightened out
 
         var isEditing = RowToEdit == BindingContext;
 
