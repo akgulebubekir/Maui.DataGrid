@@ -11,7 +11,7 @@
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-    <MauiVersion>8.0.20</MauiVersion>
+    <MauiVersion>8.0.21</MauiVersion>
 
 		<!-- Display name -->
 		<ApplicationTitle>Maui.DataGrid.Sample</ApplicationTitle>
