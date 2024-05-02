@@ -1333,7 +1333,11 @@ public partial class DataGrid
 
     private void OnRefreshing(object? sender, EventArgs e) => _refreshingEventManager.HandleEvent(this, e, nameof(Refreshing));
 
-    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e) => _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
+    private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
+        RowTappedCommand?.Execute(e);
+    }
 
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

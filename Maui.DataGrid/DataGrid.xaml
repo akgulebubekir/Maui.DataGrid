@@ -51,11 +51,7 @@
                     SelectionMode="{Binding SelectionMode, Source={Reference self}}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="x:Object">
-                        <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" >
-                            <local:DataGridRow.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding RowTappedCommand, Source={x:Reference self}}" CommandParameter="{Binding .}" />
-                            </local:DataGridRow.GestureRecognizers>
-                        </local:DataGridRow>
+                        <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
