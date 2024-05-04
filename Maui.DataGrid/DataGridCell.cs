@@ -25,6 +25,9 @@ internal sealed class DataGridCell : ContentView
 
     internal void UpdateBindings(DataGrid dataGrid, bool bordersVisible = true)
     {
+        // This approach is a hack to avoid needing a slow Border control.
+        // The padding constitutes the cell's border thickness.
+        // And the BackgroundColor constitutes the border color of the cell.
         if (bordersVisible)
         {
             SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
