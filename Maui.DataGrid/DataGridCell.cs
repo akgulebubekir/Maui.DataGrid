@@ -5,24 +5,19 @@ using Microsoft.Maui.Controls;
 /// <summary>
 /// Specifies each cell of the DataGrid.
 /// </summary>
-internal sealed class DataGridCell : Grid
+internal sealed class DataGridCell : ContentView
 {
     internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing)
     {
-        var colorfulCellContent = new ContentView
+        Content = new ContentView
         {
             BackgroundColor = backgroundColor,
             Content = cellContent,
         };
 
-        Content = cellContent;
         Column = column;
         IsEditing = isEditing;
-
-        Children.Add(colorfulCellContent);
     }
-
-    public View Content { get; }
 
     public DataGridColumn Column { get; }
 
