@@ -736,7 +736,7 @@ public partial class DataGrid
     /// Gets or sets the thickness of the border around the DataGrid.
     /// </summary>
     public static readonly BindableProperty BorderThicknessProperty =
-        BindablePropertyExtensions.Create<DataGrid, Thickness>(new Thickness(1), BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, Thickness>(new Thickness(2), BindingMode.TwoWay,
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
