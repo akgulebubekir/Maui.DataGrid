@@ -47,6 +47,8 @@ internal sealed class DataGridHeaderRow : Grid
 
         Children.Clear();
 
+        UpdateBorders();
+
         if (DataGrid.Columns == null || DataGrid.Columns.Count == 0)
         {
             ColumnDefinitions.Clear();
@@ -77,8 +79,6 @@ internal sealed class DataGridHeaderRow : Grid
 
             col.HeaderCell ??= CreateHeaderCell(col);
 
-            col.HeaderCell.UpdateBindings(DataGrid, DataGrid.HeaderBordersVisible);
-
             if (Children.TryGetItem(i, out var existingChild))
             {
                 if (existingChild is not DataGridCell existingCell)
@@ -103,6 +103,29 @@ internal sealed class DataGridHeaderRow : Grid
         ColumnDefinitions.RemoveAfter(DataGrid.Columns.Count);
     }
 
+    private void UpdateBorders()
+    {
+        // This approach is a hack to avoid needing a slow Border control.
+        // The padding constitutes the cell's border thickness.
+        // And the BackgroundColor constitutes the border color of the cell.
+        if (DataGrid.HeaderBordersVisible)
+        {
+            var borderSize = DataGrid.BorderThickness;
+            ColumnSpacing = borderSize.Left;
+            Padding = new(0, borderSize.Top / 2, 0, borderSize.Bottom / 2);
+        }
+        else
+        {
+            ColumnSpacing = 0;
+            Padding = 0;
+        }
+    }
+
+    private void OnBorderThicknessChanged(object? sender, EventArgs e)
+    {
+        UpdateBorders();
+    }
+
     /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
@@ -118,6 +141,7 @@ internal sealed class DataGridHeaderRow : Grid
         if (Parent == null)
         {
             DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+            DataGrid.BorderThicknessChanged -= OnBorderThicknessChanged;
 
             foreach (var column in DataGrid.Columns)
             {
@@ -127,11 +151,14 @@ internal sealed class DataGridHeaderRow : Grid
         else
         {
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
+            DataGrid.BorderThicknessChanged += OnBorderThicknessChanged;
 
             foreach (var column in DataGrid.Columns)
             {
                 column.VisibilityChanged += OnVisibilityChanged;
             }
+
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
         }
     }
 

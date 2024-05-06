@@ -26,6 +26,7 @@ public partial class DataGrid
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
+    private readonly WeakEventManager _borderThicknessChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeList);
 
@@ -92,6 +93,15 @@ public partial class DataGrid
     {
         add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
         remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the BorderThickness of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler BorderThicknessChanged
+    {
+        add => _borderThicknessChangedEventManager.AddEventHandler(value);
+        remove => _borderThicknessChangedEventManager.RemoveEventHandler(value);
     }
 
     #endregion Events
@@ -726,7 +736,14 @@ public partial class DataGrid
     /// Gets or sets the thickness of the border around the DataGrid.
     /// </summary>
     public static readonly BindableProperty BorderThicknessProperty =
-        BindablePropertyExtensions.Create<DataGrid, Thickness>(new Thickness(1), BindingMode.TwoWay);
+        BindablePropertyExtensions.Create<DataGrid, Thickness>(new Thickness(1), BindingMode.TwoWay,
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._borderThicknessChangedEventManager.HandleEvent(self, EventArgs.Empty, nameof(BorderThicknessChanged));
+                }
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether the header borders are visible in the DataGrid.
