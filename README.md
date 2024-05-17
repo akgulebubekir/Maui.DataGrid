@@ -72,3 +72,7 @@ DataGrid library for .NET **MAUI** applications.
 ## Repository Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/850b3036e03f7eff1bb74b4744e42aa3901a8ee7.svg "Repobeats analytics")
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=akgulebubekir/Maui.DataGrid&type=Date)](https://star-history.com/#akgulebubekir/Maui.DataGrid&Date)
