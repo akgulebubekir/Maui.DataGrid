@@ -23,7 +23,7 @@
     <AssemblyVersion>4.0.0.4</AssemblyVersion>
     <Version>4.0.4</Version>
     <Configurations>Debug;Release;Test</Configurations>
-    <MauiVersion>8.0.21</MauiVersion>
+    <MauiVersion>8.0.60</MauiVersion>
 
     <!-- Generate the lock file -->
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
