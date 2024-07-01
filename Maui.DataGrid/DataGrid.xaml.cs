@@ -231,7 +231,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<int>>(
-            defaultValue: new List<int>(DefaultPageSizeList),
+            defaultValue: [.. DefaultPageSizeList],
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
