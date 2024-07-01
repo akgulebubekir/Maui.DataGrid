@@ -34,7 +34,7 @@ public class MainViewModel : ViewModelBase
 
     public static ImmutableList<SelectionMode> SelectionModes => Enum.GetValues<SelectionMode>().Cast<SelectionMode>().ToImmutableList();
 
-    public required ObservableCollection<DataGridColumn> Columns { get; set; }
+    public required ObservableCollection<DataGridColumn> Columns { get; init; }
 
     public Team? TeamToEdit
     {
@@ -45,7 +45,7 @@ public class MainViewModel : ViewModelBase
     public ObservableCollection<Team>? Teams
     {
         get => GetValue<ObservableCollection<Team>>();
-        set => SetValue(value);
+        init => SetValue(value);
     }
 
     public bool HeaderBordersVisible
