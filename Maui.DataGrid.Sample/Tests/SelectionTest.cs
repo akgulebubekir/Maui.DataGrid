@@ -1,7 +1,6 @@
 namespace Maui.DataGrid.Sample.Tests;
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Tests.TestUtils;
@@ -17,7 +16,7 @@ public class SelectionTest
         var viewModel = new SingleVM<Team>();
         var datagrid = new DataGrid { ItemsSource = _teams };
         var eventTriggered = false;
-        var teamToSelect = _teams.ElementAt(5);
+        var teamToSelect = _teams[5];
 
         datagrid.ItemSelected += (s, e) =>
         {
@@ -43,7 +42,7 @@ public class SelectionTest
     {
         var datagrid = new DataGrid { ItemsSource = _teams };
         var eventTriggered = false;
-        var teamToSelect = _teams.ElementAt(5);
+        var teamToSelect = _teams[5];
 
         datagrid.ItemSelected += (s, e) =>
         {

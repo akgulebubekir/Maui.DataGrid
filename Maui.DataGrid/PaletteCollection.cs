@@ -15,7 +15,7 @@ public sealed class PaletteCollection : List<Color>, IColorProvider
     {
         if (Count > 0)
         {
-            return this.ElementAt(rowIndex % Count);
+            return this[rowIndex % Count];
         }
 
         return Colors.White;
