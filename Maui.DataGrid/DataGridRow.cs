@@ -13,6 +13,26 @@ internal sealed class DataGridRow : Grid
 
     #region Bindable Properties
 
+    public static readonly BindableProperty DataGridProperty =
+    BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime);
+
+    public static readonly BindableProperty RowToEditProperty =
+        BindablePropertyExtensions.Create<DataGridRow, object>(
+            null,
+            BindingMode.OneWay,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not DataGridRow row)
+                {
+                    return;
+                }
+
+                if (o == row.BindingContext || n == row.BindingContext)
+                {
+                    row.InitializeRow();
+                }
+            });
+
     /// <summary>
     /// Gets or sets the background color of the cells within this DataGridRow.
     /// </summary>
@@ -84,28 +104,6 @@ internal sealed class DataGridRow : Grid
     }
 
     #endregion Properties
-
-    #region Bindable Properties
-
-    public static readonly BindableProperty DataGridProperty =
-        BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime);
-
-    public static readonly BindableProperty RowToEditProperty =
-        BindablePropertyExtensions.Create<DataGridRow, object>(null, BindingMode.OneWay,
-            propertyChanged: (b, o, n) =>
-            {
-                if (b is not DataGridRow row)
-                {
-                    return;
-                }
-
-                if (o == row.BindingContext || n == row.BindingContext)
-                {
-                    row.InitializeRow();
-                }
-            });
-
-    #endregion Bindable Properties
 
     #region Methods
 
