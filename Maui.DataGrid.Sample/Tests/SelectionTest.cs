@@ -28,7 +28,7 @@ public class SelectionTest
             Assert.Equal(new[] { teamToSelect }, e.CurrentSelection);
         };
 
-        //set a parent to trigger  OnParentSet
+        // set a parent to trigger  OnParentSet
         var parent = new ContentView { Content = datagrid };
 
         datagrid.SetBinding(DataGrid.SelectedItemProperty, new Binding("Item", source: viewModel));
@@ -54,7 +54,7 @@ public class SelectionTest
             Assert.Equal(new[] { teamToSelect }, e.CurrentSelection);
         };
 
-        //set a parent to trigger  OnParentSet
+        // set a parent to trigger  OnParentSet
         var parent = new ContentView { Content = datagrid };
 
         datagrid.SelectedItem = teamToSelect;

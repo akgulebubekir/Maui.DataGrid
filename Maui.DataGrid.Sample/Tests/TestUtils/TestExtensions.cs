@@ -57,8 +57,9 @@ internal static class TestExtensions
     {
         var style = new Style(element.GetType())
         {
-            Setters ={
-                new Setter() {Property = property,  Value = value }
+            Setters =
+            {
+                new Setter() { Property = property, Value = value }
             }
         };
 
