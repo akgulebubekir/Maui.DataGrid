@@ -70,7 +70,7 @@ public class Streak : IComparable
             return false;
         }
 
-        throw new NotImplementedException();
+        return (Streak)obj == this;
     }
 
     /// <inheritdoc/>
