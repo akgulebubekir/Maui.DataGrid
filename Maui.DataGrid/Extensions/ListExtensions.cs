@@ -12,11 +12,9 @@ internal static class ListExtensions
             item = list[index];
             return true;
         }
-        else
-        {
-            item = default;
-            return false;
-        }
+
+        item = default;
+        return false;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
