@@ -41,14 +41,6 @@ public class PropertyTest
         TestProperty(DataGrid.SelectionModeProperty, SelectionMode.Single, SelectionMode.Multiple);
     }
 
-    private void Command1()
-    {
-    }
-
-    private void Command2()
-    {
-    }
-
     internal static void TestProperty<T>(BindableProperty property, T testValue, T updatedValue)
         where T : notnull
     {
@@ -57,5 +49,13 @@ public class PropertyTest
 
         var anotherDataGrid = new DataGrid();
         anotherDataGrid.CheckStyleSettingWorks(property, testValue);
+    }
+
+    private void Command1()
+    {
+    }
+
+    private void Command2()
+    {
     }
 }

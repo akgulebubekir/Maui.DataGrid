@@ -10,54 +10,6 @@ using Microsoft.Maui.Controls.Shapes;
 /// </summary>
 public sealed class DataGridColumn : BindableObject, IDefinition
 {
-    #region Fields
-
-    private bool? _isSortable;
-    private ColumnDefinition? _columnDefinition;
-    private TextAlignment? _verticalTextAlignment;
-    private TextAlignment? _horizontalTextAlignment;
-    private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
-    private readonly WeakEventManager _sizeChangedEventManager = new();
-    private readonly WeakEventManager _visibilityChangedEventManager = new();
-
-    #endregion Fields
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DataGridColumn"/> class.
-    /// </summary>
-    public DataGridColumn()
-    {
-        SortingIconContainer = new ContentView
-        {
-            IsVisible = false,
-            Content = SortingIcon,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-        };
-    }
-
-    #region Events
-
-    /// <summary>
-    /// Occurs when the size of the column changes.
-    /// </summary>
-    public event EventHandler SizeChanged
-    {
-        add => _sizeChangedEventManager.AddEventHandler(value);
-        remove => _sizeChangedEventManager.RemoveEventHandler(value);
-    }
-
-    /// <summary>
-    /// Occurs when the visibility of the column changes.
-    /// </summary>
-    public event EventHandler VisibilityChanged
-    {
-        add => _visibilityChangedEventManager.AddEventHandler(value);
-        remove => _visibilityChangedEventManager.RemoveEventHandler(value);
-    }
-
-    #endregion Events
-
     #region Bindable Properties
 
     /// <summary>
@@ -182,31 +134,56 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     #endregion Bindable Properties
 
-    #region Properties
+    #region Fields
 
-    internal Polygon SortingIcon { get; } = new();
+    private readonly ColumnDefinition _invisibleColumnDefinition = new(0);
+    private readonly WeakEventManager _sizeChangedEventManager = new();
+    private readonly WeakEventManager _visibilityChangedEventManager = new();
 
-    internal Label HeaderLabel { get; } = new();
+    private bool? _isSortable;
+    private ColumnDefinition? _columnDefinition;
+    private TextAlignment? _verticalTextAlignment;
+    private TextAlignment? _horizontalTextAlignment;
 
-    internal View SortingIconContainer { get; }
+    #endregion Fields
 
-    internal SortingOrder SortingOrder { get; set; }
-
-    internal Type? DataType { get; private set; }
-
-    internal DataGrid? DataGrid { get; set; }
-
-    internal ColumnDefinition? ColumnDefinition
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataGridColumn"/> class.
+    /// </summary>
+    public DataGridColumn()
     {
-        get => IsVisible ? _columnDefinition : _invisibleColumnDefinition;
-        set => _columnDefinition = value;
+        SortingIconContainer = new ContentView
+        {
+            IsVisible = false,
+            Content = SortingIcon,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+        };
     }
 
-    internal DataGridCell? HeaderCell { get; set; }
+    #region Events
 
-    internal TextAlignment VerticalTextAlignment => _verticalTextAlignment ??= VerticalContentAlignment.ToTextAlignment();
+    /// <summary>
+    /// Occurs when the size of the column changes.
+    /// </summary>
+    public event EventHandler SizeChanged
+    {
+        add => _sizeChangedEventManager.AddEventHandler(value);
+        remove => _sizeChangedEventManager.RemoveEventHandler(value);
+    }
 
-    internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
+    /// <summary>
+    /// Occurs when the visibility of the column changes.
+    /// </summary>
+    public event EventHandler VisibilityChanged
+    {
+        add => _visibilityChangedEventManager.AddEventHandler(value);
+        remove => _visibilityChangedEventManager.RemoveEventHandler(value);
+    }
+
+    #endregion Events
+
+    #region Properties
 
     /// <summary>
     /// Gets or sets width of the column.
@@ -344,6 +321,30 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         get => (Style)GetValue(HeaderLabelStyleProperty);
         set => SetValue(HeaderLabelStyleProperty, value);
     }
+
+    internal Polygon SortingIcon { get; } = new();
+
+    internal Label HeaderLabel { get; } = new();
+
+    internal View SortingIconContainer { get; }
+
+    internal SortingOrder SortingOrder { get; set; }
+
+    internal Type? DataType { get; private set; }
+
+    internal DataGrid? DataGrid { get; set; }
+
+    internal ColumnDefinition? ColumnDefinition
+    {
+        get => IsVisible ? _columnDefinition : _invisibleColumnDefinition;
+        set => _columnDefinition = value;
+    }
+
+    internal DataGridCell? HeaderCell { get; set; }
+
+    internal TextAlignment VerticalTextAlignment => _verticalTextAlignment ??= VerticalContentAlignment.ToTextAlignment();
+
+    internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
 
     #endregion Properties
 

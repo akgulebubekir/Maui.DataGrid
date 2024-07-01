@@ -18,267 +18,6 @@ using Font = Microsoft.Maui.Font;
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
-    #region Fields
-
-    private static readonly SortedSet<int> DefaultPageSizeList = [5, 10, 50, 100, 200, 1000];
-
-    private readonly WeakEventManager _itemSelectedEventManager = new();
-    private readonly WeakEventManager _refreshingEventManager = new();
-    private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
-    private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
-
-    private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeList);
-
-    private readonly object _reloadLock = new();
-    private readonly object _sortAndPaginateLock = new();
-    private DataGridColumn? _sortedColumn;
-    private HashSet<object>? _internalItemsHashSet;
-
-    #endregion Fields
-
-    #region ctor
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DataGrid"/> class.
-    /// </summary>
-    public DataGrid()
-    {
-        InitializeComponent();
-
-        DefaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
-        DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
-
-        if (_collectionView != null)
-        {
-            _collectionView.ItemsSource = InternalItems;
-        }
-    }
-
-    #endregion ctor
-
-    #region Events
-
-    /// <summary>
-    /// Occurs when an item is selected in the DataGrid.
-    /// </summary>
-    public event EventHandler<SelectionChangedEventArgs> ItemSelected
-    {
-        add => _itemSelectedEventManager.AddEventHandler(value);
-        remove => _itemSelectedEventManager.RemoveEventHandler(value);
-    }
-
-    /// <summary>
-    /// Occurs when the DataGrid is being refreshed.
-    /// </summary>
-    public event EventHandler Refreshing
-    {
-        add => _refreshingEventManager.AddEventHandler(value);
-        remove => _refreshingEventManager.RemoveEventHandler(value);
-    }
-
-    /// <summary>
-    /// Occurs when the RowsBackgroundColorPalette of the DataGrid is changed.
-    /// </summary>
-    internal event EventHandler RowsBackgroundColorPaletteChanged
-    {
-        add => _rowsBackgroundColorPaletteChangedEventManager.AddEventHandler(value);
-        remove => _rowsBackgroundColorPaletteChangedEventManager.RemoveEventHandler(value);
-    }
-
-    /// <summary>
-    /// Occurs when the RowsTextColorPalette of the DataGrid is changed.
-    /// </summary>
-    internal event EventHandler RowsTextColorPaletteChanged
-    {
-        add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
-        remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
-    }
-
-    #endregion Events
-
-    #region Sorting methods
-
-    private bool CanSort(SortData? sortData)
-    {
-        if (sortData is null)
-        {
-            Debug.WriteLine("No sort data");
-            return false;
-        }
-
-        if (InternalItems.Count == 0)
-        {
-            Debug.WriteLine("There are no items to sort");
-            return false;
-        }
-
-        if (!SortingEnabled)
-        {
-            Debug.WriteLine("DataGrid is not sortable");
-            return false;
-        }
-
-        if (Columns.Count < 1)
-        {
-            Debug.WriteLine("There are no columns on this DataGrid.");
-            return false;
-        }
-
-        if (sortData.Index >= Columns.Count)
-        {
-            Debug.WriteLine("Sort index is out of range");
-            return false;
-        }
-
-        var columnToSort = Columns[sortData.Index];
-
-        if (columnToSort.PropertyName == null)
-        {
-            Debug.WriteLine($"Please set the {nameof(columnToSort.PropertyName)} of the column");
-            return false;
-        }
-
-        if (!columnToSort.SortingEnabled)
-        {
-            Debug.WriteLine($"{columnToSort.PropertyName} column does not have sorting enabled");
-            return false;
-        }
-
-        if (!columnToSort.IsSortable())
-        {
-            Debug.WriteLine($"{columnToSort.PropertyName} column is not sortable");
-            return false;
-        }
-
-        return true;
-    }
-
-    private IEnumerable<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
-    {
-        var columnToSort = Columns[sortData.Index];
-
-        foreach (var column in Columns)
-        {
-            if (column == columnToSort)
-            {
-                column.SortingOrder = sortData.Order;
-                column.SortingIconContainer.IsVisible = true;
-            }
-            else
-            {
-                column.SortingOrder = SortingOrder.None;
-                column.SortingIconContainer.IsVisible = false;
-            }
-        }
-
-        IEnumerable<object> items;
-
-        switch (sortData.Order)
-        {
-            case SortingOrder.Ascendant:
-                _ = columnToSort.SortingIcon.RotateTo(0);
-                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
-                break;
-            case SortingOrder.Descendant:
-                _ = columnToSort.SortingIcon.RotateTo(180);
-                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
-                break;
-            case SortingOrder.None:
-                return unsortedItems;
-            default:
-                throw new NotImplementedException();
-        }
-
-        return items;
-    }
-
-    #endregion Sorting methods
-
-    #region Pagination methods
-
-    private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
-    {
-        var skip = (PageNumber - 1) * PageSize;
-
-        return unpaginatedItems.Skip(skip).Take(PageSize);
-    }
-
-    /// <summary>
-    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown.
-    /// </summary>
-    private void UpdatePageSizeList()
-    {
-        if (PageSizeList.Contains(PageSize))
-        {
-            return;
-        }
-
-        if (_pageSizeList.Add(PageSize))
-        {
-            PageSizeList = new List<int>(_pageSizeList);
-            OnPropertyChanged(nameof(PageSizeList));
-            OnPropertyChanged(nameof(PageSize));
-        }
-    }
-
-    private void SortAndPaginate(SortData? sortData = null)
-    {
-        lock (_sortAndPaginateLock)
-        {
-            if (ItemsSource is null)
-            {
-                return;
-            }
-
-            sortData ??= SortedColumnIndex;
-
-            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
-
-            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
-
-            if (originalItems.Count == 0)
-            {
-                InternalItems.Clear();
-                return;
-            }
-
-            IEnumerable<object> sortedItems;
-
-            if (sortData != null && CanSort(sortData))
-            {
-                sortedItems = GetSortedItems(originalItems, sortData);
-            }
-            else
-            {
-                sortedItems = originalItems;
-            }
-
-            if (PaginationEnabled)
-            {
-                var paginatedItems = GetPaginatedItems(sortedItems);
-                InternalItems.ReplaceRange(paginatedItems);
-            }
-            else
-            {
-                InternalItems.ReplaceRange(sortedItems);
-            }
-        }
-    }
-
-    #endregion Pagination methods
-
-    #region Methods
-
-    /// <summary>
-    /// Scrolls to the row.
-    /// </summary>
-    /// <param name="item">Item to scroll.</param>
-    /// <param name="position">Position of the row in screen.</param>
-    /// <param name="animated">animated.</param>
-    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => _collectionView.ScrollTo(item, position: position, animate: animated);
-
-    #endregion Methods
-
     #region Bindable properties
 
     /// <summary>
@@ -861,6 +600,84 @@ public partial class DataGrid
 
     #endregion Bindable properties
 
+    #region Fields
+
+    private static readonly SortedSet<int> DefaultPageSizeList = [5, 10, 50, 100, 200, 1000];
+
+    private readonly WeakEventManager _itemSelectedEventManager = new();
+    private readonly WeakEventManager _refreshingEventManager = new();
+    private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
+    private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
+
+    private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeList);
+
+    private readonly object _reloadLock = new();
+    private readonly object _sortAndPaginateLock = new();
+    private DataGridColumn? _sortedColumn;
+    private HashSet<object>? _internalItemsHashSet;
+
+    #endregion Fields
+
+    #region ctor
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataGrid"/> class.
+    /// </summary>
+    public DataGrid()
+    {
+        InitializeComponent();
+
+        DefaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
+        DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
+
+        if (_collectionView != null)
+        {
+            _collectionView.ItemsSource = InternalItems;
+        }
+    }
+
+    #endregion ctor
+
+    #region Events
+
+    /// <summary>
+    /// Occurs when an item is selected in the DataGrid.
+    /// </summary>
+    public event EventHandler<SelectionChangedEventArgs> ItemSelected
+    {
+        add => _itemSelectedEventManager.AddEventHandler(value);
+        remove => _itemSelectedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the DataGrid is being refreshed.
+    /// </summary>
+    public event EventHandler Refreshing
+    {
+        add => _refreshingEventManager.AddEventHandler(value);
+        remove => _refreshingEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the RowsBackgroundColorPalette of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler RowsBackgroundColorPaletteChanged
+    {
+        add => _rowsBackgroundColorPaletteChangedEventManager.AddEventHandler(value);
+        remove => _rowsBackgroundColorPaletteChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the RowsTextColorPalette of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler RowsTextColorPaletteChanged
+    {
+        add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
+        remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
+    }
+
+    #endregion Events
+
     #region Properties
 
 #pragma warning disable CA2227 // Collection properties should be read only
@@ -1274,6 +1091,33 @@ public partial class DataGrid
 
     #endregion Properties
 
+    #region Methods
+
+    /// <summary>
+    /// Scrolls to the row.
+    /// </summary>
+    /// <param name="item">Item to scroll.</param>
+    /// <param name="position">Position of the row in screen.</param>
+    /// <param name="animated">animated.</param>
+    public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => _collectionView.ScrollTo(item, position: position, animate: animated);
+
+    internal void Initialize()
+    {
+        if (!IsLoaded)
+        {
+            return;
+        }
+
+        lock (_reloadLock)
+        {
+            UpdatePageSizeList();
+
+            _headerRow.InitializeHeaderRow();
+        }
+    }
+
+    #endregion Methods
+
     #region UI Methods
 
     /// <inheritdoc/>
@@ -1333,14 +1177,14 @@ public partial class DataGrid
         }
     }
 
-    private void OnLoaded(object? sender, EventArgs e) => Initialize();
-
     /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
         _headerRow.InitializeHeaderRow();
     }
+
+    private void OnLoaded(object? sender, EventArgs e) => Initialize();
 
     private void OnColumnsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
@@ -1403,20 +1247,176 @@ public partial class DataGrid
         return SortedColumnIndex;
     }
 
-    internal void Initialize()
+    #endregion UI Methods
+
+    #region Sorting methods
+
+    private bool CanSort(SortData? sortData)
     {
-        if (!IsLoaded)
+        if (sortData is null)
+        {
+            Debug.WriteLine("No sort data");
+            return false;
+        }
+
+        if (InternalItems.Count == 0)
+        {
+            Debug.WriteLine("There are no items to sort");
+            return false;
+        }
+
+        if (!SortingEnabled)
+        {
+            Debug.WriteLine("DataGrid is not sortable");
+            return false;
+        }
+
+        if (Columns.Count < 1)
+        {
+            Debug.WriteLine("There are no columns on this DataGrid.");
+            return false;
+        }
+
+        if (sortData.Index >= Columns.Count)
+        {
+            Debug.WriteLine("Sort index is out of range");
+            return false;
+        }
+
+        var columnToSort = Columns[sortData.Index];
+
+        if (columnToSort.PropertyName == null)
+        {
+            Debug.WriteLine($"Please set the {nameof(columnToSort.PropertyName)} of the column");
+            return false;
+        }
+
+        if (!columnToSort.SortingEnabled)
+        {
+            Debug.WriteLine($"{columnToSort.PropertyName} column does not have sorting enabled");
+            return false;
+        }
+
+        if (!columnToSort.IsSortable())
+        {
+            Debug.WriteLine($"{columnToSort.PropertyName} column is not sortable");
+            return false;
+        }
+
+        return true;
+    }
+
+    private IEnumerable<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
+    {
+        var columnToSort = Columns[sortData.Index];
+
+        foreach (var column in Columns)
+        {
+            if (column == columnToSort)
+            {
+                column.SortingOrder = sortData.Order;
+                column.SortingIconContainer.IsVisible = true;
+            }
+            else
+            {
+                column.SortingOrder = SortingOrder.None;
+                column.SortingIconContainer.IsVisible = false;
+            }
+        }
+
+        IEnumerable<object> items;
+
+        switch (sortData.Order)
+        {
+            case SortingOrder.Ascendant:
+                _ = columnToSort.SortingIcon.RotateTo(0);
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
+                break;
+            case SortingOrder.Descendant:
+                _ = columnToSort.SortingIcon.RotateTo(180);
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
+                break;
+            case SortingOrder.None:
+                return unsortedItems;
+            default:
+                throw new NotImplementedException();
+        }
+
+        return items;
+    }
+
+    #endregion Sorting methods
+
+    #region Pagination methods
+
+    private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
+    {
+        var skip = (PageNumber - 1) * PageSize;
+
+        return unpaginatedItems.Skip(skip).Take(PageSize);
+    }
+
+    /// <summary>
+    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown.
+    /// </summary>
+    private void UpdatePageSizeList()
+    {
+        if (PageSizeList.Contains(PageSize))
         {
             return;
         }
 
-        lock (_reloadLock)
+        if (_pageSizeList.Add(PageSize))
         {
-            UpdatePageSizeList();
-
-            _headerRow.InitializeHeaderRow();
+            PageSizeList = new List<int>(_pageSizeList);
+            OnPropertyChanged(nameof(PageSizeList));
+            OnPropertyChanged(nameof(PageSize));
         }
     }
 
-    #endregion UI Methods
+    private void SortAndPaginate(SortData? sortData = null)
+    {
+        lock (_sortAndPaginateLock)
+        {
+            if (ItemsSource is null)
+            {
+                return;
+            }
+
+            sortData ??= SortedColumnIndex;
+
+            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
+
+            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
+
+            if (originalItems.Count == 0)
+            {
+                InternalItems.Clear();
+                return;
+            }
+
+            IEnumerable<object> sortedItems;
+
+            if (sortData != null && CanSort(sortData))
+            {
+                sortedItems = GetSortedItems(originalItems, sortData);
+            }
+            else
+            {
+                sortedItems = originalItems;
+            }
+
+            if (PaginationEnabled)
+            {
+                var paginatedItems = GetPaginatedItems(sortedItems);
+                InternalItems.ReplaceRange(paginatedItems);
+            }
+            else
+            {
+                InternalItems.ReplaceRange(sortedItems);
+            }
+        }
+    }
+
+    #endregion Pagination methods
 }

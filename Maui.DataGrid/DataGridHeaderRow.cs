@@ -5,6 +5,13 @@ using Microsoft.Maui.Controls;
 
 internal sealed class DataGridHeaderRow : Grid
 {
+    #region Bindable Properties
+
+    public static readonly BindableProperty DataGridProperty =
+        BindablePropertyExtensions.Create<DataGridHeaderRow, DataGrid>(null, BindingMode.OneTime);
+
+    #endregion Bindable Properties
+
     #region Fields
 
     private readonly ColumnDefinitionCollection _headerColumnDefinitions =
@@ -28,13 +35,6 @@ internal sealed class DataGridHeaderRow : Grid
     }
 
     #endregion Properties
-
-    #region Bindable Properties
-
-    public static readonly BindableProperty DataGridProperty =
-        BindablePropertyExtensions.Create<DataGridHeaderRow, DataGrid>(null, BindingMode.OneTime);
-
-    #endregion Bindable Properties
 
     #region Methods
 
@@ -135,16 +135,6 @@ internal sealed class DataGridHeaderRow : Grid
         }
     }
 
-    private void OnColumnsChanged(object? sender, EventArgs e)
-    {
-        InitializeHeaderRow();
-    }
-
-    private void OnVisibilityChanged(object? sender, EventArgs e)
-    {
-        InitializeHeaderRow();
-    }
-
     private static void OnSort(DataGridColumn column)
     {
         ArgumentNullException.ThrowIfNull(column.DataGrid);
@@ -167,6 +157,16 @@ internal sealed class DataGridHeaderRow : Grid
         ArgumentNullException.ThrowIfNull(column.DataGrid);
 
         return column.SortingEnabled && column.DataGrid.Columns.Contains(column);
+    }
+
+    private void OnColumnsChanged(object? sender, EventArgs e)
+    {
+        InitializeHeaderRow();
+    }
+
+    private void OnVisibilityChanged(object? sender, EventArgs e)
+    {
+        InitializeHeaderRow();
     }
 
     private DataGridCell CreateHeaderCell(DataGridColumn column)

@@ -12,6 +12,8 @@ public partial class SettingsPopup
         _viewModel = viewModel;
     }
 
+    public void OnClose(object sender, EventArgs e) => Close();
+
     private async void OnAddColumn(object sender, EventArgs e)
     {
         var newColumnTitle = await Shell.Current.DisplayPromptAsync("Add column", "What is the name of the new column?");
@@ -41,6 +43,4 @@ public partial class SettingsPopup
             _ = _viewModel.Columns.Remove(columnToRemove);
         }
     }
-
-    public void OnClose(object sender, EventArgs e) => Close();
 }

@@ -5,12 +5,6 @@ using Microsoft.Maui.Controls;
 
 internal sealed class DataGridRow : Grid
 {
-    #region Fields
-
-    private bool _wasSelected;
-
-    #endregion Fields
-
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
@@ -79,6 +73,12 @@ internal sealed class DataGridRow : Grid
 
     #endregion Bindable Properties
 
+    #region Fields
+
+    private bool _wasSelected;
+
+    #endregion Fields
+
     #region Properties
 
     public DataGrid DataGrid
@@ -108,6 +108,50 @@ internal sealed class DataGridRow : Grid
     #endregion Properties
 
     #region Methods
+
+    /// <inheritdoc/>
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+        InitializeRow();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnParentSet()
+    {
+        base.OnParentSet();
+
+        if (Parent == null)
+        {
+            DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+            DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
+            DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
+
+            foreach (var column in DataGrid.Columns)
+            {
+                column.VisibilityChanged -= OnVisibilityChanged;
+            }
+        }
+        else
+        {
+            DataGrid.ItemSelected += DataGrid_ItemSelected;
+            DataGrid.Columns.CollectionChanged += OnColumnsChanged;
+            DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
+            DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
+
+            foreach (var column in DataGrid.Columns)
+            {
+                column.VisibilityChanged += OnVisibilityChanged;
+            }
+        }
+    }
+
+    private static Color InverseColor(Color color)
+    {
+        var brightness = (0.299 * color.Red) + (0.587 * color.Green) + (0.114 * color.Blue);
+        return brightness < 0.5 ? Colors.White : Colors.Black;
+    }
 
     private void InitializeRow()
     {
@@ -381,50 +425,6 @@ internal sealed class DataGridRow : Grid
         CellTextColor = isSelected
                 ? InverseColor(DataGrid.ActiveRowColor)
                 : DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
-    }
-
-    private static Color InverseColor(Color color)
-    {
-        var brightness = (0.299 * color.Red) + (0.587 * color.Green) + (0.114 * color.Blue);
-        return brightness < 0.5 ? Colors.White : Colors.Black;
-    }
-
-    /// <inheritdoc/>
-    protected override void OnBindingContextChanged()
-    {
-        base.OnBindingContextChanged();
-        InitializeRow();
-    }
-
-    /// <inheritdoc/>
-    protected override void OnParentSet()
-    {
-        base.OnParentSet();
-
-        if (Parent == null)
-        {
-            DataGrid.ItemSelected -= DataGrid_ItemSelected;
-            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
-            DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
-            DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
-
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged -= OnVisibilityChanged;
-            }
-        }
-        else
-        {
-            DataGrid.ItemSelected += DataGrid_ItemSelected;
-            DataGrid.Columns.CollectionChanged += OnColumnsChanged;
-            DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
-            DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
-
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged += OnVisibilityChanged;
-            }
-        }
     }
 
     private void OnRowsTextColorPaletteChanged(object? sender, EventArgs e)

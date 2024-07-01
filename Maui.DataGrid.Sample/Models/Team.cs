@@ -1,5 +1,11 @@
 namespace Maui.DataGrid.Sample.Models;
 
+public enum Result
+{
+    Lost = 0,
+    Won = 1,
+}
+
 public class Team
 {
     public required string Name { get; set; }
@@ -30,6 +36,41 @@ public class Streak : IComparable
     public Result Result { get; set; }
 
     public int NumStreak { get; set; }
+
+    public static bool operator ==(Streak left, Streak right)
+    {
+        if (left is null)
+        {
+            return right is null;
+        }
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Streak left, Streak right)
+    {
+        return !(left == right);
+    }
+
+    public static bool operator <(Streak left, Streak right)
+    {
+        return left is null ? right is not null : left.CompareTo(right) < 0;
+    }
+
+    public static bool operator <=(Streak left, Streak right)
+    {
+        return left is null || left.CompareTo(right) <= 0;
+    }
+
+    public static bool operator >(Streak left, Streak right)
+    {
+        return left?.CompareTo(right) > 0;
+    }
+
+    public static bool operator >=(Streak left, Streak right)
+    {
+        return left is null ? right is null : left.CompareTo(right) >= 0;
+    }
 
     public int CompareTo(object? obj)
     {
@@ -78,45 +119,4 @@ public class Streak : IComparable
     {
         throw new NotImplementedException();
     }
-
-    public static bool operator ==(Streak left, Streak right)
-    {
-        if (left is null)
-        {
-            return right is null;
-        }
-
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Streak left, Streak right)
-    {
-        return !(left == right);
-    }
-
-    public static bool operator <(Streak left, Streak right)
-    {
-        return left is null ? right is not null : left.CompareTo(right) < 0;
-    }
-
-    public static bool operator <=(Streak left, Streak right)
-    {
-        return left is null || left.CompareTo(right) <= 0;
-    }
-
-    public static bool operator >(Streak left, Streak right)
-    {
-        return left?.CompareTo(right) > 0;
-    }
-
-    public static bool operator >=(Streak left, Streak right)
-    {
-        return left is null ? right is null : left.CompareTo(right) >= 0;
-    }
-}
-
-public enum Result
-{
-    Lost = 0,
-    Won = 1,
 }
