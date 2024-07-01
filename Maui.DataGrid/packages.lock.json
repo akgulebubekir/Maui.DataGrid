@@ -4,44 +4,33 @@
     "net8.0": {
       "DotNet.ReproducibleBuilds": {
         "type": "Direct",
-        "requested": "[1.1.1, )",
-        "resolved": "1.1.1",
-        "contentHash": "+H2t/t34h6mhEoUvHi8yGXyuZ2GjSovcGYehJrS2MDm2XgmPfZL2Sdxg+uL2lKgZ4M6tTwKHIlxOob2bgh0NRQ==",
-        "dependencies": {
-          "Microsoft.SourceLink.AzureRepos.Git": "1.1.1",
-          "Microsoft.SourceLink.Bitbucket.Git": "1.1.1",
-          "Microsoft.SourceLink.GitHub": "1.1.1",
-          "Microsoft.SourceLink.GitLab": "1.1.1"
-        }
+        "requested": "[1.2.4, )",
+        "resolved": "1.2.4",
+        "contentHash": "Ch9U74tQA2fQH+U0hcYH7WyIFUfAq7jrjgSHVu2FAcYiMBtbrCMyq2nGA/ZZnB2jSaUeOOYiCjxeaDVB7Ssbdw=="
       },
       "Microsoft.Maui.Controls": {
         "type": "Direct",
-        "requested": "[8.0.60, )",
-        "resolved": "8.0.60",
-        "contentHash": "ifb/ioCDTB70V9pKAyyg8wPZ96NKcru9HIkZvszhUbmDrFkUD6DUqnjHljva+S7W3zDSZHD5yS2B4jJyffL7LQ==",
+        "requested": "[8.0.61, )",
+        "resolved": "8.0.61",
+        "contentHash": "PQ78C3U1rLpU5uYzVyKLE3z44UtNye0WqUcReBHItL7wEPeeTHVetOei9eklvJa3lk5KfhewhpxcF7fBHSiqFw==",
         "dependencies": {
-          "Microsoft.Maui.Controls.Build.Tasks": "8.0.60",
-          "Microsoft.Maui.Controls.Core": "8.0.60",
-          "Microsoft.Maui.Controls.Xaml": "8.0.60",
-          "Microsoft.Maui.Resizetizer": "8.0.60"
+          "Microsoft.Maui.Controls.Build.Tasks": "8.0.61",
+          "Microsoft.Maui.Controls.Core": "8.0.61",
+          "Microsoft.Maui.Controls.Xaml": "8.0.61",
+          "Microsoft.Maui.Resizetizer": "8.0.61"
         }
       },
       "Microsoft.Maui.Controls.Compatibility": {
         "type": "Direct",
-        "requested": "[8.0.60, )",
-        "resolved": "8.0.60",
-        "contentHash": "P3lCJCkFuFJxHdK+G82uUMJz/WwePffBPnEPRzuHCZSaQhxECfW7XQexEfcxNIxzESItyUYuz3+TlA2M6gE7eQ==",
+        "requested": "[8.0.61, )",
+        "resolved": "8.0.61",
+        "contentHash": "1q5+PmVwKB0dgK/YvYANgP7xXbTS4BjzrDIeiHXprRPma0DTAbZBM6CbJgQjqnHJCTzezLwAH4JAWsNZ5swX3g==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Microsoft.Maui.Controls.Core": "8.0.60",
-          "Microsoft.Maui.Controls.Xaml": "8.0.60"
+          "Microsoft.Maui.Controls.Core": "8.0.61",
+          "Microsoft.Maui.Controls.Xaml": "8.0.61"
         }
-      },
-      "Microsoft.Build.Tasks.Git": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "AT3HlgTjsqHnWpBHSNeR0KxbLZD7bztlZVj7I8vgeYG9SYqbeFGh0TM/KVtC6fg53nrWHl3VfZFvb5BiQFcY6Q=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -107,106 +96,65 @@
       },
       "Microsoft.Maui.Controls.Build.Tasks": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "VhxV1xrvCr/MIZibJMEArPejcxpefLdsMEui+5hN+h587lbkmVpiXt6HFXON8I7X67aoG//vfwq3LkpTnR+8Ug==",
+        "resolved": "8.0.61",
+        "contentHash": "myT34wX/7aB45NyRHeNcMCKbaSEPjQjMwMBp7ciBEVumkyJpPfV54vAd2VeF7KwWPgyK272kvKEyrLsCP8V12w==",
         "dependencies": {
-          "Microsoft.Maui.Controls.Core": "8.0.60",
-          "Microsoft.Maui.Controls.Xaml": "8.0.60"
+          "Microsoft.Maui.Controls.Core": "8.0.61",
+          "Microsoft.Maui.Controls.Xaml": "8.0.61"
         }
       },
       "Microsoft.Maui.Controls.Core": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "JeWH+C4H8Mi3NYbd7+r2BealfyFPyrb540po8Vwc7pSnUVDr6Rc7arv+wBpyzy3E3zYSoGQGNkAOO4KRk/SjEw==",
+        "resolved": "8.0.61",
+        "contentHash": "RoLgNnGQuaU7a5YCkNqTCf9SICnq7N6Zkzqp8J0KRh5XTNzTrlSr1w5swNo4LeEpDicVozKpa4JEVh5iCVT39w==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.Extensions.Logging": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Microsoft.Maui.Core": "8.0.60"
+          "Microsoft.Maui.Core": "8.0.61"
         }
       },
       "Microsoft.Maui.Controls.Xaml": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "1BBwBqvyXay6luWZfgIHL1ae9HiLXvW/0lqzQTRRmpR4bQOi0W2Sdl9UnWsXbAph+VH59FecP2she0XEE9hMtQ==",
+        "resolved": "8.0.61",
+        "contentHash": "dNeGQ8mQ8fE+znZtcsC40LIvfE7wls+pJA9J/Erdnai1VfFUTjPYVS0G1t+RGCmSHgVNC+k0Ds3XZjAZuV6pVA==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
-          "Microsoft.Maui.Controls.Core": "8.0.60",
-          "Microsoft.Maui.Core": "8.0.60"
+          "Microsoft.Maui.Controls.Core": "8.0.61",
+          "Microsoft.Maui.Core": "8.0.61"
         }
       },
       "Microsoft.Maui.Core": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "HucIhys/bKUJnRWiuslgjD2w/koDQbBZOgRqtKr6aKCGX165jQzz02roNVjZrpby4i8WddWlZMzRHGYonuGkJA==",
+        "resolved": "8.0.61",
+        "contentHash": "oHmmZYQJpFeFFKf11WsFRUDa+kdiDS1R1UQTot3g8HFTIGChtzSnMd3Z2VxDP3Ch3Lw6l89WiqstNbRS7tpvUQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "Microsoft.Extensions.Logging": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.0",
-          "Microsoft.Maui.Essentials": "8.0.60",
-          "Microsoft.Maui.Graphics": "8.0.60"
+          "Microsoft.Maui.Essentials": "8.0.61",
+          "Microsoft.Maui.Graphics": "8.0.61"
         }
       },
       "Microsoft.Maui.Essentials": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "LK/ISlh4491LhlhNGl0qXtkeho0yuq/oLszPpgNrr9ZT4HbqAIc5NcuSGtXqgWoRZBeDu1IMG2slb0wqqYVZ8Q==",
+        "resolved": "8.0.61",
+        "contentHash": "/libE5+OEDF8eErZOmp+ncjvt8wME51wxA02AzkQ2c60Z0UU/qOaSejPs4H+0y3AhVMb1VTBdz/eKKXfZVZPxA==",
         "dependencies": {
-          "Microsoft.Maui.Graphics": "8.0.60"
+          "Microsoft.Maui.Graphics": "8.0.61"
         }
       },
       "Microsoft.Maui.Graphics": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "rPL2ZW7iV6k+g9S4+3GhCC88/V0F7AIUx5fDEGz1BNY3VUw4+p/SVnvDwiY1tRROT4KMvAjrhUwjfZZ0Z7g+Nw=="
+        "resolved": "8.0.61",
+        "contentHash": "pXu35x7E10GyXr5J20Er8cEY123WCuyXJn7j9Zd+/u0gKURnsTWhm5JaGnYqBB/whwrM6YEygX8120LFXmWvPQ=="
       },
       "Microsoft.Maui.Resizetizer": {
         "type": "Transitive",
-        "resolved": "8.0.60",
-        "contentHash": "w/xpi7KDX4qjSKH7fTpW5KS0Yz+SBanjTLxnAVLIw3e3zzgqB+b25wxY/31QO6cZfhxmm5aweh4unAbtN0KbTQ=="
-      },
-      "Microsoft.SourceLink.AzureRepos.Git": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "qB5urvw9LO2bG3eVAkuL+2ughxz2rR7aYgm2iyrB8Rlk9cp2ndvGRCvehk3rNIhRuNtQaeKwctOl1KvWiklv5w==",
-        "dependencies": {
-          "Microsoft.Build.Tasks.Git": "1.1.1",
-          "Microsoft.SourceLink.Common": "1.1.1"
-        }
-      },
-      "Microsoft.SourceLink.Bitbucket.Git": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "cDzxXwlyWpLWaH0em4Idj0H3AmVo3L/6xRXKssYemx+7W52iNskj/SQ4FOmfCb8YQt39otTDNMveCZzYtMoucQ==",
-        "dependencies": {
-          "Microsoft.Build.Tasks.Git": "1.1.1",
-          "Microsoft.SourceLink.Common": "1.1.1"
-        }
-      },
-      "Microsoft.SourceLink.Common": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "WMcGpWKrmJmzrNeuaEb23bEMnbtR/vLmvZtkAP5qWu7vQsY59GqfRJd65sFpBszbd2k/bQ8cs8eWawQKAabkVg=="
-      },
-      "Microsoft.SourceLink.GitHub": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "IaJGnOv/M7UQjRJks7B6p7pbPnOwisYGOIzqCz5ilGFTApZ3ktOR+6zJ12ZRPInulBmdAf1SrGdDG2MU8g6XTw==",
-        "dependencies": {
-          "Microsoft.Build.Tasks.Git": "1.1.1",
-          "Microsoft.SourceLink.Common": "1.1.1"
-        }
-      },
-      "Microsoft.SourceLink.GitLab": {
-        "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "tvsg47DDLqqedlPeYVE2lmiTpND8F0hkrealQ5hYltSmvruy/Gr5nHAKSsjyw5L3NeM/HLMI5ORv7on/M4qyZw==",
-        "dependencies": {
-          "Microsoft.Build.Tasks.Git": "1.1.1",
-          "Microsoft.SourceLink.Common": "1.1.1"
-        }
+        "resolved": "8.0.61",
+        "contentHash": "Tr5nKvpriyPVhw+O5edcMa6WECMAfbqBLKOIQgELknT6xltlLmECv9bFYMj8K7p+Feie/Bf+FGTcZkv+fDyADA=="
       }
     }
   }
