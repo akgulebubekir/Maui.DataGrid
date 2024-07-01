@@ -354,6 +354,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Determines via reflection if the column's data type is sortable.
     /// If you want to disable sorting for specific column please use <see cref="SortingEnabled"/> property.
     /// </summary>
+    /// <returns>Boolean value representing whether the column is sortable.</returns>
     public bool IsSortable()
     {
         if (_isSortable is not null)

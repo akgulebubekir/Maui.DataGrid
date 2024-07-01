@@ -2,6 +2,9 @@ namespace Maui.DataGrid.Sample;
 
 using Maui.DataGrid.Sample.ViewModels;
 
+/// <summary>
+/// Codebehind for the SettingsPopup.
+/// </summary>
 public partial class SettingsPopup
 {
     private readonly MainViewModel _viewModel;

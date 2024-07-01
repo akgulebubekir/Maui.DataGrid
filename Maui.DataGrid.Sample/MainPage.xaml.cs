@@ -2,6 +2,9 @@ namespace Maui.DataGrid.Sample;
 
 using Maui.DataGrid.Sample.ViewModels;
 
+/// <summary>
+/// Codebehind for the MainPage.
+/// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class MainPage
 {
