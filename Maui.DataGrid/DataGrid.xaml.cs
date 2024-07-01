@@ -866,7 +866,7 @@ public partial class DataGrid
 #pragma warning disable CA2227 // Collection properties should be read only
 
     /// <summary>
-    /// Selected Row color.
+    /// Gets or sets selected Row color.
     /// </summary>
     public Color ActiveRowColor
     {
@@ -875,7 +875,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// BackgroundColor of the column header
+    /// Gets or sets backgroundColor of the column header
     /// Default value is <see cref="Colors.White"/>.
     /// </summary>
     public Color HeaderBackground
@@ -885,7 +885,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// BackgroundColor of the footer that contains pagination elements
+    /// Gets or sets backgroundColor of the footer that contains pagination elements
     /// Default value is <see cref="Colors.White"/>.
     /// </summary>
     public Color FooterBackground
@@ -895,7 +895,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Border color
+    /// Gets or sets border color
     /// Default Value is Black.
     /// </summary>
     public Color BorderColor
@@ -905,7 +905,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// ItemSizingStrategy
+    /// Gets or sets <see cref="ItemSizingStrategy"/>
     /// Default Value is <see cref="ItemSizingStrategy.MeasureFirstItem"/>, except on Android.
     /// </summary>
     public ItemSizingStrategy ItemSizingStrategy
@@ -915,7 +915,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// The row to set to edit mode.
+    /// Gets or sets the row to set to edit mode.
     /// </summary>
     public object RowToEdit
     {
@@ -924,7 +924,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Background color of the rows. It repeats colors consecutively for rows.
+    /// Gets or sets background color of the rows. It repeats colors consecutively for rows.
     /// </summary>
     public IColorProvider RowsBackgroundColorPalette
     {
@@ -933,7 +933,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Text color of the rows. It repeats colors consecutively for rows.
+    /// Gets or sets text color of the rows. It repeats colors consecutively for rows.
     /// </summary>
     public IColorProvider RowsTextColorPalette
     {
@@ -942,7 +942,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Executes the command when a row is tapped. Works with selection disabled.
+    /// Gets or sets executes the command when a row is tapped. Works with selection disabled.
     /// </summary>
     public ICommand RowTappedCommand
     {
@@ -951,7 +951,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// ItemsSource of the DataGrid.
+    /// Gets or sets ItemsSource of the DataGrid.
     /// </summary>
     public IEnumerable ItemsSource
     {
@@ -960,7 +960,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Columns.
+    /// Gets or sets columns of the DataGrid.
     /// </summary>
     public ObservableCollection<DataGridColumn> Columns
     {
@@ -969,7 +969,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Font size of the cells.
+    /// Gets or sets font size of the cells.
     /// It does not sets header font size. Use <see cref="HeaderLabelStyle"/> to set header font size.
     /// </summary>
     [TypeConverter(typeof(FontSizeConverter))]
@@ -980,7 +980,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets the font family.
+    /// Gets or sets the font family.
     /// It does not sets header font family. Use <see cref="HeaderLabelStyle"/> to set header font size.
     /// </summary>
     public string FontFamily
@@ -1008,7 +1008,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets whether the page size picker is visible.
+    /// Gets or sets a value indicating whether the page size picker is visible.
     /// </summary>
     public bool PageSizeVisible
     {
@@ -1026,7 +1026,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets the row height.
+    /// Gets or sets the row height.
     /// </summary>
     public int RowHeight
     {
@@ -1044,7 +1044,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets header height.
+    /// Gets or sets header height.
     /// </summary>
     public int HeaderHeight
     {
@@ -1053,6 +1053,7 @@ public partial class DataGrid
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether sorting is enabled.
     /// Obsolete. Use <see cref="SortingEnabled"/> instead.
     /// </summary>
     [Obsolete("IsSortable is obsolete. Please use SortingEnabled instead.")]
@@ -1063,7 +1064,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets if the grid allows sorting. Default value is true.
+    /// Gets or sets a value indicating whether gets or sets if the grid allows sorting. Default value is true.
     /// Sortable columns must implement <see cref="IComparable"/>
     /// If you want to enable or disable sorting for specific column please use <see cref="DataGridColumn.SortingEnabled"/> property.
     /// </summary>
@@ -1083,7 +1084,8 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables pagination in dataGrid. Default value is False.
+    /// Gets or sets a value indicating whether pagination is enabled in the DataGrid.
+    /// Default value is False.
     /// </summary>
     public bool PaginationEnabled
     {
@@ -1092,7 +1094,8 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets whether selection is enabled for the DataGrid. Default value is true.
+    /// Gets or sets a value indicating whether sets whether selection is enabled for the DataGrid.
+    /// Default value is true.
     /// </summary>
     [Obsolete($"SelectionEnabled is obsolete. Please use {nameof(SelectionMode)} instead.")]
     public bool SelectionEnabled
@@ -1102,7 +1105,8 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Set the SelectionMode for the DataGrid. Default value is Single.
+    /// Gets or sets set the SelectionMode for the DataGrid.
+    /// Default value is Single.
     /// </summary>
     public SelectionMode SelectionMode
     {
@@ -1111,7 +1115,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Selected item.
+    /// Gets or sets the selected item.
     /// </summary>
     public object? SelectedItem
     {
@@ -1120,7 +1124,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Selected items.
+    /// Gets or sets the selected items.
     /// </summary>
     public IList<object> SelectedItems
     {
@@ -1129,7 +1133,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Executes the command when refreshing via pull.
+    /// Gets or sets the command to execute when refreshing via a pull gesture.
     /// </summary>
     public ICommand PullToRefreshCommand
     {
@@ -1156,7 +1160,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Displays an ActivityIndicator when is refreshing.
+    /// Gets or sets a value indicating whether to display an ActivityIndicator.
     /// </summary>
     public bool IsRefreshing
     {
@@ -1165,7 +1169,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables refreshing the DataGrid by a pull down command.
+    /// Gets or sets a value indicating whether refreshing the DataGrid by a pull down command is enabled.
     /// </summary>
     public bool RefreshingEnabled
     {
@@ -1174,7 +1178,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Border thickness for cells.
+    /// Gets or sets border thickness for cells.
     /// </summary>
     public Thickness BorderThickness
     {
@@ -1183,7 +1187,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Determines to show the borders of header cells.
+    /// Gets or sets a value indicating whether to show the borders of header cells.
     /// Default value is true.
     /// </summary>
     public bool HeaderBordersVisible
@@ -1193,7 +1197,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Column index and sorting order for the DataGrid.
+    /// Gets or sets column index and sorting order for the DataGrid.
     /// </summary>
     public SortData? SortedColumnIndex
     {
@@ -1202,7 +1206,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Style of the header label.
+    /// Gets or sets style of the header label.
     /// Style's <see cref="Style.TargetType"/> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
@@ -1212,7 +1216,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sort icon.
+    /// Gets or sets sort icon.
     /// </summary>
     public Polygon SortIcon
     {
@@ -1221,7 +1225,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Style of the sort icon
+    /// Gets or sets style of the sort icon
     /// Style's <see cref="Style.TargetType"/> must be Polygon.
     /// </summary>
     public Style SortIconStyle
@@ -1231,7 +1235,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// View to show when there is no data to display.
+    /// Gets or sets view to show when there is no data to display.
     /// </summary>
     public View NoDataView
     {

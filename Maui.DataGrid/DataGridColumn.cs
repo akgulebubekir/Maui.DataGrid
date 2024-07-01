@@ -209,7 +209,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
 
     /// <summary>
-    /// Width of the column. Like Grid, you can use <see cref="GridUnitType.Absolute"/>, <see cref="GridUnitType.Star"/>, or <see cref="GridUnitType.Auto"/>.
+    /// Gets or sets width of the column.
+    /// Like Grid, you can use <see cref="GridUnitType.Absolute"/>, <see cref="GridUnitType.Star"/>, or <see cref="GridUnitType.Auto"/>.
+    /// Be careful when using Auto. Columns may become misaligned.
     /// </summary>
     [TypeConverter(typeof(GridLengthTypeConverter))]
     public GridLength Width
@@ -219,7 +221,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Column title.
+    /// Gets or sets column title.
     /// </summary>
     public string Title
     {
@@ -228,7 +230,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Formatted title for column.
+    /// Gets or sets formatted title for column.
     /// <example>
     /// <code>
     /// <![CDATA[
@@ -249,7 +251,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Property name to bind in the object.
+    /// Gets or sets property name to bind in the object.
     /// </summary>
     public string PropertyName
     {
@@ -258,7 +260,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Is this column visible?.
+    /// Gets or sets a value indicating whether this column visible.
     /// </summary>
     public bool IsVisible
     {
@@ -267,7 +269,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// String format for the cell.
+    /// Gets or sets string format for the cell.
     /// </summary>
     public string? StringFormat
     {
@@ -276,7 +278,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Cell template. Default value is <see cref="Label"/> with binding <see cref="PropertyName"/>.
+    /// Gets or sets cell template.
+    /// Default value is <see cref="Label"/> with binding <see cref="PropertyName"/>.
     /// </summary>
     public DataTemplate? CellTemplate
     {
@@ -285,7 +288,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Edit cell template. Default value is <see cref="Entry"/> with binding <see cref="PropertyName"/>.
+    /// Gets or sets edit cell template.
+    /// Default value is <see cref="Entry"/> with binding <see cref="PropertyName"/>.
     /// </summary>
     public DataTemplate? EditCellTemplate
     {
@@ -294,7 +298,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// LineBreakModeProperty for the text. WordWrap by default.
+    /// Gets or sets <see cref="LineBreakMode"/> for the text.
+    /// Default value is <see cref="LineBreakMode.WordWrap"/>.
     /// </summary>
     public LineBreakMode LineBreakMode
     {
@@ -303,7 +308,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Horizontal alignment of the cell content.
+    /// Gets or sets horizontal alignment of the cell content.
     /// </summary>
     public LayoutOptions HorizontalContentAlignment
     {
@@ -312,7 +317,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Vertical alignment of the cell content.
+    /// Gets or sets vertical alignment of the cell content.
     /// </summary>
     public LayoutOptions VerticalContentAlignment
     {
@@ -321,7 +326,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Defines if the column is sortable. Default is true
+    /// Gets or sets a value indicating whether the column is sortable.
+    /// Default is true.
     /// Sortable columns must implement <see cref="IComparable"/>.
     /// </summary>
     public bool SortingEnabled
@@ -331,7 +337,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Label Style of the header. <see cref="Style.TargetType"/> must be Label.
+    /// Gets or sets label style of the header. <see cref="Style.TargetType"/> must be Label.
     /// </summary>
     public Style HeaderLabelStyle
     {
