@@ -4,8 +4,8 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Maui.Views;
-using Models;
-using Utils;
+using Maui.DataGrid.Sample.Models;
+using Maui.DataGrid.Sample.Utils;
 
 public class MainViewModel : ViewModelBase
 {
