@@ -22,29 +22,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <AssemblyVersion>4.0.0.4</AssemblyVersion>
     <Version>4.0.4</Version>
-    <Configurations>Debug;Release;Test</Configurations>
-    <MauiVersion>8.0.61</MauiVersion>
-
-    <!-- Generate the lock file -->
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-
-    <!-- Restore the exact packages as listed in the lock file -->
-    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
 
-  <!-- Static Analysis Settings -->
+  <!-- Package Validation Settings -->
   <PropertyGroup>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Features>strict</Features>
-    <Deterministic>true</Deterministic>
-	  <WarningLevel>9999</WarningLevel>
-    <AnalysisLevel>latest-all</AnalysisLevel>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
     <PackageValidationBaselineVersion>4.0.4</PackageValidationBaselineVersion>
