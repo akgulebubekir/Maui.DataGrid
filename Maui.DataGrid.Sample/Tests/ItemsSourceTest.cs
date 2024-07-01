@@ -12,12 +12,12 @@ public class ItemsSourceTest
     private readonly Team _dummyTeam = new()
     {
         Name = "Not Exists",
-        Conf = "",
-        Div = "",
-        Home = "",
-        Last10 = "",
-        Logo = "",
-        Road = "",
+        Conf = string.Empty,
+        Div = string.Empty,
+        Home = string.Empty,
+        Last10 = string.Empty,
+        Logo = string.Empty,
+        Road = string.Empty,
         Streak = new Streak { NumStreak = 3, Result = Result.Lost },
     };
 
