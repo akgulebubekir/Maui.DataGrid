@@ -231,7 +231,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<int>>(
-            defaultValue: [.. DefaultPageSizeList],
+            defaultValue: DefaultPageSizeList,
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -610,14 +610,15 @@ public partial class DataGrid
 
     #region Fields
 
-    private static readonly SortedSet<int> DefaultPageSizeList = [5, 10, 50, 100, 200, 1000];
+    private static readonly SortedSet<int> DefaultPageSizeSet = [5, 10, 50, 100, 200, 1000];
+    private static readonly IList<int> DefaultPageSizeList = [.. DefaultPageSizeSet];
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
 
-    private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeList);
+    private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
 
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
