@@ -219,7 +219,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Column title
+    /// Column title.
     /// </summary>
     public string Title
     {
@@ -228,7 +228,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Formatted title for column
+    /// Formatted title for column.
     /// <example>
     /// <code>
     /// <![CDATA[
@@ -249,7 +249,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Property name to bind in the object
+    /// Property name to bind in the object.
     /// </summary>
     public string PropertyName
     {
@@ -258,7 +258,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Is this column visible?
+    /// Is this column visible?.
     /// </summary>
     public bool IsVisible
     {
@@ -267,7 +267,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// String format for the cell
+    /// String format for the cell.
     /// </summary>
     public string? StringFormat
     {
@@ -276,7 +276,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Cell template. Default value is <see cref="Label"/> with binding <see cref="PropertyName"/>
+    /// Cell template. Default value is <see cref="Label"/> with binding <see cref="PropertyName"/>.
     /// </summary>
     public DataTemplate? CellTemplate
     {
@@ -285,7 +285,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Edit cell template. Default value is <see cref="Entry"/> with binding <see cref="PropertyName"/>
+    /// Edit cell template. Default value is <see cref="Entry"/> with binding <see cref="PropertyName"/>.
     /// </summary>
     public DataTemplate? EditCellTemplate
     {
@@ -303,7 +303,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Horizontal alignment of the cell content
+    /// Horizontal alignment of the cell content.
     /// </summary>
     public LayoutOptions HorizontalContentAlignment
     {
@@ -312,7 +312,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
-    /// Vertical alignment of the cell content
+    /// Vertical alignment of the cell content.
     /// </summary>
     public LayoutOptions VerticalContentAlignment
     {
@@ -322,7 +322,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     /// <summary>
     /// Defines if the column is sortable. Default is true
-    /// Sortable columns must implement <see cref="IComparable"/>
+    /// Sortable columns must implement <see cref="IComparable"/>.
     /// </summary>
     public bool SortingEnabled
     {
@@ -345,7 +345,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     /// <summary>
     /// Determines via reflection if the column's data type is sortable.
-    /// If you want to disable sorting for specific column please use <see cref="SortingEnabled"/> property
+    /// If you want to disable sorting for specific column please use <see cref="SortingEnabled"/> property.
     /// </summary>
     public bool IsSortable()
     {

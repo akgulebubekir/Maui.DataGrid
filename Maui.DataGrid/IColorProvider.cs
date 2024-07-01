@@ -6,10 +6,10 @@
 public interface IColorProvider
 {
     /// <summary>
-    /// Determines the Color for the row
+    /// Determines the Color for the row.
     /// </summary>
-    /// <param name="rowIndex">Index of the row based on DataSource</param>
-    /// <param name="item">Item on the index</param>
-    /// <returns>Color for the row</returns>
+    /// <param name="rowIndex">Index of the row based on DataSource.</param>
+    /// <param name="item">Item on the index.</param>
+    /// <returns>Color for the row.</returns>
     Color GetColor(int rowIndex, object item);
 }

@@ -13,7 +13,7 @@ using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
 /// <summary>
-/// DataGrid component for .NET MAUI
+/// DataGrid component for .NET MAUI.
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
@@ -204,7 +204,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown
+    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown.
     /// </summary>
     private void UpdatePageSizeList()
     {
@@ -270,11 +270,11 @@ public partial class DataGrid
     #region Methods
 
     /// <summary>
-    /// Scrolls to the row
+    /// Scrolls to the row.
     /// </summary>
-    /// <param name="item">Item to scroll</param>
-    /// <param name="position">Position of the row in screen</param>
-    /// <param name="animated">animated</param>
+    /// <param name="item">Item to scroll.</param>
+    /// <param name="position">Position of the row in screen.</param>
+    /// <param name="animated">animated.</param>
     public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => _collectionView.ScrollTo(item, position: position, animate: animated);
 
     #endregion Methods
@@ -722,7 +722,7 @@ public partial class DataGrid
             });
 
     /// <summary>
-    /// Gets or sets the parameter to pass to the <see cref="PullToRefreshCommand"/>
+    /// Gets or sets the parameter to pass to the <see cref="PullToRefreshCommand"/>.
     /// </summary>
     public static readonly BindableProperty PullToRefreshCommandParameterProperty =
         BindablePropertyExtensions.Create<DataGrid, object>();
@@ -866,7 +866,7 @@ public partial class DataGrid
 #pragma warning disable CA2227 // Collection properties should be read only
 
     /// <summary>
-    /// Selected Row color
+    /// Selected Row color.
     /// </summary>
     public Color ActiveRowColor
     {
@@ -876,7 +876,7 @@ public partial class DataGrid
 
     /// <summary>
     /// BackgroundColor of the column header
-    /// Default value is <see cref="Colors.White"/>
+    /// Default value is <see cref="Colors.White"/>.
     /// </summary>
     public Color HeaderBackground
     {
@@ -886,7 +886,7 @@ public partial class DataGrid
 
     /// <summary>
     /// BackgroundColor of the footer that contains pagination elements
-    /// Default value is <see cref="Colors.White"/>
+    /// Default value is <see cref="Colors.White"/>.
     /// </summary>
     public Color FooterBackground
     {
@@ -896,7 +896,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Border color
-    /// Default Value is Black
+    /// Default Value is Black.
     /// </summary>
     public Color BorderColor
     {
@@ -906,7 +906,7 @@ public partial class DataGrid
 
     /// <summary>
     /// ItemSizingStrategy
-    /// Default Value is <see cref="ItemSizingStrategy.MeasureFirstItem"/>, except on Android
+    /// Default Value is <see cref="ItemSizingStrategy.MeasureFirstItem"/>, except on Android.
     /// </summary>
     public ItemSizingStrategy ItemSizingStrategy
     {
@@ -951,7 +951,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// ItemsSource of the DataGrid
+    /// ItemsSource of the DataGrid.
     /// </summary>
     public IEnumerable ItemsSource
     {
@@ -960,7 +960,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Columns
+    /// Columns.
     /// </summary>
     public ObservableCollection<DataGridColumn> Columns
     {
@@ -990,7 +990,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets the page size
+    /// Gets or sets the page size.
     /// </summary>
     public int PageSize
     {
@@ -999,7 +999,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets the list of available page sizes
+    /// Gets or sets the list of available page sizes.
     /// </summary>
     public IList<int> PageSizeList
     {
@@ -1008,7 +1008,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets whether the page size picker is visible
+    /// Gets or sets whether the page size picker is visible.
     /// </summary>
     public bool PageSizeVisible
     {
@@ -1017,7 +1017,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets the pagination stepper style
+    /// Gets or sets the pagination stepper style.
     /// </summary>
     public Style? PaginationStepperStyle
     {
@@ -1026,7 +1026,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets the row height
+    /// Sets the row height.
     /// </summary>
     public int RowHeight
     {
@@ -1035,7 +1035,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets footer height
+    /// Gets or sets footer height.
     /// </summary>
     public int FooterHeight
     {
@@ -1044,7 +1044,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets header height
+    /// Sets header height.
     /// </summary>
     public int HeaderHeight
     {
@@ -1065,7 +1065,7 @@ public partial class DataGrid
     /// <summary>
     /// Gets or sets if the grid allows sorting. Default value is true.
     /// Sortable columns must implement <see cref="IComparable"/>
-    /// If you want to enable or disable sorting for specific column please use <see cref="DataGridColumn.SortingEnabled"/> property
+    /// If you want to enable or disable sorting for specific column please use <see cref="DataGridColumn.SortingEnabled"/> property.
     /// </summary>
     public bool SortingEnabled
     {
@@ -1074,7 +1074,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets the page number. Default value is 1
+    /// Gets or sets the page number. Default value is 1.
     /// </summary>
     public int PageNumber
     {
@@ -1083,7 +1083,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables pagination in dataGrid. Default value is False
+    /// Enables pagination in dataGrid. Default value is False.
     /// </summary>
     public bool PaginationEnabled
     {
@@ -1092,7 +1092,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sets whether selection is enabled for the DataGrid. Default value is true
+    /// Sets whether selection is enabled for the DataGrid. Default value is true.
     /// </summary>
     [Obsolete($"SelectionEnabled is obsolete. Please use {nameof(SelectionMode)} instead.")]
     public bool SelectionEnabled
@@ -1102,7 +1102,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Set the SelectionMode for the DataGrid. Default value is Single
+    /// Set the SelectionMode for the DataGrid. Default value is Single.
     /// </summary>
     public SelectionMode SelectionMode
     {
@@ -1111,7 +1111,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Selected item
+    /// Selected item.
     /// </summary>
     public object? SelectedItem
     {
@@ -1120,7 +1120,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Selected items
+    /// Selected items.
     /// </summary>
     public IList<object> SelectedItems
     {
@@ -1129,7 +1129,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Executes the command when refreshing via pull
+    /// Executes the command when refreshing via pull.
     /// </summary>
     public ICommand PullToRefreshCommand
     {
@@ -1138,7 +1138,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets the parameter to pass to the <see cref="PullToRefreshCommand"/>
+    /// Gets or sets the parameter to pass to the <see cref="PullToRefreshCommand"/>.
     /// </summary>
     public object PullToRefreshCommandParameter
     {
@@ -1156,7 +1156,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Displays an ActivityIndicator when is refreshing
+    /// Displays an ActivityIndicator when is refreshing.
     /// </summary>
     public bool IsRefreshing
     {
@@ -1165,7 +1165,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Enables refreshing the DataGrid by a pull down command
+    /// Enables refreshing the DataGrid by a pull down command.
     /// </summary>
     public bool RefreshingEnabled
     {
@@ -1174,7 +1174,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Border thickness for cells
+    /// Border thickness for cells.
     /// </summary>
     public Thickness BorderThickness
     {
@@ -1184,7 +1184,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Determines to show the borders of header cells.
-    /// Default value is true
+    /// Default value is true.
     /// </summary>
     public bool HeaderBordersVisible
     {
@@ -1193,7 +1193,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Column index and sorting order for the DataGrid
+    /// Column index and sorting order for the DataGrid.
     /// </summary>
     public SortData? SortedColumnIndex
     {
@@ -1212,7 +1212,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Sort icon
+    /// Sort icon.
     /// </summary>
     public Polygon SortIcon
     {
@@ -1231,7 +1231,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// View to show when there is no data to display
+    /// View to show when there is no data to display.
     /// </summary>
     public View NoDataView
     {
@@ -1240,7 +1240,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets the page count
+    /// Gets the page count.
     /// </summary>
     public int PageCount
     {
