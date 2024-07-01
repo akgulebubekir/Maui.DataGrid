@@ -11,7 +11,7 @@ public partial class MainPage
 
         BindingContext = new MainViewModel
         {
-            Columns = _dataGrid1.Columns
+            Columns = _dataGrid1.Columns,
         };
     }
 }

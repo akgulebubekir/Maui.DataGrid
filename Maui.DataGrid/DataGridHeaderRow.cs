@@ -197,9 +197,9 @@ internal sealed class DataGridHeaderRow : Grid
                     new TapGestureRecognizer
                     {
                         Command = _sortCommand,
-                        CommandParameter = column
-                    }
-                }
+                        CommandParameter = column,
+                    },
+                },
             };
 
             cellContent.SetColumn(column.SortingIconContainer, 1);

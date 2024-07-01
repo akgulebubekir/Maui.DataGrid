@@ -18,7 +18,7 @@ public class ItemsSourceTest
         Last10 = "",
         Logo = "",
         Road = "",
-        Streak = new Streak { NumStreak = 3, Result = Result.Lost }
+        Streak = new Streak { NumStreak = 3, Result = Result.Lost },
     };
 
     [Fact]

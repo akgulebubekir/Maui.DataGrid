@@ -219,7 +219,7 @@ internal sealed class DataGridRow : Grid
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
                 FontSize = DataGrid.FontSize,
-                FontFamily = DataGrid.FontFamily
+                FontFamily = DataGrid.FontFamily,
             };
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
@@ -288,7 +288,7 @@ internal sealed class DataGridRow : Grid
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
-            FontFamily = DataGrid.FontFamily
+            FontFamily = DataGrid.FontFamily,
         };
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
@@ -326,7 +326,7 @@ internal sealed class DataGridRow : Grid
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
             FontFamily = DataGrid.FontFamily,
-            Keyboard = Keyboard.Numeric
+            Keyboard = Keyboard.Numeric,
         };
 
         entry.TextChanged += (s, e) =>

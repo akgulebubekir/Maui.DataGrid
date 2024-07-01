@@ -18,5 +18,5 @@ public enum SortingOrder
     /// <summary>
     /// Descending sorting order.
     /// </summary>
-    Descendant = 2
+    Descendant = 2,
 }

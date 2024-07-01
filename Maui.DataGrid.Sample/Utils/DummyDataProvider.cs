@@ -51,7 +51,7 @@ internal static class DummyDataProvider
                     Streak = new Streak
                     {
                         Result = (Result)RandomNumber.Next(0, 2),
-                        NumStreak = RandomNumber.Next(0, 10)
+                        NumStreak = RandomNumber.Next(0, 10),
                     },
                     Logo = realTeam.Logo,
                 };

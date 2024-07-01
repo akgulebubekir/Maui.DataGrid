@@ -118,5 +118,5 @@ public class Streak : IComparable
 public enum Result
 {
     Lost = 0,
-    Won = 1
+    Won = 1,
 }

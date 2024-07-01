@@ -60,8 +60,8 @@ internal static class TestExtensions
         {
             Setters =
             {
-                new Setter() { Property = property, Value = value }
-            }
+                new Setter() { Property = property, Value = value },
+            },
         };
 
         element.DispatchIfRequired(() =>
