@@ -1361,7 +1361,7 @@ public partial class DataGrid
     /// </summary>
     private void UpdatePageSizeList()
     {
-        if (PageSizeList.Contains(PageSize))
+        if (_pageSizeList.Contains(PageSize))
         {
             return;
         }
