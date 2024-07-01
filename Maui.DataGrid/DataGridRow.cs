@@ -37,7 +37,8 @@ internal sealed class DataGridRow : Grid
     /// Gets or sets the background color of the cells within this DataGridRow.
     /// </summary>
     public static readonly BindableProperty CellBackgroundColorProperty =
-        BindablePropertyExtensions.Create<DataGridRow, Color>(Colors.White,
+        BindablePropertyExtensions.Create<DataGridRow, Color>(
+            defaultValue: Colors.White,
             propertyChanged: (b, o, n) =>
             {
                 if (b is not DataGridRow self)
@@ -58,7 +59,8 @@ internal sealed class DataGridRow : Grid
     /// Gets or sets the text color of the cells within this DataGridRow.
     /// </summary>
     public static readonly BindableProperty CellTextColorProperty =
-        BindablePropertyExtensions.Create<DataGridRow, Color>(Colors.White,
+        BindablePropertyExtensions.Create<DataGridRow, Color>(
+            defaultValue: Colors.White,
             propertyChanged: (b, o, n) =>
             {
                 if (b is not DataGridRow self)
@@ -206,8 +208,8 @@ internal sealed class DataGridRow : Grid
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
-                cell.SetBinding(BindingContextProperty,
-                    new Binding(col.PropertyName, source: BindingContext));
+                Binding binding = new(col.PropertyName, source: BindingContext);
+                cell.SetBinding(BindingContextProperty, binding);
             }
         }
         else
@@ -224,8 +226,8 @@ internal sealed class DataGridRow : Grid
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
-                cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, stringFormat: col.StringFormat, source: BindingContext));
+                Binding binding = new(col.PropertyName, stringFormat: col.StringFormat, source: BindingContext);
+                cell.SetBinding(Label.TextProperty, binding);
             }
         }
 
@@ -273,8 +275,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            cell.SetBinding(BindingContextProperty,
-                new Binding(col.PropertyName, source: BindingContext));
+            Binding binding = new(col.PropertyName, source: BindingContext);
+            cell.SetBinding(BindingContextProperty, binding);
         }
 
         return cell;
@@ -293,8 +295,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            entry.SetBinding(Entry.TextProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext);
+            entry.SetBinding(Entry.TextProperty, binding);
         }
 
         return entry;
@@ -310,8 +312,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            checkBox.SetBinding(CheckBox.IsCheckedProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, source: BindingContext);
+            checkBox.SetBinding(CheckBox.IsCheckedProperty, binding);
         }
 
         return checkBox;
@@ -339,8 +341,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            entry.SetBinding(Entry.TextProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, source: BindingContext);
+            entry.SetBinding(Entry.TextProperty, binding);
         }
 
         return entry;
@@ -355,8 +357,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            datePicker.SetBinding(DatePicker.DateProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, source: BindingContext);
+            datePicker.SetBinding(DatePicker.DateProperty, binding);
         }
 
         return datePicker;

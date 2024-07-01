@@ -291,7 +291,8 @@ public partial class DataGrid
     /// Gets or sets the background color of the header.
     /// </summary>
     public static readonly BindableProperty HeaderBackgroundProperty =
-        BindablePropertyExtensions.Create<DataGrid, Color>(Colors.White,
+        BindablePropertyExtensions.Create<DataGrid, Color>(
+            defaultValue: Colors.White,
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self && self._headerRow != null && !self.HeaderBordersVisible)
@@ -322,7 +323,8 @@ public partial class DataGrid
     /// Gets or sets the color of the border.
     /// </summary>
     public static readonly BindableProperty BorderColorProperty =
-        BindablePropertyExtensions.Create<DataGrid, Color>(Colors.Black,
+        BindablePropertyExtensions.Create<DataGrid, Color>(
+            defaultValue: Colors.Black,
             propertyChanged: (b, _, _) =>
             {
                 var self = (DataGrid)b;
@@ -349,7 +351,8 @@ public partial class DataGrid
     /// Gets or sets the background color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
-        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.White },
+        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(
+            defaultValue: new PaletteCollection { Colors.White },
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -362,7 +365,8 @@ public partial class DataGrid
     /// Gets or sets the text color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsTextColorPaletteProperty =
-        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(new PaletteCollection { Colors.Black },
+        BindablePropertyExtensions.Create<DataGrid, IColorProvider>(
+            defaultValue: new PaletteCollection { Colors.Black },
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -375,7 +379,8 @@ public partial class DataGrid
     /// Gets or sets the Columns for the DataGrid.
     /// </summary>
     public static readonly BindableProperty ColumnsProperty =
-        BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>([],
+        BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>(
+            defaultValue: [],
             propertyChanged: (b, o, n) =>
             {
                 if (b is not DataGrid self)
@@ -448,7 +453,8 @@ public partial class DataGrid
     /// Gets or sets a value indicating whether pagination is enabled in the DataGrid.
     /// </summary>
     public static readonly BindableProperty PaginationEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(false,
+        BindablePropertyExtensions.Create<DataGrid, bool>(
+            defaultValue: false,
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
@@ -467,8 +473,10 @@ public partial class DataGrid
     /// Gets or sets the page size for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageSizeProperty =
-        BindablePropertyExtensions.Create<DataGrid, int>(100, BindingMode.TwoWay,
-            (_, v) => v > 0,
+        BindablePropertyExtensions.Create<DataGrid, int>(
+            defaultValue: 100,
+            BindingMode.TwoWay,
+            validateValue: (_, v) => v > 0,
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
@@ -483,7 +491,8 @@ public partial class DataGrid
     /// Gets or sets the list of available page sizes for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
-        BindablePropertyExtensions.Create<DataGrid, IList<int>>(new List<int>(DefaultPageSizeList),
+        BindablePropertyExtensions.Create<DataGrid, IList<int>>(
+            defaultValue: new List<int>(DefaultPageSizeList),
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
@@ -550,7 +559,9 @@ public partial class DataGrid
     /// Gets or sets the selected item in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SelectedItemProperty =
-        BindablePropertyExtensions.Create<DataGrid, object>(null, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, object>(
+            defaultValue: null,
+            BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
                 if (b is DataGrid self && self._collectionView.SelectedItem != n)
@@ -577,7 +588,9 @@ public partial class DataGrid
     /// Gets or sets the selected items in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SelectedItemsProperty =
-        BindablePropertyExtensions.Create<DataGrid, IList<object>>([], BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, IList<object>>(
+            defaultValue: [],
+            BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
@@ -624,7 +637,8 @@ public partial class DataGrid
     /// </summary>
     [Obsolete($"SelectionEnabled is obsolete. Please use {nameof(SelectionMode)} instead.")]
     public static readonly BindableProperty SelectionEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(true,
+        BindablePropertyExtensions.Create<DataGrid, bool>(
+            defaultValue: true,
             propertyChanged: (b, o, n) =>
             {
                 if (!n && b is DataGrid self)
@@ -643,7 +657,9 @@ public partial class DataGrid
     /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SelectionModeProperty =
-        BindablePropertyExtensions.Create<DataGrid, SelectionMode>(SelectionMode.Single, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, SelectionMode>(
+            defaultValue: SelectionMode.Single,
+            BindingMode.TwoWay,
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
@@ -672,7 +688,8 @@ public partial class DataGrid
     /// Gets or sets a value indicating whether refreshing is enabled in the DataGrid.
     /// </summary>
     public static readonly BindableProperty RefreshingEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(true,
+        BindablePropertyExtensions.Create<DataGrid, bool>(
+            defaultValue: true,
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGrid self)
@@ -732,7 +749,8 @@ public partial class DataGrid
     /// Gets or sets a value indicating whether the header borders are visible in the DataGrid.
     /// </summary>
     public static readonly BindableProperty HeaderBordersVisibleProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(true,
+        BindablePropertyExtensions.Create<DataGrid, bool>(
+            defaultValue: true,
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -745,7 +763,9 @@ public partial class DataGrid
     /// Gets or sets the index of the sorted column in the DataGrid.
     /// </summary>
     public static readonly BindableProperty SortedColumnIndexProperty =
-        BindablePropertyExtensions.Create<DataGrid, SortData?>(null, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, SortData?>(
+            defaultValue: null,
+            BindingMode.TwoWay,
             validateValue: (b, v) =>
             {
                 var self = (DataGrid)b;
@@ -774,7 +794,9 @@ public partial class DataGrid
     /// Gets or sets the current page number in the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageNumberProperty =
-        BindablePropertyExtensions.Create<DataGrid, int>(1, BindingMode.TwoWay,
+        BindablePropertyExtensions.Create<DataGrid, int>(
+            defaultValue: 1,
+            BindingMode.TwoWay,
             validateValue: (b, v) =>
             {
                 if (v < 0)

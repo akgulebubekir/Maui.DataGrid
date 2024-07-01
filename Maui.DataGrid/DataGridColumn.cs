@@ -64,7 +64,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Gets or sets the width of the column.
     /// </summary>
     public static readonly BindableProperty WidthProperty =
-        BindablePropertyExtensions.Create<DataGridColumn, GridLength>(GridLength.Star,
+        BindablePropertyExtensions.Create<DataGridColumn, GridLength>(
+            defaultValue: GridLength.Star,
             propertyChanged: (b, o, n) =>
             {
                 if (!o.Equals(n) && b is DataGridColumn self)
@@ -86,7 +87,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Gets or sets the title of the column.
     /// </summary>
     public static readonly BindableProperty TitleProperty =
-        BindablePropertyExtensions.Create<DataGridColumn, string>(string.Empty,
+        BindablePropertyExtensions.Create<DataGridColumn, string>(
+            defaultValue: string.Empty,
             propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = n);
 
     /// <summary>
@@ -106,7 +108,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Gets or sets a value indicating whether the column is visible.
     /// </summary>
     public static readonly BindableProperty IsVisibleProperty =
-        BindablePropertyExtensions.Create<DataGridColumn, bool>(true,
+        BindablePropertyExtensions.Create<DataGridColumn, bool>(
+            defaultValue: true,
             propertyChanged: (b, o, n) =>
             {
                 if (b is DataGridColumn column)
