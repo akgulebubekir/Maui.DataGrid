@@ -117,6 +117,6 @@ public class Streak : IComparable
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return HashCode.Combine(Result, NumStreak);
     }
 }
