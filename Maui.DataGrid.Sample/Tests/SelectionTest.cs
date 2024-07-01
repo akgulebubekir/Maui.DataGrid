@@ -25,7 +25,7 @@ public class SelectionTest
             Assert.Equal(s, datagrid);
             Assert.Equal(0, e.PreviousSelection.Count);
             Assert.Equal(1, e.CurrentSelection.Count);
-            Assert.Equal(new[] { teamToSelect }, e.CurrentSelection);
+            Assert.Equal([teamToSelect], e.CurrentSelection);
         };
 
         // set a parent to trigger  OnParentSet
@@ -51,7 +51,7 @@ public class SelectionTest
             Assert.Equal(s, datagrid);
             Assert.Equal(0, e.PreviousSelection.Count);
             Assert.Equal(1, e.CurrentSelection.Count);
-            Assert.Equal(new[] { teamToSelect }, e.CurrentSelection);
+            Assert.Equal([teamToSelect], e.CurrentSelection);
         };
 
         // set a parent to trigger  OnParentSet
