@@ -137,8 +137,10 @@ public class MainViewModel : ViewModelBase
     private async void CmdRefresh()
     {
         IsRefreshing = true;
+
         // wait 3 secs for demo
         await Task.Delay(3000);
+
         IsRefreshing = false;
     }
 

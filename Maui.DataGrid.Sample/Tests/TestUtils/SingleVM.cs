@@ -1,4 +1,5 @@
 namespace Maui.DataGrid.Sample.Tests.TestUtils;
+
 using System.ComponentModel;
 
 internal sealed class SingleVM<T> : INotifyPropertyChanged

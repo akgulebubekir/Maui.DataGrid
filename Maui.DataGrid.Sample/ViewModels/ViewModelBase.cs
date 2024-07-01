@@ -8,6 +8,7 @@ using System.Windows.Input;
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
+
     private readonly Dictionary<string, object?> _properties = [];
 
     public Dictionary<string, ICommand> Commands { get; } = [];

@@ -13,6 +13,7 @@ internal sealed class StreakToColorConverter : IValueConverter
                 ? Colors.Green.AddLuminosity(s.NumStreak / 30F)
                 : Colors.Red.AddLuminosity(-s.NumStreak / 30F);
         }
+
         return Colors.Transparent;
     }
 

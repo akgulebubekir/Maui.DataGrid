@@ -12,6 +12,7 @@ internal static class TestExtensions
         {
             return await Application.Current.Dispatcher.DispatchAsync(() => bindableObject.GetValue(property));
         }
+
         return bindableObject.GetValue(property);
     }
 

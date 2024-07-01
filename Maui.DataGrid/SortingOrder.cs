@@ -9,10 +9,12 @@ public enum SortingOrder
     /// No sorting order.
     /// </summary>
     None = 0,
+
     /// <summary>
     /// Ascending sorting order.
     /// </summary>
     Ascendant = 1,
+
     /// <summary>
     /// Descending sorting order.
     /// </summary>
