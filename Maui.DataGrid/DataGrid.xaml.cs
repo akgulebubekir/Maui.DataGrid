@@ -429,11 +429,11 @@ public partial class DataGrid
     public static readonly BindableProperty RefreshingEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(
             defaultValue: true,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGrid self)
                 {
-                    _ = self.PullToRefreshCommand?.CanExecute(() => n);
+                    self.PullToRefreshCommand?.CanExecute(() => n);
                 }
             });
 

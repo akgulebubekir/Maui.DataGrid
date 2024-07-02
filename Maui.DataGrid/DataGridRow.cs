@@ -33,7 +33,7 @@ internal sealed class DataGridRow : Grid
     public static readonly BindableProperty CellBackgroundColorProperty =
         BindablePropertyExtensions.Create<DataGridRow, Color>(
             defaultValue: Colors.White,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is not DataGridRow self)
                 {
@@ -55,7 +55,7 @@ internal sealed class DataGridRow : Grid
     public static readonly BindableProperty CellTextColorProperty =
         BindablePropertyExtensions.Create<DataGridRow, Color>(
             defaultValue: Colors.White,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is not DataGridRow self)
                 {
