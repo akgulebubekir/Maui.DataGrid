@@ -32,7 +32,7 @@ public partial class DataGrid
     public static readonly BindableProperty HeaderBackgroundProperty =
         BindablePropertyExtensions.Create<DataGrid, Color>(
             defaultValue: Colors.White,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGrid self && self._headerRow != null && !self.HeaderBordersVisible)
                 {
@@ -194,7 +194,7 @@ public partial class DataGrid
     public static readonly BindableProperty PaginationEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(
             defaultValue: false,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
@@ -216,7 +216,7 @@ public partial class DataGrid
             defaultValue: 100,
             BindingMode.TwoWay,
             validateValue: (_, v) => v > 0,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
@@ -232,7 +232,7 @@ public partial class DataGrid
     public static readonly BindableProperty PageSizeListProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<int>>(
             defaultValue: [.. DefaultPageSizeList],
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
@@ -378,7 +378,7 @@ public partial class DataGrid
     public static readonly BindableProperty SelectionEnabledProperty =
         BindablePropertyExtensions.Create<DataGrid, bool>(
             defaultValue: true,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (!n && b is DataGrid self)
                 {
@@ -442,7 +442,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PullToRefreshCommandProperty =
         BindablePropertyExtensions.Create<DataGrid, ICommand>(
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is not DataGrid self)
                 {
@@ -516,7 +516,7 @@ public partial class DataGrid
 
                 return self.CanSort(v);
             },
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGrid self)
                 {
@@ -549,7 +549,7 @@ public partial class DataGrid
 
                 return false;
             },
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
@@ -574,7 +574,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty SortIconStyleProperty =
         BindablePropertyExtensions.Create<DataGrid, Style>(
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGrid self)
                 {
@@ -590,7 +590,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty NoDataViewProperty =
         BindablePropertyExtensions.Create<DataGrid, View>(
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGrid self)
                 {

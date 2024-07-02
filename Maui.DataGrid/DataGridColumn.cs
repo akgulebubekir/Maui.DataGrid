@@ -62,7 +62,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty IsVisibleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, bool>(
             defaultValue: true,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, _) =>
             {
                 if (b is DataGridColumn column)
                 {
@@ -124,7 +124,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public static readonly BindableProperty HeaderLabelStyleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, Style>(
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGridColumn self && self.HeaderLabel != null)
                 {
