@@ -431,9 +431,14 @@ public partial class DataGrid
             defaultValue: true,
             propertyChanged: (b, _, n) =>
             {
-                if (b is DataGrid self)
+                if (b is not DataGrid self)
                 {
-                    self.PullToRefreshCommand?.CanExecute(n);
+                    return;
+                }
+
+                if (self.PullToRefreshCommand?.CanExecute(n) != true)
+                {
+                    Debug.WriteLine("RefreshView cannot be executed.");
                 }
             });
 
@@ -456,7 +461,10 @@ public partial class DataGrid
                 else
                 {
                     self._refreshView.Command = n;
-                    _ = self._refreshView.Command?.CanExecute(self.RefreshingEnabled);
+                    if (!self._refreshView.Command.CanExecute(self.RefreshingEnabled))
+                    {
+                        Debug.WriteLine("RefreshView cannot be executed.");
+                    }
                 }
             });
 
