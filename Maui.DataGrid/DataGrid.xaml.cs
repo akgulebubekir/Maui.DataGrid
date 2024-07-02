@@ -433,7 +433,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.PullToRefreshCommand?.CanExecute(() => n);
+                    self.PullToRefreshCommand?.CanExecute(n);
                 }
             });
 
