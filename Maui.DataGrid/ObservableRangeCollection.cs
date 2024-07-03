@@ -2,8 +2,7 @@
 The MIT License (MIT)
 -------------------------------------------------------------------------
 Copyright (c) 2017 James Montemagno (https://github.com/jamesmontemagno/mvvm-helpers)
-Copyright (c) 2018 Brandon Minnick (https://github.com/brminnick/AsyncAwaitBestPractices)
-Copyright (c) .NET Foundation Contributors (https://github.com/xamarin/Xamarin.Forms/)
+Copyright (c) 2016 .NET Foundation Contributors (https://github.com/xamarin/XamarinCommunityToolkit)
 -------------------------------------------------------------------------
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
