@@ -3,6 +3,9 @@
     "namingRules": {
       "allowedHungarianPrefixes": [
         "iOS"
+      ],
+      "allowedNamespaceComponents": [
+        "iOS"
       ]
     }
   }
