@@ -166,6 +166,7 @@ internal sealed class DataGridRow : Grid
         if (columns == null || columns.Count == 0)
         {
             ColumnDefinitions.Clear();
+            Children.Clear();
             return;
         }
 
