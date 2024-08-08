@@ -1649,7 +1649,7 @@
         "contentHash": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw=="
       }
     },
-    "net8.0-ios17.2": {
+    "net8.0-ios17.5": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
         "requested": "[9.0.2, )",
@@ -2837,7 +2837,7 @@
         "type": "Project"
       }
     },
-    "net8.0-ios17.2/android-arm": {
+    "net8.0-ios17.5/android-arm": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -3698,7 +3698,7 @@
         }
       }
     },
-    "net8.0-ios17.2/android-arm64": {
+    "net8.0-ios17.5/android-arm64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -4559,7 +4559,7 @@
         }
       }
     },
-    "net8.0-ios17.2/android-x64": {
+    "net8.0-ios17.5/android-x64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -5420,7 +5420,7 @@
         }
       }
     },
-    "net8.0-ios17.2/android-x86": {
+    "net8.0-ios17.5/android-x86": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -6281,7 +6281,7 @@
         }
       }
     },
-    "net8.0-ios17.2/ios-arm64": {
+    "net8.0-ios17.5/ios-arm64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -7142,7 +7142,7 @@
         }
       }
     },
-    "net8.0-ios17.2/maccatalyst-x64": {
+    "net8.0-ios17.5/maccatalyst-x64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -8003,7 +8003,7 @@
         }
       }
     },
-    "net8.0-ios17.2/win10-x64": {
+    "net8.0-ios17.5/win10-x64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -8868,7 +8868,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2": {
+    "net8.0-maccatalyst17.5": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
         "requested": "[9.0.2, )",
@@ -10056,7 +10056,7 @@
         "type": "Project"
       }
     },
-    "net8.0-maccatalyst17.2/android-arm": {
+    "net8.0-maccatalyst17.5/android-arm": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -10917,7 +10917,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2/android-arm64": {
+    "net8.0-maccatalyst17.5/android-arm64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -11778,7 +11778,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2/android-x64": {
+    "net8.0-maccatalyst17.5/android-x64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -12639,7 +12639,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2/android-x86": {
+    "net8.0-maccatalyst17.5/android-x86": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -13500,7 +13500,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2/ios-arm64": {
+    "net8.0-maccatalyst17.5/ios-arm64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -14361,7 +14361,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2/maccatalyst-x64": {
+    "net8.0-maccatalyst17.5/maccatalyst-x64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -15222,7 +15222,7 @@
         }
       }
     },
-    "net8.0-maccatalyst17.2/win10-x64": {
+    "net8.0-maccatalyst17.5/win10-x64": {
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",
         "resolved": "4.3.0",
