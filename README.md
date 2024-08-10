@@ -25,7 +25,7 @@ DataGrid library for .NET **MAUI** applications.
     <dg:DataGrid.Columns>
         <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False">
             <dg:DataGridColumn.CellTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="x:String">
                     <Image Source="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
                            Aspect="AspectFit" HeightRequest="60" />
                 </DataTemplate>
@@ -45,7 +45,7 @@ DataGrid library for .NET **MAUI** applications.
         <dg:DataGridColumn Title="Win %" PropertyName="Percentage" Width="0.75*" StringFormat="{}{0:0.00}" />
         <dg:DataGridColumn Title="Streak" PropertyName="Streak" Width="0.75*">
             <dg:DataGridColumn.CellTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="m:Streak">
                     <ContentView HorizontalOptions="Fill" VerticalOptions="Fill"
                                  BackgroundColor="{Binding Converter={StaticResource StreakToColorConverter}}">
                         <Label Text="{Binding}" HorizontalOptions="Center" VerticalOptions="Center"
