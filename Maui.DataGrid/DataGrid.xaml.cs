@@ -1376,11 +1376,11 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown
+    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown.
     /// </summary>
     private void UpdatePageSizeList()
     {
-        if (PageSizeList.Contains(PageSize))
+        if (_pageSizeList.Contains(PageSize))
         {
             return;
         }
