@@ -116,7 +116,6 @@ internal sealed class DataGridRow : Grid
         InitializeRow();
     }
 
-
     /// <inheritdoc/>
     protected override void OnParentSet()
     {
