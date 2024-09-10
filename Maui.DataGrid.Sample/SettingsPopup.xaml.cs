@@ -2,6 +2,9 @@ namespace Maui.DataGrid.Sample;
 
 using Maui.DataGrid.Sample.ViewModels;
 
+/// <summary>
+/// Codebehind for the SettingsPopup.
+/// </summary>
 public partial class SettingsPopup
 {
     private readonly MainViewModel _viewModel;
@@ -11,6 +14,8 @@ public partial class SettingsPopup
         InitializeComponent();
         _viewModel = viewModel;
     }
+
+    public void OnClose(object sender, EventArgs e) => Close();
 
     private async void OnAddColumn(object sender, EventArgs e)
     {
@@ -41,6 +46,4 @@ public partial class SettingsPopup
             _ = _viewModel.Columns.Remove(columnToRemove);
         }
     }
-
-    public void OnClose(object sender, EventArgs e) => Close();
 }

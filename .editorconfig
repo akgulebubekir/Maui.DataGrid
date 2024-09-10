@@ -427,6 +427,10 @@ end_of_line = crlf
 dotnet_diagnostic.IDE0010.severity = silent
 dotnet_diagnostic.IDE0072.severity = silent
 
+# Allow Hungarian notation for iOS projects
+stylecop.naming.allowedHungarianPrefixes = iOS
+stylecop.naming.allowedNamespaceComponentTerms = iOS
+
 ##########################################
 # License
 ##########################################

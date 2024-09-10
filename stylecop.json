@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "namingRules": {
+      "allowedHungarianPrefixes": [
+        "iOS"
+      ],
+      "allowedNamespaceComponents": [
+        "iOS"
+      ]
+    }
+  }
+}

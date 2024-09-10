@@ -2,6 +2,9 @@ namespace Maui.DataGrid.Sample;
 
 using Maui.DataGrid.Sample.ViewModels;
 
+/// <summary>
+/// Codebehind for the MainPage.
+/// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class MainPage
 {
@@ -11,7 +14,7 @@ public partial class MainPage
 
         BindingContext = new MainViewModel
         {
-            Columns = _dataGrid1.Columns
+            Columns = _dataGrid1.Columns,
         };
     }
 }

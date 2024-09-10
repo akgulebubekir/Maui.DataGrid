@@ -3,7 +3,7 @@ namespace Maui.DataGrid;
 using System.ComponentModel;
 
 /// <summary>
-/// Creates SortData for <see cref="DataGrid"/>
+/// Creates SortData for <see cref="DataGrid"/>.
 /// </summary>
 /// <param name="index">The index of the column to sort on.</param>
 /// <param name="order">The direction to sort.</param>
@@ -13,12 +13,12 @@ public sealed class SortData(int index, SortingOrder order)
     #region Properties
 
     /// <summary>
-    /// Sorting order for the column
+    /// Gets or sets sorting order for the column.
     /// </summary>
     public SortingOrder Order { get; set; } = order;
 
     /// <summary>
-    /// Column Index to sort
+    /// Gets or sets column Index to sort.
     /// </summary>
     public int Index { get; set; } = index;
 

@@ -4,8 +4,8 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Maui.Views;
-using Models;
-using Utils;
+using Maui.DataGrid.Sample.Models;
+using Maui.DataGrid.Sample.Utils;
 
 public class MainViewModel : ViewModelBase
 {
@@ -34,7 +34,7 @@ public class MainViewModel : ViewModelBase
 
     public static ImmutableList<SelectionMode> SelectionModes => Enum.GetValues<SelectionMode>().Cast<SelectionMode>().ToImmutableList();
 
-    public required ObservableCollection<DataGridColumn> Columns { get; set; }
+    public required ObservableCollection<DataGridColumn> Columns { get; init; }
 
     public Team? TeamToEdit
     {
@@ -45,7 +45,7 @@ public class MainViewModel : ViewModelBase
     public ObservableCollection<Team>? Teams
     {
         get => GetValue<ObservableCollection<Team>>();
-        set => SetValue(value);
+        init => SetValue(value);
     }
 
     public bool HeaderBordersVisible
@@ -137,8 +137,10 @@ public class MainViewModel : ViewModelBase
     private async void CmdRefresh()
     {
         IsRefreshing = true;
+
         // wait 3 secs for demo
         await Task.Delay(3000);
+
         IsRefreshing = false;
     }
 

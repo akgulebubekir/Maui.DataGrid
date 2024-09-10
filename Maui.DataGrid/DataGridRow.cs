@@ -1,24 +1,39 @@
 namespace Maui.DataGrid;
 
-using Extensions;
+using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
 
 internal sealed class DataGridRow : Grid
 {
-    #region Fields
-
-    private bool _wasSelected;
-
-    #endregion Fields
-
     #region Bindable Properties
+
+    public static readonly BindableProperty DataGridProperty =
+    BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime);
+
+    public static readonly BindableProperty RowToEditProperty =
+        BindablePropertyExtensions.Create<DataGridRow, object>(
+            null,
+            BindingMode.OneWay,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not DataGridRow row)
+                {
+                    return;
+                }
+
+                if (o == row.BindingContext || n == row.BindingContext)
+                {
+                    row.InitializeRow();
+                }
+            });
 
     /// <summary>
     /// Gets or sets the background color of the cells within this DataGridRow.
     /// </summary>
     public static readonly BindableProperty CellBackgroundColorProperty =
-        BindablePropertyExtensions.Create<DataGridRow, Color>(Colors.White,
-            propertyChanged: (b, o, n) =>
+        BindablePropertyExtensions.Create<DataGridRow, Color>(
+            defaultValue: Colors.White,
+            propertyChanged: (b, _, n) =>
             {
                 if (b is not DataGridRow self)
                 {
@@ -38,8 +53,9 @@ internal sealed class DataGridRow : Grid
     /// Gets or sets the text color of the cells within this DataGridRow.
     /// </summary>
     public static readonly BindableProperty CellTextColorProperty =
-        BindablePropertyExtensions.Create<DataGridRow, Color>(Colors.White,
-            propertyChanged: (b, o, n) =>
+        BindablePropertyExtensions.Create<DataGridRow, Color>(
+            defaultValue: Colors.White,
+            propertyChanged: (b, _, n) =>
             {
                 if (b is not DataGridRow self)
                 {
@@ -56,6 +72,12 @@ internal sealed class DataGridRow : Grid
             });
 
     #endregion Bindable Properties
+
+    #region Fields
+
+    private bool _wasSelected;
+
+    #endregion Fields
 
     #region Properties
 
@@ -85,29 +107,56 @@ internal sealed class DataGridRow : Grid
 
     #endregion Properties
 
-    #region Bindable Properties
-
-    public static readonly BindableProperty DataGridProperty =
-        BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime);
-
-    public static readonly BindableProperty RowToEditProperty =
-        BindablePropertyExtensions.Create<DataGridRow, object>(null, BindingMode.OneWay,
-            propertyChanged: (b, o, n) =>
-            {
-                if (b is not DataGridRow row)
-                {
-                    return;
-                }
-
-                if (o == row.BindingContext || n == row.BindingContext)
-                {
-                    row.InitializeRow();
-                }
-            });
-
-    #endregion Bindable Properties
-
     #region Methods
+
+    /// <inheritdoc/>
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+        InitializeRow();
+    }
+
+
+    /// <inheritdoc/>
+    protected override void OnParentSet()
+    {
+        base.OnParentSet();
+
+        if (Parent == null)
+        {
+            DataGrid.ItemSelected -= DataGrid_ItemSelected;
+            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+            DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
+            DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
+            DataGrid.BorderThicknessChanged -= OnBorderThicknessChanged;
+
+            foreach (var column in DataGrid.Columns)
+            {
+                column.VisibilityChanged -= OnVisibilityChanged;
+            }
+        }
+        else
+        {
+            DataGrid.ItemSelected += DataGrid_ItemSelected;
+            DataGrid.Columns.CollectionChanged += OnColumnsChanged;
+            DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
+            DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
+            DataGrid.BorderThicknessChanged += OnBorderThicknessChanged;
+
+            foreach (var column in DataGrid.Columns)
+            {
+                column.VisibilityChanged += OnVisibilityChanged;
+            }
+
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
+        }
+    }
+
+    private static Color InverseColor(Color color)
+    {
+        var brightness = (0.299 * color.Red) + (0.587 * color.Green) + (0.114 * color.Blue);
+        return brightness < 0.5 ? Colors.White : Colors.Black;
+    }
 
     private void InitializeRow()
     {
@@ -124,6 +173,7 @@ internal sealed class DataGridRow : Grid
         if (columns == null || columns.Count == 0)
         {
             ColumnDefinitions.Clear();
+            Children.Clear();
             return;
         }
 
@@ -208,8 +258,8 @@ internal sealed class DataGridRow : Grid
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
-                cell.SetBinding(BindingContextProperty,
-                    new Binding(col.PropertyName, source: BindingContext));
+                Binding binding = new(col.PropertyName, source: BindingContext);
+                cell.SetBinding(BindingContextProperty, binding);
             }
         }
         else
@@ -221,13 +271,13 @@ internal sealed class DataGridRow : Grid
                 HorizontalTextAlignment = col.HorizontalTextAlignment,
                 LineBreakMode = col.LineBreakMode,
                 FontSize = DataGrid.FontSize,
-                FontFamily = DataGrid.FontFamily
+                FontFamily = DataGrid.FontFamily,
             };
 
             if (!string.IsNullOrWhiteSpace(col.PropertyName))
             {
-                cell.SetBinding(Label.TextProperty,
-                    new Binding(col.PropertyName, stringFormat: col.StringFormat, source: BindingContext));
+                Binding binding = new(col.PropertyName, stringFormat: col.StringFormat, source: BindingContext);
+                cell.SetBinding(Label.TextProperty, binding);
             }
         }
 
@@ -275,8 +325,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            cell.SetBinding(BindingContextProperty,
-                new Binding(col.PropertyName, source: BindingContext));
+            Binding binding = new(col.PropertyName, source: BindingContext);
+            cell.SetBinding(BindingContextProperty, binding);
         }
 
         return cell;
@@ -290,13 +340,13 @@ internal sealed class DataGridRow : Grid
             VerticalTextAlignment = col.VerticalTextAlignment,
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
-            FontFamily = DataGrid.FontFamily
+            FontFamily = DataGrid.FontFamily,
         };
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            entry.SetBinding(Entry.TextProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext);
+            entry.SetBinding(Entry.TextProperty, binding);
         }
 
         return entry;
@@ -312,8 +362,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            checkBox.SetBinding(CheckBox.IsCheckedProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, source: BindingContext);
+            checkBox.SetBinding(CheckBox.IsCheckedProperty, binding);
         }
 
         return checkBox;
@@ -328,7 +378,7 @@ internal sealed class DataGridRow : Grid
             HorizontalTextAlignment = col.HorizontalTextAlignment,
             FontSize = DataGrid.FontSize,
             FontFamily = DataGrid.FontFamily,
-            Keyboard = Keyboard.Numeric
+            Keyboard = Keyboard.Numeric,
         };
 
         entry.TextChanged += (s, e) =>
@@ -341,8 +391,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            entry.SetBinding(Entry.TextProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, source: BindingContext);
+            entry.SetBinding(Entry.TextProperty, binding);
         }
 
         return entry;
@@ -357,8 +407,8 @@ internal sealed class DataGridRow : Grid
 
         if (!string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            datePicker.SetBinding(DatePicker.DateProperty,
-                new Binding(col.PropertyName, BindingMode.TwoWay, source: BindingContext));
+            Binding binding = new(col.PropertyName, BindingMode.TwoWay, source: BindingContext);
+            datePicker.SetBinding(DatePicker.DateProperty, binding);
         }
 
         return datePicker;
@@ -393,57 +443,9 @@ internal sealed class DataGridRow : Grid
                 : DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
     }
 
-    private static Color InverseColor(Color color)
-    {
-        var brightness = (0.299 * color.Red) + (0.587 * color.Green) + (0.114 * color.Blue);
-        return brightness < 0.5 ? Colors.White : Colors.Black;
-    }
-
-    /// <inheritdoc/>
-    protected override void OnBindingContextChanged()
-    {
-        base.OnBindingContextChanged();
-        InitializeRow();
-    }
-
     private void OnBorderThicknessChanged(object? sender, EventArgs e)
     {
         UpdateBorders();
-    }
-
-    /// <inheritdoc/>
-    protected override void OnParentSet()
-    {
-        base.OnParentSet();
-
-        if (Parent == null)
-        {
-            DataGrid.ItemSelected -= DataGrid_ItemSelected;
-            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
-            DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
-            DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
-            DataGrid.BorderThicknessChanged -= OnBorderThicknessChanged;
-
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged -= OnVisibilityChanged;
-            }
-        }
-        else
-        {
-            DataGrid.ItemSelected += DataGrid_ItemSelected;
-            DataGrid.Columns.CollectionChanged += OnColumnsChanged;
-            DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
-            DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
-            DataGrid.BorderThicknessChanged += OnBorderThicknessChanged;
-
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged += OnVisibilityChanged;
-            }
-
-            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
-        }
     }
 
     private void OnRowsTextColorPaletteChanged(object? sender, EventArgs e)

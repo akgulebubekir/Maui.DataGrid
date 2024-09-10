@@ -1,13 +1,12 @@
 namespace Maui.DataGrid.Sample.Utils;
 
 using System.Reflection;
-using Maui.DataGrid.Sample.Models;
+using System.Security.Cryptography;
 using System.Text.Json;
+using Maui.DataGrid.Sample.Models;
 
 internal static class DummyDataProvider
 {
-    private static readonly Random RandomNumber = new();
-
     private static List<Team>? _realTeams;
 
     public static List<Team> GetTeams(int numberOfCopies = 1)
@@ -40,18 +39,18 @@ internal static class DummyDataProvider
                 var randomTeam = new Team
                 {
                     Name = $"{realTeam.Name} {i}",
-                    Won = RandomNumber.Next(0, 50),
-                    Lost = RandomNumber.Next(0, 50),
-                    Percentage = Math.Round(RandomNumber.NextDouble() * 100) / 100,
-                    Conf = $"{realTeam.Conf} {RandomNumber.Next(1, 10)}",
-                    Div = $"{realTeam.Div} {RandomNumber.Next(1, 10)}",
-                    Home = $"{RandomNumber.Next(1, 10)}",
-                    Road = $"{RandomNumber.Next(1, 10)}",
-                    Last10 = $"{RandomNumber.Next(1, 10)}",
+                    Won = RandomNumberGenerator.GetInt32(0, 50),
+                    Lost = RandomNumberGenerator.GetInt32(0, 50),
+                    Percentage = Math.Round(RandomDouble() * 100) / 100,
+                    Conf = $"{realTeam.Conf} {RandomNumberGenerator.GetInt32(1, 10)}",
+                    Div = $"{realTeam.Div} {RandomNumberGenerator.GetInt32(1, 10)}",
+                    Home = $"{RandomNumberGenerator.GetInt32(1, 10)}",
+                    Road = $"{RandomNumberGenerator.GetInt32(1, 10)}",
+                    Last10 = $"{RandomNumberGenerator.GetInt32(1, 10)}",
                     Streak = new Streak
                     {
-                        Result = (Result)RandomNumber.Next(0, 2),
-                        NumStreak = RandomNumber.Next(0, 10)
+                        Result = (Result)RandomNumberGenerator.GetInt32(0, 2),
+                        NumStreak = RandomNumberGenerator.GetInt32(0, 10),
                     },
                     Logo = realTeam.Logo,
                 };
@@ -62,4 +61,6 @@ internal static class DummyDataProvider
 
         return teams;
     }
+
+    private static double RandomDouble() => (double)RandomNumberGenerator.GetInt32(int.MaxValue) / int.MaxValue;
 }

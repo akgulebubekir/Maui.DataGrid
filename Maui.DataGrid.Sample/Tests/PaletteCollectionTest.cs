@@ -18,7 +18,7 @@ public class PaletteCollectionTest
     {
         var palette = new PaletteCollection
         {
-            Colors.Red
+            Colors.Red,
         };
 
         _ = Assert.Single(palette);
@@ -33,7 +33,7 @@ public class PaletteCollectionTest
         var palette = new PaletteCollection
         {
             Colors.Red,
-            Colors.Green
+            Colors.Green,
         };
 
         Assert.Equal(2, palette.Count);

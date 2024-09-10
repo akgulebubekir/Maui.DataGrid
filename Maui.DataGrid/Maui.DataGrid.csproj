@@ -1,6 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="1.1.1" />
-
   <PropertyGroup>
     <TargetFrameworks>net8.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
@@ -20,34 +18,15 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>4.0.0.3</AssemblyVersion>
-    <Version>4.0.3</Version>
-    <Configurations>Debug;Release;Test</Configurations>
-    <MauiVersion>8.0.21</MauiVersion>
-
-    <!-- Generate the lock file -->
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-
-    <!-- Restore the exact packages as listed in the lock file -->
-    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
+    <AssemblyVersion>4.0.0.4</AssemblyVersion>
+    <Version>4.0.4</Version>
   </PropertyGroup>
 
-  <!-- Static Analysis Settings -->
+  <!-- Package Validation Settings -->
   <PropertyGroup>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Features>strict</Features>
-    <Deterministic>true</Deterministic>
-	  <WarningLevel>9999</WarningLevel>
-    <AnalysisLevel>latest-all</AnalysisLevel>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
-    <PackageValidationBaselineVersion>4.0.2</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.0.4</PackageValidationBaselineVersion>
     <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
     <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
   </PropertyGroup>
@@ -59,12 +38,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
   </ItemGroup>
 </Project>
