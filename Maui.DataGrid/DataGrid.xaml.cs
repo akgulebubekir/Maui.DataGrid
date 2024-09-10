@@ -617,6 +617,7 @@ public partial class DataGrid
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
+    private readonly WeakEventManager _borderThicknessChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
 
@@ -683,6 +684,15 @@ public partial class DataGrid
     {
         add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
         remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the BorderThickness of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler BorderThicknessChanged
+    {
+        add => _borderThicknessChangedEventManager.AddEventHandler(value);
+        remove => _borderThicknessChangedEventManager.RemoveEventHandler(value);
     }
 
     #endregion Events
@@ -1103,11 +1113,11 @@ public partial class DataGrid
     #region Methods
 
     /// <summary>
-    /// Scrolls to the row.
+    /// Scrolls to the row
     /// </summary>
-    /// <param name="item">Item to scroll.</param>
-    /// <param name="position">Position of the row in screen.</param>
-    /// <param name="animated">animated.</param>
+    /// <param name="item">Item to scroll</param>
+    /// <param name="position">Position of the row in screen</param>
+    /// <param name="animated">animated</param>
     public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => _collectionView.ScrollTo(item, position: position, animate: animated);
 
     internal void Initialize()
@@ -1366,11 +1376,11 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown.
+    /// Checks if PageSizeList contains the new PageSize value, so that it shows in the dropdown
     /// </summary>
     private void UpdatePageSizeList()
     {
-        if (_pageSizeList.Contains(PageSize))
+        if (PageSizeList.Contains(PageSize))
         {
             return;
         }

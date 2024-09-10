@@ -20,7 +20,7 @@ public class MainViewModel : ViewModelBase
         TeamColumnWidth = 70;
         SelectionMode = SelectionMode.Single;
         PageSize = 6;
-        BorderThicknessNumeric = 1;
+        BorderThicknessNumeric = 2;
 
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
