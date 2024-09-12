@@ -1,16 +1,13 @@
 namespace Maui.DataGrid.Extensions;
 
 using System;
-using System.Collections.Concurrent;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 internal static class ReflectionExtensions
 {
     private const char PropertyOfOp = '.';
-
-    private static readonly ConcurrentDictionary<Type, PropertyDescriptorCollection> PropertyTypeCache = new();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyValue(Object, String)")]
@@ -21,27 +18,18 @@ internal static class ReflectionExtensions
             return null;
         }
 
-        object? result;
+        var result = obj;
 
-        if (path.Contains(PropertyOfOp, StringComparison.Ordinal))
+        foreach (var token in path.Split(PropertyOfOp))
         {
-            var tokens = path.Split(PropertyOfOp);
+            var resultType = result?.GetType().GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
 
-            result = obj;
+            result = resultType?.GetValue(result);
 
-            foreach (var token in tokens)
+            if (result == null)
             {
-                result = GetPropertyValue(result, token);
-
-                if (result == null)
-                {
-                    break;
-                }
+                return null;
             }
-        }
-        else
-        {
-            result = GetPropertyValue(obj, path);
         }
 
         return result;
@@ -50,7 +38,7 @@ internal static class ReflectionExtensions
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyType(String)")]
-    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, string path)
+    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] this Type type, string path)
     {
         if (type == null)
         {
@@ -62,65 +50,20 @@ internal static class ReflectionExtensions
             return type;
         }
 
-        Type? resultType;
+        var resultType = type;
 
-        if (path.Contains(PropertyOfOp, StringComparison.Ordinal))
+        foreach (var token in path.Split(PropertyOfOp))
         {
-            var tokens = path.Split(PropertyOfOp);
+            var property = resultType?.GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
 
-            resultType = type;
+            resultType = property?.PropertyType;
 
-            foreach (var token in tokens)
+            if (resultType == null)
             {
-                resultType = resultType.GetPropertyType(token);
-
-                if (resultType == null)
-                {
-                    break;
-                }
+                return null;
             }
-        }
-        else
-        {
-            resultType = type.GetPropertyType(path);
         }
 
         return resultType;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyDescriptor(Type, String)")]
-    [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    private static Type? GetPropertyType(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
-        string propertyName)
-    {
-        var propertyDescriptor = GetPropertyDescriptor(type, propertyName);
-
-        return propertyDescriptor?.PropertyType;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyDescriptor(Type, String)")]
-    private static object? GetPropertyValue(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] object obj,
-        string propertyName)
-    {
-        var type = obj.GetType();
-
-        var propertyDescriptor = GetPropertyDescriptor(type, propertyName);
-
-        return propertyDescriptor?.GetValue(obj);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [RequiresUnreferencedCode("Calls System.ComponentModel.TypeDescriptor.GetProperties(Type)")]
-    private static PropertyDescriptor? GetPropertyDescriptor(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type,
-        string propertyName)
-    {
-        var properties = PropertyTypeCache.GetOrAdd(type, TypeDescriptor.GetProperties);
-
-        return properties.Find(propertyName, false);
     }
 }
