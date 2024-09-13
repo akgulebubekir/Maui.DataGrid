@@ -8,13 +8,12 @@ using Maui.DataGrid.Collections;
 
 internal static class ReflectionExtensions
 {
-    private const int DefaultCacheSize = 100000;
     private const char PropertyOfOp = '.';
 
-    private static readonly ConcurrentLRUCache<string, object?> ValueCache = new(DefaultCacheSize);
-    private static readonly ConcurrentLRUCache<string, Type?> TypeCache = new(DefaultCacheSize);
+    private static readonly ConcurrentLRUCache<string, object?> ValueCache = new(DataGrid.DefaultCacheSize);
+    private static readonly ConcurrentLRUCache<string, Type?> TypeCache = new(DataGrid.DefaultCacheSize);
 
-    private static int _cacheSize = DefaultCacheSize;
+    private static int _cacheSize = DataGrid.DefaultCacheSize;
 
     public static void SetCacheSize(int cacheSize)
     {
@@ -24,15 +23,21 @@ internal static class ReflectionExtensions
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyValue(Object, String)")]
-    public static object? GetValueByPath(this object obj, string path)
+    public static object? GetValueByPath(this object obj, string path, bool useCaching, int cacheSize)
     {
         if (obj == null || string.IsNullOrWhiteSpace(path))
         {
             return null;
         }
 
-        var cacheKey = $"{obj.GetHashCode()}_{obj.GetType().FullName}.{path}";
-        if (ValueCache.TryGetValue(cacheKey, out var cachedValue))
+        if (useCaching && cacheSize != _cacheSize)
+        {
+            SetCacheSize(cacheSize);
+        }
+
+        var cacheKey = useCaching ? $"{obj.GetHashCode()}_{obj.GetType().FullName}.{path}" : string.Empty;
+
+        if (useCaching && ValueCache.TryGetValue(cacheKey, out var cachedValue))
         {
             return cachedValue;
         }
@@ -41,23 +46,37 @@ internal static class ReflectionExtensions
 
         foreach (var token in path.Split(PropertyOfOp))
         {
-            var resultType = result?.GetType().GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
+            var resultType = result.GetType().GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
 
             result = resultType?.GetValue(result);
 
             if (result == null)
             {
-                return ValueCache.TryGetOrAdd(cacheKey, null);
+                if (useCaching)
+                {
+                    return ValueCache.TryGetOrAdd(cacheKey, null);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
-        return ValueCache.TryGetOrAdd(cacheKey, result);
+        if (useCaching)
+        {
+            return ValueCache.TryGetOrAdd(cacheKey, result);
+        }
+        else
+        {
+            return result;
+        }
     }
 
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyType(String)")]
-    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] this Type type, string path)
+    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] this Type type, string path, bool useCaching, int cacheSize)
     {
         if (type == null)
         {
@@ -69,9 +88,14 @@ internal static class ReflectionExtensions
             return type;
         }
 
-        var cacheKey = $"{type.GetHashCode()}_{type.FullName}.{path}";
+        if (useCaching && cacheSize != _cacheSize)
+        {
+            SetCacheSize(cacheSize);
+        }
 
-        if (TypeCache.TryGetValue(cacheKey, out var cachedType))
+        var cacheKey = useCaching ? $"{type.GetHashCode()}_{type.FullName}.{path}" : string.Empty;
+
+        if (useCaching && TypeCache.TryGetValue(cacheKey, out var cachedType))
         {
             return cachedType;
         }
@@ -80,17 +104,31 @@ internal static class ReflectionExtensions
 
         foreach (var token in path.Split(PropertyOfOp))
         {
-            var property = resultType?.GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
+            var property = resultType.GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
 
             resultType = property?.PropertyType;
 
             if (resultType == null)
             {
-                return TypeCache.TryGetOrAdd(cacheKey, null);
+                if (useCaching)
+                {
+                    return TypeCache.TryGetOrAdd(cacheKey, null);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
-        return TypeCache.TryGetOrAdd(cacheKey, resultType);
+        if (useCaching)
+        {
+            return TypeCache.TryGetOrAdd(cacheKey, resultType);
+        }
+        else
+        {
+            return resultType;
+        }
     }
 
     private static void ReinitializeCaches()

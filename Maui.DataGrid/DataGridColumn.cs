@@ -407,7 +407,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 }
             }
 
-            DataType = rowDataType?.GetPropertyTypeByPath(PropertyName);
+            DataType = rowDataType?.GetPropertyTypeByPath(PropertyName, DataGrid.CachingEnabled, DataGrid.CacheSize);
         }
         catch (Exception ex)
             when (ex is NotSupportedException or ArgumentNullException or InvalidCastException)
