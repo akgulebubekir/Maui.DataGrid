@@ -3,7 +3,6 @@ namespace Maui.DataGrid.Extensions;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using Maui.DataGrid.Collections;
 
 internal static class ReflectionExtensions
@@ -21,8 +20,6 @@ internal static class ReflectionExtensions
         ReinitializeCaches();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyValue(Object, String)")]
     public static object? GetValueByPath(this object obj, string path, bool useCaching, int cacheSize)
     {
         if (obj == null || string.IsNullOrWhiteSpace(path))
@@ -74,8 +71,6 @@ internal static class ReflectionExtensions
     }
 
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyType(String)")]
     public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] this Type type, string path, bool useCaching, int cacheSize)
     {
         if (type == null)
