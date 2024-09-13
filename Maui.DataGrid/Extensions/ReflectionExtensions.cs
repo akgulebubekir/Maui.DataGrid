@@ -3,6 +3,7 @@ namespace Maui.DataGrid.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 internal static class ReflectionExtensions
@@ -12,6 +13,7 @@ internal static class ReflectionExtensions
     private static readonly ConcurrentDictionary<Type, PropertyDescriptorCollection> PropertyTypeCache = new();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyValue(Object, String)")]
     public static object? GetValueByPath(this object obj, string path)
     {
         if (obj == null || string.IsNullOrWhiteSpace(path))
@@ -45,8 +47,10 @@ internal static class ReflectionExtensions
         return result;
     }
 
+    [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Type? GetPropertyTypeByPath(this Type type, string path)
+    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyType(String)")]
+    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, string path)
     {
         if (type == null)
         {
@@ -85,7 +89,11 @@ internal static class ReflectionExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Type? GetPropertyType(this Type type, string propertyName)
+    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyDescriptor(Type, String)")]
+    [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    private static Type? GetPropertyType(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type,
+        string propertyName)
     {
         var propertyDescriptor = GetPropertyDescriptor(type, propertyName);
 
@@ -93,7 +101,10 @@ internal static class ReflectionExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static object? GetPropertyValue(object obj, string propertyName)
+    [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyDescriptor(Type, String)")]
+    private static object? GetPropertyValue(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] object obj,
+        string propertyName)
     {
         var type = obj.GetType();
 
@@ -103,7 +114,10 @@ internal static class ReflectionExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static PropertyDescriptor? GetPropertyDescriptor(Type type, string propertyName)
+    [RequiresUnreferencedCode("Calls System.ComponentModel.TypeDescriptor.GetProperties(Type)")]
+    private static PropertyDescriptor? GetPropertyDescriptor(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type,
+        string propertyName)
     {
         var properties = PropertyTypeCache.GetOrAdd(type, TypeDescriptor.GetProperties);
 
