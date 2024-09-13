@@ -4,10 +4,23 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Maui.DataGrid.Collections;
 
 internal static class ReflectionExtensions
 {
+    private const int DefaultCacheSize = 100000;
     private const char PropertyOfOp = '.';
+
+    private static readonly ConcurrentLRUCache<string, object?> ValueCache = new(DefaultCacheSize);
+    private static readonly ConcurrentLRUCache<string, Type?> TypeCache = new(DefaultCacheSize);
+
+    private static int _cacheSize = DefaultCacheSize;
+
+    public static void SetCacheSize(int cacheSize)
+    {
+        _cacheSize = cacheSize;
+        ReinitializeCaches();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [RequiresUnreferencedCode("Calls Maui.DataGrid.Extensions.ReflectionExtensions.GetPropertyValue(Object, String)")]
@@ -16,6 +29,12 @@ internal static class ReflectionExtensions
         if (obj == null || string.IsNullOrWhiteSpace(path))
         {
             return null;
+        }
+
+        var cacheKey = $"{obj.GetHashCode()}_{obj.GetType().FullName}.{path}";
+        if (ValueCache.TryGetValue(cacheKey, out var cachedValue))
+        {
+            return cachedValue;
         }
 
         var result = obj;
@@ -28,11 +47,11 @@ internal static class ReflectionExtensions
 
             if (result == null)
             {
-                return null;
+                return ValueCache.TryGetOrAdd(cacheKey, null);
             }
         }
 
-        return result;
+        return ValueCache.TryGetOrAdd(cacheKey, result);
     }
 
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -50,6 +69,13 @@ internal static class ReflectionExtensions
             return type;
         }
 
+        var cacheKey = $"{type.GetHashCode()}_{type.FullName}.{path}";
+
+        if (TypeCache.TryGetValue(cacheKey, out var cachedType))
+        {
+            return cachedType;
+        }
+
         var resultType = type;
 
         foreach (var token in path.Split(PropertyOfOp))
@@ -60,10 +86,16 @@ internal static class ReflectionExtensions
 
             if (resultType == null)
             {
-                return null;
+                return TypeCache.TryGetOrAdd(cacheKey, null);
             }
         }
 
-        return resultType;
+        return TypeCache.TryGetOrAdd(cacheKey, resultType);
+    }
+
+    private static void ReinitializeCaches()
+    {
+        ValueCache.SetCapacity(_cacheSize);
+        TypeCache.SetCapacity(_cacheSize);
     }
 }

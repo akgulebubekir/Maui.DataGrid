@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using Maui.DataGrid.Collections;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
