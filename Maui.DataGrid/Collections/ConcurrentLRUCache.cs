@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerable<KeyValuePair<TKey, TValue>>
+internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IDictionary<TKey, TValue>
     where TKey : notnull
 {
     private readonly object _lock = new();
@@ -28,13 +28,21 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerabl
         _capacity = capacity;
     }
 
-    public bool Contains(TKey key)
+    public bool IsReadOnly => false;
+
+    public ICollection<TKey> Keys => _cache.Keys;
+
+    public ICollection<TValue> Values => _cache.Values;
+
+    public int Count => _cache.Count;
+
+    public TValue this[TKey key]
     {
-        lock (_lock)
-        {
-            return _cache.ContainsKey(key);
-        }
+        get => Get(key)!;
+        set => TryGetOrAdd(key, value);
     }
+
+    public bool Contains(TKey key) => _cache.ContainsKey(key);
 
     public TValue? Get(TKey key)
     {
@@ -95,14 +103,6 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerabl
         }
     }
 
-    /// <summary>
-    /// Set the capacity of the cache.
-    /// </summary>
-    /// <remarks>
-    /// WARNING: Thread-safety is not guaranteed. This method should only be called when no other threads are accessing the cache.
-    /// </remarks>
-    /// <param name="newCapacity">The new capacity of the cache.</param>
-    /// <exception cref="ArgumentException">Thrown when the new capacity is less than or equal to zero.</exception>
     public void SetCapacity(int newCapacity)
     {
         if (newCapacity <= 0)
@@ -114,7 +114,7 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerabl
         {
             _capacity = newCapacity;
 
-            var oldestToNewest = _lruSet.OrderBy(kvp => kvp.Value);
+            var oldestToNewest = _lruSet.OrderBy(kvp => kvp.Value).ToList();
 
             foreach (var kvp in oldestToNewest)
             {
@@ -136,6 +136,65 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerabl
         Clear();
     }
 
+    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    {
+        return _cache.ToList().GetEnumerator();
+    }
+
+    public void Add(TKey key, TValue value) => TryGetOrAdd(key, value);
+
+    public bool ContainsKey(TKey key)
+    {
+        return Contains(key);
+    }
+
+    public bool Remove(TKey key)
+    {
+        lock (_lock)
+        {
+            if (_cache.TryRemove(key, out _))
+            {
+                _lruSet.TryRemove(key, out _);
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    public void Add(KeyValuePair<TKey, TValue> item)
+    {
+        Add(item.Key, item.Value);
+    }
+
+    public bool Contains(KeyValuePair<TKey, TValue> item)
+    {
+        return ContainsKey(item.Key) && EqualityComparer<TValue>.Default.Equals(this[item.Key], item.Value);
+    }
+
+    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+    {
+        ((ICollection<KeyValuePair<TKey, TValue>>)_cache).CopyTo(array, arrayIndex);
+    }
+
+    public bool Remove(KeyValuePair<TKey, TValue> item)
+    {
+        lock (_lock)
+        {
+            if (Contains(item))
+            {
+                return Remove(item.Key);
+            }
+
+            return false;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
     private void RemoveLeastRecentlyUsed()
     {
         var leastRecentlyUsedKey = default(TKey);
@@ -154,18 +213,5 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerabl
         {
             _cache.TryRemove(leastRecentlyUsedKey, out _);
         }
-    }
-
-    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-    {
-        lock (_lock)
-        {
-            return _cache.ToList().GetEnumerator();
-        }
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }
