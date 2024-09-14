@@ -116,18 +116,6 @@ public partial class DataGrid
             });
 
     /// <summary>
-    /// Gets or sets a value indicating whether the DataGrid allows caching.
-    /// </summary>
-    public static readonly BindableProperty CachingEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(false);
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the DataGrid allows caching.
-    /// </summary>
-    public static readonly BindableProperty CacheSizeProperty =
-        BindablePropertyExtensions.Create<DataGrid, int>(DefaultCacheSize);
-
-    /// <summary>
     /// Gets or sets the Columns for the DataGrid.
     /// </summary>
     public static readonly BindableProperty ColumnsProperty =
@@ -811,26 +799,6 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether caching is enabled in the DataGrid.
-    /// Default value is False.
-    /// </summary>
-    public bool CachingEnabled
-    {
-        get => (bool)GetValue(CachingEnabledProperty);
-        set => SetValue(CachingEnabledProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating the size of the cache for the DataGrid.
-    /// Default value is 100000.
-    /// </summary>
-    public int CacheSize
-    {
-        get => (int)GetValue(CacheSizeProperty);
-        set => SetValue(CacheSizeProperty, value);
-    }
-
-    /// <summary>
     /// Gets or sets columns of the DataGrid.
     /// </summary>
     public ObservableCollection<DataGridColumn> Columns
@@ -1384,11 +1352,11 @@ public partial class DataGrid
         {
             case SortingOrder.Ascendant:
                 _ = columnToSort.SortingIcon.RotateTo(0);
-                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName, CachingEnabled, CacheSize));
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
                 break;
             case SortingOrder.Descendant:
                 _ = columnToSort.SortingIcon.RotateTo(180);
-                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName, CachingEnabled, CacheSize));
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
                 break;
             case SortingOrder.None:
                 return unsortedItems;
