@@ -26,6 +26,14 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable
         _capacity = capacity;
     }
 
+    public bool Contains(TKey key)
+    {
+        lock (_lock)
+        {
+            return _cache.ContainsKey(key);
+        }
+    }
+
     public TValue? Get(TKey key)
     {
         lock (_lock)
