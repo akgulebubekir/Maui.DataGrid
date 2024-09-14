@@ -611,8 +611,6 @@ public partial class DataGrid
 
     #region Fields
 
-    internal const int DefaultCacheSize = 100000;
-
     private static readonly SortedSet<int> DefaultPageSizeSet = [5, 10, 50, 100, 200, 1000];
     private static readonly IList<int> DefaultPageSizeList = [.. DefaultPageSizeSet];
 
