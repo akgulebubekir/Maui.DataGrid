@@ -1,10 +1,12 @@
 namespace Maui.DataGrid.Collections;
 
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
-internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable
+internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable, IEnumerable<KeyValuePair<TKey, TValue>>
     where TKey : notnull
 {
     private readonly object _lock = new();
@@ -152,5 +154,18 @@ internal sealed class ConcurrentLRUCache<TKey, TValue> : IDisposable
         {
             _cache.TryRemove(leastRecentlyUsedKey, out _);
         }
+    }
+
+    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    {
+        lock (_lock)
+        {
+            return _cache.ToList().GetEnumerator();
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
