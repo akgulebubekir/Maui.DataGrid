@@ -16,7 +16,7 @@ internal static class ReflectionExtensions
 
     public static void SetCacheSize(int cacheSize)
     {
-        _cacheSize = cacheSize;
+        Interlocked.Exchange(ref _cacheSize, cacheSize);
         ReinitializeCaches();
     }
 
