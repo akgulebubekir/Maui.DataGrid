@@ -1114,11 +1114,11 @@ public partial class DataGrid
     #region Methods
 
     /// <summary>
-    /// Scrolls to the row
+    /// Scrolls to the row.
     /// </summary>
-    /// <param name="item">Item to scroll</param>
-    /// <param name="position">Position of the row in screen</param>
-    /// <param name="animated">animated</param>
+    /// <param name="item">Item to scroll.</param>
+    /// <param name="position">Position of the row in screen.</param>
+    /// <param name="animated">animated.</param>
     public void ScrollTo(object item, ScrollToPosition position, bool animated = true) => _collectionView.ScrollTo(item, position: position, animate: animated);
 
     internal void Initialize()
