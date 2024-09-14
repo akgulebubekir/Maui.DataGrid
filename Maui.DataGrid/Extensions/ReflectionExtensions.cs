@@ -33,7 +33,7 @@ internal static class ReflectionExtensions
     }
 
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] this Type type, string path)
+    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, string path)
     {
         if (type == null)
         {
