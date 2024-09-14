@@ -53,10 +53,8 @@ internal static class ReflectionExtensions
                 {
                     return ValueCache.TryGetOrAdd(cacheKey, null);
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
 
@@ -64,10 +62,8 @@ internal static class ReflectionExtensions
         {
             return ValueCache.TryGetOrAdd(cacheKey, result);
         }
-        else
-        {
-            return result;
-        }
+
+        return result;
     }
 
     [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
@@ -109,10 +105,8 @@ internal static class ReflectionExtensions
                 {
                     return TypeCache.TryGetOrAdd(cacheKey, null);
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
         }
 
@@ -120,10 +114,8 @@ internal static class ReflectionExtensions
         {
             return TypeCache.TryGetOrAdd(cacheKey, resultType);
         }
-        else
-        {
-            return resultType;
-        }
+
+        return resultType;
     }
 
     private static void ReinitializeCaches()
