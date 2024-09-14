@@ -103,29 +103,6 @@ internal sealed class DataGridHeaderRow : Grid
         ColumnDefinitions.RemoveAfter(DataGrid.Columns.Count);
     }
 
-    private void UpdateBorders()
-    {
-        // This approach is a hack to avoid needing a slow Border control.
-        // The padding constitutes the cell's border thickness.
-        // And the BackgroundColor constitutes the border color of the cell.
-        if (DataGrid.HeaderBordersVisible)
-        {
-            var borderSize = DataGrid.BorderThickness;
-            ColumnSpacing = borderSize.Left;
-            Padding = new(0, borderSize.Top / 2, 0, borderSize.Bottom / 2);
-        }
-        else
-        {
-            ColumnSpacing = 0;
-            Padding = 0;
-        }
-    }
-
-    private void OnBorderThicknessChanged(object? sender, EventArgs e)
-    {
-        UpdateBorders();
-    }
-
     /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
@@ -186,6 +163,11 @@ internal sealed class DataGridHeaderRow : Grid
         return column.SortingEnabled && column.DataGrid.Columns.Contains(column);
     }
 
+    private void OnBorderThicknessChanged(object? sender, EventArgs e)
+    {
+        UpdateBorders();
+    }
+
     private void OnColumnsChanged(object? sender, EventArgs e)
     {
         InitializeHeaderRow();
@@ -233,6 +215,24 @@ internal sealed class DataGridHeaderRow : Grid
         }
 
         return new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
+    }
+
+    private void UpdateBorders()
+    {
+        // This approach is a hack to avoid needing a slow Border control.
+        // The padding constitutes the cell's border thickness.
+        // And the BackgroundColor constitutes the border color of the cell.
+        if (DataGrid.HeaderBordersVisible)
+        {
+            var borderSize = DataGrid.BorderThickness;
+            ColumnSpacing = borderSize.Left;
+            Padding = new(0, borderSize.Top / 2, 0, borderSize.Bottom / 2);
+        }
+        else
+        {
+            ColumnSpacing = 0;
+            Padding = 0;
+        }
     }
 
     #endregion Methods
