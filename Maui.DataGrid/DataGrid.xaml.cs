@@ -1396,13 +1396,13 @@ public partial class DataGrid
 
     private void SortAndPaginate(SortData? sortData = null)
     {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
         lock (_sortAndPaginateLock)
         {
-            if (ItemsSource is null)
-            {
-                return;
-            }
-
             sortData ??= SortedColumnIndex;
 
             var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
