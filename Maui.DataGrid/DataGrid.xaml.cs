@@ -1415,26 +1415,11 @@ public partial class DataGrid
                 return;
             }
 
-            IEnumerable<object> sortedItems;
+            var sortedItems = CanSort(sortData) ? GetSortedItems(originalItems, sortData!) : originalItems;
 
-            if (sortData != null && CanSort(sortData))
-            {
-                sortedItems = GetSortedItems(originalItems, sortData);
-            }
-            else
-            {
-                sortedItems = originalItems;
-            }
+            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
 
-            if (PaginationEnabled)
-            {
-                var paginatedItems = GetPaginatedItems(sortedItems);
-                InternalItems.ReplaceRange(paginatedItems);
-            }
-            else
-            {
-                InternalItems.ReplaceRange(sortedItems);
-            }
+            InternalItems.ReplaceRange(paginatedItems);
         }
     }
 
