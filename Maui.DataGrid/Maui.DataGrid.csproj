@@ -29,7 +29,7 @@
   <PropertyGroup>
     <EnablePackageValidation>true</EnablePackageValidation>
     <EnableStrictModeForBaselineValidation>true</EnableStrictModeForBaselineValidation>
-    <PackageValidationBaselineVersion>4.0.4</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.0.5</PackageValidationBaselineVersion>
     <GenerateCompatibilitySuppressionFile>true</GenerateCompatibilitySuppressionFile>
     <CompatibilitySuppressionFilePath>ApiCompatSuppressions.xml</CompatibilitySuppressionFilePath>
   </PropertyGroup>
