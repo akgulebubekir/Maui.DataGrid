@@ -1,13 +1,16 @@
 namespace Maui.DataGrid.Extensions;
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Microsoft.Maui.Controls;
 using static Microsoft.Maui.Controls.BindableProperty;
 
 internal static class BindablePropertyExtensions
 {
-    public static BindableProperty Create<TDeclaringType, TReturnType>(
+    public static BindableProperty Create<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.PublicProperties)] TDeclaringType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] TReturnType>(
         TReturnType? defaultValue = default,
         BindingMode defaultBindingMode = BindingMode.OneWay,
         ValidateValueDelegate<TReturnType?>? validateValue = null,
