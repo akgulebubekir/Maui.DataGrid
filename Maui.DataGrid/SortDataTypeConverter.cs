@@ -16,7 +16,7 @@ public sealed class SortDataTypeConverter : TypeConverter // This needs to be pu
             return null;
         }
 
-        if (int.TryParse(value.ToString(), out var index))
+        if (value is int index || int.TryParse(value.ToString(), out index))
         {
             return (SortData)index;
         }
