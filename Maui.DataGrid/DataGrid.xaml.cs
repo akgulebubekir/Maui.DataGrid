@@ -1252,19 +1252,19 @@ public partial class DataGrid
 
     private SortData? RegenerateSortedColumnIndex()
     {
-        if (_sortedColumn != null && SortedColumnIndex != null)
+        if (_sortedColumn == null || SortedColumnIndex == null)
         {
-            var newSortedColumnIndex = Columns.IndexOf(_sortedColumn);
-
-            if (newSortedColumnIndex == -1)
-            {
-                return null;
-            }
-
-            return new(newSortedColumnIndex, SortedColumnIndex.Order);
+            return SortedColumnIndex;
         }
 
-        return SortedColumnIndex;
+        var newSortedColumnIndex = Columns.IndexOf(_sortedColumn);
+
+        if (newSortedColumnIndex == -1)
+        {
+            return null;
+        }
+
+        return new(newSortedColumnIndex, SortedColumnIndex.Order);
     }
 
     #endregion UI Methods
