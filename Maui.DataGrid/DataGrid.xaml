@@ -28,6 +28,7 @@
                 <Setter Property="Fill" Value="Black" />
                 <Setter Property="Points" Value="50,0 0,80 100,80" />
                 <Setter Property="Margin" Value="0,0,3,0" />
+                <Setter Property="MaximumHeightRequest" Value="10" />
             </Style>
             <!--Default Pagination Stepper Style-->
             <Style x:Key="DefaultPaginationStepperStyle" TargetType="Stepper">
