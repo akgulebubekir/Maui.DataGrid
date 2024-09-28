@@ -58,7 +58,7 @@
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                 </dg:DataGridColumn>
-                <dg:DataGridColumn PropertyName="." Width="0.75*">
+                <dg:DataGridColumn PropertyName="." Width="0.75*" FilteringEnabled="False">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate x:DataType="m:Team">
                             <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding BindingContext.Commands[Edit], Source={Reference self}, x:DataType={x:Null}}" CommandParameter="{Binding .}" />
