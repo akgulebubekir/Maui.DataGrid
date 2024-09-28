@@ -127,7 +127,6 @@ internal sealed class DataGridRow : Grid
             DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
             DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
             DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
-            DataGrid.BorderThicknessChanged -= OnBorderThicknessChanged;
 
             foreach (var column in DataGrid.Columns)
             {
@@ -140,7 +139,6 @@ internal sealed class DataGridRow : Grid
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
             DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
             DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
-            DataGrid.BorderThicknessChanged += OnBorderThicknessChanged;
 
             foreach (var column in DataGrid.Columns)
             {
@@ -164,8 +162,6 @@ internal sealed class DataGridRow : Grid
         UpdateSelectedState();
 
         UpdateColors();
-
-        UpdateBorders();
 
         var columns = DataGrid.Columns;
 
@@ -223,6 +219,8 @@ internal sealed class DataGridRow : Grid
     private DataGridCell GenerateCellForColumn(DataGridColumn col, int columnIndex)
     {
         var dataGridCell = CreateCell(col);
+
+        dataGridCell.UpdateBindings(DataGrid);
 
         SetColumn((BindableObject)dataGridCell, columnIndex);
 
@@ -413,16 +411,6 @@ internal sealed class DataGridRow : Grid
         return datePicker;
     }
 
-    private void UpdateBorders()
-    {
-        // This approach is a hack to avoid needing a slow Border control.
-        // The padding constitutes the cell's border thickness.
-        // And the BackgroundColor constitutes the border color of the cell.
-        var borderSize = DataGrid.BorderThickness;
-        ColumnSpacing = borderSize.Left;
-        Padding = new(0, borderSize.Top / 2, 0, borderSize.Bottom / 2);
-    }
-
     private void UpdateColors()
     {
         var rowIndex = DataGrid.InternalItems.IndexOf(BindingContext);
@@ -440,11 +428,6 @@ internal sealed class DataGridRow : Grid
         CellTextColor = isSelected
                 ? InverseColor(DataGrid.ActiveRowColor)
                 : DataGrid.RowsTextColorPalette.GetColor(rowIndex, BindingContext);
-    }
-
-    private void OnBorderThicknessChanged(object? sender, EventArgs e)
-    {
-        UpdateBorders();
     }
 
     private void OnRowsTextColorPaletteChanged(object? sender, EventArgs e)

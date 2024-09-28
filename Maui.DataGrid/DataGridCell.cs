@@ -1,5 +1,6 @@
 namespace Maui.DataGrid;
 
+using Maui.DataGrid.Converters;
 using Microsoft.Maui.Controls;
 
 /// <summary>
@@ -22,6 +23,25 @@ internal sealed class DataGridCell : ContentView
     public DataGridColumn Column { get; }
 
     public bool IsEditing { get; }
+
+    internal void UpdateBindings(DataGrid dataGrid)
+    {
+        // This approach is a hack to avoid needing a slow Border control.
+        // The padding constitutes the cell's border thickness.
+        // And the BackgroundColor constitutes the border color of the cell.
+        if (dataGrid.HeaderBordersVisible)
+        {
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
+            SetBinding(PaddingProperty, new Binding(nameof(DataGrid.BorderThickness), converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
+        }
+        else
+        {
+            RemoveBinding(BackgroundColorProperty);
+            RemoveBinding(PaddingProperty);
+
+            Padding = 0;
+        }
+    }
 
     internal void UpdateCellBackgroundColor(Color? bgColor)
     {

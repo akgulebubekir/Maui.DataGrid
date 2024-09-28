@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using Maui.DataGrid.Collections;
+using Maui.DataGrid.Converters;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
@@ -618,7 +619,6 @@ public partial class DataGrid
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
-    private readonly WeakEventManager _borderThicknessChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
 
@@ -685,15 +685,6 @@ public partial class DataGrid
     {
         add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
         remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
-    }
-
-    /// <summary>
-    /// Occurs when the BorderThickness of the DataGrid is changed.
-    /// </summary>
-    internal event EventHandler BorderThicknessChanged
-    {
-        add => _borderThicknessChangedEventManager.AddEventHandler(value);
-        remove => _borderThicknessChangedEventManager.RemoveEventHandler(value);
     }
 
     #endregion Events
