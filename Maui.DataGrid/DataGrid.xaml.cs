@@ -10,7 +10,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Input;
 using Maui.DataGrid.Collections;
-using Maui.DataGrid.Converters;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
@@ -543,7 +542,7 @@ public partial class DataGrid
             {
                 var self = (DataGrid)b;
 
-                if (!self.IsLoaded && self.Columns == null)
+                if (!self.IsLoaded || self.Columns == null)
                 {
                     return true;
                 }
