@@ -50,9 +50,10 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         BindablePropertyExtensions.Create<DataGridColumn, string>(
             propertyChanged: (b, _, _) =>
             {
-                if (b is DataGridColumn self)
+                if (b is DataGridColumn self && self.DataGrid is not null)
                 {
-                    self.DataGrid?.SortFilterAndPaginate();
+                    self.DataGrid.PageNumber = 1;
+                    self.DataGrid.SortFilterAndPaginate();
                 }
             });
 
