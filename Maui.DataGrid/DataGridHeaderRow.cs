@@ -184,6 +184,11 @@ internal sealed class DataGridHeaderRow : Grid
 
         if (column.HeaderCell != null)
         {
+            if (!sortingEnabled)
+            {
+                column.SortingIconContainer.IsVisible = false;
+            }
+
             column.FilterTextbox.IsVisible = filteringEnabled;
             return column.HeaderCell;
         }
@@ -206,6 +211,11 @@ internal sealed class DataGridHeaderRow : Grid
         column.SortingIconContainer.HeightRequest = sortIconSize;
         column.SortingIconContainer.WidthRequest = sortIconSize;
         column.SortingIcon.Style = DataGrid.SortIconStyle ?? DataGrid.DefaultSortIconStyle;
+
+        if (!sortingEnabled)
+        {
+            column.SortingIconContainer.IsVisible = false;
+        }
 
         cellContent.Children.Add(column.SortingIconContainer);
         cellContent.SetColumn(column.SortingIconContainer, 1);
