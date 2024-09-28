@@ -14,11 +14,17 @@ internal sealed class DataGridHeaderRow : Grid
 
     #region Fields
 
-    private readonly ColumnDefinitionCollection _headerColumnDefinitions =
+    private readonly RowDefinitionCollection _headerRowDefinitions =
                 [
-                    new() { Width = new(1, GridUnitType.Star) },
-                    new() { Width = new(1, GridUnitType.Auto) }
+                    new() { Height = new(1, GridUnitType.Star) },
+                    new() { Height = new(1, GridUnitType.Auto) },
                 ];
+
+    private readonly ColumnDefinitionCollection _headerColumnDefinitions =
+            [
+                new() { Width = new(1, GridUnitType.Star) },
+                new() { Width = new(1, GridUnitType.Auto) },
+            ];
 
     private readonly Thickness _headerCellPadding = new(0, 0, 4, 0);
 
@@ -70,14 +76,14 @@ internal sealed class DataGridHeaderRow : Grid
             // Add or update columns as needed
             ColumnDefinitions.AddOrUpdate(col.ColumnDefinition, i);
 
+            col.HeaderCell = CreateHeaderCell(col);
+
+            col.HeaderCell.UpdateBindings(DataGrid);
+
             if (!col.IsVisible)
             {
                 continue;
             }
-
-            col.HeaderCell ??= CreateHeaderCell(col);
-
-            col.HeaderCell.UpdateBindings(DataGrid);
 
             if (Children.TryGetItem(i, out var existingChild))
             {
@@ -173,39 +179,51 @@ internal sealed class DataGridHeaderRow : Grid
 
     private DataGridCell CreateHeaderCell(DataGridColumn column)
     {
-        Grid cellContent;
+        var sortingEnabled = DataGrid.SortingEnabled && column.SortingEnabled && column.IsSortable();
+        var filteringEnabled = DataGrid.FilteringEnabled && column.FilteringEnabled;
 
-        column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderStyle;
-
-        if (!DataGrid.SortingEnabled || !column.SortingEnabled || !column.IsSortable())
+        if (column.HeaderCell != null)
         {
-            cellContent = [column.HeaderLabel];
-            cellContent.Padding = _headerCellPadding;
+            column.SortingIconContainer.IsVisible = sortingEnabled;
+            column.FilterTextbox.IsVisible = filteringEnabled;
+            return column.HeaderCell;
         }
-        else
+
+        var cellContent = new Grid
         {
-            var sortIconSize = DataGrid.HeaderHeight * 0.3;
-            column.SortingIconContainer.HeightRequest = sortIconSize;
-            column.SortingIconContainer.WidthRequest = sortIconSize;
-            column.SortingIcon.Style = DataGrid.SortIconStyle ?? DataGrid.DefaultSortIconStyle;
+            Padding = _headerCellPadding,
+            ColumnDefinitions = _headerColumnDefinitions,
+            RowDefinitions = _headerRowDefinitions,
+        };
 
-            cellContent = new Grid
-            {
-                Padding = _headerCellPadding,
-                ColumnDefinitions = _headerColumnDefinitions,
-                Children = { column.HeaderLabel, column.SortingIconContainer },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer
-                    {
-                        Command = _sortCommand,
-                        CommandParameter = column,
-                    },
-                },
-            };
+        column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultLabelHeaderStyle;
+        column.FilterTextbox.Style = column.HeaderFilterStyle ?? DataGrid.HeaderFilterStyle ?? DataGrid.DefaultFilterHeaderStyle;
 
-            cellContent.SetColumn(column.SortingIconContainer, 1);
-        }
+        cellContent.Children.Add(column.HeaderLabel);
+
+        /* Configure the sorting icon */
+
+        var sortIconSize = DataGrid.HeaderHeight * 0.3;
+        column.SortingIconContainer.IsVisible = sortingEnabled;
+        column.SortingIconContainer.HeightRequest = sortIconSize;
+        column.SortingIconContainer.WidthRequest = sortIconSize;
+        column.SortingIcon.Style = DataGrid.SortIconStyle ?? DataGrid.DefaultSortIconStyle;
+
+        cellContent.Children.Add(column.SortingIconContainer);
+        cellContent.SetColumn(column.SortingIconContainer, 1);
+
+        cellContent.GestureRecognizers.Add(new TapGestureRecognizer
+        {
+            Command = _sortCommand,
+            CommandParameter = column,
+        });
+
+        /* Configure the filter textbox */
+
+        column.FilterTextbox.IsVisible = filteringEnabled;
+        cellContent.Children.Add(column.FilterTextbox);
+        cellContent.SetRow(column.FilterTextbox, 1);
+        cellContent.SetColumnSpan(column.FilterTextbox, 2);
 
         return new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
     }

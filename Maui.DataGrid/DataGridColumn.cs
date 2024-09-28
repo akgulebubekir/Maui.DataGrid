@@ -44,6 +44,19 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = n);
 
     /// <summary>
+    /// Gets or sets the filter text of the column.
+    /// </summary>
+    public static readonly BindableProperty FilterTextProperty =
+        BindablePropertyExtensions.Create<DataGridColumn, string>(
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGridColumn self)
+                {
+                    self.DataGrid?.SortFilterAndPaginate();
+                }
+            });
+
+    /// <summary>
     /// Gets or sets the formatted title of the column.
     /// </summary>
     public static readonly BindableProperty FormattedTitleProperty =
@@ -117,7 +130,31 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Gets or sets a value indicating whether sorting is enabled for the column.
     /// </summary>
     public static readonly BindableProperty SortingEnabledProperty =
-        BindablePropertyExtensions.Create<DataGridColumn, bool>(true);
+        BindablePropertyExtensions.Create<DataGridColumn, bool>(
+            defaultValue: true,
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGridColumn self)
+                {
+                    self.HeaderCell = null;
+                    self.DataGrid?.Initialize();
+                }
+            });
+
+    /// <summary>
+    /// Gets or sets a value indicating whether filtering is enabled for the column.
+    /// </summary>
+    public static readonly BindableProperty FilteringEnabledProperty =
+        BindablePropertyExtensions.Create<DataGridColumn, bool>(
+            defaultValue: true,
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGridColumn self)
+                {
+                    self.HeaderCell = null;
+                    self.DataGrid?.Initialize();
+                }
+            });
 
     /// <summary>
     /// Gets or sets the style for the header label of the column.
@@ -129,6 +166,19 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 if (b is DataGridColumn self && self.HeaderLabel != null)
                 {
                     self.HeaderLabel.Style = n;
+                }
+            });
+
+    /// <summary>
+    /// Gets or sets the style for the header filter of the column.
+    /// </summary>
+    public static readonly BindableProperty HeaderFilterStyleProperty =
+        BindablePropertyExtensions.Create<DataGridColumn, Style>(
+            propertyChanged: (b, _, n) =>
+            {
+                if (b is DataGridColumn self && self.HeaderLabel != null)
+                {
+                    self.FilterTextbox.Style = n;
                 }
             });
 
@@ -159,6 +209,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
         };
+
+        FilterTextbox.SetBinding(Entry.TextProperty, new Binding(nameof(FilterText), BindingMode.TwoWay, source: this));
     }
 
     #region Events
@@ -225,6 +277,12 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         get => (string)GetValue(FormattedTitleProperty);
         set => SetValue(FormattedTitleProperty, value);
+    }
+
+    public string FilterText
+    {
+        get => (string)GetValue(FilterTextProperty);
+        set => SetValue(FilterTextProperty, value);
     }
 
     /// <summary>
@@ -304,13 +362,23 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     /// <summary>
     /// Gets or sets a value indicating whether the column is sortable.
-    /// Default is true.
+    /// Default is true. But the DataGrid must also have sorting enabled.
     /// Sortable columns must implement <see cref="IComparable"/>.
     /// </summary>
     public bool SortingEnabled
     {
         get => (bool)GetValue(SortingEnabledProperty);
         set => SetValue(SortingEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the column can be filtered.
+    /// Default is true. But the DataGrid must also have filtering enabled.
+    /// </summary>
+    public bool FilteringEnabled
+    {
+        get => (bool)GetValue(FilteringEnabledProperty);
+        set => SetValue(FilteringEnabledProperty, value);
     }
 
     /// <summary>
@@ -322,7 +390,18 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         set => SetValue(HeaderLabelStyleProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets label style of the header. <see cref="Style.TargetType"/> must be Label.
+    /// </summary>
+    public Style HeaderFilterStyle
+    {
+        get => (Style)GetValue(HeaderFilterStyleProperty);
+        set => SetValue(HeaderFilterStyleProperty, value);
+    }
+
     internal Polygon SortingIcon { get; } = new();
+
+    internal Entry FilterTextbox { get; } = new() { Placeholder = "Filter" };
 
     internal Label HeaderLabel { get; } = new();
 

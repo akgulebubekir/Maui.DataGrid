@@ -10,13 +10,18 @@
     <ContentView.Resources>
         <ResourceDictionary>
             <!--Default Header Style-->
-            <Style x:Key="DefaultHeaderStyle" TargetType="Label">
+            <Style x:Key="DefaultLabelHeaderStyle" TargetType="Label">
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="VerticalOptions" Value="Center" />
                 <Setter Property="TextColor" Value="Black" />
                 <Setter Property="LineBreakMode" Value="TailTruncation" />
             </Style>
+
+            <Style x:Key="DefaultFilterHeaderStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+
             <!--Default Sort Icon Style-->
             <Style x:Key="DefaultSortIconStyle" TargetType="Polygon">
                 <Setter Property="Aspect" Value="Uniform" />
