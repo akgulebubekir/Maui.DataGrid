@@ -15,6 +15,7 @@ public class MainViewModel : ViewModelBase
         TeamColumnVisible = true;
         WonColumnVisible = true;
         HeaderBordersVisible = true;
+        FilteringEnabled = true;
         PaginationEnabled = true;
         RefreshingEnabled = true;
         TeamColumnWidth = 70;
@@ -89,6 +90,12 @@ public class MainViewModel : ViewModelBase
     public int PageSize
     {
         get => GetValue<int>();
+        set => SetValue(value);
+    }
+
+    public bool FilteringEnabled
+    {
+        get => GetValue<bool>();
         set => SetValue(value);
     }
 

@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows.Input;
 using Maui.DataGrid.Collections;
 using Maui.DataGrid.Converters;
@@ -181,7 +183,7 @@ public partial class DataGrid
                 }
 
                 self._headerRow.InitializeHeaderRow(true);
-                self.SortAndPaginate();
+                self.SortFilterAndPaginate();
 
                 // Reset SelectedItem if it's not in the new collection
                 if (self.SelectedItem != null && !self.GetInternalItems().Contains(self.SelectedItem))
@@ -200,7 +202,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.SortAndPaginate();
+                    self.SortFilterAndPaginate();
                 }
             });
 
@@ -223,7 +225,7 @@ public partial class DataGrid
                 if (b is DataGrid self)
                 {
                     self.PageNumber = 1;
-                    self.SortAndPaginate();
+                    self.SortFilterAndPaginate();
                     self.UpdatePageSizeList();
                 }
             });
@@ -276,7 +278,29 @@ public partial class DataGrid
     /// Gets or sets a value indicating whether the DataGrid allows sorting.
     /// </summary>
     public static readonly BindableProperty SortingEnabledProperty =
-        BindablePropertyExtensions.Create<DataGrid, bool>(true);
+        BindablePropertyExtensions.Create<DataGrid, bool>(
+            defaultValue: true,
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._headerRow.InitializeHeaderRow(true);
+                }
+            });
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the DataGrid allows filtering.
+    /// </summary>
+    public static readonly BindableProperty FilteringEnabledProperty =
+        BindablePropertyExtensions.Create<DataGrid, bool>(
+            defaultValue: false,
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._headerRow.InitializeHeaderRow(true);
+                }
+            });
 
     /// <summary>
     /// Obsolete. Use <see cref="SortingEnabledProperty"/> instead.
@@ -535,7 +559,7 @@ public partial class DataGrid
                         self._sortedColumn = self.Columns[n.Index];
                     }
 
-                    self.SortAndPaginate(n);
+                    self.SortFilterAndPaginate(n);
                 }
             });
 
@@ -563,7 +587,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    self.SortAndPaginate();
+                    self.SortFilterAndPaginate();
                 }
             });
 
@@ -571,6 +595,12 @@ public partial class DataGrid
     /// Gets or sets the style for the header labels in the DataGrid.
     /// </summary>
     public static readonly BindableProperty HeaderLabelStyleProperty =
+        BindablePropertyExtensions.Create<DataGrid, Style>();
+
+    /// <summary>
+    /// Gets or sets the style for the column filters in the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty HeaderFilterStyleProperty =
         BindablePropertyExtensions.Create<DataGrid, Style>();
 
     /// <summary>
@@ -616,6 +646,7 @@ public partial class DataGrid
     private static readonly IList<int> DefaultPageSizeList = [.. DefaultPageSizeSet];
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
+    private readonly WeakEventManager _filterChangedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
@@ -626,6 +657,9 @@ public partial class DataGrid
     private readonly object _sortAndPaginateLock = new();
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
+
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+    private Type? _cachedType;
 
     #endregion Fields
 
@@ -638,7 +672,8 @@ public partial class DataGrid
     {
         InitializeComponent();
 
-        DefaultHeaderStyle = (Style)Resources["DefaultHeaderStyle"];
+        DefaultLabelHeaderStyle = (Style)Resources["DefaultLabelHeaderStyle"];
+        DefaultFilterHeaderStyle = (Style)Resources["DefaultFilterHeaderStyle"];
         DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
 
         if (_collectionView != null)
@@ -658,6 +693,15 @@ public partial class DataGrid
     {
         add => _itemSelectedEventManager.AddEventHandler(value);
         remove => _itemSelectedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when an item is selected in the DataGrid.
+    /// </summary>
+    public event EventHandler<TextChangedEventArgs> FilterChanged
+    {
+        add => _filterChangedEventManager.AddEventHandler(value);
+        remove => _filterChangedEventManager.RemoveEventHandler(value);
     }
 
     /// <summary>
@@ -903,6 +947,17 @@ public partial class DataGrid
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether gets or sets if the grid allows filtering. Default value is false.
+    /// If you want to enable or disable filtering for specific column please use <see cref="DataGridColumn.FilteringEnabled"/> property.
+    /// </summary>
+    public bool FilteringEnabled
+    {
+        get => (bool)GetValue(FilteringEnabledProperty);
+        set => SetValue(FilteringEnabledProperty, value);
+    }
+
+
+    /// <summary>
     /// Gets or sets the page number. Default value is 1.
     /// </summary>
     public int PageNumber
@@ -1044,6 +1099,16 @@ public partial class DataGrid
     }
 
     /// <summary>
+    /// Gets or sets style of the header label.
+    /// Style's <see cref="Style.TargetType"/> must be Label.
+    /// </summary>
+    public Style HeaderFilterStyle
+    {
+        get => (Style)GetValue(HeaderFilterStyleProperty);
+        set => SetValue(HeaderFilterStyleProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets sort icon.
     /// </summary>
     public Polygon SortIcon
@@ -1094,7 +1159,9 @@ public partial class DataGrid
 
 #pragma warning restore CA2227 // Collection properties should be read only
 
-    internal Style DefaultHeaderStyle { get; }
+    internal Style DefaultLabelHeaderStyle { get; }
+
+    internal Style DefaultFilterHeaderStyle { get; }
 
     internal Style DefaultSortIconStyle { get; }
 
@@ -1223,7 +1290,7 @@ public partial class DataGrid
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         _internalItemsHashSet = null;
-        SortAndPaginate();
+        SortFilterAndPaginate();
     }
 
     private ICollection<object> GetInternalItems(int lookupCount = 1)
@@ -1261,6 +1328,12 @@ public partial class DataGrid
     #endregion UI Methods
 
     #region Sorting methods
+
+    /// <summary>
+    /// TODO: Implement this method.
+    /// </summary>
+    /// <returns>Whether the DataGrid can be filtered</returns>
+    private bool CanFilter() => true;
 
     private bool CanSort(SortData? sortData)
     {
@@ -1360,6 +1433,92 @@ public partial class DataGrid
 
     #region Pagination methods
 
+    internal void SortFilterAndPaginate(SortData? sortData = null)
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
+
+        lock (_sortAndPaginateLock)
+        {
+            sortData ??= SortedColumnIndex;
+
+            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
+
+            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
+
+            if (originalItems.Count == 0)
+            {
+                InternalItems.Clear();
+                return;
+            }
+
+            var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
+
+            var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
+
+            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
+
+            InternalItems.ReplaceRange(paginatedItems);
+        }
+    }
+
+    private List<object> GetFilteredItems(IList<object> originalItems)
+    {
+        var filteredItems = originalItems.AsEnumerable();
+
+        foreach (var column in Columns)
+        {
+            /* if (!column.IsFilterEnabled) */
+
+            if (string.IsNullOrEmpty(column.FilterText))
+            {
+                continue;
+            }
+
+            try
+            {
+                filteredItems = filteredItems.Where(item => FilterItem(item, column));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        return filteredItems.ToList();
+    }
+
+    private bool FilterItem(object item, DataGridColumn column)
+    {
+        var isItemTypeCached = _cachedType != null;
+
+        if (!isItemTypeCached)
+        {
+            _cachedType = item.GetType();
+        }
+
+        var type = _cachedType ?? item.GetType();
+        var property = type?.GetProperty(column.PropertyName);
+
+        if (property?.PropertyType == typeof(object))
+        {
+            return false;
+        }
+
+        var value = property?.GetValue(item, null)?.ToString();
+        var result = value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase);
+
+        if (result == null && isItemTypeCached)
+        {
+            _cachedType = null;
+            result = FilterItem(item, column);
+        }
+
+        return result == true;
+    }
+
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
     {
         var skip = (PageNumber - 1) * PageSize;
@@ -1382,35 +1541,6 @@ public partial class DataGrid
             PageSizeList = new List<int>(_pageSizeList);
             OnPropertyChanged(nameof(PageSizeList));
             OnPropertyChanged(nameof(PageSize));
-        }
-    }
-
-    private void SortAndPaginate(SortData? sortData = null)
-    {
-        if (ItemsSource is null)
-        {
-            return;
-        }
-
-        lock (_sortAndPaginateLock)
-        {
-            sortData ??= SortedColumnIndex;
-
-            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
-
-            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
-
-            if (originalItems.Count == 0)
-            {
-                InternalItems.Clear();
-                return;
-            }
-
-            var sortedItems = CanSort(sortData) ? GetSortedItems(originalItems, sortData!) : originalItems;
-
-            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
-
-            InternalItems.ReplaceRange(paginatedItems);
         }
     }
 

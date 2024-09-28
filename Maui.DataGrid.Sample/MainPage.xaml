@@ -16,7 +16,7 @@
             <Button Text="Remove Team" WidthRequest="140" Command="{Binding Commands[RemoveTeam]}" />
         </HorizontalStackLayout>
 
-        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}"
+        <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}" FilteringEnabled="{Binding FilteringEnabled}"
                      SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}" RefreshingEnabled="{Binding RefreshingEnabled}"
                      BorderColor="{StaticResource GridBorderColor}" BorderThickness="{Binding BorderThickness}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"

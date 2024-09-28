@@ -8,7 +8,30 @@ internal sealed class DataGridRow : Grid
     #region Bindable Properties
 
     public static readonly BindableProperty DataGridProperty =
-    BindablePropertyExtensions.Create<DataGridRow, DataGrid>(null, BindingMode.OneTime);
+        BindablePropertyExtensions.Create<DataGridRow, DataGrid>(
+            null,
+            BindingMode.OneTime,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not DataGridRow dataGridRow)
+                {
+                    return;
+                }
+
+                if (o is DataGrid oldDataGrid)
+                {
+                    foreach (var column in oldDataGrid.Columns)
+                    {
+                        column.VisibilityChanged -= dataGridRow.OnVisibilityChanged;
+                    }
+                }
+
+                foreach (var column in dataGridRow.DataGrid.Columns)
+                {
+                    column.VisibilityChanged -= dataGridRow.OnVisibilityChanged;
+                    column.VisibilityChanged += dataGridRow.OnVisibilityChanged;
+                }
+            });
 
     public static readonly BindableProperty RowToEditProperty =
         BindablePropertyExtensions.Create<DataGridRow, object>(
