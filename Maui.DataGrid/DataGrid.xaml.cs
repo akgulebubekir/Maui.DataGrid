@@ -1471,14 +1471,7 @@ public partial class DataGrid
                 continue;
             }
 
-            try
-            {
-                filteredItems = filteredItems.Where(item => FilterItem(item, column));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
+            filteredItems = filteredItems.Where(item => FilterItem(item, column));
         }
 
         return filteredItems.ToList();
@@ -1486,31 +1479,39 @@ public partial class DataGrid
 
     private bool FilterItem(object item, DataGridColumn column)
     {
-        var isItemTypeCached = _cachedType != null;
-
-        if (!isItemTypeCached)
+        try
         {
-            _cachedType = item.GetType();
+            var isItemTypeCached = _cachedType != null;
+
+            if (!isItemTypeCached)
+            {
+                _cachedType = item.GetType();
+            }
+
+            var type = _cachedType ?? item.GetType();
+            var property = type?.GetProperty(column.PropertyName);
+
+            if (property?.PropertyType == typeof(object))
+            {
+                return false;
+            }
+
+            var value = property?.GetValue(item, null)?.ToString();
+            var result = value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase);
+
+            if (result == null && isItemTypeCached)
+            {
+                _cachedType = null;
+                result = FilterItem(item, column);
+            }
+
+            return result == true;
         }
-
-        var type = _cachedType ?? item.GetType();
-        var property = type?.GetProperty(column.PropertyName);
-
-        if (property?.PropertyType == typeof(object))
+        catch (Exception ex)
         {
+            Debug.WriteLine(ex);
             return false;
         }
-
-        var value = property?.GetValue(item, null)?.ToString();
-        var result = value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase);
-
-        if (result == null && isItemTypeCached)
-        {
-            _cachedType = null;
-            result = FilterItem(item, column);
-        }
-
-        return result == true;
     }
 
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
