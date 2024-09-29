@@ -32,8 +32,8 @@ internal static class ReflectionExtensions
         return result;
     }
 
-    [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] this Type type, string path)
+    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is needed here.")]
+    public static Type? GetPropertyTypeByPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] this Type type, string path)
     {
         if (type == null)
         {

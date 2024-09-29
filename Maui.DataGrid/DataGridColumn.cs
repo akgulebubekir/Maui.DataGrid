@@ -2,6 +2,7 @@ namespace Maui.DataGrid;
 
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls.Shapes;
 
@@ -454,6 +455,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         return _isSortable ??= false;
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2062", Justification = "Reflection is needed here.")]
     internal void InitializeDataType()
     {
         if (DataType != null || string.IsNullOrEmpty(PropertyName))
