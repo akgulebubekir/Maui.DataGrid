@@ -955,7 +955,6 @@ public partial class DataGrid
         set => SetValue(FilteringEnabledProperty, value);
     }
 
-
     /// <summary>
     /// Gets or sets the page number. Default value is 1.
     /// </summary>
@@ -1328,11 +1327,7 @@ public partial class DataGrid
 
     #region Sorting methods
 
-    /// <summary>
-    /// TODO: Implement this method.
-    /// </summary>
-    /// <returns>Whether the DataGrid can be filtered</returns>
-    private bool CanFilter() => true;
+    private bool CanFilter() => FilteringEnabled && Columns.Any(c => c.FilteringEnabled);
 
     private bool CanSort(SortData? sortData)
     {
