@@ -645,7 +645,6 @@ public partial class DataGrid
     private static readonly IList<int> DefaultPageSizeList = [.. DefaultPageSizeSet];
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
-    private readonly WeakEventManager _filterChangedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
@@ -692,15 +691,6 @@ public partial class DataGrid
     {
         add => _itemSelectedEventManager.AddEventHandler(value);
         remove => _itemSelectedEventManager.RemoveEventHandler(value);
-    }
-
-    /// <summary>
-    /// Occurs when an item is selected in the DataGrid.
-    /// </summary>
-    public event EventHandler<TextChangedEventArgs> FilterChanged
-    {
-        add => _filterChangedEventManager.AddEventHandler(value);
-        remove => _filterChangedEventManager.RemoveEventHandler(value);
     }
 
     /// <summary>
