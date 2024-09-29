@@ -51,12 +51,12 @@ internal static class ReflectionExtensions
         {
             var property = resultType.GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
 
-            resultType = property?.PropertyType;
-
-            if (resultType == null)
+            if (property == null)
             {
                 return null;
             }
+
+            resultType = property.PropertyType;
         }
 
         return resultType;
