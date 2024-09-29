@@ -1464,9 +1464,7 @@ public partial class DataGrid
 
         foreach (var column in Columns)
         {
-            /* if (!column.IsFilterEnabled) */
-
-            if (string.IsNullOrEmpty(column.FilterText))
+            if (!column.FilteringEnabled || string.IsNullOrEmpty(column.FilterText))
             {
                 continue;
             }
