@@ -4,7 +4,7 @@ using System.Globalization;
 
 public class BorderThicknessToCellPaddingConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type? targetType, object? parameter, CultureInfo? culture)
     {
         if (value is Thickness thickness)
         {
@@ -14,7 +14,7 @@ public class BorderThicknessToCellPaddingConverter : IValueConverter
         return new Thickness(0);
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type? targetType, object? parameter, CultureInfo? culture)
     {
         throw new NotImplementedException();
     }
