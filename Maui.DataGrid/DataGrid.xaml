@@ -10,7 +10,7 @@
     <ContentView.Resources>
         <ResourceDictionary>
             <!--Default Header Style-->
-            <Style x:Key="DefaultLabelHeaderStyle" TargetType="Label">
+            <Style x:Key="DefaultHeaderLabelStyle" TargetType="Label">
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="VerticalOptions" Value="Center" />
@@ -18,7 +18,7 @@
                 <Setter Property="LineBreakMode" Value="TailTruncation" />
             </Style>
 
-            <Style x:Key="DefaultFilterHeaderStyle" TargetType="Entry">
+            <Style x:Key="DefaultHeaderFilterStyle" TargetType="Entry">
                 <Setter Property="TextColor" Value="Black" />
             </Style>
 

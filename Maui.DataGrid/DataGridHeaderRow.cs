@@ -200,8 +200,8 @@ internal sealed class DataGridHeaderRow : Grid
             RowDefinitions = _headerRowDefinitions,
         };
 
-        column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultLabelHeaderStyle;
-        column.FilterTextbox.Style = column.HeaderFilterStyle ?? DataGrid.HeaderFilterStyle ?? DataGrid.DefaultFilterHeaderStyle;
+        column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderLabelStyle;
+        column.FilterTextbox.Style = column.HeaderFilterStyle ?? DataGrid.HeaderFilterStyle ?? DataGrid.DefaultHeaderFilterStyle;
 
         cellContent.Children.Add(column.HeaderLabel);
 

@@ -670,8 +670,8 @@ public partial class DataGrid
     {
         InitializeComponent();
 
-        DefaultLabelHeaderStyle = (Style)Resources["DefaultLabelHeaderStyle"];
-        DefaultFilterHeaderStyle = (Style)Resources["DefaultFilterHeaderStyle"];
+        DefaultHeaderLabelStyle = (Style)Resources["DefaultHeaderLabelStyle"];
+        DefaultHeaderFilterStyle = (Style)Resources["DefaultHeaderFilterStyle"];
         DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
 
         if (_collectionView != null)
@@ -1147,9 +1147,9 @@ public partial class DataGrid
 
 #pragma warning restore CA2227 // Collection properties should be read only
 
-    internal Style DefaultLabelHeaderStyle { get; }
+    internal Style DefaultHeaderLabelStyle { get; }
 
-    internal Style DefaultFilterHeaderStyle { get; }
+    internal Style DefaultHeaderFilterStyle { get; }
 
     internal Style DefaultSortIconStyle { get; }
 
