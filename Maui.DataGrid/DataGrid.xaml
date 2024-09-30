@@ -20,6 +20,7 @@
 
             <Style x:Key="DefaultHeaderFilterStyle" TargetType="Entry">
                 <Setter Property="TextColor" Value="Black" />
+                <Setter Property="PlaceholderColor" Value="Black" />
             </Style>
 
             <!--Default Sort Icon Style-->
