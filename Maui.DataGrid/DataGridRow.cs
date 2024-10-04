@@ -11,7 +11,7 @@ internal sealed class DataGridRow : Grid
         BindablePropertyExtensions.Create<DataGridRow, DataGrid>(
             null,
             BindingMode.OneTime,
-            propertyChanged: (b, o, n) =>
+            propertyChanged: (b, o, _) =>
             {
                 if (b is not DataGridRow dataGridRow)
                 {
