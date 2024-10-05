@@ -1127,8 +1127,6 @@ public partial class DataGrid
         }
     }
 
-#pragma warning restore CA2227 // Collection properties should be read only
-
     internal Style DefaultHeaderLabelStyle { get; }
 
     internal Style DefaultHeaderFilterStyle { get; }
