@@ -1,6 +1,7 @@
 namespace Maui.DataGrid;
 
 using System.ComponentModel;
+using Maui.DataGrid.Converters;
 
 /// <summary>
 /// Creates SortData for <see cref="DataGrid"/>.

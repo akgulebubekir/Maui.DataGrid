@@ -9,6 +9,20 @@
     <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
   <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Maui.DataGrid.Converters.SortDataTypeConverter</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Maui.DataGrid.SortDataTypeConverter</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.FilteringEnabledProperty</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
