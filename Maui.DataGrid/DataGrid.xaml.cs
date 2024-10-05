@@ -1495,11 +1495,13 @@ public partial class DataGrid
 
             return result == true;
         }
+#pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
             return false;
         }
+#pragma warning restore CA1031 // Do not catch general exception types
     }
 
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
