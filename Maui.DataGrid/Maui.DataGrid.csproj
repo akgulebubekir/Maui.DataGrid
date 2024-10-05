@@ -40,6 +40,7 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)">
       <PrivateAssets>all</PrivateAssets>

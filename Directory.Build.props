@@ -11,6 +11,7 @@
 	  <WarningLevel>9999</WarningLevel>
     <AnalysisLevel>latest-all</AnalysisLevel>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>

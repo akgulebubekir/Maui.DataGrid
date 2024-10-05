@@ -15,11 +15,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 /// <summary>
 /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed.
 /// </summary>
 /// <typeparam name="T">The object type of elements in the collection.</typeparam>
+[SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated via collection expression")]
 internal sealed class ObservableRangeCollection<T> : ObservableCollection<T>
 {
     /// <summary>

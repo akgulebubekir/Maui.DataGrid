@@ -15,6 +15,8 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
+#pragma warning disable CA1724
+
 /// <summary>
 /// DataGrid component for .NET MAUI.
 /// </summary>

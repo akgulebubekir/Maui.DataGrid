@@ -1,8 +1,10 @@
 namespace Maui.DataGrid.Sample.Converters;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Maui.DataGrid.Sample.Models;
 
+[SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated via XAML")]
 internal sealed class StreakToColorConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
