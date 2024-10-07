@@ -28,8 +28,6 @@ internal sealed class DataGridHeaderRow : Grid
                 new() { Width = new(1, GridUnitType.Auto) },
             ];
 
-    private readonly Thickness _headerCellPadding = new(0, 0, 4, 0);
-
     private readonly Command<DataGridColumn> _sortCommand = new(OnSort, CanSort);
 
     #endregion Fields
@@ -197,7 +195,6 @@ internal sealed class DataGridHeaderRow : Grid
 
         var cellContent = new Grid
         {
-            Padding = _headerCellPadding,
             ColumnDefinitions = _headerColumnDefinitions,
             RowDefinitions = _headerRowDefinitions,
         };
