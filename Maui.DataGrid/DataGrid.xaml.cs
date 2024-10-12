@@ -81,7 +81,7 @@ public partial class DataGrid
     /// Gets or sets the ItemSizingStrategy for the data grid.
     /// </summary>
     public static readonly BindableProperty ItemSizingStrategyProperty =
-        BindablePropertyExtensions.Create<DataGrid, ItemSizingStrategy>(DeviceInfo.Platform == DevicePlatform.Android ? ItemSizingStrategy.MeasureAllItems : ItemSizingStrategy.MeasureFirstItem);
+        BindablePropertyExtensions.Create<DataGrid, ItemSizingStrategy>(ItemSizingStrategy.MeasureFirstItem);
 
     /// <summary>
     /// Gets or sets the row to edit.
@@ -751,7 +751,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Gets or sets <see cref="ItemSizingStrategy"/>
-    /// Default Value is <see cref="ItemSizingStrategy.MeasureFirstItem"/>, except on Android.
+    /// Default Value is <see cref="ItemSizingStrategy.MeasureFirstItem"/>.
     /// </summary>
     public ItemSizingStrategy ItemSizingStrategy
     {
