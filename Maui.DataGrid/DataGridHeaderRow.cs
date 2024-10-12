@@ -1,8 +1,10 @@
 namespace Maui.DataGrid;
 
+using System.Diagnostics.CodeAnalysis;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
 
+[SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated via XAML")]
 internal sealed class DataGridHeaderRow : Grid
 {
     #region Bindable Properties
@@ -25,8 +27,6 @@ internal sealed class DataGridHeaderRow : Grid
                 new() { Width = new(1, GridUnitType.Star) },
                 new() { Width = new(1, GridUnitType.Auto) },
             ];
-
-    private readonly Thickness _headerCellPadding = new(0, 0, 4, 0);
 
     private readonly Command<DataGridColumn> _sortCommand = new(OnSort, CanSort);
 
@@ -195,7 +195,6 @@ internal sealed class DataGridHeaderRow : Grid
 
         var cellContent = new Grid
         {
-            Padding = _headerCellPadding,
             ColumnDefinitions = _headerColumnDefinitions,
             RowDefinitions = _headerRowDefinitions,
         };

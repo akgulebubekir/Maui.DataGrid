@@ -15,14 +15,14 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 using Font = Microsoft.Maui.Font;
 
+#pragma warning disable CA1724
+
 /// <summary>
 /// DataGrid component for .NET MAUI.
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class DataGrid
 {
-    #region Bindable properties
-
     /// <summary>
     /// Gets or sets the color of the active row.
     /// </summary>
@@ -637,10 +637,6 @@ public partial class DataGrid
                 }
             });
 
-    #endregion Bindable properties
-
-    #region Fields
-
     private static readonly SortedSet<int> DefaultPageSizeSet = [5, 10, 50, 100, 200, 1000];
     private static readonly IList<int> DefaultPageSizeList = [.. DefaultPageSizeSet];
 
@@ -659,10 +655,6 @@ public partial class DataGrid
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
     private Type? _cachedType;
 
-    #endregion Fields
-
-    #region ctor
-
     /// <summary>
     /// Initializes a new instance of the <see cref="DataGrid"/> class.
     /// </summary>
@@ -679,10 +671,6 @@ public partial class DataGrid
             _collectionView.ItemsSource = InternalItems;
         }
     }
-
-    #endregion ctor
-
-    #region Events
 
     /// <summary>
     /// Occurs when an item is selected in the DataGrid.
@@ -719,10 +707,6 @@ public partial class DataGrid
         add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
         remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
     }
-
-    #endregion Events
-
-    #region Properties
 
 #pragma warning disable CA2227 // Collection properties should be read only
 
@@ -1145,8 +1129,6 @@ public partial class DataGrid
         }
     }
 
-#pragma warning restore CA2227 // Collection properties should be read only
-
     internal Style DefaultHeaderLabelStyle { get; }
 
     internal Style DefaultHeaderFilterStyle { get; }
@@ -1154,10 +1136,6 @@ public partial class DataGrid
     internal Style DefaultSortIconStyle { get; }
 
     internal ObservableRangeCollection<object> InternalItems { get; } = [];
-
-    #endregion Properties
-
-    #region Methods
 
     /// <summary>
     /// Scrolls to the row.
@@ -1182,9 +1160,36 @@ public partial class DataGrid
         }
     }
 
-    #endregion Methods
+    internal void SortFilterAndPaginate(SortData? sortData = null)
+    {
+        if (ItemsSource is null)
+        {
+            return;
+        }
 
-    #region UI Methods
+        lock (_sortAndPaginateLock)
+        {
+            sortData ??= SortedColumnIndex;
+
+            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
+
+            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
+
+            if (originalItems.Count == 0)
+            {
+                InternalItems.Clear();
+                return;
+            }
+
+            var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
+
+            var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
+
+            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
+
+            InternalItems.ReplaceRange(paginatedItems);
+        }
+    }
 
     /// <inheritdoc/>
     protected override void OnParentSet()
@@ -1313,10 +1318,6 @@ public partial class DataGrid
         return new(newSortedColumnIndex, SortedColumnIndex.Order);
     }
 
-    #endregion UI Methods
-
-    #region Sorting methods
-
     private bool CanFilter() => FilteringEnabled && Columns.Any(c => c.FilteringEnabled);
 
     private bool CanSort(SortData? sortData)
@@ -1413,41 +1414,6 @@ public partial class DataGrid
         return items;
     }
 
-    #endregion Sorting methods
-
-    #region Pagination methods
-
-    internal void SortFilterAndPaginate(SortData? sortData = null)
-    {
-        if (ItemsSource is null)
-        {
-            return;
-        }
-
-        lock (_sortAndPaginateLock)
-        {
-            sortData ??= SortedColumnIndex;
-
-            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
-
-            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
-
-            if (originalItems.Count == 0)
-            {
-                InternalItems.Clear();
-                return;
-            }
-
-            var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
-
-            var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
-
-            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
-
-            InternalItems.ReplaceRange(paginatedItems);
-        }
-    }
-
     private List<object> GetFilteredItems(IList<object> originalItems)
     {
         var filteredItems = originalItems.AsEnumerable();
@@ -1495,11 +1461,13 @@ public partial class DataGrid
 
             return result == true;
         }
+#pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
             return false;
         }
+#pragma warning restore CA1031 // Do not catch general exception types
     }
 
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
@@ -1526,6 +1494,4 @@ public partial class DataGrid
             OnPropertyChanged(nameof(PageSize));
         }
     }
-
-    #endregion Pagination methods
 }

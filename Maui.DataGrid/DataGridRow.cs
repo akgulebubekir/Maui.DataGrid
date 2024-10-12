@@ -1,8 +1,10 @@
 namespace Maui.DataGrid;
 
+using System.Diagnostics.CodeAnalysis;
 using Maui.DataGrid.Extensions;
 using Microsoft.Maui.Controls;
 
+[SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Instantiated via XAML")]
 internal sealed class DataGridRow : Grid
 {
     #region Bindable Properties
