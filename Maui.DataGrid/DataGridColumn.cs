@@ -149,11 +149,11 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty FilteringEnabledProperty =
         BindablePropertyExtensions.Create<DataGridColumn, bool>(
             defaultValue: true,
-            propertyChanged: (b, _, _) =>
+            propertyChanged: (b, _, n) =>
             {
                 if (b is DataGridColumn self)
                 {
-                    self.HeaderCell = null;
+                    self.FilterTextbox.IsVisible = n;
                     self.DataGrid?.Initialize();
                 }
             });
@@ -206,7 +206,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         SortingIconContainer = new ContentView
         {
-            IsVisible = false,
             Content = SortingIcon,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
