@@ -11,7 +11,7 @@ internal sealed class StreakToColorConverter : IValueConverter
     {
         if (value is Streak s)
         {
-            return s.Result == Result.Won
+            return s.Result == GameResult.Won
                 ? Colors.Green.AddLuminosity(s.NumStreak / 30F)
                 : Colors.Red.AddLuminosity(-s.NumStreak / 30F);
         }

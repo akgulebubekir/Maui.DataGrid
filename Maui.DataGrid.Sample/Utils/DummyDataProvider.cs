@@ -49,7 +49,7 @@ internal static class DummyDataProvider
                     Last10 = $"{RandomNumberGenerator.GetInt32(1, 10)}",
                     Streak = new Streak
                     {
-                        Result = (Result)RandomNumberGenerator.GetInt32(0, 2),
+                        Result = (GameResult)RandomNumberGenerator.GetInt32(0, 2),
                         NumStreak = RandomNumberGenerator.GetInt32(0, 10),
                     },
                     Logo = realTeam.Logo,

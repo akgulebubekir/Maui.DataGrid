@@ -1,21 +1,8 @@
 namespace Maui.DataGrid.Sample.Models;
 
-public enum Result
-{
-    /// <summary>
-    /// The team lost.
-    /// </summary>
-    Lost = 0,
-
-    /// <summary>
-    /// The team won.
-    /// </summary>
-    Won = 1,
-}
-
 public class Streak : IComparable
 {
-    public Result Result { get; set; }
+    public GameResult Result { get; set; }
 
     public int NumStreak { get; set; }
 
@@ -65,7 +52,7 @@ public class Streak : IComparable
                 return resultComparison;
             }
 
-            var winLossIndicator = Result == Result.Won ? 1 : -1;
+            var winLossIndicator = Result == GameResult.Won ? 1 : -1;
 
             // If Result is the same, then compare the NumStreak
             return winLossIndicator * NumStreak.CompareTo(s.NumStreak);
@@ -77,7 +64,7 @@ public class Streak : IComparable
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{Enum.GetName(typeof(Result), Result)} {NumStreak}";
+        return $"{Enum.GetName(typeof(GameResult), Result)} {NumStreak}";
     }
 
     /// <inheritdoc/>
