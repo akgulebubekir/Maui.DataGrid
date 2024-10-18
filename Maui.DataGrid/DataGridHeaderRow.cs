@@ -179,16 +179,10 @@ internal sealed class DataGridHeaderRow : Grid
 
     private DataGridCell CreateHeaderCell(DataGridColumn column)
     {
-        var sortingEnabled = DataGrid.SortingEnabled && column.SortingEnabled && column.IsSortable();
         var filteringEnabled = DataGrid.FilteringEnabled && column.FilteringEnabled;
 
         if (column.HeaderCell != null)
         {
-            if (!sortingEnabled)
-            {
-                column.SortingIconContainer.IsVisible = false;
-            }
-
             column.FilterTextbox.IsVisible = filteringEnabled;
             return column.HeaderCell;
         }
@@ -210,11 +204,6 @@ internal sealed class DataGridHeaderRow : Grid
         column.SortingIconContainer.HeightRequest = sortIconSize;
         column.SortingIconContainer.WidthRequest = sortIconSize;
         column.SortingIcon.Style = DataGrid.SortIconStyle ?? DataGrid.DefaultSortIconStyle;
-
-        if (!sortingEnabled)
-        {
-            column.SortingIconContainer.IsVisible = false;
-        }
 
         cellContent.Children.Add(column.SortingIconContainer);
         cellContent.SetColumn(column.SortingIconContainer, 1);
