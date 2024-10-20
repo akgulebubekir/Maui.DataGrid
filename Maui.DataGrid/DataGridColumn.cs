@@ -178,7 +178,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         BindablePropertyExtensions.Create<DataGridColumn, Style>(
             propertyChanged: (b, _, n) =>
             {
-                if (b is DataGridColumn self && self.HeaderLabel != null)
+                if (b is DataGridColumn self)
                 {
                     self.FilterTextbox.Style = n;
                 }
