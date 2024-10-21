@@ -1,6 +1,6 @@
 namespace Maui.DataGrid.Sample.Models;
 
-public class Team
+internal sealed class Team
 {
     public required string Name { get; set; }
 

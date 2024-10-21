@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-public abstract class ViewModelBase : INotifyPropertyChanged
+internal abstract class ViewModelBase : INotifyPropertyChanged
 {
     private readonly Dictionary<string, object?> _properties = [];
 

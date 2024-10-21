@@ -1,6 +1,6 @@
 namespace Maui.DataGrid.Sample.Models;
 
-public class Streak : IComparable
+internal sealed class Streak : IComparable
 {
     public GameResult Result { get; set; }
 
@@ -64,7 +64,7 @@ public class Streak : IComparable
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{Enum.GetName(typeof(GameResult), Result)} {NumStreak}";
+        return $"{Enum.GetName(Result)} {NumStreak}";
     }
 
     /// <inheritdoc/>

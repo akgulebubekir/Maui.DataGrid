@@ -9,7 +9,7 @@ public partial class SettingsPopup
 {
     private readonly MainViewModel _viewModel;
 
-    public SettingsPopup(MainViewModel viewModel)
+    internal SettingsPopup(MainViewModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;
