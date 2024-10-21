@@ -179,11 +179,10 @@ internal sealed class DataGridHeaderRow : Grid
 
     private DataGridCell CreateHeaderCell(DataGridColumn column)
     {
-        var filteringEnabled = DataGrid.FilteringEnabled && column.FilteringEnabled;
-
         if (column.HeaderCell != null)
         {
-            column.FilterTextbox.IsVisible = filteringEnabled;
+            SetFilterRow(column);
+
             return column.HeaderCell;
         }
 
@@ -214,14 +213,36 @@ internal sealed class DataGridHeaderRow : Grid
             CommandParameter = column,
         });
 
-        /* Configure the filter textbox */
+        SetFilterRow(column);
 
-        column.FilterTextbox.IsVisible = filteringEnabled;
-        cellContent.Children.Add(column.FilterTextbox);
-        cellContent.SetRow(column.FilterTextbox, 1);
-        cellContent.SetColumnSpan(column.FilterTextbox, 2);
+        cellContent.Children.Add(column.FilterTextboxContainer);
+        cellContent.SetRow(column.FilterTextboxContainer, 1);
+        cellContent.SetColumnSpan(column.FilterTextboxContainer, 2);
 
         return new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
+    }
+
+    private void SetFilterRow(DataGridColumn column)
+    {
+        if (DataGrid.FilteringEnabled && column.FilteringEnabled)
+        {
+            column.FilterTextboxContainer.Content = column.FilterTextbox;
+        }
+        else if (DataGrid.FilteringEnabled && DataGrid.Columns.Any(c => c.FilteringEnabled))
+        {
+            var height = DataGrid.Columns.First(c => c.FilteringEnabled).FilterTextbox.Height;
+
+            // Add placeholder
+            column.FilterTextboxContainer.Content = new BoxView
+            {
+                MinimumHeightRequest = height,
+                Color = Colors.Transparent,
+            };
+        }
+        else
+        {
+            column.FilterTextboxContainer.Content = null;
+        }
     }
 
     #endregion Methods

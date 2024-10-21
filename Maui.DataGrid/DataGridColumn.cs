@@ -211,6 +211,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             VerticalOptions = LayoutOptions.Center,
         };
 
+        FilterTextboxContainer = new ContentView();
+
         FilterTextbox.SetBinding(Entry.TextProperty, new Binding(nameof(FilterText), BindingMode.TwoWay, source: this));
     }
 
@@ -405,6 +407,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal Entry FilterTextbox { get; } = new() { Placeholder = "Filter" };
 
     internal Label HeaderLabel { get; } = new();
+
+    internal ContentView FilterTextboxContainer { get; }
 
     internal View SortingIconContainer { get; }
 
