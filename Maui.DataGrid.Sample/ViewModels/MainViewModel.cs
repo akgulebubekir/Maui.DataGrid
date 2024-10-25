@@ -22,6 +22,8 @@ internal sealed class MainViewModel : ViewModelBase
         SelectionMode = SelectionMode.Single;
         PageSize = 6;
         BorderThicknessNumeric = 2;
+        PaginationText = "Page: ";
+        PerPageText = "# per page: ";
 
         Commands.Add("CompleteEdit", new Command(CmdCompleteEdit));
         Commands.Add("Edit", new Command<Team>(CmdEdit));
@@ -102,6 +104,18 @@ internal sealed class MainViewModel : ViewModelBase
     public bool PaginationEnabled
     {
         get => GetValue<bool>();
+        set => SetValue(value);
+    }
+
+    public string PaginationText
+    {
+        get => GetValue<string>() ?? "Page:";
+        set => SetValue(value);
+    }
+
+    public string PerPageText
+    {
+        get => GetValue<string>() ?? "# per page:";
         set => SetValue(value);
     }
 
