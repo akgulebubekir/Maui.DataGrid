@@ -206,6 +206,34 @@ public partial class DataGrid
             });
 
     /// <summary>
+    /// Gets or sets the text for the page label in the DataGrid.
+    /// </summary>
+    public static readonly BindableProperty PageTextProperty =
+        BindablePropertyExtensions.Create<DataGrid, string>(
+            defaultValue: "Page:",
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self.OnPropertyChanged(nameof(PageText));
+                }
+            });
+
+    /// <summary>
+    /// Gets or sets the localized text for the per page label.
+    /// </summary>
+    public static readonly BindableProperty PerPageTextProperty =
+        BindablePropertyExtensions.Create<DataGrid, string>(
+            defaultValue: "# per page:",
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self.OnPropertyChanged(nameof(PerPageText));
+                }
+            });
+
+    /// <summary>
     /// Gets or sets the page count for the DataGrid.
     /// </summary>
     public static readonly BindableProperty PageCountProperty =
@@ -1127,6 +1155,24 @@ public partial class DataGrid
                 PageNumber = value;
             }
         }
+    }
+
+    /// <summary>
+    /// Gets or sets the customized text for the 'Page' label in the pagination section.
+    /// </summary>
+    public string PageText
+    {
+        get => (string)GetValue(PageTextProperty);
+        set => SetValue(PageTextProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the customized text for the 'Per Page' label in the pagination section.
+    /// </summary>
+    public string PerPageText
+    {
+        get => (string)GetValue(PerPageTextProperty);
+        set => SetValue(PerPageTextProperty, value);
     }
 
     internal Style DefaultHeaderLabelStyle { get; }
