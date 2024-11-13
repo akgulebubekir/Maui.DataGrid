@@ -1,6 +1,6 @@
 namespace Maui.DataGrid.Sample;
 
-#pragma warning disable CA1724
+#pragma warning disable CA1724, CA1515
 
 /// <summary>
 /// Codebehind for the App.
