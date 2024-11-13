@@ -647,7 +647,14 @@ public partial class DataGrid
                 {
                     foreach (var column in self.Columns)
                     {
-                        column.SortingIcon.Style = n;
+                        if (n is null)
+                        {
+                            column.SortingIcon.Style = self.DefaultSortIconStyle;
+                        }
+                        else
+                        {
+                            column.SortingIcon.Style = n;
+                        }
                     }
                 }
             });

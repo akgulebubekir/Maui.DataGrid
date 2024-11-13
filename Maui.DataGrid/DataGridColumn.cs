@@ -167,7 +167,17 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             {
                 if (b is DataGridColumn self && self.HeaderLabel != null)
                 {
-                    self.HeaderLabel.Style = n;
+                    if (n is null)
+                    {
+                        if (self.DataGrid is not null)
+                        {
+                            self.HeaderLabel.Style = self.DataGrid.DefaultHeaderLabelStyle;
+                        }
+                    }
+                    else
+                    {
+                        self.HeaderLabel.Style = n;
+                    }
                 }
             });
 
@@ -180,7 +190,17 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             {
                 if (b is DataGridColumn self)
                 {
-                    self.FilterTextbox.Style = n;
+                    if (n is null)
+                    {
+                        if (self.DataGrid is not null)
+                        {
+                            self.FilterTextbox.Style = self.DataGrid.DefaultHeaderFilterStyle;
+                        }
+                    }
+                    else
+                    {
+                        self.FilterTextbox.Style = n;
+                    }
                 }
             });
 
