@@ -22,8 +22,8 @@ public class SelectionTest
         {
             eventTriggered = true;
             Assert.Equal(s, datagrid);
-            Assert.Equal(0, e.PreviousSelection.Count);
-            Assert.Equal(1, e.CurrentSelection.Count);
+            Assert.Empty(e.PreviousSelection);
+            _ = Assert.Single(e.CurrentSelection);
             Assert.Equal([teamToSelect], e.CurrentSelection);
         };
 
@@ -48,8 +48,8 @@ public class SelectionTest
         {
             eventTriggered = true;
             Assert.Equal(s, datagrid);
-            Assert.Equal(0, e.PreviousSelection.Count);
-            Assert.Equal(1, e.CurrentSelection.Count);
+            Assert.Empty(e.PreviousSelection);
+            _ = Assert.Single(e.CurrentSelection);
             Assert.Equal([teamToSelect], e.CurrentSelection);
         };
 

@@ -41,6 +41,7 @@ public class ColumnsTest
 
         var newColumns = await dataGrid.GetValueSafe(DataGrid.ColumnsProperty) as ObservableCollection<DataGridColumn>;
         Assert.NotNull(newColumns);
+        Assert.NotNull(dataGrid.Columns);
         Assert.Equal(2, dataGrid.Columns.Count);
         Assert.Equal("Name", dataGrid.Columns[0].Title);
         Assert.Equal("Won", dataGrid.Columns[1].Title);
