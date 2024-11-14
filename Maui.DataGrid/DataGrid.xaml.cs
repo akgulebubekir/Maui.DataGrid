@@ -62,6 +62,12 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, Color>(Colors.White);
 
     /// <summary>
+    /// Gets or sets the text color of the footer.
+    /// </summary>
+    public static readonly BindableProperty FooterTextColorProperty =
+        BindablePropertyExtensions.Create<DataGrid, Color>(Colors.Black);
+
+    /// <summary>
     /// Gets or sets the color of the border.
     /// </summary>
     public static readonly BindableProperty BorderColorProperty =
@@ -772,6 +778,16 @@ public partial class DataGrid
     {
         get => (Color)GetValue(FooterBackgroundProperty);
         set => SetValue(FooterBackgroundProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets textColor of the footer that contains pagination elements
+    /// Default value is <see cref="Colors.Black"/>.
+    /// </summary>
+    public Color FooterTextColor
+    {
+        get => (Color)GetValue(FooterTextColorProperty);
+        set => SetValue(FooterTextColorProperty, value);
     }
 
     /// <summary>

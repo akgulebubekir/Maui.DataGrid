@@ -21,7 +21,7 @@
                      BorderColor="{StaticResource GridBorderColor}" BorderThickness="{Binding BorderThickness}"
                      HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
                      BackgroundColor="{StaticResource GridBgColor}" ActiveRowColor="{StaticResource ActiveRowColor}"
-                     FooterBackground="{StaticResource GridFooterBgColor}" SortedColumnIndex="1"
+                     FooterBackground="{StaticResource GridFooterBgColor}" FooterTextColor="{StaticResource GridFooterTextColor}" SortedColumnIndex="1"
                      PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}" PageText="{Binding PaginationText}" PerPageText="{Binding PerPageText}"
                      PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
                      RowHeight="70" HeaderHeight="75" x:Name="_dataGrid1"
