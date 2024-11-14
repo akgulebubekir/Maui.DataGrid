@@ -61,12 +61,12 @@
                 <dg:DataGridColumn PropertyName="." Width="0.75*" FilteringEnabled="False">
                     <dg:DataGridColumn.CellTemplate>
                         <DataTemplate x:DataType="m:Team">
-                            <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding BindingContext.Commands[Edit], Source={Reference self}, x:DataType={x:Null}}" CommandParameter="{Binding .}" />
+                            <Button Text="Edit" BackgroundColor="LightSkyBlue" Command="{Binding Commands[Edit], Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:MainViewModel}}, x:DataType={x:Type vm:MainViewModel}}" CommandParameter="{Binding .}" />
                         </DataTemplate>
                     </dg:DataGridColumn.CellTemplate>
                     <dg:DataGridColumn.EditCellTemplate>
                         <DataTemplate x:DataType="m:Team">
-                            <Button Text="Done" BackgroundColor="MediumSeaGreen" Command="{Binding BindingContext.Commands[CompleteEdit], Source={Reference self}, x:DataType={x:Null}}" CommandParameter="{Binding .}" />
+                            <Button Text="Done" BackgroundColor="MediumSeaGreen" Command="{Binding Commands[CompleteEdit], Source={RelativeSource Mode=FindAncestorBindingContext, AncestorType={x:Type vm:MainViewModel}}, x:DataType={x:Type vm:MainViewModel}}" CommandParameter="{Binding .}" />
                         </DataTemplate>
                     </dg:DataGridColumn.EditCellTemplate>
                 </dg:DataGridColumn>
