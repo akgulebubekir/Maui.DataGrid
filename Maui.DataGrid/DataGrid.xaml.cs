@@ -1495,20 +1495,16 @@ public partial class DataGrid
         {
             var isItemTypeCached = _cachedType != null;
 
-            if (!isItemTypeCached)
-            {
-                _cachedType = item.GetType();
-            }
+            _cachedType ??= item.GetType();
 
-            var type = _cachedType ?? item.GetType();
-            var property = type?.GetProperty(column.PropertyName);
+            var property = _cachedType.GetProperty(column.PropertyName);
 
-            if (property?.PropertyType == typeof(object))
+            if (property == null || property.PropertyType == typeof(object))
             {
                 return false;
             }
 
-            var value = property?.GetValue(item, null)?.ToString();
+            var value = property.GetValue(item, null)?.ToString();
             var result = value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase);
 
             if (result == null && isItemTypeCached)
