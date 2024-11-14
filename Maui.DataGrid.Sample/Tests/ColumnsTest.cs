@@ -71,15 +71,10 @@ public class ColumnsTest
 
         viewModel.Item = -1;
 
-        if (dataGrid.IsLoaded)
-        {
-            Assert.Equal(-1, await dataGrid.GetValueSafe(DataGrid.SortedColumnIndexProperty));
-            Assert.True(propertyChangedEventTriggered);
-        }
-        else
-        {
-            Assert.Null(await dataGrid.GetValueSafe(DataGrid.SortedColumnIndexProperty));
-            Assert.False(propertyChangedEventTriggered);
-        }
+        var sortIndex = (SortData)await dataGrid.GetValueSafe(DataGrid.SortedColumnIndexProperty);
+
+        Assert.Equal(1, sortIndex.Index);
+        Assert.Equal(SortingOrder.Descendant, sortIndex.Order);
+        Assert.True(propertyChangedEventTriggered);
     }
 }
