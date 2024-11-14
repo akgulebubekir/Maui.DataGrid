@@ -8,6 +8,7 @@ internal static class ReflectionExtensions
 {
     private const char PropertyOfOp = '.';
 
+    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is required here.")]
     public static object? GetValueByPath(this object obj, string path)
     {
         if (obj == null || string.IsNullOrWhiteSpace(path))
