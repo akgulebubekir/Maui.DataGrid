@@ -15,9 +15,9 @@ internal static class MauiProgram
         builder.ConfigureTests(new TestOptions
         {
             Assemblies =
-        {
-            typeof(MauiProgram).Assembly
-        }
+            {
+                typeof(MauiProgram).Assembly,
+            },
         })
 .UseVisualRunner();
 #else
