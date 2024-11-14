@@ -682,8 +682,13 @@ public partial class DataGrid
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
 
+#if NET9_0
+    private readonly Lock _reloadLock = new();
+    private readonly Lock _sortAndPaginateLock = new();
+#else
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
+#endif
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
 

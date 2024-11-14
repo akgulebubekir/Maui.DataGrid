@@ -139,7 +139,7 @@ internal sealed class DataGridHeaderRow : Grid
                 column.VisibilityChanged += OnVisibilityChanged;
             }
 
-            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
+            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: DataGrid));
         }
     }
 

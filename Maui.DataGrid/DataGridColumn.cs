@@ -233,7 +233,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         FilterTextboxContainer = new ContentView();
 
-        FilterTextbox.SetBinding(Entry.TextProperty, new Binding(nameof(FilterText), BindingMode.TwoWay, source: this));
+        FilterTextbox.SetBinding(Entry.TextProperty, BindingBase.Create<DataGridColumn, string>(static x => x.FilterText, BindingMode.TwoWay, source: this));
     }
 
     #region Events
@@ -478,6 +478,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         return _isSortable ??= false;
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2072", Justification = "Reflection is needed here.")]
     [UnconditionalSuppressMessage("Trimming", "IL2062", Justification = "Reflection is needed here.")]
     internal void InitializeDataType()
     {
