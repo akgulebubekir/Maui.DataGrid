@@ -1489,6 +1489,7 @@ public partial class DataGrid
         return filteredItems.ToList();
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2074", Justification = "Reflection is needed here.")]
     private bool FilterItem(object item, DataGridColumn column)
     {
         try
