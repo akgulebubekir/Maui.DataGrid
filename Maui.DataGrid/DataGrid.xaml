@@ -69,12 +69,12 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <HorizontalStackLayout VerticalOptions="Center" IsVisible="{Binding PageSizeVisible, Source={Reference self}}">
-                <Label Text="{Binding PerPageText, Source={Reference self}}" Margin="5,0,0,0" VerticalTextAlignment="Center" TextColor="Black" />
-                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=TwoWay}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="Black"  MinimumWidthRequest="50" ios:Picker.UpdateMode="WhenFinished"/>
+                <Label Text="{Binding PerPageText, Source={Reference self}}" Margin="5,0,0,0" VerticalTextAlignment="Center" TextColor="{Binding FooterTextColor, Source={Reference self}}" />
+                <Picker ItemsSource="{Binding PageSizeList, Source={Reference self}, Mode=TwoWay}" SelectedItem="{Binding PageSize, Source={Reference self}}" TextColor="{Binding FooterTextColor, Source={Reference self}}"  MinimumWidthRequest="50" ios:Picker.UpdateMode="WhenFinished"/>
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2" VerticalOptions="Center">
-                <Label Text="{Binding PageText, Source={Reference self}}" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="Black" />
-                <Label Text="{Binding PageNumber, Source={Reference self}}" VerticalTextAlignment="Center" TextColor="Black" />
+                <Label Text="{Binding PageText, Source={Reference self}}" Margin="0,0,5,0" VerticalTextAlignment="Center" TextColor="{Binding FooterTextColor, Source={Reference self}}" />
+                <Label Text="{Binding PageNumber, Source={Reference self}}" VerticalTextAlignment="Center" TextColor="{Binding FooterTextColor, Source={Reference self}}" />
                 <Stepper x:Name="_paginationStepper" Value="{Binding PageNumber, Source={Reference self}}" Style="{Binding PaginationStepperStyle, Source={Reference self}}" Minimum="1" />
             </HorizontalStackLayout>
         </Grid>
