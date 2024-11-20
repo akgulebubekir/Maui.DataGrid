@@ -688,8 +688,13 @@ public partial class DataGrid
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
 
+#if NET9_0
+    private readonly Lock _reloadLock = new();
+    private readonly Lock _sortAndPaginateLock = new();
+#else
     private readonly object _reloadLock = new();
     private readonly object _sortAndPaginateLock = new();
+#endif
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
 
@@ -1500,26 +1505,23 @@ public partial class DataGrid
         return filteredItems.ToList();
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2074", Justification = "Reflection is needed here.")]
     private bool FilterItem(object item, DataGridColumn column)
     {
         try
         {
             var isItemTypeCached = _cachedType != null;
 
-            if (!isItemTypeCached)
-            {
-                _cachedType = item.GetType();
-            }
+            _cachedType ??= item.GetType();
 
-            var type = _cachedType ?? item.GetType();
-            var property = type?.GetProperty(column.PropertyName);
+            var property = _cachedType.GetProperty(column.PropertyName);
 
-            if (property?.PropertyType == typeof(object))
+            if (property == null || property.PropertyType == typeof(object))
             {
                 return false;
             }
 
-            var value = property?.GetValue(item, null)?.ToString();
+            var value = property.GetValue(item, null)?.ToString();
             var result = value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase);
 
             if (result == null && isItemTypeCached)

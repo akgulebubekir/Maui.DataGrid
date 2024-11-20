@@ -1,5 +1,8 @@
 namespace Maui.DataGrid.Sample;
 
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+
 #pragma warning disable CA1724, CA1515
 
 /// <summary>
@@ -11,7 +14,7 @@ public partial class App
     public App()
     {
         InitializeComponent();
-
-        MainPage = new AppShell();
     }
+
+    protected override Window CreateWindow(IActivationState? activationState) => new(new AppShell());
 }
