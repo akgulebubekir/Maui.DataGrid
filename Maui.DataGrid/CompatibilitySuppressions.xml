@@ -31,6 +31,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGrid.FooterTextColorProperty</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>F:Maui.DataGrid.DataGrid.HeaderFilterStyleProperty</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
     <Right>lib/net8.0/Maui.DataGrid.dll</Right>
@@ -80,6 +87,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.get_FooterTextColor</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGrid.get_HeaderFilterStyle</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
     <Right>lib/net8.0/Maui.DataGrid.dll</Right>
@@ -102,6 +116,13 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGrid.set_FilteringEnabled(System.Boolean)</Target>
+    <Left>lib/net8.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net8.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGrid.set_FooterTextColor(Microsoft.Maui.Graphics.Color)</Target>
     <Left>lib/net8.0/Maui.DataGrid.dll</Left>
     <Right>lib/net8.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
