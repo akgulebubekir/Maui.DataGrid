@@ -31,8 +31,13 @@ internal sealed class DataGridCell : ContentView
         // And the BackgroundColor constitutes the border color of the cell.
         if (dataGrid.HeaderBordersVisible)
         {
+#if NET9_0_OR_GREATER
             SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: dataGrid));
             SetBinding(PaddingProperty, BindingBase.Create<DataGrid, Thickness>(static x => x.BorderThickness, converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
+#else
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
+            SetBinding(PaddingProperty, new Binding(nameof(DataGrid.BorderThickness), converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
+#endif
         }
         else
         {

@@ -139,7 +139,11 @@ internal sealed class DataGridHeaderRow : Grid
                 column.VisibilityChanged += OnVisibilityChanged;
             }
 
+#if NET9_0_OR_GREATER
             SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: DataGrid));
+#else
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
+#endif
         }
     }
 
@@ -245,5 +249,5 @@ internal sealed class DataGridHeaderRow : Grid
         }
     }
 
-    #endregion Methods
+#endregion Methods
 }

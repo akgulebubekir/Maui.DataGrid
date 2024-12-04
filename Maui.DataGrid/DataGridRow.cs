@@ -170,7 +170,11 @@ internal sealed class DataGridRow : Grid
                 column.VisibilityChanged += OnVisibilityChanged;
             }
 
+#if NET9_0_OR_GREATER
             SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: DataGrid));
+#else
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
+#endif
         }
     }
 
@@ -492,5 +496,5 @@ internal sealed class DataGridRow : Grid
         _wasSelected = DataGrid.SelectedItem == BindingContext || DataGrid.SelectedItems.Contains(BindingContext);
     }
 
-    #endregion Methods
+#endregion Methods
 }
