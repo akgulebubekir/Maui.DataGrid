@@ -233,7 +233,11 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
         FilterTextboxContainer = new ContentView();
 
+#if NET9_0_OR_GREATER
         FilterTextbox.SetBinding(Entry.TextProperty, BindingBase.Create<DataGridColumn, string>(static x => x.FilterText, BindingMode.TwoWay, source: this));
+#else
+        FilterTextbox.SetBinding(Entry.TextProperty, new Binding(nameof(FilterText), BindingMode.TwoWay, source: this));
+#endif
     }
 
     #region Events

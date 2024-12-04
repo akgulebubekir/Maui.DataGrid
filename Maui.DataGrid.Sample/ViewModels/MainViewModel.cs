@@ -3,6 +3,7 @@ namespace Maui.DataGrid.Sample.ViewModels;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Maui.Views;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Utils;
@@ -11,7 +12,8 @@ internal sealed class MainViewModel : ViewModelBase
 {
     public MainViewModel()
     {
-        Teams = new(DummyDataProvider.GetTeams());
+        // To play with more data use DummyDataProvider.GetTeams(100)
+        Teams = DummyDataProvider.GetTeams().ToObservableCollection();
         TeamColumnVisible = true;
         WonColumnVisible = true;
         HeaderBordersVisible = true;
