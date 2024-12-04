@@ -100,7 +100,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(
-            defaultValue: new PaletteCollection { Colors.White },
+            defaultValueCreator: _ => new PaletteCollection { Colors.White },
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -114,7 +114,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty RowsTextColorPaletteProperty =
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(
-            defaultValue: new PaletteCollection { Colors.Black },
+            defaultValueCreator: _ => new PaletteCollection { Colors.Black },
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -128,7 +128,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty ColumnsProperty =
         BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>(
-            defaultValue: [],
+            defaultValueCreator: _ => [],  // Note: defaultValueCreator needed to prevent errors during navigation
             propertyChanged: (b, o, n) =>
             {
                 if (b is not DataGrid self)
@@ -157,8 +157,7 @@ public partial class DataGrid
                 }
 
                 self.Initialize();
-            },
-            defaultValueCreator: _ => []); // Note: defaultValueCreator needed to prevent errors during navigation
+            });
 
     /// <summary>
     /// Gets or sets the ItemsSource for the DataGrid.
@@ -268,7 +267,7 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<int>>(
-            defaultValue: DefaultPageSizeList,
+            defaultValueCreator: _ => [.. DefaultPageSizeSet!],
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
@@ -387,8 +386,8 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty SelectedItemsProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<object>>(
-            defaultValue: [],
-            BindingMode.TwoWay,
+            defaultBindingMode: BindingMode.TwoWay,
+            defaultValueCreator: _ => [],
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
@@ -679,7 +678,6 @@ public partial class DataGrid
             });
 
     private static readonly SortedSet<int> DefaultPageSizeSet = [5, 10, 50, 100, 200, 1000];
-    private static readonly IList<int> DefaultPageSizeList = [.. DefaultPageSizeSet];
 
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
