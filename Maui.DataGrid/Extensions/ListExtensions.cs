@@ -1,10 +1,7 @@
 namespace Maui.DataGrid.Extensions;
 
-using System.Runtime.CompilerServices;
-
 internal static class ListExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool TryGetItem(this IList<IView> list, int index, out IView? item)
     {
         if (index >= 0 && index < list.Count)
@@ -17,7 +14,6 @@ internal static class ListExtensions
         return false;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AddOrUpdate(this ColumnDefinitionCollection columnDefinitions, ColumnDefinition columnDefinition, int columnIndex)
     {
         if (columnIndex > columnDefinitions.Count - 1)
@@ -30,7 +26,6 @@ internal static class ListExtensions
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void RemoveAfter(this ColumnDefinitionCollection columnDefinitions, int lastColumnIndex)
     {
         for (var i = columnDefinitions.Count - 1; i > lastColumnIndex - 1; i--)
