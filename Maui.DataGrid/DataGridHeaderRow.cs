@@ -249,5 +249,5 @@ internal sealed class DataGridHeaderRow : Grid
         }
     }
 
-#endregion Methods
+    #endregion Methods
 }
