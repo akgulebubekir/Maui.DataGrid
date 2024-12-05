@@ -234,12 +234,9 @@ internal sealed class DataGridHeaderRow : Grid
         }
         else if (DataGrid.FilteringEnabled && DataGrid.Columns.Any(c => c.FilteringEnabled))
         {
-            var height = DataGrid.Columns.First(c => c.FilteringEnabled).FilterTextbox.Height;
-
             // Add placeholder
             column.FilterTextboxContainer.Content = new BoxView
             {
-                MinimumHeightRequest = height,
                 Color = Colors.Transparent,
             };
         }
