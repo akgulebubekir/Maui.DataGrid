@@ -235,9 +235,10 @@ internal sealed class DataGridHeaderRow : Grid
         else if (DataGrid.FilteringEnabled && DataGrid.Columns.Any(c => c.FilteringEnabled))
         {
             // Add placeholder
-            column.FilterTextboxContainer.Content = new BoxView
+            column.FilterTextboxContainer.Content = new Entry
             {
-                Color = Colors.Transparent,
+                Style = column.FilterTextbox.Style,
+                IsEnabled = false,
             };
         }
         else
