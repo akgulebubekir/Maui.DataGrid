@@ -1449,11 +1449,11 @@ public partial class DataGrid
 
     private IEnumerable<object> GetSortedItems(IList<object> unsortedItems, SortData sortData)
     {
-        var columnToSort = Columns[sortData.Index];
+        _sortedColumn ??= Columns[sortData.Index];
 
         foreach (var column in Columns)
         {
-            if (column == columnToSort)
+            if (column == _sortedColumn)
             {
                 column.SortingOrder = sortData.Order;
                 column.SortingIconContainer.IsVisible = true;
@@ -1470,12 +1470,12 @@ public partial class DataGrid
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
-                _ = columnToSort.SortingIcon.RotateTo(0);
-                items = unsortedItems.OrderBy(x => x.GetValueByPath(columnToSort.PropertyName));
+                _ = _sortedColumn.SortingIcon.RotateTo(0);
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(_sortedColumn.PropertyName));
                 break;
             case SortingOrder.Descendant:
-                _ = columnToSort.SortingIcon.RotateTo(180);
-                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(columnToSort.PropertyName));
+                _ = _sortedColumn.SortingIcon.RotateTo(180);
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(_sortedColumn.PropertyName));
                 break;
             case SortingOrder.None:
                 return unsortedItems;
