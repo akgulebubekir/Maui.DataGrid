@@ -22,12 +22,6 @@ internal sealed class DataGridHeaderRow : Grid
                     new() { Height = new(1, GridUnitType.Auto) },
                 ];
 
-    private readonly ColumnDefinitionCollection _headerColumnDefinitions =
-            [
-                new() { Width = new(1, GridUnitType.Star) },
-                new() { Width = new(1, GridUnitType.Auto) },
-            ];
-
     private readonly Command<DataGridColumn> _sortCommand = new(OnSort, CanSort);
 
     #endregion Fields
@@ -192,14 +186,13 @@ internal sealed class DataGridHeaderRow : Grid
 
         var cellContent = new Grid
         {
-            ColumnDefinitions = _headerColumnDefinitions,
             RowDefinitions = _headerRowDefinitions,
         };
 
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderLabelStyle;
         column.FilterTextbox.Style = column.HeaderFilterStyle ?? DataGrid.HeaderFilterStyle ?? DataGrid.DefaultHeaderFilterStyle;
 
-        cellContent.Children.Add(column.HeaderLabel);
+        column.HeaderLabelContainer.Children.Add(column.HeaderLabel);
 
         /* Configure the sorting icon */
 
@@ -208,14 +201,16 @@ internal sealed class DataGridHeaderRow : Grid
         column.SortingIconContainer.WidthRequest = sortIconSize;
         column.SortingIcon.Style = DataGrid.SortIconStyle ?? DataGrid.DefaultSortIconStyle;
 
-        cellContent.Children.Add(column.SortingIconContainer);
-        cellContent.SetColumn(column.SortingIconContainer, 1);
+        column.HeaderLabelContainer.Children.Add(column.SortingIconContainer);
+        column.HeaderLabelContainer.SetColumn(column.SortingIconContainer, 1);
 
-        cellContent.GestureRecognizers.Add(new TapGestureRecognizer
+        column.HeaderLabelContainer.GestureRecognizers.Add(new TapGestureRecognizer
         {
             Command = _sortCommand,
             CommandParameter = column,
         });
+
+        cellContent.Children.Add(column.HeaderLabelContainer);
 
         SetFilterRow(column);
 

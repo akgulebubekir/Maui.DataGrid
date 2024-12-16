@@ -232,8 +232,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             IsVisible = false,
         };
 
-        FilterTextboxContainer = new ContentView();
-
 #if NET9_0_OR_GREATER
         FilterTextbox.SetBinding(Entry.TextProperty, BindingBase.Create<DataGridColumn, string>(static x => x.FilterText, BindingMode.TwoWay, source: this));
 #else
@@ -431,9 +429,18 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal Entry FilterTextbox { get; } = new() { Placeholder = "Filter" };
 
+    internal ContentView FilterTextboxContainer { get; } = new();
+
     internal Label HeaderLabel { get; } = new();
 
-    internal ContentView FilterTextboxContainer { get; }
+    internal Grid HeaderLabelContainer { get; } = new()
+    {
+        ColumnDefinitions =
+        [
+            new() { Width = new(1, GridUnitType.Star) },
+            new() { Width = new(1, GridUnitType.Auto) },
+        ],
+    };
 
     internal View SortingIconContainer { get; }
 
