@@ -100,35 +100,34 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty RowsBackgroundColorPaletteProperty =
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(
-            defaultValueCreator: _ => new PaletteCollection { Colors.White },
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
                     self._rowsBackgroundColorPaletteChangedEventManager.HandleEvent(self, EventArgs.Empty, nameof(RowsBackgroundColorPaletteChanged));
                 }
-            });
+            },
+            defaultValueCreator: _ => new PaletteCollection { Colors.White });
 
     /// <summary>
     /// Gets or sets the text color palette for the rows.
     /// </summary>
     public static readonly BindableProperty RowsTextColorPaletteProperty =
         BindablePropertyExtensions.Create<DataGrid, IColorProvider>(
-            defaultValueCreator: _ => new PaletteCollection { Colors.Black },
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
                     self._rowsTextColorPaletteChangedEventManager.HandleEvent(self, EventArgs.Empty, nameof(RowsTextColorPaletteChanged));
                 }
-            });
+            },
+            defaultValueCreator: _ => new PaletteCollection { Colors.Black });
 
     /// <summary>
     /// Gets or sets the Columns for the DataGrid.
     /// </summary>
     public static readonly BindableProperty ColumnsProperty =
         BindablePropertyExtensions.Create<DataGrid, ObservableCollection<DataGridColumn>>(
-            defaultValueCreator: _ => [],  // Note: defaultValueCreator needed to prevent errors during navigation
             propertyChanged: (b, o, n) =>
             {
                 if (b is not DataGrid self)
@@ -157,7 +156,8 @@ public partial class DataGrid
                 }
 
                 self.Initialize();
-            });
+            },
+            defaultValueCreator: _ => []); // Note: defaultValueCreator needed to prevent errors during navigation
 
     /// <summary>
     /// Gets or sets the ItemsSource for the DataGrid.
@@ -267,14 +267,14 @@ public partial class DataGrid
     /// </summary>
     public static readonly BindableProperty PageSizeListProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<int>>(
-            defaultValueCreator: _ => [.. DefaultPageSizeSet!],
             propertyChanged: (b, _, _) =>
             {
                 if (b is DataGrid self)
                 {
                     self.UpdatePageSizeList();
                 }
-            });
+            },
+            defaultValueCreator: _ => [.. DefaultPageSizeSet!]);
 
     /// <summary>
     /// Gets or sets a value indicating whether the page size is visible in the DataGrid.
@@ -387,7 +387,6 @@ public partial class DataGrid
     public static readonly BindableProperty SelectedItemsProperty =
         BindablePropertyExtensions.Create<DataGrid, IList<object>>(
             defaultBindingMode: BindingMode.TwoWay,
-            defaultValueCreator: _ => [],
             propertyChanged: (b, _, n) =>
             {
                 var self = (DataGrid)b;
@@ -426,7 +425,8 @@ public partial class DataGrid
                 }
 
                 return selectedItems;
-            });
+            },
+            defaultValueCreator: _ => []);
 
     /// <summary>
     /// Gets or sets a value indicating whether selection is enabled in the DataGrid.
@@ -586,7 +586,7 @@ public partial class DataGrid
             {
                 if (b is DataGrid self)
                 {
-                    if (n != null && Math.Abs(n.Index) < self.Columns.Count)
+                    if (n != null && n.Index < self.Columns.Count)
                     {
                         self._sortedColumn = self.Columns[n.Index];
                     }
