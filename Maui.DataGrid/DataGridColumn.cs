@@ -229,6 +229,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             Content = SortingIcon,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
+            IsVisible = false,
         };
 
         FilterTextboxContainer = new ContentView();
