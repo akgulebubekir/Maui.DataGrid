@@ -65,7 +65,6 @@ DataGrid library for .NET **MAUI** applications.
 ```
 
 ## Screenshots
-----------
 
 ![Screenshot 2025-01-10 144417](https://github.com/user-attachments/assets/0f8b3bb1-a4e9-4620-bef2-c6821150fe12)
 
