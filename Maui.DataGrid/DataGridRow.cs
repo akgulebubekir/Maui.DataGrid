@@ -496,5 +496,5 @@ internal sealed class DataGridRow : Grid
         _wasSelected = DataGrid.SelectedItem == BindingContext || DataGrid.SelectedItems.Contains(BindingContext);
     }
 
-#endregion Methods
+    #endregion Methods
 }
