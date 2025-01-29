@@ -1243,7 +1243,7 @@ public partial class DataGrid
         {
             sortData ??= SortedColumnIndex;
 
-            var originalItems = ItemsSource as IList<object> ?? ItemsSource.Cast<object>().ToList();
+            var originalItems = ItemsSource as IList<object> ?? [.. ItemsSource.Cast<object>()];
 
             PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
 
@@ -1370,7 +1370,7 @@ public partial class DataGrid
             return InternalItems;
         }
 
-        return _internalItemsHashSet = new HashSet<object>(InternalItems);
+        return _internalItemsHashSet = [.. InternalItems];
     }
 
     private SortData? RegenerateSortedColumnIndex()
@@ -1500,7 +1500,7 @@ public partial class DataGrid
             filteredItems = filteredItems.Where(item => FilterItem(item, column));
         }
 
-        return filteredItems.ToList();
+        return [.. filteredItems];
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2074", Justification = "Reflection is needed here.")]
@@ -1558,7 +1558,7 @@ public partial class DataGrid
 
         if (_pageSizeList.Add(PageSize))
         {
-            PageSizeList = new List<int>(_pageSizeList);
+            PageSizeList = [.. _pageSizeList];
             OnPropertyChanged(nameof(PageSizeList));
             OnPropertyChanged(nameof(PageSize));
         }
