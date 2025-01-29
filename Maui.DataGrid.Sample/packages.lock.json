@@ -4,12 +4,12 @@
     "net9.0-android35.0": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
-        "requested": "[9.1.1, )",
-        "resolved": "9.1.1",
-        "contentHash": "vDFIMhs/NRKEaHrrxq3AR3qEnfc0L6nno3/ZEFRUctDdwcYKNfmx8aof1lj8++dX+56c282SLHyuCnN6eH2Mpg==",
+        "requested": "[11.0.0, )",
+        "resolved": "11.0.0",
+        "contentHash": "NjGc6XzGjYl1GvV6HHpLqReWDJlER7yz8HxcC1n/vKQNDVn1fB+MSoY59d9gaut65Aa5WDYnS4j6BF0L97CxyQ==",
         "dependencies": {
-          "CommunityToolkit.Maui.Core": "9.1.1",
-          "Microsoft.Maui.Controls": "8.0.71"
+          "CommunityToolkit.Maui.Core": "11.0.0",
+          "Microsoft.Maui.Controls": "[9.0.30, 10.0.0)"
         }
       },
       "DotNet.ReproducibleBuilds": {
@@ -68,11 +68,11 @@
       },
       "CommunityToolkit.Maui.Core": {
         "type": "Transitive",
-        "resolved": "9.1.1",
-        "contentHash": "2O5bgBnwYLKXUMSA4a0hd3ildtr9t5Rw109y7Lz0udnX4C9JrW8Xi1mLDuUcNmK+U37gulhJGLb2tCMc+cbo3w==",
+        "resolved": "11.0.0",
+        "contentHash": "5G7LJTrySg+YcnDASScmBOuQNrYzI2nBWF+4J2rK0NKt/3ArR91zOAbKvBe9EKpUtUqVprb7+RcL9djEhukh/g==",
         "dependencies": {
-          "Microsoft.Maui.Core": "8.0.71",
-          "Microsoft.Maui.Essentials": "8.0.71"
+          "Microsoft.Maui.Core": "[9.0.30, 10.0.0)",
+          "Microsoft.Maui.Essentials": "[9.0.30, 10.0.0)"
         }
       },
       "GoogleGson": {
@@ -1672,12 +1672,12 @@
     "net9.0-ios18.2": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
-        "requested": "[9.1.1, )",
-        "resolved": "9.1.1",
-        "contentHash": "vDFIMhs/NRKEaHrrxq3AR3qEnfc0L6nno3/ZEFRUctDdwcYKNfmx8aof1lj8++dX+56c282SLHyuCnN6eH2Mpg==",
+        "requested": "[11.0.0, )",
+        "resolved": "11.0.0",
+        "contentHash": "NjGc6XzGjYl1GvV6HHpLqReWDJlER7yz8HxcC1n/vKQNDVn1fB+MSoY59d9gaut65Aa5WDYnS4j6BF0L97CxyQ==",
         "dependencies": {
-          "CommunityToolkit.Maui.Core": "9.1.1",
-          "Microsoft.Maui.Controls": "8.0.71"
+          "CommunityToolkit.Maui.Core": "11.0.0",
+          "Microsoft.Maui.Controls": "[9.0.30, 10.0.0)"
         }
       },
       "DotNet.ReproducibleBuilds": {
@@ -1737,11 +1737,11 @@
       },
       "CommunityToolkit.Maui.Core": {
         "type": "Transitive",
-        "resolved": "9.1.1",
-        "contentHash": "2O5bgBnwYLKXUMSA4a0hd3ildtr9t5Rw109y7Lz0udnX4C9JrW8Xi1mLDuUcNmK+U37gulhJGLb2tCMc+cbo3w==",
+        "resolved": "11.0.0",
+        "contentHash": "5G7LJTrySg+YcnDASScmBOuQNrYzI2nBWF+4J2rK0NKt/3ArR91zOAbKvBe9EKpUtUqVprb7+RcL9djEhukh/g==",
         "dependencies": {
-          "Microsoft.Maui.Core": "8.0.71",
-          "Microsoft.Maui.Essentials": "8.0.71"
+          "Microsoft.Maui.Core": "[9.0.30, 10.0.0)",
+          "Microsoft.Maui.Essentials": "[9.0.30, 10.0.0)"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -6733,12 +6733,12 @@
     "net9.0-maccatalyst18.2": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
-        "requested": "[9.1.1, )",
-        "resolved": "9.1.1",
-        "contentHash": "vDFIMhs/NRKEaHrrxq3AR3qEnfc0L6nno3/ZEFRUctDdwcYKNfmx8aof1lj8++dX+56c282SLHyuCnN6eH2Mpg==",
+        "requested": "[11.0.0, )",
+        "resolved": "11.0.0",
+        "contentHash": "NjGc6XzGjYl1GvV6HHpLqReWDJlER7yz8HxcC1n/vKQNDVn1fB+MSoY59d9gaut65Aa5WDYnS4j6BF0L97CxyQ==",
         "dependencies": {
-          "CommunityToolkit.Maui.Core": "9.1.1",
-          "Microsoft.Maui.Controls": "8.0.71"
+          "CommunityToolkit.Maui.Core": "11.0.0",
+          "Microsoft.Maui.Controls": "[9.0.30, 10.0.0)"
         }
       },
       "DotNet.ReproducibleBuilds": {
@@ -6798,11 +6798,11 @@
       },
       "CommunityToolkit.Maui.Core": {
         "type": "Transitive",
-        "resolved": "9.1.1",
-        "contentHash": "2O5bgBnwYLKXUMSA4a0hd3ildtr9t5Rw109y7Lz0udnX4C9JrW8Xi1mLDuUcNmK+U37gulhJGLb2tCMc+cbo3w==",
+        "resolved": "11.0.0",
+        "contentHash": "5G7LJTrySg+YcnDASScmBOuQNrYzI2nBWF+4J2rK0NKt/3ArR91zOAbKvBe9EKpUtUqVprb7+RcL9djEhukh/g==",
         "dependencies": {
-          "Microsoft.Maui.Core": "8.0.71",
-          "Microsoft.Maui.Essentials": "8.0.71"
+          "Microsoft.Maui.Core": "[9.0.30, 10.0.0)",
+          "Microsoft.Maui.Essentials": "[9.0.30, 10.0.0)"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -11794,12 +11794,12 @@
     "net9.0-windows10.0.26100": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
-        "requested": "[9.1.1, )",
-        "resolved": "9.1.1",
-        "contentHash": "vDFIMhs/NRKEaHrrxq3AR3qEnfc0L6nno3/ZEFRUctDdwcYKNfmx8aof1lj8++dX+56c282SLHyuCnN6eH2Mpg==",
+        "requested": "[11.0.0, )",
+        "resolved": "11.0.0",
+        "contentHash": "NjGc6XzGjYl1GvV6HHpLqReWDJlER7yz8HxcC1n/vKQNDVn1fB+MSoY59d9gaut65Aa5WDYnS4j6BF0L97CxyQ==",
         "dependencies": {
-          "CommunityToolkit.Maui.Core": "9.1.1",
-          "Microsoft.Maui.Controls": "8.0.71"
+          "CommunityToolkit.Maui.Core": "11.0.0",
+          "Microsoft.Maui.Controls": "[9.0.30, 10.0.0)"
         }
       },
       "DotNet.ReproducibleBuilds": {
@@ -11852,12 +11852,12 @@
       },
       "CommunityToolkit.Maui.Core": {
         "type": "Transitive",
-        "resolved": "9.1.1",
-        "contentHash": "2O5bgBnwYLKXUMSA4a0hd3ildtr9t5Rw109y7Lz0udnX4C9JrW8Xi1mLDuUcNmK+U37gulhJGLb2tCMc+cbo3w==",
+        "resolved": "11.0.0",
+        "contentHash": "5G7LJTrySg+YcnDASScmBOuQNrYzI2nBWF+4J2rK0NKt/3ArR91zOAbKvBe9EKpUtUqVprb7+RcL9djEhukh/g==",
         "dependencies": {
-          "Microsoft.Maui.Core": "8.0.71",
-          "Microsoft.Maui.Essentials": "8.0.71",
-          "System.Speech": "8.0.0"
+          "Microsoft.Maui.Core": "[9.0.30, 10.0.0)",
+          "Microsoft.Maui.Essentials": "[9.0.30, 10.0.0)",
+          "System.Speech": "9.0.0"
         }
       },
       "Microsoft.Extensions.Configuration": {
@@ -12767,8 +12767,8 @@
       },
       "System.Speech": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "CNuiA6vb95Oe5PRjClZEBiaju31vwB8OIeCgeSBXyZL6+MS4RVVB2X/C11z0xCkooHE3Vy91nM2z76emIzR+sg=="
+        "resolved": "9.0.0",
+        "contentHash": "z8mvEVBfWSi0692vPOra8MougSEJCDzlaLj4g0aA87XDZpJoJD3BJTcJ0MuFbbN1fOT9Cr2ZFqXhZc+zzX0Gwg=="
       },
       "System.Text.Encoding": {
         "type": "Transitive",
@@ -13698,8 +13698,8 @@
       },
       "System.Speech": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "CNuiA6vb95Oe5PRjClZEBiaju31vwB8OIeCgeSBXyZL6+MS4RVVB2X/C11z0xCkooHE3Vy91nM2z76emIzR+sg=="
+        "resolved": "9.0.0",
+        "contentHash": "z8mvEVBfWSi0692vPOra8MougSEJCDzlaLj4g0aA87XDZpJoJD3BJTcJ0MuFbbN1fOT9Cr2ZFqXhZc+zzX0Gwg=="
       },
       "System.Text.Encoding": {
         "type": "Transitive",
@@ -14516,8 +14516,8 @@
       },
       "System.Speech": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "CNuiA6vb95Oe5PRjClZEBiaju31vwB8OIeCgeSBXyZL6+MS4RVVB2X/C11z0xCkooHE3Vy91nM2z76emIzR+sg=="
+        "resolved": "9.0.0",
+        "contentHash": "z8mvEVBfWSi0692vPOra8MougSEJCDzlaLj4g0aA87XDZpJoJD3BJTcJ0MuFbbN1fOT9Cr2ZFqXhZc+zzX0Gwg=="
       },
       "System.Text.Encoding": {
         "type": "Transitive",
@@ -15334,8 +15334,8 @@
       },
       "System.Speech": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "CNuiA6vb95Oe5PRjClZEBiaju31vwB8OIeCgeSBXyZL6+MS4RVVB2X/C11z0xCkooHE3Vy91nM2z76emIzR+sg=="
+        "resolved": "9.0.0",
+        "contentHash": "z8mvEVBfWSi0692vPOra8MougSEJCDzlaLj4g0aA87XDZpJoJD3BJTcJ0MuFbbN1fOT9Cr2ZFqXhZc+zzX0Gwg=="
       },
       "System.Text.Encoding": {
         "type": "Transitive",
@@ -16152,8 +16152,8 @@
       },
       "System.Speech": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "CNuiA6vb95Oe5PRjClZEBiaju31vwB8OIeCgeSBXyZL6+MS4RVVB2X/C11z0xCkooHE3Vy91nM2z76emIzR+sg=="
+        "resolved": "9.0.0",
+        "contentHash": "z8mvEVBfWSi0692vPOra8MougSEJCDzlaLj4g0aA87XDZpJoJD3BJTcJ0MuFbbN1fOT9Cr2ZFqXhZc+zzX0Gwg=="
       },
       "System.Text.Encoding": {
         "type": "Transitive",
@@ -16971,8 +16971,8 @@
       },
       "System.Speech": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "CNuiA6vb95Oe5PRjClZEBiaju31vwB8OIeCgeSBXyZL6+MS4RVVB2X/C11z0xCkooHE3Vy91nM2z76emIzR+sg=="
+        "resolved": "9.0.0",
+        "contentHash": "z8mvEVBfWSi0692vPOra8MougSEJCDzlaLj4g0aA87XDZpJoJD3BJTcJ0MuFbbN1fOT9Cr2ZFqXhZc+zzX0Gwg=="
       },
       "System.Text.Encoding": {
         "type": "Transitive",
