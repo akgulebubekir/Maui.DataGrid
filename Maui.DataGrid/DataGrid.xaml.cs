@@ -1486,7 +1486,7 @@ public partial class DataGrid
         return items;
     }
 
-    private List<object> GetFilteredItems(IList<object> originalItems)
+    private IList<object> GetFilteredItems(IList<object> originalItems)
     {
         var filteredItems = originalItems.AsEnumerable();
 
