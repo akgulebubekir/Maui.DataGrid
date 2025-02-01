@@ -5,7 +5,7 @@ using Maui.DataGrid.Sample.ViewModels;
 /// <summary>
 /// Codebehind for the SettingsPopup.
 /// </summary>
-public partial class SettingsPopup
+internal partial class SettingsPopup
 {
     private readonly MainViewModel _viewModel;
 

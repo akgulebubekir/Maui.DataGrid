@@ -9,7 +9,7 @@ using Microsoft.Maui.Controls;
 /// Codebehind for the App.
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class App
+internal partial class App
 {
     public App()
     {

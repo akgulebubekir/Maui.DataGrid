@@ -2,7 +2,7 @@ namespace Maui.DataGrid.Sample.Platforms.MacCatalyst;
 
 using UIKit;
 
-public static class Program
+internal static class Program
 {
     /// <summary>
     /// This is the main entry point of the application.

@@ -1,6 +1,6 @@
 namespace Maui.DataGrid.Sample.Models;
 
-public enum GameResult
+internal enum GameResult
 {
     /// <summary>
     /// The team lost.

@@ -6,7 +6,7 @@ using Maui.DataGrid.Sample.ViewModels;
 /// Codebehind for the MainPage.
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
-public partial class MainPage
+internal partial class MainPage
 {
     public MainPage()
     {
