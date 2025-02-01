@@ -186,7 +186,7 @@ internal sealed class DataGridRow : Grid
 
     private void InitializeRow()
     {
-        Children.Clear(); // TODO: Revisit this if and when virtualization is straightened out
+        Children.Clear(); // TODO: Revisit this if and when virtualization is straightened out in the underlying MAUI CollectionView control
 
         UpdateSelectedState();
 
