@@ -686,7 +686,7 @@ public partial class DataGrid
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
 
-    private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
+    private readonly SortedSet<int> _pageSizeList = [.. DefaultPageSizeSet];
 
     private readonly ConcurrentDictionary<string, PropertyInfo?> _propertyCache = [];
 
