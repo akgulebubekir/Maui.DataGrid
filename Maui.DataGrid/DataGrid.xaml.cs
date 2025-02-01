@@ -1,6 +1,7 @@
 namespace Maui.DataGrid;
 
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Input;
 using Maui.DataGrid.Collections;
 using Maui.DataGrid.Extensions;
@@ -686,6 +688,8 @@ public partial class DataGrid
 
     private readonly SortedSet<int> _pageSizeList = new(DefaultPageSizeSet);
 
+    private readonly ConcurrentDictionary<string, PropertyInfo?> _propertyCache = [];
+
 #if NET9_0
     private readonly Lock _reloadLock = new();
     private readonly Lock _sortAndPaginateLock = new();
@@ -695,9 +699,6 @@ public partial class DataGrid
 #endif
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
-
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
-    private Type? _cachedType;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataGrid"/> class.
@@ -1503,32 +1504,32 @@ public partial class DataGrid
         return [.. filteredItems];
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2074", Justification = "Reflection is needed here.")]
+    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is needed here.")]
     private bool FilterItem(object item, DataGridColumn column)
     {
         try
         {
-            var isItemTypeCached = _cachedType != null;
+            if (string.IsNullOrEmpty(column.FilterText))
+            {
+                return true;
+            }
 
-            _cachedType ??= item.GetType();
+            var itemType = item.GetType();
+            var cacheKey = $"{itemType.FullName}|{column.PropertyName}";
 
-            var property = _cachedType.GetProperty(column.PropertyName);
+            if (!_propertyCache.TryGetValue(cacheKey, out var property))
+            {
+                property = itemType.GetProperty(column.PropertyName);
+                _propertyCache[cacheKey] = property;
+            }
 
             if (property == null || property.PropertyType == typeof(object))
             {
                 return false;
             }
 
-            var value = property.GetValue(item, null)?.ToString();
-            var result = value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase);
-
-            if (result == null && isItemTypeCached)
-            {
-                _cachedType = null;
-                result = FilterItem(item, column);
-            }
-
-            return result == true;
+            var value = property.GetValue(item)?.ToString();
+            return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
         }
 #pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception ex)
