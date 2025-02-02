@@ -64,6 +64,19 @@ DataGrid library for .NET **MAUI** applications.
 </dg:DataGrid>
 ```
 
+## Tip
+
+If you are experiencing any issues on iOS, you can try adding the following to MauiProgram.cs
+
+```csharp
+#if IOS || MACCATALYST
+builder.ConfigureMauiHandlers(handlers =>
+{
+    handlers.AddHandler<Microsoft.Maui.Controls.CollectionView, Microsoft.Maui.Controls.Handlers.Items2.CollectionViewHandler2>();
+});
+#endif
+```
+
 ## Screenshots
 
 ![Screenshot 2025-01-10 144417](https://github.com/user-attachments/assets/0f8b3bb1-a4e9-4620-bef2-c6821150fe12)
