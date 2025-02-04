@@ -282,11 +282,7 @@ internal sealed class DataGridRow : Grid
         {
             cell = (View)col.CellTemplate.CreateContent();
 
-            if (!string.IsNullOrWhiteSpace(col.PropertyName))
-            {
-                var binding = CreateBindingViaReflection(col);
-                cell.SetBinding(BindingContextProperty, binding);
-            }
+            SetBinding(col, cell, BindingContextProperty);
         }
         else
         {
@@ -300,11 +296,7 @@ internal sealed class DataGridRow : Grid
                 FontFamily = DataGrid.FontFamily,
             };
 
-            if (!string.IsNullOrWhiteSpace(col.PropertyName))
-            {
-                var binding = CreateBindingViaReflection(col);
-                cell.SetBinding(Label.TextProperty, binding);
-            }
+            SetBinding(col, cell, Label.TextProperty);
         }
 
         return cell;
@@ -349,11 +341,7 @@ internal sealed class DataGridRow : Grid
 
         var cell = (View)col.EditCellTemplate.CreateContent();
 
-        if (!string.IsNullOrWhiteSpace(col.PropertyName))
-        {
-            var binding = CreateBindingViaReflection(col);
-            cell.SetBinding(BindingContextProperty, binding);
-        }
+        SetBinding(col, cell, BindingContextProperty);
 
         return cell;
     }
@@ -369,11 +357,7 @@ internal sealed class DataGridRow : Grid
             FontFamily = DataGrid.FontFamily,
         };
 
-        if (!string.IsNullOrWhiteSpace(col.PropertyName))
-        {
-            var binding = CreateBindingViaReflection(col);
-            entry.SetBinding(Entry.TextProperty, binding);
-        }
+        SetBinding(col, entry, Entry.TextProperty);
 
         return entry;
     }
@@ -386,11 +370,7 @@ internal sealed class DataGridRow : Grid
             BackgroundColor = CellBackgroundColor,
         };
 
-        if (!string.IsNullOrWhiteSpace(col.PropertyName))
-        {
-            var binding = CreateBindingViaReflection(col);
-            checkBox.SetBinding(CheckBox.IsCheckedProperty, binding);
-        }
+        SetBinding(col, checkBox, CheckBox.IsCheckedProperty);
 
         return checkBox;
     }
@@ -415,11 +395,7 @@ internal sealed class DataGridRow : Grid
             }
         };
 
-        if (!string.IsNullOrWhiteSpace(col.PropertyName))
-        {
-            var binding = CreateBindingViaReflection(col);
-            entry.SetBinding(Entry.TextProperty, binding);
-        }
+        SetBinding(col, entry, Entry.TextProperty);
 
         return entry;
     }
@@ -431,17 +407,20 @@ internal sealed class DataGridRow : Grid
             TextColor = CellTextColor,
         };
 
-        if (!string.IsNullOrWhiteSpace(col.PropertyName))
-        {
-            var binding = CreateBindingViaReflection(col);
-            datePicker.SetBinding(DatePicker.DateProperty, binding);
-        }
+        SetBinding(col, datePicker, DatePicker.DateProperty);
 
         return datePicker;
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Reflection is needed here.")]
-    private Binding CreateBindingViaReflection(DataGridColumn col) => new(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext);
+    private void SetBinding(DataGridColumn col, View view, BindableProperty bindableProperty)
+    {
+        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        {
+            var binding = new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext);
+            view.SetBinding(bindableProperty, binding);
+        }
+    }
 
     private void UpdateColors()
     {
