@@ -8,7 +8,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Features>strict</Features>
     <Deterministic>true</Deterministic>
-	  <WarningLevel>9999</WarningLevel>
+    <WarningLevel>9999</WarningLevel>
     <AnalysisLevel>latest-all</AnalysisLevel>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.Contains('net9.0'))">
-      <MauiVersion>9.0.30</MauiVersion>
+      <MauiVersion>9.0.40</MauiVersion>
   </PropertyGroup>
 
   <ItemGroup>
