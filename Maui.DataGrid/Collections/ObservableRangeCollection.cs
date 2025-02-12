@@ -74,7 +74,7 @@ internal sealed class ObservableRangeCollection<T> : ObservableCollection<T>
             return;
         }
 
-        var changedItems = collection is List<T> list ? list : new List<T>(collection);
+        var changedItems = collection is List<T> list ? list : [.. collection];
 
         RaiseChangeNotificationEvents(
             action: NotifyCollectionChangedAction.Add,
