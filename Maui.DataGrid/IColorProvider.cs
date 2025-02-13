@@ -1,4 +1,4 @@
-﻿namespace Maui.DataGrid;
+namespace Maui.DataGrid;
 
 /// <summary>
 /// Color Provider interface for Background and Text color of each row.
@@ -11,5 +11,5 @@ public interface IColorProvider
     /// <param name="rowIndex">Index of the row based on DataSource.</param>
     /// <param name="item">Item on the index.</param>
     /// <returns>Color for the row.</returns>
-    Color GetColor(int rowIndex, object item);
+    public Color GetColor(int rowIndex, object item);
 }
