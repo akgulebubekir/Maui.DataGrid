@@ -12,6 +12,7 @@ internal partial class SettingsPopup
     internal SettingsPopup(MainViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = viewModel;
         _viewModel = viewModel;
     }
 
