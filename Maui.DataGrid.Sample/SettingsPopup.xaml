@@ -50,7 +50,7 @@
                     <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                    <Picker SelectedItem="{Binding SelectionMode}" ItemsSource="{Static vm:MainViewModel.SelectionModes}" ItemDisplayBinding="{Binding ., x:DataType=x:Null }" />
+                    <Picker SelectedItem="{Binding SelectionMode}" ItemsSource="{Static vm:MainViewModel.SelectionModes}" ItemDisplayBinding="{Binding ., x:DataType=SelectionMode }" />
                     <Label Text="Selection Mode" TextColor="White" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
