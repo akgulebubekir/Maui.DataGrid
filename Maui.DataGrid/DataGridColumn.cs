@@ -511,9 +511,16 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             Type? rowDataType = null;
 
             var firstItem = DataGrid.ItemsSource.OfType<object>().FirstOrDefault(i => i != null);
+            //at least on item -> use first item type
             if (firstItem != default)
             {
                 rowDataType = firstItem.GetType();
+            }
+            //no item -> try to use generic type of ItemSource (if any)
+            else
+            {
+                var genericArguments = DataGrid.ItemsSource.GetType().GetGenericArguments();
+                rowDataType = genericArguments.Length == 1 ? genericArguments[0] : null;
             }
 
             DataType = rowDataType?.GetPropertyTypeByPath(PropertyName);
