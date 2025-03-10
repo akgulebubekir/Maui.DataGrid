@@ -510,19 +510,10 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         {
             Type? rowDataType = null;
 
-            var genericArguments = DataGrid.ItemsSource.GetType().GetGenericArguments();
-
-            if (genericArguments.Length == 1)
+            var firstItem = DataGrid.ItemsSource.OfType<object>().FirstOrDefault(i => i != null);
+            if (firstItem != default)
             {
-                rowDataType = genericArguments[0];
-            }
-            else
-            {
-                var firstItem = DataGrid.ItemsSource.OfType<object>().FirstOrDefault(i => i != null);
-                if (firstItem != default)
-                {
-                    rowDataType = firstItem.GetType();
-                }
+                rowDataType = firstItem.GetType();
             }
 
             DataType = rowDataType?.GetPropertyTypeByPath(PropertyName);
