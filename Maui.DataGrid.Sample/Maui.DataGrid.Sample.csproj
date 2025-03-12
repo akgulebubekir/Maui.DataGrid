@@ -33,6 +33,8 @@
 		<AssemblyName></AssemblyName>
 		<Authors>Ebubekir Akgul</Authors>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <WindowsPackageType>None</WindowsPackageType>
 	</PropertyGroup>
 
 	<ItemGroup>
