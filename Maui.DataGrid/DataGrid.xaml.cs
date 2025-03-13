@@ -1259,6 +1259,7 @@ public partial class DataGrid
             sortData ??= SortedColumnIndex;
 
             var originalItems = ItemsSource as IList<object> ?? [.. ItemsSource.Cast<object>()];
+
             PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
 
             if (originalItems.Count == 0)
