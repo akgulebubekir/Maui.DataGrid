@@ -1260,10 +1260,9 @@ public partial class DataGrid
 
             var originalItems = ItemsSource as IList<object> ?? [.. ItemsSource.Cast<object>()];
 
-            PageCount = (int)Math.Ceiling(originalItems.Count / (double)PageSize);
-
             if (originalItems.Count == 0)
             {
+                PageCount = 0;
                 InternalItems.Clear();
                 return;
             }
@@ -1273,6 +1272,8 @@ public partial class DataGrid
             var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
 
             var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
+
+            PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
 
             InternalItems.ReplaceRange(paginatedItems);
         }
