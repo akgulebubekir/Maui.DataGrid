@@ -85,7 +85,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="11.2.0" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Shiny.Xunit.Runners.Maui" Version="1.0.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
