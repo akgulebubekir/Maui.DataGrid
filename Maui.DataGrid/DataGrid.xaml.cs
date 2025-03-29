@@ -1262,7 +1262,7 @@ public partial class DataGrid
 
             if (originalItems.Count == 0)
             {
-                PageCount = 0;
+                PageCount = 1;
                 InternalItems.Clear();
                 return;
             }
