@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.Contains('net9.0'))">
-      <MauiVersion>9.0.60</MauiVersion>
+      <MauiVersion>9.0.70</MauiVersion>
   </PropertyGroup>
 
   <ItemGroup>
