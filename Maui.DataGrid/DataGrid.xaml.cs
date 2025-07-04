@@ -737,7 +737,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Occurs when the RowsBackgroundColorPalette of the DataGrid is changed.
+    /// Occurs when the <see cref="RowsBackgroundColorPalette"/> of the DataGrid is changed.
     /// </summary>
     internal event EventHandler RowsBackgroundColorPaletteChanged
     {
@@ -746,7 +746,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Occurs when the RowsTextColorPalette of the DataGrid is changed.
+    /// Occurs when the <see cref="RowsTextColorPalette"/> of the DataGrid is changed.
     /// </summary>
     internal event EventHandler RowsTextColorPaletteChanged
     {
@@ -766,7 +766,7 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets backgroundColor of the column header
+    /// Gets or sets the background color of the column header
     /// Default value is <see cref="Colors.White"/>.
     /// </summary>
     public Color HeaderBackground
@@ -797,7 +797,7 @@ public partial class DataGrid
 
     /// <summary>
     /// Gets or sets border color
-    /// Default Value is Black.
+    /// Default Value is <see cref="Colors.Black"/>.
     /// </summary>
     public Color BorderColor
     {
