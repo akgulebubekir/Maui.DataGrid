@@ -6,7 +6,7 @@
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                 xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
                 x:DataType="vm:MainViewModel" x:ClassModifier="internal"
-                x:Class="Maui.DataGrid.Sample.SettingsPopup" Color="Black">
+                x:Class="Maui.DataGrid.Sample.SettingsPopup" BackgroundColor="Black">
 
     <toolkit:Popup.Resources>
         <ResourceDictionary>
