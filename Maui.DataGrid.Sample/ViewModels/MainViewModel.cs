@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Maui.Core.Extensions;
-using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Extensions;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Utils;
 

@@ -16,7 +16,7 @@ internal partial class SettingsPopup
         _viewModel = viewModel;
     }
 
-    public void OnClose(object sender, EventArgs e) => Close();
+    public async Task OnClose(object sender, EventArgs e) => await CloseAsync();
 
     private async void OnAddColumn(object sender, EventArgs e)
     {
