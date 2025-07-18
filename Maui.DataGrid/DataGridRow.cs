@@ -294,6 +294,7 @@ internal sealed class DataGridRow : Grid
                 LineBreakMode = col.LineBreakMode,
                 FontSize = DataGrid.FontSize,
                 FontFamily = DataGrid.FontFamily,
+                Padding = col.Padding,
             };
 
             SetBinding(col, cell, Label.TextProperty);

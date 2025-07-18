@@ -129,6 +129,12 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         BindablePropertyExtensions.Create<DataGridColumn, LayoutOptions>(LayoutOptions.Center);
 
     /// <summary>
+    /// Gets or sets the distance between an element and its child elements.
+    /// </summary>
+    public static readonly BindableProperty PaddingProperty =
+        BindablePropertyExtensions.Create<DataGridColumn, Thickness>(Thickness.Zero);
+
+    /// <summary>
     /// Gets or sets a value indicating whether sorting is enabled for the column.
     /// </summary>
     public static readonly BindableProperty SortingEnabledProperty =
@@ -385,6 +391,16 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         get => (LayoutOptions)GetValue(VerticalContentAlignmentProperty);
         set => SetValue(VerticalContentAlignmentProperty, value);
     }
+
+    /// <summary>
+    /// Gets or sets the distance between an element and its child elements.
+    /// </summary>
+    public Thickness Padding
+    {
+        get { return (Thickness)GetValue(PaddingProperty); }
+        set { SetValue(PaddingProperty, value); }
+    }
+
 
     /// <summary>
     /// Gets or sets a value indicating whether the column is sortable.
