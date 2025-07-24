@@ -401,7 +401,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         set { SetValue(PaddingProperty, value); }
     }
 
-
     /// <summary>
     /// Gets or sets a value indicating whether the column is sortable.
     /// Default is true. But the DataGrid must also have sorting enabled.
