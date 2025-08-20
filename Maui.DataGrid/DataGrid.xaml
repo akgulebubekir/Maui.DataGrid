@@ -52,9 +52,13 @@
                     x:Name="_collectionView"
                     BackgroundColor="{Binding BackgroundColor, Source={Reference self}}"
                     SelectedItem="{Binding SelectedItem, Source={Reference self}, Mode=TwoWay}"
-                    SelectedItems="{Binding SelectedItems, Source={Reference self}, Mode=TwoWay}"
                     ItemSizingStrategy="{Binding ItemSizingStrategy, Source={Reference self}}"
-                    SelectionMode="{Binding SelectionMode, Source={Reference self}}">
+                    SelectionMode="{Binding SelectionMode, Source={Reference self}}"
+                    >
+
+                <!--cannot be bound, creates endless loop in coerceValue and propertyChanged callbacks of DataGrid.SelectedItems bindable property-->
+                <!--SelectedItems="{Binding SelectedItems, Source={Reference self}, Mode=OneTime}"-->
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Null}">
                         <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />

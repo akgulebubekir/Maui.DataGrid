@@ -92,6 +92,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="MultipleSelectionPage.xaml.cs">
+      <DependentUpon>MultipleSelectionPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="MultipleSelectionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="SettingsPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
