@@ -8,7 +8,7 @@ using CommunityToolkit.Maui.Extensions;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Utils;
 
-internal sealed class MainViewModel : ViewModelBase
+internal class MainViewModel : ViewModelBase
 {
     public MainViewModel()
     {
