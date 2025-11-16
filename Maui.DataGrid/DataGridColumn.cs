@@ -480,7 +480,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
 
-#endregion Properties
+    #endregion Properties
 
     #region Methods
 

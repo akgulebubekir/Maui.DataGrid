@@ -22,7 +22,7 @@ internal static class TestExtensions
         Assert.Equal(property.DefaultValue, await bindableObject.GetValueSafe(property));
 
         var viewModel = new SingleVM<T> { Item = testValue };
-        bindableObject.SetBinding(property, new Binding(nameof(SingleVM<T>.Item), source: viewModel));
+        bindableObject.SetBinding(property, new Binding(nameof(SingleVM<>.Item), source: viewModel));
 
         Assert.Equal(1, viewModel.NumberOfSubscribers);
         Assert.Equal(testValue, await bindableObject.GetValueSafe(property));

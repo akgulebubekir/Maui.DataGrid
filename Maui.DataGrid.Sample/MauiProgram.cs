@@ -24,6 +24,7 @@ internal static class MauiProgram
 
         _ = builder
             .UseMauiApp<App>()
+#if WINDOWS || MACCATALYST || IOS || ANDROID
 #if DEBUG
             .UseMauiCommunityToolkit()
 #else
@@ -34,7 +35,8 @@ internal static class MauiProgram
                 options.SetShouldSuppressExceptionsInConverters(true);
             })
 #endif
-.ConfigureFonts(fonts =>
+#endif
+            .ConfigureFonts(fonts =>
             {
                 _ = fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 _ = fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");

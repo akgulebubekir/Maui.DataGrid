@@ -2,7 +2,11 @@ namespace Maui.DataGrid.Sample.Tests.TestUtils;
 
 using System.ComponentModel;
 
-internal sealed class SingleVM<T> : INotifyPropertyChanged
+/// <summary>
+/// A simple ViewModel with a single property for testing bindings.
+/// </summary>
+/// <typeparam name="T">The type of the property.</typeparam>
+internal sealed partial class SingleVM<T> : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
