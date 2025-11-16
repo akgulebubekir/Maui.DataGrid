@@ -4,16 +4,14 @@ using System.ComponentModel;
 
 internal sealed class SingleVM<T> : INotifyPropertyChanged
 {
-    private T? _item;
-
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public T? Item
     {
-        get => _item;
+        get;
         set
         {
-            _item = value;
+            field = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Item)));
         }
     }
