@@ -5,8 +5,7 @@
       xmlns:local="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
       xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
       x:Class="Maui.DataGrid.DataGrid"
-      x:DataType="local:DataGrid"
-      CompressedLayout.IsHeadless="True">
+      x:DataType="local:DataGrid">
     <ContentView.Resources>
         <ResourceDictionary>
             <!--Default Header Style-->
@@ -39,7 +38,7 @@
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
-    <Grid CompressedLayout.IsHeadless="True">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

@@ -26,12 +26,12 @@
     <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.Contains('net8.0'))">
-      <MauiVersion>8.0.100</MauiVersion>
-  </PropertyGroup>
-
   <PropertyGroup Condition="$(TargetFramework.Contains('net9.0'))">
       <MauiVersion>9.0.90</MauiVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework.Contains('net10.0'))">
+      <MauiVersion>10.0.10</MauiVersion>
   </PropertyGroup>
 
   <ItemGroup>

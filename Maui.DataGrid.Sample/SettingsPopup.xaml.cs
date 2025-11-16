@@ -24,7 +24,7 @@ internal partial class SettingsPopup
 
         if (string.IsNullOrEmpty(newColumnTitle))
         {
-            await Shell.Current.DisplayAlert("Title required", "A title is required in order to add a column.", "Ok");
+            await Shell.Current.DisplayAlertAsync("Title required", "A title is required in order to add a column.", "Ok");
         }
         else
         {
@@ -40,7 +40,7 @@ internal partial class SettingsPopup
 
         if (columnToRemove == null)
         {
-            await Shell.Current.DisplayAlert("Column not found", "No column by that title", "Ok");
+            await Shell.Current.DisplayAlertAsync("Column not found", "No column by that title", "Ok");
         }
         else
         {

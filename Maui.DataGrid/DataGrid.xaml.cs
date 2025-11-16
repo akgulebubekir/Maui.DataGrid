@@ -690,13 +690,8 @@ public partial class DataGrid
 
     private readonly ConcurrentDictionary<string, PropertyInfo?> _propertyCache = [];
 
-#if NET9_0
     private readonly Lock _reloadLock = new();
     private readonly Lock _sortAndPaginateLock = new();
-#else
-    private readonly object _reloadLock = new();
-    private readonly object _sortAndPaginateLock = new();
-#endif
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
 
@@ -1485,11 +1480,19 @@ public partial class DataGrid
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
+#if NET10_0_OR_GREATER
+                _ = _sortedColumn.SortingIcon.RotateToAsync(0);
+#else
                 _ = _sortedColumn.SortingIcon.RotateTo(0);
+#endif
                 items = unsortedItems.OrderBy(x => x.GetValueByPath(_sortedColumn.PropertyName));
                 break;
             case SortingOrder.Descendant:
+#if NET10_0_OR_GREATER
+                _ = _sortedColumn.SortingIcon.RotateToAsync(180);
+#else
                 _ = _sortedColumn.SortingIcon.RotateTo(180);
+#endif
                 items = unsortedItems.OrderByDescending(x => x.GetValueByPath(_sortedColumn.PropertyName));
                 break;
             case SortingOrder.None:

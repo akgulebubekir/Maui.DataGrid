@@ -273,7 +273,11 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// Like Grid, you can use <see cref="GridUnitType.Absolute"/>, <see cref="GridUnitType.Star"/>, or <see cref="GridUnitType.Auto"/>.
     /// Be careful when using Auto. Columns may become misaligned.
     /// </summary>
+#if NET10_0_OR_GREATER
+    [TypeConverter(typeof(Microsoft.Maui.Converters.GridLengthTypeConverter))]
+#else
     [TypeConverter(typeof(GridLengthTypeConverter))]
+#endif
     public GridLength Width
     {
         get => (GridLength)GetValue(WidthProperty);
@@ -476,7 +480,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal TextAlignment HorizontalTextAlignment => _horizontalTextAlignment ??= HorizontalContentAlignment.ToTextAlignment();
 
-    #endregion Properties
+#endregion Properties
 
     #region Methods
 
