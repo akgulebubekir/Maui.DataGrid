@@ -4,7 +4,7 @@ namespace Maui.DataGrid.Sample;
 /// Codebehind for AppShell.
 /// </summary>
 [XamlCompilation(XamlCompilationOptions.Compile)]
-internal partial class AppShell
+internal sealed partial class AppShell
 {
     public AppShell()
     {
