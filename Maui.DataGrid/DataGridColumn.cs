@@ -219,7 +219,6 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     private readonly WeakEventManager _visibilityChangedEventManager = new();
 
     private bool? _isSortable;
-    private ColumnDefinition? _columnDefinition;
     private TextAlignment? _verticalTextAlignment;
     private TextAlignment? _horizontalTextAlignment;
 
@@ -467,8 +466,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
 
     internal ColumnDefinition? ColumnDefinition
     {
-        get => IsVisible ? _columnDefinition : _invisibleColumnDefinition;
-        set => _columnDefinition = value;
+        get => IsVisible ? field : _invisibleColumnDefinition;
+        set;
     }
 
     internal DataGridCell? HeaderCell { get; set; }

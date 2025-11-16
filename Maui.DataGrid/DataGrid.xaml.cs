@@ -699,7 +699,6 @@ public partial class DataGrid
 #endif
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
-    private int _pageCount = 100;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataGrid"/> class.
@@ -1169,12 +1168,12 @@ public partial class DataGrid
     /// </summary>
     public int PageCount
     {
-        get => _pageCount;
+        get;
         private set
         {
             if (value > 0)
             {
-                _pageCount = value;
+                field = value;
                 _paginationStepper.IsEnabled = value > 1;
 
                 if (value > 1)
@@ -1191,7 +1190,7 @@ public partial class DataGrid
             {
                 // Handle case where there is no data (value == 0) and assume 1 blank page
                 // If (value < 0) something is wrong and try to fail gracefully by assuming 1 blank page
-                _pageCount = 1;
+                field = 1;
                 _paginationStepper.IsEnabled = false;
                 PageNumber = 1;
             }
