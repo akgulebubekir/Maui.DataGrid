@@ -477,10 +477,7 @@ public partial class DataGrid
                         break;
                 }
 
-                if (self._collectionView != null)
-                {
-                    self._collectionView.SelectionMode = n;
-                }
+                self._collectionView?.SelectionMode = n;
             });
 
     /// <summary>
@@ -706,10 +703,7 @@ public partial class DataGrid
         DefaultHeaderFilterStyle = (Style)Resources["DefaultHeaderFilterStyle"];
         DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
 
-        if (_collectionView != null)
-        {
-            _collectionView.ItemsSource = InternalItems;
-        }
+        _collectionView?.ItemsSource = InternalItems;
     }
 
     /// <summary>
