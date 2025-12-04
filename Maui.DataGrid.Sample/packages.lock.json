@@ -1353,7 +1353,7 @@
     "net10.0-android36.0/ios-arm64": {},
     "net10.0-android36.0/maccatalyst-arm64": {},
     "net10.0-android36.0/win-arm64": {},
-    "net10.0-ios26.0": {
+    "net10.0-ios26.1": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
         "requested": "[13.0.0, )",
@@ -1658,12 +1658,12 @@
         "type": "Project"
       }
     },
-    "net10.0-ios26.0/android-arm64": {},
-    "net10.0-ios26.0/android-x64": {},
-    "net10.0-ios26.0/ios-arm64": {},
-    "net10.0-ios26.0/maccatalyst-arm64": {},
-    "net10.0-ios26.0/win-arm64": {},
-    "net10.0-maccatalyst26.0": {
+    "net10.0-ios26.1/android-arm64": {},
+    "net10.0-ios26.1/android-x64": {},
+    "net10.0-ios26.1/ios-arm64": {},
+    "net10.0-ios26.1/maccatalyst-arm64": {},
+    "net10.0-ios26.1/win-arm64": {},
+    "net10.0-maccatalyst26.1": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
         "requested": "[13.0.0, )",
@@ -1968,11 +1968,11 @@
         "type": "Project"
       }
     },
-    "net10.0-maccatalyst26.0/android-arm64": {},
-    "net10.0-maccatalyst26.0/android-x64": {},
-    "net10.0-maccatalyst26.0/ios-arm64": {},
-    "net10.0-maccatalyst26.0/maccatalyst-arm64": {},
-    "net10.0-maccatalyst26.0/win-arm64": {},
+    "net10.0-maccatalyst26.1/android-arm64": {},
+    "net10.0-maccatalyst26.1/android-x64": {},
+    "net10.0-maccatalyst26.1/ios-arm64": {},
+    "net10.0-maccatalyst26.1/maccatalyst-arm64": {},
+    "net10.0-maccatalyst26.1/win-arm64": {},
     "net10.0-windows10.0.26100": {
       "CommunityToolkit.Maui": {
         "type": "Direct",
