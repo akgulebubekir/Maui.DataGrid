@@ -210,6 +210,12 @@ public sealed class DataGridColumn : BindableObject, IDefinition
                 }
             });
 
+    /// <summary>
+    /// Gets or sets the name of the sort property associated with the column.
+    /// </summary>
+    public static readonly BindableProperty SortPropertyNameProperty =
+        BindablePropertyExtensions.Create<DataGridColumn, string>();
+
     #endregion Bindable Properties
 
     #region Fields
@@ -443,6 +449,15 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         set => SetValue(HeaderFilterStyleProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets sort property name to bind in the object.
+    /// </summary>
+    public string SortPropertyName
+    {
+        get => (string)GetValue(SortPropertyNameProperty);
+        set => SetValue(SortPropertyNameProperty, value);
+    }
+
     internal Polygon SortingIcon { get; } = new();
 
     internal Entry FilterTextbox { get; } = new() { Placeholder = "Filter" };
@@ -465,6 +480,8 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     internal SortingOrder SortingOrder { get; set; }
 
     internal Type? DataType { get; private set; }
+
+    internal Type? SortDataType { get; private set; }
 
     internal DataGrid? DataGrid { get; set; }
 
@@ -502,7 +519,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         }
         else if (DataType is not null)
         {
-            _isSortable = typeof(IComparable).IsAssignableFrom(DataType);
+            _isSortable = typeof(IComparable).IsAssignableFrom(SortDataType);
         }
 
         return _isSortable ??= false;
@@ -544,6 +561,7 @@ public sealed class DataGridColumn : BindableObject, IDefinition
             }
 
             DataType = rowDataType?.GetPropertyTypeByPath(PropertyName);
+            SortDataType = string.IsNullOrEmpty(SortPropertyName) ? DataType : rowDataType?.GetPropertyTypeByPath(SortPropertyName);
         }
         catch (Exception ex)
             when (ex is NotSupportedException or ArgumentNullException or InvalidCastException)

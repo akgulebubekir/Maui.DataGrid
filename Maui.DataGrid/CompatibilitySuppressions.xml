@@ -10,6 +10,13 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>F:Maui.DataGrid.DataGridColumn.SortPropertyNameProperty</Target>
+    <Left>lib/net9.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net9.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGridColumn.get_Padding</Target>
     <Left>lib/net9.0/Maui.DataGrid.dll</Left>
     <Right>lib/net9.0/Maui.DataGrid.dll</Right>
@@ -17,7 +24,21 @@
   </Suppression>
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGridColumn.get_SortPropertyName</Target>
+    <Left>lib/net9.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net9.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Maui.DataGrid.DataGridColumn.set_Padding(Microsoft.Maui.Thickness)</Target>
+    <Left>lib/net9.0/Maui.DataGrid.dll</Left>
+    <Right>lib/net9.0/Maui.DataGrid.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Maui.DataGrid.DataGridColumn.set_SortPropertyName(System.String)</Target>
     <Left>lib/net9.0/Maui.DataGrid.dll</Left>
     <Right>lib/net9.0/Maui.DataGrid.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
