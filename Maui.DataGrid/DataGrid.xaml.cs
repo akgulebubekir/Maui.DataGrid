@@ -687,8 +687,6 @@ public partial class DataGrid
 
     private readonly Dictionary<string, PropertyInfo?> _propertyCache = [];
 
-    private readonly Lock _reloadLock = new();
-    private readonly Lock _sortAndPaginateLock = new();
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
     private IList<object>? _originalItemsCache;
@@ -1248,12 +1246,9 @@ public partial class DataGrid
             return;
         }
 
-        lock (_reloadLock)
-        {
-            UpdatePageSizeList();
+        UpdatePageSizeList();
 
-            _headerRow.InitializeHeaderRow();
-        }
+        _headerRow.InitializeHeaderRow();
     }
 
     internal void SortFilterAndPaginate(SortData? sortData = null)
@@ -1263,31 +1258,28 @@ public partial class DataGrid
             return;
         }
 
-        lock (_sortAndPaginateLock)
+        sortData ??= SortedColumnIndex;
+
+        var originalItems = ItemsSource as IList<object> ?? (_originalItemsCache ??= [.. ItemsSource.Cast<object>()]);
+
+        if (originalItems.Count == 0)
         {
-            sortData ??= SortedColumnIndex;
-
-            var originalItems = ItemsSource as IList<object> ?? (_originalItemsCache ??= [.. ItemsSource.Cast<object>()]);
-
-            if (originalItems.Count == 0)
-            {
-                PageCount = 1;
-                _internalItemsIndexMap = null;
-                InternalItems.Clear();
-                return;
-            }
-
-            var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
-
-            var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
-
-            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
-
-            PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
-
+            PageCount = 1;
             _internalItemsIndexMap = null;
-            InternalItems.ReplaceRange(paginatedItems);
+            InternalItems.Clear();
+            return;
         }
+
+        var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
+
+        var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
+
+        var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
+
+        PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
+
+        _internalItemsIndexMap = null;
+        InternalItems.ReplaceRange(paginatedItems);
     }
 
     /// <inheritdoc/>
