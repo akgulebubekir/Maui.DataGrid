@@ -176,6 +176,12 @@ public partial class DataGrid
                 self._internalItemsHashSet = null;
                 self._originalItemsCache = null;
 
+                // Reset column data types so they are re-resolved for the new source
+                foreach (var column in self.Columns)
+                {
+                    column.ResetDataType();
+                }
+
                 // Unsubscribe from old collection's change event
                 if (o is INotifyCollectionChanged oldCollection)
                 {
