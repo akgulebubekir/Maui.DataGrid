@@ -1526,6 +1526,7 @@ public partial class DataGrid
     private IList<object> GetFilteredItems(IList<object> originalItems)
     {
         var filteredItems = originalItems.AsEnumerable();
+        var hasFilter = false;
 
         foreach (var column in Columns)
         {
@@ -1534,10 +1535,11 @@ public partial class DataGrid
                 continue;
             }
 
+            hasFilter = true;
             filteredItems = filteredItems.Where(item => FilterItem(item, column));
         }
 
-        return [.. filteredItems];
+        return hasFilter ? [.. filteredItems] : originalItems;
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is needed here.")]
