@@ -116,16 +116,15 @@ internal sealed class DataGridHeaderRow : Grid
     {
         base.OnParentSet();
 
-        if (Parent == null)
-        {
-            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+        // Always unsubscribe first to prevent duplicate handlers
+        DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
 
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged -= OnVisibilityChanged;
-            }
+        foreach (var column in DataGrid.Columns)
+        {
+            column.VisibilityChanged -= OnVisibilityChanged;
         }
-        else
+
+        if (Parent != null)
         {
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
 

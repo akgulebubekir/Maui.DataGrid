@@ -146,19 +146,18 @@ internal sealed class DataGridRow : Grid
     {
         base.OnParentSet();
 
-        if (Parent == null)
-        {
-            DataGrid.ItemSelected -= DataGrid_ItemSelected;
-            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
-            DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
-            DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
+        // Always unsubscribe first to prevent duplicate handlers
+        DataGrid.ItemSelected -= DataGrid_ItemSelected;
+        DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+        DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
+        DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
 
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged -= OnVisibilityChanged;
-            }
+        foreach (var column in DataGrid.Columns)
+        {
+            column.VisibilityChanged -= OnVisibilityChanged;
         }
-        else
+
+        if (Parent != null)
         {
             DataGrid.ItemSelected += DataGrid_ItemSelected;
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
