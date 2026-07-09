@@ -418,11 +418,11 @@ public partial class DataGrid
 
                 var internalItems = self.GetInternalItems(v.Count);
 
-                foreach (var selectedItem in selectedItems)
+                for (var i = selectedItems.Count - 1; i >= 0; i--)
                 {
-                    if (!internalItems.Contains(selectedItem))
+                    if (!internalItems.Contains(selectedItems[i]))
                     {
-                        _ = selectedItems.Remove(selectedItem);
+                        selectedItems.RemoveAt(i);
                     }
                 }
 
