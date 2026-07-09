@@ -1,12 +1,15 @@
 namespace Maui.DataGrid.Extensions;
 
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 internal static class ReflectionExtensions
 {
     private const char PropertyOfOp = '.';
+
+    private static readonly ConcurrentDictionary<(Type Type, string Path), PropertyInfo[]?> PropertyPathCache = new();
 
     [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is required here.")]
     public static object? GetValueByPath(this object obj, string path)
@@ -16,13 +19,18 @@ internal static class ReflectionExtensions
             return null;
         }
 
+        var properties = PropertyPathCache.GetOrAdd((obj.GetType(), path), static key => ResolvePropertyPath(key.Type, key.Path));
+
+        if (properties == null)
+        {
+            return null;
+        }
+
         var result = obj;
 
-        foreach (var token in path.Split(PropertyOfOp))
+        foreach (var property in properties)
         {
-            var resultType = result.GetType().GetProperty(token, BindingFlags.Public | BindingFlags.Instance);
-
-            result = resultType?.GetValue(result);
+            result = property.GetValue(result);
 
             if (result == null)
             {
@@ -61,5 +69,28 @@ internal static class ReflectionExtensions
         }
 
         return resultType;
+    }
+
+    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is required here.")]
+    private static PropertyInfo[]? ResolvePropertyPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type type, string path)
+    {
+        var tokens = path.Split(PropertyOfOp);
+        var properties = new PropertyInfo[tokens.Length];
+        var currentType = type;
+
+        for (var i = 0; i < tokens.Length; i++)
+        {
+            var property = currentType.GetProperty(tokens[i], BindingFlags.Public | BindingFlags.Instance);
+
+            if (property == null)
+            {
+                return null;
+            }
+
+            properties[i] = property;
+            currentType = property.PropertyType;
+        }
+
+        return properties;
     }
 }
