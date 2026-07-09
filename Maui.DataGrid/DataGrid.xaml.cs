@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Input;
 using Maui.DataGrid.Collections;
 using Maui.DataGrid.Extensions;
@@ -690,8 +689,6 @@ public partial class DataGrid
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = [.. DefaultPageSizeSet];
-
-    private readonly Dictionary<string, PropertyInfo?> _propertyCache = [];
 
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
@@ -1539,40 +1536,15 @@ public partial class DataGrid
         return hasFilter ? [.. filteredItems] : originalItems;
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is needed here.")]
-    private bool FilterItem(object item, DataGridColumn column)
+    private static bool FilterItem(object item, DataGridColumn column)
     {
-        try
+        if (string.IsNullOrEmpty(column.FilterText))
         {
-            if (string.IsNullOrEmpty(column.FilterText))
-            {
-                return true;
-            }
-
-            var itemType = item.GetType();
-            var cacheKey = $"{itemType.FullName}|{column.PropertyName}";
-
-            if (!_propertyCache.TryGetValue(cacheKey, out var property))
-            {
-                property = itemType.GetProperty(column.PropertyName);
-                _propertyCache[cacheKey] = property;
-            }
-
-            if (property == null || property.PropertyType == typeof(object))
-            {
-                return false;
-            }
-
-            var value = property.GetValue(item)?.ToString();
-            return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
+            return true;
         }
-#pragma warning disable CA1031 // Do not catch general exception types
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-            return false;
-        }
-#pragma warning restore CA1031 // Do not catch general exception types
+
+        var value = item.GetValueByPath(column.PropertyName)?.ToString();
+        return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
     }
 
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
