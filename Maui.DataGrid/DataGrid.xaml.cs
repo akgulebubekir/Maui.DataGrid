@@ -173,8 +173,9 @@ public partial class DataGrid
                     return;
                 }
 
-                // Reset internal hash set, used for fast lookups
+                // Reset caches
                 self._internalItemsHashSet = null;
+                self._originalItemsCache = null;
 
                 // Unsubscribe from old collection's change event
                 if (o is INotifyCollectionChanged oldCollection)
@@ -691,6 +692,7 @@ public partial class DataGrid
     private readonly Lock _sortAndPaginateLock = new();
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
+    private IList<object>? _originalItemsCache;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataGrid"/> class.
@@ -1246,7 +1248,7 @@ public partial class DataGrid
         {
             sortData ??= SortedColumnIndex;
 
-            var originalItems = ItemsSource as IList<object> ?? [.. ItemsSource.Cast<object>()];
+            var originalItems = ItemsSource as IList<object> ?? (_originalItemsCache ??= [.. ItemsSource.Cast<object>()]);
 
             if (originalItems.Count == 0)
             {
@@ -1359,6 +1361,7 @@ public partial class DataGrid
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         _internalItemsHashSet = null;
+        _originalItemsCache = null;
         SortFilterAndPaginate();
     }
 
