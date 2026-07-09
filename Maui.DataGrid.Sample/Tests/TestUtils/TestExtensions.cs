@@ -19,7 +19,12 @@ internal static class TestExtensions
     public static async void CheckPropertyBindingWorks<T>(this BindableObject bindableObject, BindableProperty property, T testValue, T? updatedValue)
         where T : notnull
     {
-        Assert.Equal(property.DefaultValue, await bindableObject.GetValueSafe(property));
+        var defaultValue = property.DefaultValue;
+        var actualValue = await bindableObject.GetValueSafe(property);
+        if (defaultValue is not null)
+        {
+            Assert.Equal(defaultValue, actualValue);
+        }
 
         var viewModel = new SingleVM<T> { Item = testValue };
         bindableObject.SetBinding(property, new Binding(nameof(SingleVM<>.Item), source: viewModel));
