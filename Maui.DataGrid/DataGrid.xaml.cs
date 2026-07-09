@@ -1,7 +1,6 @@
 namespace Maui.DataGrid;
 
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -686,7 +685,7 @@ public partial class DataGrid
 
     private readonly SortedSet<int> _pageSizeList = [.. DefaultPageSizeSet];
 
-    private readonly ConcurrentDictionary<string, PropertyInfo?> _propertyCache = [];
+    private readonly Dictionary<string, PropertyInfo?> _propertyCache = [];
 
     private readonly Lock _reloadLock = new();
     private readonly Lock _sortAndPaginateLock = new();
