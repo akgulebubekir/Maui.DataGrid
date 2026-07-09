@@ -1215,8 +1215,13 @@ public partial class DataGrid
 
     internal ObservableRangeCollection<object> InternalItems { get; } = [];
 
-    internal int GetItemIndex(object item)
+    internal int GetItemIndex(object? item)
     {
+        if (item == null)
+        {
+            return -1;
+        }
+
         if (_internalItemsIndexMap == null)
         {
             _internalItemsIndexMap = new(InternalItems.Count);
