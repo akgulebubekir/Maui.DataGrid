@@ -693,6 +693,7 @@ public partial class DataGrid
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
     private IList<object>? _originalItemsCache;
+    private Dictionary<object, int>? _internalItemsIndexMap;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataGrid"/> class.
@@ -1214,6 +1215,20 @@ public partial class DataGrid
 
     internal ObservableRangeCollection<object> InternalItems { get; } = [];
 
+    internal int GetItemIndex(object item)
+    {
+        if (_internalItemsIndexMap == null)
+        {
+            _internalItemsIndexMap = new(InternalItems.Count);
+            for (var i = 0; i < InternalItems.Count; i++)
+            {
+                _internalItemsIndexMap[InternalItems[i]] = i;
+            }
+        }
+
+        return _internalItemsIndexMap.TryGetValue(item, out var index) ? index : -1;
+    }
+
     /// <summary>
     /// Scrolls to the row.
     /// </summary>
@@ -1253,6 +1268,7 @@ public partial class DataGrid
             if (originalItems.Count == 0)
             {
                 PageCount = 1;
+                _internalItemsIndexMap = null;
                 InternalItems.Clear();
                 return;
             }
@@ -1265,6 +1281,7 @@ public partial class DataGrid
 
             PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
 
+            _internalItemsIndexMap = null;
             InternalItems.ReplaceRange(paginatedItems);
         }
     }
