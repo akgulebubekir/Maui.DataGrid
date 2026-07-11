@@ -4,12 +4,16 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 internal static class ReflectionExtensions
 {
     private const char PropertyOfOp = '.';
 
-    private static readonly ConcurrentDictionary<(Type Type, string Path), PropertyInfo[]?> PropertyPathCache = new();
+    // Keyed weakly by Type so that collectible types (e.g. from unloadable AssemblyLoadContexts
+    // or runtime-generated types) and their cached property paths can be reclaimed by the GC once
+    // the type is no longer referenced elsewhere, instead of being pinned for the process lifetime.
+    private static readonly ConditionalWeakTable<Type, ConcurrentDictionary<string, PropertyInfo[]?>> PropertyPathCache = [];
 
     [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is required here.")]
     public static object? GetValueByPath(this object obj, string path)
@@ -19,7 +23,14 @@ internal static class ReflectionExtensions
             return null;
         }
 
-        var properties = PropertyPathCache.GetOrAdd((obj.GetType(), path), static key => ResolvePropertyPath(key.Type, key.Path));
+        var type = obj.GetType();
+        var propertiesByPath = PropertyPathCache.GetValue(type, static _ => new ConcurrentDictionary<string, PropertyInfo[]?>());
+
+        if (!propertiesByPath.TryGetValue(path, out var properties))
+        {
+            properties = ResolvePropertyPath(type, path);
+            propertiesByPath[path] = properties;
+        }
 
         if (properties == null)
         {
