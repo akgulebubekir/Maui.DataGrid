@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsAotCompatible>true</IsAotCompatible>
     <IsTrimmable>true</IsTrimmable>
-    <InternalsVisibleTo Condition="'$(Configuration)' == 'Test'">Maui.DataGrid.Sample</InternalsVisibleTo>
+    <InternalsVisibleTo>Maui.DataGrid.Sample</InternalsVisibleTo>
     <Title>Maui.DataGrid</Title>
     <Authors>Ebubekir Akgul, Edward Miller</Authors>
     <Description>Datagrid component for Maui</Description>
