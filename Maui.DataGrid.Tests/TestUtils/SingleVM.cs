@@ -1,4 +1,4 @@
-namespace Maui.DataGrid.Sample.Tests.TestUtils;
+namespace Maui.DataGrid.Tests.TestUtils;
 
 using System.ComponentModel;
 

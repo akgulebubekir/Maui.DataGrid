@@ -1,9 +1,9 @@
-namespace Maui.DataGrid.Sample.Tests;
+namespace Maui.DataGrid.Tests;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Maui.DataGrid.Sample.Models;
-using Maui.DataGrid.Sample.Tests.TestUtils;
+using Maui.DataGrid.Tests.Models;
+using Maui.DataGrid.Tests.TestUtils;
 using Xunit;
 
 public class SelectionTest

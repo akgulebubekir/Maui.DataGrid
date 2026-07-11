@@ -1,0 +1,242 @@
+[
+    {
+        "Name": "Phoenix",
+        "Won": 64,
+        "Lost": 18,
+        "Percentage": 0.780,
+        "Home": "32-9",
+        "Road": "32-9",
+        "Div": "10-6",
+        "Conf": "39-13",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
+        "Last10": "6-4",
+        "Logo": "suns.png"
+    },
+    {
+        "Name": "Memphis",
+        "Won": 56,
+        "Lost": 26,
+        "Percentage": 0.683,
+        "Home": "30-11",
+        "Road": "26-15",
+        "Div": "11-5",
+        "Conf": "36-16",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
+        "Last10": "7-3",
+        "Logo": "mem.png"
+    },
+    {
+        "Name": "Golden St.",
+        "Won": 53,
+        "Lost": 29,
+        "Percentage": 0.646,
+        "Home": "31-10",
+        "Road": "22-19",
+        "Div": "12-4",
+        "Conf": "33-19",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 5
+        },
+        "Last10": "6-4",
+        "Logo": "gsw.png"
+    },
+    {
+        "Name": "Dallas",
+        "Won": 52,
+        "Lost": 30,
+        "Percentage": 0.634,
+        "Home": "29-12",
+        "Road": "23-18",
+        "Div": "14-2",
+        "Conf": "36-16",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 4
+        },
+        "Last10": "8-2",
+        "Logo": "mavs.png"
+    },
+    {
+        "Name": "Utah",
+        "Won": 49,
+        "Lost": 33,
+        "Percentage": 0.598,
+        "Home": "29-12",
+        "Road": "20-21",
+        "Div": "15-1",
+        "Conf": "33-19",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 1
+        },
+        "Last10": "4-6",
+        "Logo": "jazz.png"
+    },
+    {
+        "Name": "Denver",
+        "Won": 48,
+        "Lost": 34,
+        "Percentage": 0.585,
+        "Home": "23-18",
+        "Road": "25-16",
+        "Div": "6-10",
+        "Conf": "29-23",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
+        "Last10": "6-4",
+        "Logo": "nuggets.png"
+    },
+    {
+        "Name": "Minnesota",
+        "Won": 46,
+        "Lost": 36,
+        "Percentage": 0.561,
+        "Home": "26-15",
+        "Road": "20-21",
+        "Div": "12-4",
+        "Conf": "32-20",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 1
+        },
+        "Last10": "4-6",
+        "Logo": "timberwolves.png"
+    },
+    {
+        "Name": "New Orleans",
+        "Won": 36,
+        "Lost": 46,
+        "Percentage": 0.439,
+        "Home": "19-22",
+        "Road": "17-24",
+        "Div": "6-10",
+        "Conf": "25-27",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 2
+        },
+        "Last10": "6-4",
+        "Logo": "nop.png"
+    },
+    {
+        "Name": "L.A. Clippers",
+        "Won": 42,
+        "Lost": 40,
+        "Percentage": 0.512,
+        "Home": "25-16",
+        "Road": "17-24",
+        "Div": "9-7",
+        "Conf": "26-26",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 5
+        },
+        "Last10": "6-4",
+        "Logo": "lac.png"
+    },
+    {
+        "Name": "San Antonio",
+        "Won": 34,
+        "Lost": 48,
+        "Percentage": 0.415,
+        "Home": "16-25",
+        "Road": "18-23",
+        "Div": "6-10",
+        "Conf": "24-28",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 3
+        },
+        "Last10": "6-4",
+        "Logo": "sas.png"
+    },
+    {
+        "Name": "L.A. Lakers",
+        "Won": 33,
+        "Lost": 49,
+        "Percentage": 0.402,
+        "Home": "21-20",
+        "Road": "12-29",
+        "Div": "3-13",
+        "Conf": "18-34",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 2
+        },
+        "Last10": "2-8",
+        "Logo": "lakers.png"
+    },
+    {
+        "Name": "Sacramento",
+        "Won": 30,
+        "Lost": 52,
+        "Percentage": 0.366,
+        "Home": "16-25",
+        "Road": "14-27",
+        "Div": "6-10",
+        "Conf": "20-32",
+        "Streak": {
+            "Result": 1,
+            "NumStreak": 1
+        },
+        "Last10": "5-5",
+        "Logo": "kings.png"
+    },
+    {
+        "Name": "Portland",
+        "Won": 27,
+        "Lost": 55,
+        "Percentage": 0.329,
+        "Home": "17-24",
+        "Road": "10-31",
+        "Div": "1-15",
+        "Conf": "11-41",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 11
+        },
+        "Last10": "0-10",
+        "Logo": "ptb.png"
+    },
+    {
+        "Name": "Oklahoma City",
+        "Won": 24,
+        "Lost": 58,
+        "Percentage": 0.293,
+        "Home": "12-29",
+        "Road": "12-29",
+        "Div": "6-10",
+        "Conf": "17-35",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 3
+        },
+        "Last10": "4-6",
+        "Logo": "okc.png"
+    },
+    {
+        "Name": "Houston",
+        "Won": 20,
+        "Lost": 62,
+        "Percentage": 0.244,
+        "Home": "11-30",
+        "Road": "9-32",
+        "Div": "3-13",
+        "Conf": "11-41",
+        "Streak": {
+            "Result": 0,
+            "NumStreak": 7
+        },
+        "Last10": "2-8",
+        "Logo": "hou.png"
+    }
+]

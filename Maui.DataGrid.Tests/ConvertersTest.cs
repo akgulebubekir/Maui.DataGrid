@@ -1,4 +1,4 @@
-namespace Maui.DataGrid.Sample.Tests;
+namespace Maui.DataGrid.Tests;
 
 using System.Globalization;
 using Maui.DataGrid.Converters;

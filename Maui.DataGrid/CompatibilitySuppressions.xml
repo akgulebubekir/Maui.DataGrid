@@ -2,28 +2,11 @@
 <!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>F:Maui.DataGrid.DataGridColumn.PaddingProperty</Target>
-    <Left>lib/net9.0/Maui.DataGrid.dll</Left>
-    <Right>lib/net9.0/Maui.DataGrid.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Maui.DataGrid.DataGridColumn.get_Padding</Target>
-    <Left>lib/net9.0/Maui.DataGrid.dll</Left>
-    <Right>lib/net9.0/Maui.DataGrid.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
-  </Suppression>
-  <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Maui.DataGrid.DataGridColumn.set_Padding(Microsoft.Maui.Thickness)</Target>
-    <Left>lib/net9.0/Maui.DataGrid.dll</Left>
-    <Right>lib/net9.0/Maui.DataGrid.dll</Right>
-    <IsBaselineSuppression>true</IsBaselineSuppression>
+    <DiagnosticId>PKV006</DiagnosticId>
+    <Target>net8.0</Target>
   </Suppression>
   <Suppression>
     <DiagnosticId>PKV006</DiagnosticId>
-    <Target>net8.0</Target>
+    <Target>net9.0</Target>
   </Suppression>
 </Suppressions>

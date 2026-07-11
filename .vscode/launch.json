@@ -9,15 +9,6 @@
             "type": "maui",
             "request": "launch",
             "preLaunchTask": "maui: Build"
-        },
-        {
-            "name": ".NET MAUI (Test)",
-            "type": "coreclr",
-            "request": "launch",
-            "program": "${workspaceFolder}/Maui.DataGrid.Sample/bin/Test/net10.0-maccatalyst/maccatalyst-arm64/Maui.DataGrid.Sample.app/Contents/MacOS/Maui.DataGrid.Sample",
-            "cwd": "${workspaceFolder}/Maui.DataGrid.Sample",
-            "preLaunchTask": "build-test-maccatalyst",
-            "console": "internalConsole"
         }
     ]
 }

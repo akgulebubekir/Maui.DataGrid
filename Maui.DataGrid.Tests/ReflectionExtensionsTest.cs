@@ -1,4 +1,4 @@
-namespace Maui.DataGrid.Sample.Tests;
+namespace Maui.DataGrid.Tests;
 
 using Maui.DataGrid.Extensions;
 using Xunit;

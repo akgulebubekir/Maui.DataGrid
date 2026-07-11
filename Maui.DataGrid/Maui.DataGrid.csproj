@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsAotCompatible>true</IsAotCompatible>
     <IsTrimmable>true</IsTrimmable>
-    <InternalsVisibleTo>Maui.DataGrid.Sample</InternalsVisibleTo>
     <Title>Maui.DataGrid</Title>
     <Authors>Ebubekir Akgul, Edward Miller</Authors>
     <Description>Datagrid component for Maui</Description>
@@ -38,6 +37,10 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Maui.DataGrid.Tests" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maui.DataGrid", "Maui.DataGrid\Maui.DataGrid.csproj", "{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maui.DataGrid.Sample", "Maui.DataGrid.Sample\Maui.DataGrid.Sample.csproj", "{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maui.DataGrid", "Maui.DataGrid\Maui.DataGrid.csproj", "{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maui.DataGrid.Tests", "Maui.DataGrid.Tests\Maui.DataGrid.Tests.csproj", "{C3BF1272-71AE-4C92-B6D6-CAB18B98A6BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root Files", "Root Files", "{175C8F2C-B5A2-4AAE-A858-2D4A1E8F073E}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,24 +25,22 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Test|Any CPU.Build.0 = Test|Any CPU
-		{1A19A0CA-B02B-4DDB-B8F6-39FAAC6263E0}.Test|Any CPU.Deploy.0 = Test|Any CPU
-		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{3CAFEEB9-BB8E-40FE-B85B-F0ACD6A66429}.Test|Any CPU.Build.0 = Test|Any CPU
+		{C3BF1272-71AE-4C92-B6D6-CAB18B98A6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3BF1272-71AE-4C92-B6D6-CAB18B98A6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3BF1272-71AE-4C92-B6D6-CAB18B98A6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3BF1272-71AE-4C92-B6D6-CAB18B98A6BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

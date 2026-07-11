@@ -2,9 +2,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build-test-maccatalyst",
+            "label": "test",
             "type": "shell",
-            "command": "dotnet build ${workspaceFolder}/Maui.DataGrid.Sample/Maui.DataGrid.Sample.csproj -c Test -f net10.0-maccatalyst",
+            "command": "dotnet test ${workspaceFolder}/Maui.DataGrid.Tests/Maui.DataGrid.Tests.csproj",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
             "problemMatcher": "$msCompile"
         }
     ]
