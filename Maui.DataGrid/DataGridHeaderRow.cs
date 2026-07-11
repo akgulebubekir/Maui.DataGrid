@@ -190,6 +190,7 @@ internal sealed class DataGridHeaderRow : Grid
         };
 
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderLabelStyle;
+
         column.FilterTextbox.Style = column.HeaderFilterStyle ?? DataGrid.HeaderFilterStyle ?? DataGrid.DefaultHeaderFilterStyle;
 
         column.HeaderLabelContainer.Children.Add(column.HeaderLabel);
@@ -218,7 +219,18 @@ internal sealed class DataGridHeaderRow : Grid
         cellContent.SetRow(column.FilterTextboxContainer, 1);
         cellContent.SetColumnSpan(column.FilterTextboxContainer, 2);
 
-        return new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
+        var cell = new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
+
+        if (cell.Content is ContentView innerContentView)
+        {
+#if NET9_0_OR_GREATER
+            innerContentView.SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.HeaderBackground, source: DataGrid));
+#else
+            innerContentView.SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.HeaderBackground), source: DataGrid));
+#endif
+        }
+
+        return cell;
     }
 
     private void SetFilterRow(DataGridColumn column)

@@ -9,6 +9,27 @@
              x:DataType="vm:MainViewModel"
              x:Name="self" x:ClassModifier="internal"
              x:Class="Maui.DataGrid.Sample.MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <dg:PaletteCollection x:Key="LightRowsBackground">
+                <Color >#F2F2F2</Color>
+                <Color >#FFFFFF</Color>
+            </dg:PaletteCollection>
+            <dg:PaletteCollection x:Key="DarkRowsBackground">
+                <Color >#1A1A1A</Color>
+                <Color >#353535</Color>
+            </dg:PaletteCollection>
+            <dg:PaletteCollection x:Key="LightRowsText">
+                <Color >Black</Color>
+                <Color >Black</Color>
+            </dg:PaletteCollection>
+            <dg:PaletteCollection x:Key="DarkRowsText">
+                <Color >#E1E1E1</Color>
+                <Color >#E1E1E1</Color>
+            </dg:PaletteCollection>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid RowDefinitions="Auto,*">
 
         <HorizontalStackLayout HorizontalOptions="Center">
@@ -19,9 +40,9 @@
         <dg:DataGrid Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="{Binding SelectionMode}" FilteringEnabled="{Binding FilteringEnabled}"
                      SelectedItem="{Binding SelectedTeam}" RowToEdit="{Binding TeamToEdit}" RefreshingEnabled="{Binding RefreshingEnabled}"
                      BorderColor="{StaticResource GridBorderColor}" BorderThickness="{Binding BorderThickness}"
-                     HeaderBackground="{StaticResource GridHeaderBgColor}" HeaderBordersVisible="{Binding HeaderBordersVisible}"
-                     BackgroundColor="{StaticResource GridBgColor}" ActiveRowColor="{StaticResource ActiveRowColor}"
-                     FooterBackground="{StaticResource GridFooterBgColor}" FooterTextColor="{StaticResource GridFooterTextColor}" SortedColumnIndex="1"
+                     HeaderBackground="{AppThemeBinding Light={StaticResource GridHeaderBgColor}, Dark={StaticResource GridHeaderBgColorDark}}" HeaderBordersVisible="{Binding HeaderBordersVisible}" 
+                     BackgroundColor="{AppThemeBinding Light={StaticResource GridBgColor}, Dark={StaticResource GridBgColorDark}}" ActiveRowColor="{StaticResource ActiveRowColor}" RowsBackgroundColorPalette="{AppThemeBinding Light={StaticResource LightRowsBackground}, Dark={StaticResource DarkRowsBackground}}" RowsTextColorPalette="{AppThemeBinding Light={StaticResource LightRowsText}, Dark={StaticResource DarkRowsText}}"
+                     FooterBackground="{AppThemeBinding Light={StaticResource GridFooterBgColor}, Dark={StaticResource GridFooterBgColorDark}}" FooterTextColor="{AppThemeBinding Light={StaticResource GridFooterTextColor}, Dark={StaticResource GridFooterTextColorDark}}" SortedColumnIndex="1"
                      PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}" PageText="{Binding PaginationText}" PerPageText="{Binding PerPageText}"
                      PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
                      RowHeight="70" HeaderHeight="75" x:Name="_dataGrid1"
@@ -41,8 +62,8 @@
                 <dg:DataGridColumn PropertyName="Home">
                     <dg:DataGridColumn.FormattedTitle>
                         <FormattedString>
-                            <Span Text="Home" TextColor="Black" FontSize="13" FontAttributes="Bold" />
-                            <Span Text=" (won-lost)" TextColor="#333333" FontSize="11" />
+                            <Span Text="Home" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" FontSize="13" FontAttributes="Bold" />
+                            <Span Text=" (won-lost)" TextColor="{AppThemeBinding Light=#333333, Dark=#CCCCCC}" FontSize="11" />
                         </FormattedString>
                     </dg:DataGridColumn.FormattedTitle>
                 </dg:DataGridColumn>
@@ -71,12 +92,6 @@
                     </dg:DataGridColumn.EditCellTemplate>
                 </dg:DataGridColumn>
             </dg:DataGrid.Columns>
-            <dg:DataGrid.RowsBackgroundColorPalette>
-                <dg:PaletteCollection>
-                    <Color>#F2F2F2</Color>
-                    <Color>#FFFFFF</Color>
-                </dg:PaletteCollection>
-            </dg:DataGrid.RowsBackgroundColorPalette>
             <dg:DataGrid.Resources>
                 <ResourceDictionary>
                     <conv:StreakToColorConverter x:Key="StreakToColorConverter" />

@@ -6,7 +6,7 @@
                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                 xmlns:vm="clr-namespace:Maui.DataGrid.Sample.ViewModels"
                 x:DataType="vm:MainViewModel" x:ClassModifier="internal"
-                x:Class="Maui.DataGrid.Sample.SettingsPopup" BackgroundColor="Black">
+                x:Class="Maui.DataGrid.Sample.SettingsPopup" BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
     <toolkit:Popup.Resources>
         <ResourceDictionary>
@@ -17,51 +17,51 @@
         </ResourceDictionary>
     </toolkit:Popup.Resources>
 
-    <Border Padding="20" StrokeShape="RoundRectangle 10 10 10 10" VerticalOptions="Center" Background="Black" Stroke="White">
-        <FlexLayout Background="Black" Direction="Column" Wrap="Wrap">
-            <VerticalStackLayout Background="Black">
+    <Border Padding="20" StrokeShape="RoundRectangle 10 10 10 10" VerticalOptions="Center" Background="{AppThemeBinding Light=White, Dark=Black}" Stroke="{AppThemeBinding Light=Black, Dark=White}">
+        <FlexLayout Background="{AppThemeBinding Light=White, Dark=Black}" Direction="Column" Wrap="Wrap">
+            <VerticalStackLayout Background="{AppThemeBinding Light=White, Dark=Black}">
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding HeaderBordersVisible}" />
-                    <Label Text="Header Borders Visible?" TextColor="White" VerticalOptions="Center" />
+                    <Label Text="Header Borders Visible?" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <Stepper Minimum="0" Maximum="10" Value="{Binding BorderThicknessNumeric}"
-                             BackgroundColor="{OnPlatform WinUI=Gray}"/>
-                    <Label Text="Border Thickness" TextColor="White" VerticalOptions="Center" />
+                             BackgroundColor="{OnPlatform WinUI={AppThemeBinding Light=LightGray, Dark=Gray}}"/>
+                    <Label Text="Border Thickness" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding WonColumnVisible}" />
-                    <Label Text="Won Column" TextColor="White" VerticalOptions="Center" />
+                    <Label Text="Won Column" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
-                    <Entry Text="{Binding PageSize}" Keyboard="Numeric" TextColor="White" />
-                    <Label Text="Page Size" TextColor="White" VerticalOptions="Center" />
+                    <Entry Text="{Binding PageSize}" Keyboard="Numeric" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                    <Label Text="Page Size" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding FilteringEnabled}" />
-                    <Label Text="Filtering Enabled?" TextColor="White" VerticalOptions="Center" />
+                    <Label Text="Filtering Enabled?" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding RefreshingEnabled}" />
-                    <Label Text="Refreshing Enabled?" TextColor="White" VerticalOptions="Center" />
+                    <Label Text="Refreshing Enabled?" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <CheckBox IsChecked="{Binding PaginationEnabled}" />
-                    <Label Text="Pagination Enabled?" TextColor="White" VerticalOptions="Center" />
+                    <Label Text="Pagination Enabled?" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <Picker SelectedItem="{Binding SelectionMode}" ItemsSource="{Static vm:MainViewModel.SelectionModes}" ItemDisplayBinding="{Binding ., x:DataType=SelectionMode }" />
-                    <Label Text="Selection Mode" TextColor="White" VerticalOptions="Center" />
+                    <Label Text="Selection Mode" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 <HorizontalStackLayout Style="{StaticResource SampleContainerStyle}">
                     <Stepper Minimum="0" Maximum="200" Increment="10" Value="{Binding TeamColumnWidth}"
-                             BackgroundColor="{OnPlatform WinUI=Gray}"/>
-                    <Label Text="Team Col Width" TextColor="White" VerticalOptions="Center" />
+                             BackgroundColor="{OnPlatform WinUI={AppThemeBinding Light=LightGray, Dark=Gray}}"/>
+                    <Label Text="Team Col Width" TextColor="{AppThemeBinding Light=Black, Dark=White}" VerticalOptions="Center" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="1" Background="Black">
-                <Label Text="Column Order (drag to reorder):" BackgroundColor="#333" />
-                <CollectionView ItemsSource="{Binding Columns, Mode=TwoWay}" CanReorderItems="True" Background="Black">
+            <VerticalStackLayout Grid.Column="1" Background="{AppThemeBinding Light=White, Dark=Black}">
+                <Label Text="Column Order (drag to reorder):" BackgroundColor="{AppThemeBinding Light=#CCC, Dark=#333}" />
+                <CollectionView ItemsSource="{Binding Columns, Mode=TwoWay}" CanReorderItems="True" Background="{AppThemeBinding Light=White, Dark=Black}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="dg:DataGridColumn">
                             <Label Text="{Binding PropertyName}" FontSize="Medium" />
