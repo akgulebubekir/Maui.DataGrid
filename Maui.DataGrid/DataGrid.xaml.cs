@@ -707,6 +707,11 @@ public partial class DataGrid
         DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
 
         _collectionView?.ItemsSource = InternalItems;
+
+        // Any mutation of InternalItems must invalidate its derived lookup caches,
+        // regardless of which code path performed the change. Subscribing here makes
+        // that invariant hold centrally instead of relying on every call site.
+        InternalItems.CollectionChanged += OnInternalItemsChanged;
     }
 
     /// <summary>
@@ -1224,7 +1229,7 @@ public partial class DataGrid
 
         if (_internalItemsIndexMap == null)
         {
-            _internalItemsIndexMap = new(InternalItems.Count);
+            _internalItemsIndexMap = new(InternalItems.Count, ReferenceEqualityComparer.Instance);
             for (var i = 0; i < InternalItems.Count; i++)
             {
                 _internalItemsIndexMap[InternalItems[i]] = i;
@@ -1381,6 +1386,14 @@ public partial class DataGrid
         SortFilterAndPaginate();
     }
 
+    private void OnInternalItemsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // InternalItems changed (sort/filter/paginate/clear/replace), so the derived
+        // membership and index caches are now stale and must be rebuilt on next access.
+        _internalItemsHashSet = null;
+        _internalItemsIndexMap = null;
+    }
+
     private ICollection<object> GetInternalItems(int lookupCount = 1)
     {
         if (_internalItemsHashSet != null)
@@ -1393,7 +1406,7 @@ public partial class DataGrid
             return InternalItems;
         }
 
-        return _internalItemsHashSet = [.. InternalItems];
+        return _internalItemsHashSet = new HashSet<object>(InternalItems, ReferenceEqualityComparer.Instance);
     }
 
     private SortData? RegenerateSortedColumnIndex()
