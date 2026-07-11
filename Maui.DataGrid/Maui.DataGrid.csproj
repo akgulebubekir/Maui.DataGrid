@@ -8,7 +8,7 @@
     <IsTrimmable>true</IsTrimmable>
     <InternalsVisibleTo Condition="'$(Configuration)' == 'Test'">Maui.DataGrid.Sample</InternalsVisibleTo>
     <Title>Maui.DataGrid</Title>
-    <Authors>Ebubekir Akgul</Authors>
+    <Authors>Ebubekir Akgul, Edward Miller</Authors>
     <Description>Datagrid component for Maui</Description>
     <RepositoryUrl>https://github.com/akgulebubekir/Maui.DataGrid</RepositoryUrl>
     <PackageProjectUrl>https://github.com/akgulebubekir/Maui.DataGrid</PackageProjectUrl>
