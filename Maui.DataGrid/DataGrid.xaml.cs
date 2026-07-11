@@ -1,7 +1,6 @@
 namespace Maui.DataGrid;
 
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -9,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Input;
 using Maui.DataGrid.Collections;
 using Maui.DataGrid.Extensions;
@@ -173,8 +171,15 @@ public partial class DataGrid
                     return;
                 }
 
-                // Reset internal hash set, used for fast lookups
+                // Reset caches
                 self._internalItemsHashSet = null;
+                self._originalItemsCache = null;
+
+                // Reset column data types so they are re-resolved for the new source
+                foreach (var column in self.Columns)
+                {
+                    column.ResetDataType();
+                }
 
                 // Unsubscribe from old collection's change event
                 if (o is INotifyCollectionChanged oldCollection)
@@ -418,11 +423,11 @@ public partial class DataGrid
 
                 var internalItems = self.GetInternalItems(v.Count);
 
-                foreach (var selectedItem in selectedItems)
+                for (var i = selectedItems.Count - 1; i >= 0; i--)
                 {
-                    if (!internalItems.Contains(selectedItem))
+                    if (!internalItems.Contains(selectedItems[i]))
                     {
-                        _ = selectedItems.Remove(selectedItem);
+                        selectedItems.RemoveAt(i);
                     }
                 }
 
@@ -685,12 +690,10 @@ public partial class DataGrid
 
     private readonly SortedSet<int> _pageSizeList = [.. DefaultPageSizeSet];
 
-    private readonly ConcurrentDictionary<string, PropertyInfo?> _propertyCache = [];
-
-    private readonly Lock _reloadLock = new();
-    private readonly Lock _sortAndPaginateLock = new();
     private DataGridColumn? _sortedColumn;
     private HashSet<object>? _internalItemsHashSet;
+    private IList<object>? _originalItemsCache;
+    private Dictionary<object, int>? _internalItemsIndexMap;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DataGrid"/> class.
@@ -1212,6 +1215,25 @@ public partial class DataGrid
 
     internal ObservableRangeCollection<object> InternalItems { get; } = [];
 
+    internal int GetItemIndex(object? item)
+    {
+        if (item == null)
+        {
+            return -1;
+        }
+
+        if (_internalItemsIndexMap == null)
+        {
+            _internalItemsIndexMap = new(InternalItems.Count);
+            for (var i = 0; i < InternalItems.Count; i++)
+            {
+                _internalItemsIndexMap[InternalItems[i]] = i;
+            }
+        }
+
+        return _internalItemsIndexMap.TryGetValue(item, out var index) ? index : -1;
+    }
+
     /// <summary>
     /// Scrolls to the row.
     /// </summary>
@@ -1227,12 +1249,9 @@ public partial class DataGrid
             return;
         }
 
-        lock (_reloadLock)
-        {
-            UpdatePageSizeList();
+        UpdatePageSizeList();
 
-            _headerRow.InitializeHeaderRow();
-        }
+        _headerRow.InitializeHeaderRow();
     }
 
     internal void SortFilterAndPaginate(SortData? sortData = null)
@@ -1242,29 +1261,28 @@ public partial class DataGrid
             return;
         }
 
-        lock (_sortAndPaginateLock)
+        sortData ??= SortedColumnIndex;
+
+        var originalItems = ItemsSource as IList<object> ?? (_originalItemsCache ??= [.. ItemsSource.Cast<object>()]);
+
+        if (originalItems.Count == 0)
         {
-            sortData ??= SortedColumnIndex;
-
-            var originalItems = ItemsSource as IList<object> ?? [.. ItemsSource.Cast<object>()];
-
-            if (originalItems.Count == 0)
-            {
-                PageCount = 1;
-                InternalItems.Clear();
-                return;
-            }
-
-            var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
-
-            var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
-
-            var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
-
-            PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
-
-            InternalItems.ReplaceRange(paginatedItems);
+            PageCount = 1;
+            _internalItemsIndexMap = null;
+            InternalItems.Clear();
+            return;
         }
+
+        var filteredItems = CanFilter() ? GetFilteredItems(originalItems) : originalItems;
+
+        var sortedItems = CanSort(sortData) ? GetSortedItems(filteredItems, sortData!) : filteredItems;
+
+        var paginatedItems = PaginationEnabled ? GetPaginatedItems(sortedItems) : sortedItems;
+
+        PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
+
+        _internalItemsIndexMap = null;
+        InternalItems.ReplaceRange(paginatedItems);
     }
 
     /// <inheritdoc/>
@@ -1359,6 +1377,7 @@ public partial class DataGrid
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         _internalItemsHashSet = null;
+        _originalItemsCache = null;
         SortFilterAndPaginate();
     }
 
@@ -1501,6 +1520,7 @@ public partial class DataGrid
     private IList<object> GetFilteredItems(IList<object> originalItems)
     {
         var filteredItems = originalItems.AsEnumerable();
+        var hasFilter = false;
 
         foreach (var column in Columns)
         {
@@ -1509,46 +1529,22 @@ public partial class DataGrid
                 continue;
             }
 
+            hasFilter = true;
             filteredItems = filteredItems.Where(item => FilterItem(item, column));
         }
 
-        return [.. filteredItems];
+        return hasFilter ? [.. filteredItems] : originalItems;
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is needed here.")]
-    private bool FilterItem(object item, DataGridColumn column)
+    private static bool FilterItem(object item, DataGridColumn column)
     {
-        try
+        if (string.IsNullOrEmpty(column.FilterText))
         {
-            if (string.IsNullOrEmpty(column.FilterText))
-            {
-                return true;
-            }
-
-            var itemType = item.GetType();
-            var cacheKey = $"{itemType.FullName}|{column.PropertyName}";
-
-            if (!_propertyCache.TryGetValue(cacheKey, out var property))
-            {
-                property = itemType.GetProperty(column.PropertyName);
-                _propertyCache[cacheKey] = property;
-            }
-
-            if (property == null || property.PropertyType == typeof(object))
-            {
-                return false;
-            }
-
-            var value = property.GetValue(item)?.ToString();
-            return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
+            return true;
         }
-#pragma warning disable CA1031 // Do not catch general exception types
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-            return false;
-        }
-#pragma warning restore CA1031 // Do not catch general exception types
+
+        var value = item.GetValueByPath(column.PropertyName)?.ToString();
+        return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
     }
 
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)

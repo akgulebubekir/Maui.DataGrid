@@ -552,6 +552,12 @@ public sealed class DataGridColumn : BindableObject, IDefinition
         }
     }
 
+    internal void ResetDataType()
+    {
+        DataType = null;
+        _isSortable = null;
+    }
+
     private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));
 
     private void OnVisibilityChanged() => _visibilityChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(VisibilityChanged));

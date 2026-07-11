@@ -54,6 +54,7 @@ internal sealed class DataGridHeaderRow : Grid
         }
 
         var columnCount = DataGrid.Columns.Count;
+        var anyColumnFilterable = DataGrid.Columns.Any(c => c.FilteringEnabled);
 
         for (var i = 0; i < columnCount; i++)
         {
@@ -70,7 +71,7 @@ internal sealed class DataGridHeaderRow : Grid
             // Add or update columns as needed
             ColumnDefinitions.AddOrUpdate(col.ColumnDefinition, i);
 
-            col.HeaderCell = CreateHeaderCell(col);
+            col.HeaderCell = CreateHeaderCell(col, anyColumnFilterable);
 
             col.HeaderCell.UpdateBindings(DataGrid);
 
@@ -115,16 +116,15 @@ internal sealed class DataGridHeaderRow : Grid
     {
         base.OnParentSet();
 
-        if (Parent == null)
-        {
-            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+        // Always unsubscribe first to prevent duplicate handlers
+        DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
 
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged -= OnVisibilityChanged;
-            }
+        foreach (var column in DataGrid.Columns)
+        {
+            column.VisibilityChanged -= OnVisibilityChanged;
         }
-        else
+
+        if (Parent != null)
         {
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
 
@@ -175,11 +175,11 @@ internal sealed class DataGridHeaderRow : Grid
         InitializeHeaderRow();
     }
 
-    private DataGridCell CreateHeaderCell(DataGridColumn column)
+    private DataGridCell CreateHeaderCell(DataGridColumn column, bool anyColumnFilterable)
     {
         if (column.HeaderCell != null)
         {
-            SetFilterRow(column);
+            SetFilterRow(column, anyColumnFilterable);
 
             return column.HeaderCell;
         }
@@ -213,7 +213,7 @@ internal sealed class DataGridHeaderRow : Grid
 
         cellContent.Children.Add(column.HeaderLabelContainer);
 
-        SetFilterRow(column);
+        SetFilterRow(column, anyColumnFilterable);
 
         cellContent.Children.Add(column.FilterTextboxContainer);
         cellContent.SetRow(column.FilterTextboxContainer, 1);
@@ -233,13 +233,13 @@ internal sealed class DataGridHeaderRow : Grid
         return cell;
     }
 
-    private void SetFilterRow(DataGridColumn column)
+    private void SetFilterRow(DataGridColumn column, bool anyColumnFilterable)
     {
         if (DataGrid.FilteringEnabled && column.FilteringEnabled)
         {
             column.FilterTextboxContainer.Content = column.FilterTextbox;
         }
-        else if (DataGrid.FilteringEnabled && DataGrid.Columns.Any(c => c.FilteringEnabled))
+        else if (DataGrid.FilteringEnabled && anyColumnFilterable)
         {
             // Add placeholder
             column.FilterTextboxContainer.Content = new Entry
