@@ -1232,7 +1232,11 @@ public partial class DataGrid
             _internalItemsIndexMap = new(InternalItems.Count, ReferenceEqualityComparer.Instance);
             for (var i = 0; i < InternalItems.Count; i++)
             {
-                _internalItemsIndexMap[InternalItems[i]] = i;
+                var internalItem = InternalItems[i];
+                if (internalItem != null)
+                {
+                    _internalItemsIndexMap[internalItem] = i;
+                }
             }
         }
 
