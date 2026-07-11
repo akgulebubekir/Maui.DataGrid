@@ -5,19 +5,19 @@ using Xunit;
 
 public class ReflectionExtensionsTest
 {
-    private class Deepest
+    private sealed class Deepest
     {
         public int Score { get; set; }
     }
 
-    private class Inner
+    private sealed class Inner
     {
         public int Value { get; set; }
         public string? Text { get; set; }
         public Deepest? Nested { get; set; }
     }
 
-    private class Outer
+    private sealed class Outer
     {
         public Inner? Child { get; set; }
         public string? Name { get; set; }
@@ -27,17 +27,17 @@ public class ReflectionExtensionsTest
     {
     }
 
-    private class Circle : IShape
+    private sealed class Circle : IShape
     {
         public int Radius { get; set; }
     }
 
-    private class Square : IShape
+    private sealed class Square : IShape
     {
         public int Side { get; set; }
     }
 
-    private class ShapeHolder
+    private sealed class ShapeHolder
     {
         public object? Boxed { get; set; }
 
