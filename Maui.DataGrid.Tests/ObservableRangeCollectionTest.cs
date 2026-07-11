@@ -44,7 +44,7 @@ public class ObservableRangeCollectionTest
         collection.AddRange([1, 2], NotifyCollectionChangedAction.Reset);
 
         Assert.NotNull(args);
-        Assert.Equal(NotifyCollectionChangedAction.Reset, args!.Action);
+        Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class ObservableRangeCollectionTest
         collection.RemoveRange([2], NotifyCollectionChangedAction.Reset);
 
         Assert.NotNull(args);
-        Assert.Equal(NotifyCollectionChangedAction.Reset, args!.Action);
+        Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
     }
 
     [Fact]
@@ -184,7 +184,7 @@ public class ObservableRangeCollectionTest
         Assert.Equal(10, collection[0]);
         Assert.Equal(20, collection[1]);
         Assert.NotNull(args);
-        Assert.Equal(NotifyCollectionChangedAction.Reset, args!.Action);
+        Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
     }
 
     [Fact]

@@ -60,7 +60,7 @@ public class ItemsSourceTest
         viewModel.Item.RemoveAt(2);
         var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
         Assert.NotNull(itemsSource);
-        Assert.Equal(_teams.Count - 1, itemsSource!.Count);
+        Assert.Equal(_teams.Count - 1, itemsSource.Count);
         Assert.DoesNotContain(_teams[2], itemsSource);
     }
 
@@ -74,7 +74,7 @@ public class ItemsSourceTest
         viewModel.Item.Add(_dummyTeam);
         var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
         Assert.NotNull(itemsSource);
-        Assert.Equal(_teams.Count + 1, itemsSource!.Count);
+        Assert.Equal(_teams.Count + 1, itemsSource.Count);
         Assert.Contains(_dummyTeam, itemsSource);
     }
 }
