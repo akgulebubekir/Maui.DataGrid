@@ -1558,8 +1558,22 @@ public partial class DataGrid
             return true;
         }
 
-        var value = item.GetValueByPath(column.PropertyName)?.ToString();
-        return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
+        try
+        {
+            var value = item.GetValueByPath(column.PropertyName)?.ToString();
+            return value?.Contains(column.FilterText, StringComparison.OrdinalIgnoreCase) == true;
+        }
+#pragma warning disable CA1031 // Do not catch general exception types
+        catch (Exception ex)
+        {
+            // A user model's property getter or ToString() override may throw. Keep filtering
+            // robust by excluding the offending item rather than breaking the entire operation.
+            // Use Trace (not Debug.WriteLine, which is compiled out in Release) so the failure
+            // stays visible in production instead of silently dropping the row.
+            Trace.TraceError("Error filtering column '{0}': {1}", column.PropertyName, ex);
+            return false;
+        }
+#pragma warning restore CA1031 // Do not catch general exception types
     }
 
     private IEnumerable<object> GetPaginatedItems(IEnumerable<object> unpaginatedItems)
