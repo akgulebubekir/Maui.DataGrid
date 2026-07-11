@@ -23,6 +23,27 @@ public class ReflectionExtensionsTest
         public string? Name { get; set; }
     }
 
+    private interface IShape
+    {
+    }
+
+    private class Circle : IShape
+    {
+        public int Radius { get; set; }
+    }
+
+    private class Square : IShape
+    {
+        public int Side { get; set; }
+    }
+
+    private class ShapeHolder
+    {
+        public object? Boxed { get; set; }
+
+        public IShape? Shape { get; set; }
+    }
+
     [Fact]
     public void GetValueByPath_SimpleProperty()
     {
@@ -180,5 +201,35 @@ public class ReflectionExtensionsTest
 
         Assert.Equal(10, result1);
         Assert.Equal(20, result2);
+    }
+
+    [Fact]
+    public void GetValueByPath_ResolvesDerivedPropertyWhenIntermediateDeclaredAsObject()
+    {
+        var obj = new ShapeHolder { Boxed = new Circle { Radius = 5 } };
+
+        var result = obj.GetValueByPath("Boxed.Radius");
+
+        Assert.Equal(5, result);
+    }
+
+    [Fact]
+    public void GetValueByPath_ResolvesDerivedPropertyWhenIntermediateDeclaredAsInterface()
+    {
+        var obj = new ShapeHolder { Shape = new Circle { Radius = 9 } };
+
+        var result = obj.GetValueByPath("Shape.Radius");
+
+        Assert.Equal(9, result);
+    }
+
+    [Fact]
+    public void GetValueByPath_ResolvesDistinctRuntimeTypesForSameDeclaredSlot()
+    {
+        var square = new ShapeHolder { Boxed = new Square { Side = 3 } };
+        var circle = new ShapeHolder { Boxed = new Circle { Radius = 4 } };
+
+        Assert.Equal(3, square.GetValueByPath("Boxed.Side"));
+        Assert.Equal(4, circle.GetValueByPath("Boxed.Radius"));
     }
 }

@@ -11,9 +11,9 @@ internal static class ReflectionExtensions
     private const char PropertyOfOp = '.';
 
     // Keyed weakly by Type so that collectible types (e.g. from unloadable AssemblyLoadContexts
-    // or runtime-generated types) and their cached property paths can be reclaimed by the GC once
+    // or runtime-generated types) and their cached property lookups can be reclaimed by the GC once
     // the type is no longer referenced elsewhere, instead of being pinned for the process lifetime.
-    private static readonly ConditionalWeakTable<Type, ConcurrentDictionary<string, PropertyInfo[]?>> PropertyPathCache = [];
+    private static readonly ConditionalWeakTable<Type, ConcurrentDictionary<string, PropertyInfo?>> PropertyCache = [];
 
     [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is required here.")]
     public static object? GetValueByPath(this object obj, string path)
@@ -23,25 +23,24 @@ internal static class ReflectionExtensions
             return null;
         }
 
-        var type = obj.GetType();
-        var propertiesByPath = PropertyPathCache.GetValue(type, static _ => new ConcurrentDictionary<string, PropertyInfo[]?>());
-
-        if (!propertiesByPath.TryGetValue(path, out var properties))
-        {
-            properties = ResolvePropertyPath(type, path);
-            propertiesByPath[path] = properties;
-        }
-
-        if (properties == null)
-        {
-            return null;
-        }
-
         var result = obj;
 
-        foreach (var property in properties)
+        foreach (var token in path.Split(PropertyOfOp))
         {
-            result = property.GetValue(result);
+            // Resolve each token against the runtime type of the current value so that
+            // polymorphic models (intermediate members declared as object/interface/base
+            // types) still resolve derived properties. Caching per (runtime type, token)
+            // keeps reflection lookups cheap without baking in declared-type semantics.
+            var type = result.GetType();
+            var propertiesByName = PropertyCache.GetValue(type, static _ => new ConcurrentDictionary<string, PropertyInfo?>());
+
+            if (!propertiesByName.TryGetValue(token, out var property))
+            {
+                property = ResolveProperty(type, token);
+                propertiesByName[token] = property;
+            }
+
+            result = property?.GetValue(result);
 
             if (result == null)
             {
@@ -83,25 +82,6 @@ internal static class ReflectionExtensions
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2075", Justification = "Reflection is required here.")]
-    private static PropertyInfo[]? ResolvePropertyPath([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type type, string path)
-    {
-        var tokens = path.Split(PropertyOfOp);
-        var properties = new PropertyInfo[tokens.Length];
-        var currentType = type;
-
-        for (var i = 0; i < tokens.Length; i++)
-        {
-            var property = currentType.GetProperty(tokens[i], BindingFlags.Public | BindingFlags.Instance);
-
-            if (property == null)
-            {
-                return null;
-            }
-
-            properties[i] = property;
-            currentType = property.PropertyType;
-        }
-
-        return properties;
-    }
+    private static PropertyInfo? ResolveProperty([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type type, string name)
+        => type.GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
 }
