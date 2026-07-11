@@ -1277,7 +1277,6 @@ public partial class DataGrid
         if (originalItems.Count == 0)
         {
             PageCount = 1;
-            _internalItemsIndexMap = null;
             InternalItems.Clear();
             return;
         }
@@ -1290,7 +1289,6 @@ public partial class DataGrid
 
         PageCount = (int)Math.Ceiling(filteredItems.Count / (double)PageSize);
 
-        _internalItemsIndexMap = null;
         InternalItems.ReplaceRange(paginatedItems);
     }
 
