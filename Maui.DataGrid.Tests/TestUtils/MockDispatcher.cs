@@ -26,12 +26,10 @@ internal sealed class MockDispatcher : IDispatcher
 
     public IDispatcherTimer CreateTimer() => new MockDispatcherTimer(this);
 
-    private sealed class MockDispatcherTimer : IDispatcherTimer, IDisposable
+    private sealed class MockDispatcherTimer(IDispatcher dispatcher) : IDispatcherTimer, IDisposable
     {
-        private readonly IDispatcher _dispatcher;
+        private readonly IDispatcher _dispatcher = dispatcher;
         private Timer? _timer;
-
-        public MockDispatcherTimer(IDispatcher dispatcher) => _dispatcher = dispatcher;
 
         public event EventHandler? Tick;
 
