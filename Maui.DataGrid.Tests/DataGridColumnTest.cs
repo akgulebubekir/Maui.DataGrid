@@ -32,7 +32,7 @@ public class DataGridColumnTest
         var dataGrid = new DataGrid
         {
             ItemsSource = teams,
-            Columns = [column]
+            Columns = [column],
         };
 
         column.DataGrid = dataGrid;
@@ -50,7 +50,7 @@ public class DataGridColumnTest
         var dataGrid = new DataGrid
         {
             ItemsSource = items,
-            Columns = [column]
+            Columns = [column],
         };
 
         column.DataGrid = dataGrid;
