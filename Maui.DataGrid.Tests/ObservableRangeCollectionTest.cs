@@ -30,7 +30,7 @@ public class ObservableRangeCollectionTest
 
         Assert.NotNull(args);
         Assert.Equal(NotifyCollectionChangedAction.Add, args!.Action);
-        Assert.Equal(new[] { 20, 30 }, args.NewItems!.Cast<int>());
+        Assert.Equal([20, 30], args.NewItems!.Cast<int>());
         Assert.Equal(1, args.NewStartingIndex);
     }
 
@@ -65,7 +65,7 @@ public class ObservableRangeCollectionTest
         var collection = new ObservableRangeCollection<int>();
 
         var ex = Assert.Throws<ArgumentException>(() =>
-            collection.AddRange(new[] { 1 }, NotifyCollectionChangedAction.Remove));
+            collection.AddRange([1], NotifyCollectionChangedAction.Remove));
         Assert.Contains("Mode must be either Add or Reset", ex.Message);
     }
 
@@ -114,7 +114,7 @@ public class ObservableRangeCollectionTest
 
         Assert.NotNull(args);
         Assert.Equal(NotifyCollectionChangedAction.Remove, args!.Action);
-        Assert.Equal(new[] { 2, 3 }, args.OldItems!.Cast<int>());
+        Assert.Equal([2, 3], args.OldItems!.Cast<int>());
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public class ObservableRangeCollectionTest
         collection.RemoveRange([2, 99], NotifyCollectionChangedAction.Remove);
 
         Assert.NotNull(args);
-        Assert.Equal(new[] { 2 }, args!.OldItems!.Cast<int>());
+        Assert.Equal([2], args!.OldItems!.Cast<int>());
     }
 
     [Fact]
