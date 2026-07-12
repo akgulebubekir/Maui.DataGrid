@@ -5,45 +5,6 @@ using Xunit;
 
 public class ReflectionExtensionsTest
 {
-    private sealed class Deepest
-    {
-        public int Score { get; set; }
-    }
-
-    private sealed class Inner
-    {
-        public int Value { get; set; }
-        public string? Text { get; set; }
-        public Deepest? Nested { get; set; }
-    }
-
-    private sealed class Outer
-    {
-        public Inner? Child { get; set; }
-        public string? Name { get; set; }
-    }
-
-    private interface IShape
-    {
-    }
-
-    private sealed class Circle : IShape
-    {
-        public int Radius { get; set; }
-    }
-
-    private sealed class Square : IShape
-    {
-        public int Side { get; set; }
-    }
-
-    private sealed class ShapeHolder
-    {
-        public object? Boxed { get; set; }
-
-        public IShape? Shape { get; set; }
-    }
-
     [Fact]
     public void GetValueByPath_SimpleProperty()
     {
@@ -231,5 +192,47 @@ public class ReflectionExtensionsTest
 
         Assert.Equal(3, square.GetValueByPath("Boxed.Side"));
         Assert.Equal(4, circle.GetValueByPath("Boxed.Radius"));
+    }
+
+    private interface IShape
+    {
+    }
+
+    private sealed class Deepest
+    {
+        public int Score { get; set; }
+    }
+
+    private sealed class Inner
+    {
+        public int Value { get; set; }
+
+        public string? Text { get; set; }
+
+        public Deepest? Nested { get; set; }
+    }
+
+    private sealed class Outer
+    {
+        public Inner? Child { get; set; }
+
+        public string? Name { get; set; }
+    }
+
+    private sealed class Circle : IShape
+    {
+        public int Radius { get; set; }
+    }
+
+    private sealed class Square : IShape
+    {
+        public int Side { get; set; }
+    }
+
+    private sealed class ShapeHolder
+    {
+        public object? Boxed { get; set; }
+
+        public IShape? Shape { get; set; }
     }
 }
