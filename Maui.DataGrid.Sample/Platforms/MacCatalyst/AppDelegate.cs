@@ -4,7 +4,7 @@ using Foundation;
 
 [Register("AppDelegate")]
 #pragma warning disable CA1711 // Identifiers should not have incorrect suffix
-public class AppDelegate : MauiUIApplicationDelegate
+internal class AppDelegate : MauiUIApplicationDelegate
 #pragma warning restore CA1711 // Identifiers should not have incorrect suffix
 {
     /// <inheritdoc/>
