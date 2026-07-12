@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Root Files/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="LICENSE" />
+    <File Path="Maui.DataGrid.Sample.sln.DotSettings" />
+    <File Path="README.md" />
+    <File Path="stylecop.json" />
+  </Folder>
+  <Project Path="Maui.DataGrid.Sample/Maui.DataGrid.Sample.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="Maui.DataGrid.Tests/Maui.DataGrid.Tests.csproj" />
+  <Project Path="Maui.DataGrid/Maui.DataGrid.csproj" />
+</Solution>
