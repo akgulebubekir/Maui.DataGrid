@@ -85,12 +85,13 @@ public class SortDataTest
         Assert.False(a.Equals(b));
     }
 
-    [Fact]
-    public void EqualsReturnsFalseForNull()
+    [Theory]
+    [InlineData(null)]
+    public void EqualsReturnsFalseForNull(object? other)
     {
         var sortData = new SortData(1, SortingOrder.Ascendant);
 
-        Assert.False(sortData.Equals(null));
+        Assert.False(sortData.Equals(other));
     }
 
     [Fact]
