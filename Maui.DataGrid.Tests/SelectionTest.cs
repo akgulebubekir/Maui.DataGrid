@@ -61,4 +61,28 @@ public class SelectionTest
         Assert.Equal(teamToSelect, await datagrid.GetValueSafe(DataGrid.SelectedItemProperty));
         Assert.True(eventTriggered);
     }
+
+    [Fact]
+    public async Task DeselectingItem_SetsSelectedItemToNull()
+    {
+        var datagrid = new DataGrid { ItemsSource = _teams };
+        var teamToSelect = _teams[3];
+
+        // set a parent to trigger OnParentSet
+        var parent = new ContentView { Content = datagrid };
+
+        datagrid.SelectedItem = teamToSelect;
+        Assert.Equal(teamToSelect, await datagrid.GetValueSafe(DataGrid.SelectedItemProperty));
+
+        var deselectionEventTriggered = false;
+        datagrid.ItemSelected += (s, e) =>
+        {
+            deselectionEventTriggered = true;
+            Assert.Empty(e.CurrentSelection);
+        };
+
+        datagrid.SelectedItem = null;
+        Assert.Null(await datagrid.GetValueSafe(DataGrid.SelectedItemProperty));
+        Assert.True(deselectionEventTriggered);
+    }
 }

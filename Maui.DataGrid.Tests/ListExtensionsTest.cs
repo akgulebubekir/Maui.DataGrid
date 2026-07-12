@@ -182,4 +182,36 @@ public class ListExtensionsTest
         Assert.Equal(def1, columnDefs[0]);
         Assert.Equal(def2, columnDefs[1]);
     }
+
+    [Fact]
+    public void RemoveAfter_ZeroIndex_RemovesAllItems()
+    {
+        var columnDefs = new ColumnDefinitionCollection
+        {
+            new(GridLength.Star),
+            new(GridLength.Auto),
+            new(GridLength.Star),
+        };
+
+        columnDefs.RemoveAfter(0);
+
+        Assert.Empty(columnDefs);
+    }
+
+    [Fact]
+    public void RemoveAfter_OneIndex_LeavesFirstItem()
+    {
+        var first = new ColumnDefinition(GridLength.Star);
+        var columnDefs = new ColumnDefinitionCollection
+        {
+            first,
+            new(GridLength.Auto),
+            new(GridLength.Auto),
+        };
+
+        columnDefs.RemoveAfter(1);
+
+        Assert.Single(columnDefs);
+        Assert.Same(first, columnDefs[0]);
+    }
 }

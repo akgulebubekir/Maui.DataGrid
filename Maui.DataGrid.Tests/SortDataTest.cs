@@ -103,6 +103,14 @@ public class SortDataTest
     }
 
     [Fact]
+    public void EqualsReturnsTrueForSameInstance()
+    {
+        var sortData = new SortData(1, SortingOrder.Ascendant);
+
+        Assert.True(sortData.Equals(sortData));
+    }
+
+    [Fact]
     public void GetHashCodeSameForEqualObjects()
     {
         var a = new SortData(1, SortingOrder.Ascendant);
@@ -118,5 +126,32 @@ public class SortDataTest
         var b = new SortData(2, SortingOrder.Descendant);
 
         Assert.NotEqual(a.GetHashCode(), b.GetHashCode());
+    }
+
+    [Fact]
+    public void IndexAndOrderPropertiesAreMutable()
+    {
+        var sortData = new SortData(1, SortingOrder.Ascendant)
+        {
+            Index = 5,
+            Order = SortingOrder.Descendant,
+        };
+
+        Assert.Equal(5, sortData.Index);
+        Assert.Equal(SortingOrder.Descendant, sortData.Order);
+    }
+
+    [Theory]
+    [InlineData(0, SortingOrder.Ascendant)]
+    [InlineData(1, SortingOrder.Ascendant)]
+    [InlineData(-1, SortingOrder.Descendant)]
+    [InlineData(100, SortingOrder.Ascendant)]
+    [InlineData(-100, SortingOrder.Descendant)]
+    public void FromInt32_Theory(int input, SortingOrder expectedOrder)
+    {
+        var sortData = SortData.FromInt32(input);
+
+        Assert.Equal(Math.Abs(input), sortData.Index);
+        Assert.Equal(expectedOrder, sortData.Order);
     }
 }

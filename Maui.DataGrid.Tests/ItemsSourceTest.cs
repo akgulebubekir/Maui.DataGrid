@@ -77,4 +77,25 @@ public class ItemsSourceTest
         Assert.Equal(_teams.Count + 1, itemsSource.Count);
         Assert.Contains(_dummyTeam, itemsSource);
     }
+
+    [Fact]
+    public async Task ClearingObservableCollectionUpdatesItemsSource()
+    {
+        var viewModel = new SingleVM<ObservableCollection<Team>> { Item = new ObservableCollection<Team>(_teams) };
+        var datagrid = new DataGrid();
+        datagrid.SetBinding(DataGrid.ItemsSourceProperty, new Binding("Item", source: viewModel));
+
+        viewModel.Item.Clear();
+        var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
+        Assert.NotNull(itemsSource);
+        Assert.Empty(itemsSource);
+    }
+
+    [Fact]
+    public void SettingItemsSourceToNull_DoesNotThrow()
+    {
+        var datagrid = new DataGrid { ItemsSource = _teams };
+        var ex = Record.Exception(() => datagrid.ItemsSource = null!);
+        Assert.Null(ex);
+    }
 }

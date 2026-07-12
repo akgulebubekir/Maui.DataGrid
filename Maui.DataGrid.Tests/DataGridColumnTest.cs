@@ -87,6 +87,95 @@ public class DataGridColumnTest
         column.CheckPropertyBindingWorks(DataGridColumn.SortingEnabledProperty, false, true);
     }
 
+    [Fact]
+    public void PropertyNamePropertyBinding()
+    {
+        var column = new DataGridColumn();
+        column.CheckPropertyBindingWorks(DataGridColumn.PropertyNameProperty, "Name", "Score");
+    }
+
+    [Fact]
+    public void LineBreakModePropertyBinding()
+    {
+        var column = new DataGridColumn();
+        column.CheckPropertyBindingWorks(DataGridColumn.LineBreakModeProperty, LineBreakMode.NoWrap, LineBreakMode.TailTruncation);
+    }
+
+    [Fact]
+    public void HorizontalContentAlignmentPropertyBinding()
+    {
+        var column = new DataGridColumn();
+        column.CheckPropertyBindingWorks(DataGridColumn.HorizontalContentAlignmentProperty, LayoutOptions.Start, LayoutOptions.End);
+    }
+
+    [Fact]
+    public void VerticalContentAlignmentPropertyBinding()
+    {
+        var column = new DataGridColumn();
+        column.CheckPropertyBindingWorks(DataGridColumn.VerticalContentAlignmentProperty, LayoutOptions.Start, LayoutOptions.End);
+    }
+
+    [Fact]
+    public void PaddingPropertyBinding()
+    {
+        var column = new DataGridColumn();
+        column.CheckPropertyBindingWorks(DataGridColumn.PaddingProperty, new Thickness(4), new Thickness(8));
+    }
+
+    [Fact]
+    public void FilterText_DefaultIsNull()
+    {
+        var column = new DataGridColumn();
+        Assert.Null(column.FilterText);
+    }
+
+    [Fact]
+    public void FilterText_CanBeSetDirectly()
+    {
+        var column = new DataGridColumn { FilterText = "search" };
+        Assert.Equal("search", column.FilterText);
+    }
+
+    [Fact]
+    public void IsSortable_ReturnsFalse_WhenDataGridIsNull()
+    {
+        var column = new DataGridColumn { PropertyName = "Value" };
+
+        // No DataGrid assigned; ItemsSource check short-circuits to false
+        Assert.False(column.IsSortable());
+    }
+
+    [Fact]
+    public void IsSortable_ReturnsFalse_WhenItemsSourceIsNull()
+    {
+        var column = new DataGridColumn { PropertyName = "Value" };
+        var dataGrid = new DataGrid(); // ItemsSource is null by default
+        column.DataGrid = dataGrid;
+
+        Assert.False(column.IsSortable());
+    }
+
+    [Fact]
+    public void IsSortable_CachesResult()
+    {
+        var column = new DataGridColumn { PropertyName = "Value" };
+        var items = new List<TestItem> { new() { Value = 1 } };
+        var dataGrid = new DataGrid
+        {
+            ItemsSource = items,
+            Columns = [column],
+        };
+
+        column.DataGrid = dataGrid;
+        column.InitializeDataType();
+
+        var firstCall = column.IsSortable();
+        var secondCall = column.IsSortable();
+
+        Assert.True(firstCall);
+        Assert.Equal(firstCall, secondCall);
+    }
+
     private sealed class TestItem
     {
         public int Value { get; set; }

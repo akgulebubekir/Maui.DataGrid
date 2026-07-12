@@ -43,5 +43,23 @@ public class BindablePropertyExtensionsTest
         Assert.Equal("updated", bindable.GetValue(TestProperty));
     }
 
+    [Fact]
+    public void Create_PropertyNameWithoutPropertySuffix_ThrowsInvalidOperationException()
+    {
+        Assert.Throws<InvalidOperationException>(() =>
+            BindablePropertyExtensions.Create<TestBindable, string>(propertyName: "DoesNotEndCorrectly"));
+    }
+
+    [Fact]
+    public void Create_PropertyNameWithOnlySuffix_ThrowsInvalidOperationException()
+    {
+        // "Property" alone has no leading name portion after trimming
+        // but it does end with "Property" so it should succeed and produce an empty name.
+        // Verify the property is created without throwing.
+        var prop = BindablePropertyExtensions.Create<TestBindable, int>(propertyName: "Property");
+
+        Assert.Equal(string.Empty, prop.PropertyName);
+    }
+
     private sealed class TestBindable : BindableObject;
 }

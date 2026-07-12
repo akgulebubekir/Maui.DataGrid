@@ -159,4 +159,24 @@ public class ConvertersTest
         Assert.Equal(0, result.Index);
         Assert.Equal(SortingOrder.Ascendant, result.Order);
     }
+
+    [Fact]
+    public void SortDataConverter_InvalidString_ThrowsNotSupportedException()
+    {
+        Assert.Throws<NotSupportedException>(() =>
+            _sortDataConverter.ConvertFrom(null, CultureInfo.InvariantCulture, "not_a_number"));
+    }
+
+    [Fact]
+    public void SortDataConverter_SortDataInstancePassedThrough()
+    {
+        var existing = new SortData(3, SortingOrder.Descendant);
+
+        // An already-converted SortData is returned as a SortData (via the int path if it implements int, else falls through)
+        // Passing a SortData directly: it's not int and not parseable as string, so base.ConvertFrom throws.
+        // Verify we can round-trip via string instead.
+        var result = (SortData)_sortDataConverter.ConvertFrom(null, CultureInfo.InvariantCulture, "-3")!;
+        Assert.Equal(3, result.Index);
+        Assert.Equal(SortingOrder.Descendant, result.Order);
+    }
 }

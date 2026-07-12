@@ -283,4 +283,30 @@ public class ObservableRangeCollectionTest
         Assert.Equal(1, collection[0]);
         Assert.Equal(4, collection[3]);
     }
+
+    [Fact]
+    public void Replace_RaisesResetNotification()
+    {
+        var collection = new ObservableRangeCollection<int> { 1, 2, 3 };
+        NotifyCollectionChangedEventArgs? args = null;
+
+        collection.CollectionChanged += (s, e) => args = e;
+        collection.Replace(99);
+
+        Assert.NotNull(args);
+        Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
+    }
+
+    [Fact]
+    public void RemoveRange_RemoveMode_NoMatchingItems_DoesNotRaiseEvent()
+    {
+        var collection = new ObservableRangeCollection<int> { 1, 2, 3 };
+        var eventRaised = false;
+
+        collection.CollectionChanged += (s, e) => eventRaised = true;
+        collection.RemoveRange([99, 100], NotifyCollectionChangedAction.Remove);
+
+        Assert.False(eventRaised);
+        Assert.Equal(3, collection.Count);
+    }
 }
