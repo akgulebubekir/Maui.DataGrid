@@ -87,12 +87,12 @@ public class DataGridColumnTest
         column.CheckPropertyBindingWorks(DataGridColumn.SortingEnabledProperty, false, true);
     }
 
-    public class TestItem
+    private sealed class TestItem
     {
         public int Value { get; set; }
     }
 
-    public class TestItemWithNonComparable
+    private sealed class TestItemWithNonComparable
     {
         public object? NonComparable { get; set; }
     }

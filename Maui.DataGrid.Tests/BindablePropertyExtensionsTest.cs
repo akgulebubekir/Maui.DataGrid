@@ -43,5 +43,5 @@ public class BindablePropertyExtensionsTest
         Assert.Equal("updated", bindable.GetValue(TestProperty));
     }
 
-    private class TestBindable : BindableObject;
+    private sealed class TestBindable : BindableObject;
 }
