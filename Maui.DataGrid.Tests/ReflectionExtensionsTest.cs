@@ -99,7 +99,7 @@ public class ReflectionExtensionsTest
     {
         var obj = new Outer { Name = "test" };
 
-        var result = obj.GetValueByPath("");
+        var result = obj.GetValueByPath(string.Empty);
 
         Assert.Null(result);
     }
@@ -141,7 +141,7 @@ public class ReflectionExtensionsTest
     [Fact]
     public void GetPropertyTypeByPath_EmptyPathReturnsTypeSelf()
     {
-        var result = typeof(Outer).GetPropertyTypeByPath("");
+        var result = typeof(Outer).GetPropertyTypeByPath(string.Empty);
 
         Assert.Equal(typeof(Outer), result);
     }
