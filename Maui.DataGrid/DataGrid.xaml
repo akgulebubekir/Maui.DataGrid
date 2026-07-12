@@ -31,7 +31,7 @@
                 <Setter Property="Margin" Value="0,0,3,0" />
                 <Setter Property="MaximumHeightRequest" Value="10" />
             </Style>
-            
+
             <!--Default Pagination Stepper Style-->
             <Style x:Key="DefaultPaginationStepperStyle" TargetType="Stepper">
                 <Setter Property="Margin" Value="5" />
@@ -59,7 +59,7 @@
                     SelectionMode="{Binding SelectionMode, Source={Reference self}}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Null}">
-                        <local:DataGridRow DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
+                        <local:DataGridRow x:DataType="local:DataGrid" DataGrid="{Reference self}" RowToEdit="{Binding RowToEdit, Source={Reference self}}" HeightRequest="{Binding RowHeight, Source={Reference self}, Mode=OneTime}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
