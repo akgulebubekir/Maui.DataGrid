@@ -66,7 +66,7 @@ public class ObservableRangeCollectionTest
 
         var ex = Assert.Throws<ArgumentException>(() =>
             collection.AddRange([1], NotifyCollectionChangedAction.Remove));
-        Assert.Contains("Mode must be either Add or Reset", ex.Message);
+        Assert.Contains("Mode must be either Add or Reset", ex.Message, StringComparison.Ordinal);
     }
 
     [Fact]
