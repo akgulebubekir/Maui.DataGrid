@@ -5,7 +5,6 @@
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
     <File Path="LICENSE" />
-    <File Path="Maui.DataGrid.Sample.sln.DotSettings" />
     <File Path="README.md" />
     <File Path="stylecop.json" />
   </Folder>
