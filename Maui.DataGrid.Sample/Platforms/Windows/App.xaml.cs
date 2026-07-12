@@ -6,7 +6,9 @@ namespace Maui.DataGrid.Sample.WinUI;
 /// <summary>
 /// Provides application-specific behavior to supplement the default Application class.
 /// </summary>
+#pragma warning disable CA1515 // WinUI requires the Application class to be public; the XAML compiler rejects an internal application type.
 public partial class App : MauiWinUIApplication
+#pragma warning restore CA1515
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
