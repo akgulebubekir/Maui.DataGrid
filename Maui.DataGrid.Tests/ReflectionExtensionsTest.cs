@@ -5,6 +5,10 @@ using Xunit;
 
 public class ReflectionExtensionsTest
 {
+    private interface IShape
+    {
+    }
+
     [Fact]
     public void GetValueByPath_SimpleProperty()
     {
@@ -192,10 +196,6 @@ public class ReflectionExtensionsTest
 
         Assert.Equal(3, square.GetValueByPath("Boxed.Side"));
         Assert.Equal(4, circle.GetValueByPath("Boxed.Radius"));
-    }
-
-    private interface IShape
-    {
     }
 
     private sealed class Deepest
