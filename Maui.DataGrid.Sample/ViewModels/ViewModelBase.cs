@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
+/// <summary>
+/// Base class for sample view models, providing keyed property storage and change notification.
+/// </summary>
 internal abstract partial class ViewModelBase : INotifyPropertyChanged
 {
     private readonly Dictionary<string, object?> _properties = [];

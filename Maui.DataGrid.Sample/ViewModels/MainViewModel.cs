@@ -8,6 +8,9 @@ using CommunityToolkit.Maui.Extensions;
 using Maui.DataGrid.Sample.Models;
 using Maui.DataGrid.Sample.Utils;
 
+/// <summary>
+/// View model backing the main sample page.
+/// </summary>
 internal sealed partial class MainViewModel : ViewModelBase
 {
     public MainViewModel()
