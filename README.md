@@ -87,4 +87,4 @@ builder.ConfigureMauiHandlers(handlers =>
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=akgulebubekir/Maui.DataGrid&type=Date)](https://star-history.com/#akgulebubekir/Maui.DataGrid&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=akgulebubekir/Maui.DataGrid&type=Date)](https://star-history.dera.page/#akgulebubekir/Maui.DataGrid&Date)
