@@ -279,7 +279,7 @@ internal sealed class DataGridRow : Grid
 
         if (col.CellTemplate != null)
         {
-            cell = (View)col.CellTemplate.CreateContent();
+            cell = CreateContentFrom(col.CellTemplate);
 
             SetBinding(col, cell, BindingContextProperty);
         }
@@ -339,11 +339,25 @@ internal sealed class DataGridRow : Grid
             return null;
         }
 
-        var cell = (View)col.EditCellTemplate.CreateContent();
+        var cell = CreateContentFrom(col.EditCellTemplate);
 
         SetBinding(col, cell, BindingContextProperty);
 
         return cell;
+    }
+
+    /// <summary>
+    /// Creates the content of a cell template, resolving <see cref="DataTemplateSelector"/>s
+    /// against this row's item. Calling <c>CreateContent()</c> on a selector silently yields
+    /// an empty <see cref="Label"/> instead of the selected template.
+    /// </summary>
+    private View CreateContentFrom(DataTemplate template)
+    {
+        var resolvedTemplate = template is DataTemplateSelector selector
+            ? selector.SelectTemplate(BindingContext, this)
+            : template;
+
+        return (View)resolvedTemplate.CreateContent();
     }
 
     private Entry GenerateTextEditCell(DataGridColumn col)

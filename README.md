@@ -154,6 +154,9 @@ each intermediate value:
 Use `StringFormat` for simple formatting, or `CellTemplate` for arbitrary content. Without a
 `CellTemplate`, a cell renders as a `Label` bound to `PropertyName`.
 
+`CellTemplate` and `EditCellTemplate` also accept a `DataTemplateSelector`, which is resolved per
+row — `SelectTemplate` receives the row's item — so a cell's content can vary with its data.
+
 ### Sorting
 
 Sorting is enabled by default (`DataGrid.SortingEnabled`), and each column can opt out with
