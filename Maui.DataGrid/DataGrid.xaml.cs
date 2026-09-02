@@ -1458,11 +1458,26 @@ public partial class DataGrid
         }
     }
 
+    /// <summary>
+    /// Reacts to the items source being mutated. A data collection is often filled or updated by a
+    /// background worker, so this is the one entry point which legitimately arrives off the UI thread,
+    /// and it is marshalled because the work it triggers touches the pagination controls and the
+    /// CollectionView's items.
+    /// </summary>
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        // Invalidated on the caller's thread so that nothing reads them stale while the UI work waits.
         _internalItemsHashSet = null;
         _originalItemsCache = null;
-        SortFilterAndPaginate();
+
+        if (Dispatcher.IsDispatchRequired)
+        {
+            _ = Dispatcher.Dispatch(() => SortFilterAndPaginate());
+        }
+        else
+        {
+            SortFilterAndPaginate();
+        }
     }
 
     private void OnInternalItemsChanged(object? sender, NotifyCollectionChangedEventArgs e)

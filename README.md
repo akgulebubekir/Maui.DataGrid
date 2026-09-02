@@ -256,6 +256,14 @@ removing, sorting, filtering, or changing page — so a row's color always match
 dataGrid.ScrollTo(item, ScrollToPosition.MakeVisible, animated: true);
 ```
 
+### Threading
+
+An `ItemsSource` collection may be added to, removed from, or cleared on any thread — the grid
+marshals the resulting sort, filter, and pagination work to the UI thread itself, so a background
+worker filling a collection needs no `MainThread.BeginInvokeOnMainThread` of its own. Note that this
+covers mutations of the collection only: the grid's properties, `ItemsSource` included, must be set on
+the UI thread like those of any other MAUI control.
+
 ### Styling
 
 `HeaderLabelStyle`, `HeaderFilterStyle`, `SortIconStyle`, and `PaginationStepperStyle` override the

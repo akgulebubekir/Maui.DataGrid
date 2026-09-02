@@ -9,10 +9,16 @@ using Microsoft.Maui.Dispatching;
 /// </summary>
 internal static class TestBootstrap
 {
+    /// <summary>
+    /// Gets the dispatcher which every control in the test run shares, so that a test can decide how
+    /// dispatched work is treated.
+    /// </summary>
+    internal static MockDispatcher Dispatcher { get; } = new();
+
     [ModuleInitializer]
     internal static void Initialize()
     {
-        DispatcherProvider.SetCurrent(new MockDispatcherProvider());
+        DispatcherProvider.SetCurrent(new MockDispatcherProvider(Dispatcher));
 
         // Establishes Application.Current, which the binding tests rely on.
         _ = new Application();
