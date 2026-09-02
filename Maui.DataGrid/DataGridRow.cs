@@ -153,6 +153,7 @@ internal sealed class DataGridRow : Grid
         DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
         DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
         DataGrid.RowTappedCommandModeChanged -= OnRowTappedCommandModeChanged;
+        DataGrid.InternalItemsChanged -= OnInternalItemsChanged;
 
         foreach (var column in DataGrid.Columns)
         {
@@ -166,6 +167,7 @@ internal sealed class DataGridRow : Grid
             DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
             DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
             DataGrid.RowTappedCommandModeChanged += OnRowTappedCommandModeChanged;
+            DataGrid.InternalItemsChanged += OnInternalItemsChanged;
 
             foreach (var column in DataGrid.Columns)
             {
@@ -462,6 +464,12 @@ internal sealed class DataGridRow : Grid
 
     private void OnRowsTextColorPaletteChanged(object? sender, EventArgs e)
     {
+        UpdateColors();
+    }
+
+    private void OnInternalItemsChanged(object? sender, EventArgs e)
+    {
+        // This row's index may have shifted, even though its item did not change.
         UpdateColors();
     }
 

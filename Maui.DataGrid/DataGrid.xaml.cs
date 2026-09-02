@@ -700,6 +700,7 @@ public partial class DataGrid
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
     private readonly WeakEventManager _rowTappedCommandModeChangedEventManager = new();
+    private readonly WeakEventManager _internalItemsChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = [.. DefaultPageSizeSet];
@@ -771,6 +772,16 @@ public partial class DataGrid
     {
         add => _rowTappedCommandModeChangedEventManager.AddEventHandler(value);
         remove => _rowTappedCommandModeChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs after the DataGrid's displayed items changed, and after the caches derived from them
+    /// were invalidated. Rows use this to recompute state that depends on their row index.
+    /// </summary>
+    internal event EventHandler InternalItemsChanged
+    {
+        add => _internalItemsChangedEventManager.AddEventHandler(value);
+        remove => _internalItemsChangedEventManager.RemoveEventHandler(value);
     }
 
 #pragma warning disable CA2227 // Collection properties should be read only
@@ -1460,6 +1471,10 @@ public partial class DataGrid
         // membership and index caches are now stale and must be rebuilt on next access.
         _internalItemsHashSet = null;
         _internalItemsIndexMap = null;
+
+        // Rows recycled by the CollectionView keep their binding context, so nothing else tells
+        // them that their row index - and therefore their palette color - just changed.
+        _internalItemsChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(InternalItemsChanged));
     }
 
     private ICollection<object> GetInternalItems(int lookupCount = 1)

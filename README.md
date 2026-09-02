@@ -237,6 +237,9 @@ internal sealed class OverdueColorProvider : IColorProvider
 
 `ActiveRowColor` is the color of the selected row.
 
+`GetColor` is re-evaluated for every visible row whenever the displayed items change — adding,
+removing, sorting, filtering, or changing page — so a row's color always matches its current index.
+
 ### Empty state
 
 `NoDataView` is shown when the grid has no rows (it maps to the underlying `CollectionView`'s
