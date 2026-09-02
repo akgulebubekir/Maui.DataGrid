@@ -101,6 +101,7 @@ internal sealed class DataGridRow : Grid
     #region Fields
 
     private bool _wasSelected;
+    private TapGestureRecognizer? _tapGestureRecognizer;
 
     #endregion Fields
 
@@ -151,6 +152,7 @@ internal sealed class DataGridRow : Grid
         DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
         DataGrid.RowsBackgroundColorPaletteChanged -= OnRowsBackgroundColorPaletteChanged;
         DataGrid.RowsTextColorPaletteChanged -= OnRowsTextColorPaletteChanged;
+        DataGrid.RowTappedCommandModeChanged -= OnRowTappedCommandModeChanged;
 
         foreach (var column in DataGrid.Columns)
         {
@@ -163,6 +165,7 @@ internal sealed class DataGridRow : Grid
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
             DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
             DataGrid.RowsTextColorPaletteChanged += OnRowsTextColorPaletteChanged;
+            DataGrid.RowTappedCommandModeChanged += OnRowTappedCommandModeChanged;
 
             foreach (var column in DataGrid.Columns)
             {
@@ -175,6 +178,8 @@ internal sealed class DataGridRow : Grid
             SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
 #endif
         }
+
+        UpdateRowTapGesture();
     }
 
     private static Color InverseColor(Color color)
@@ -463,6 +468,48 @@ internal sealed class DataGridRow : Grid
     private void OnRowsBackgroundColorPaletteChanged(object? sender, EventArgs e)
     {
         UpdateColors();
+    }
+
+    /// <summary>
+    /// Adds or removes the row's tap gesture to match <see cref="DataGrid.RowTappedCommandMode"/>.
+    /// The gesture is only attached when it is needed, so that rows behave exactly as before for
+    /// consumers who have not opted into <see cref="RowTappedCommandMode.Tap"/>.
+    /// </summary>
+    private void UpdateRowTapGesture()
+    {
+        if (Parent != null && DataGrid.RowTappedCommandMode == RowTappedCommandMode.Tap)
+        {
+            _tapGestureRecognizer ??= new TapGestureRecognizer { Command = new Command(ExecuteRowTappedCommand) };
+
+            if (!GestureRecognizers.Contains(_tapGestureRecognizer))
+            {
+                GestureRecognizers.Add(_tapGestureRecognizer);
+            }
+        }
+        else if (_tapGestureRecognizer != null)
+        {
+            _ = GestureRecognizers.Remove(_tapGestureRecognizer);
+        }
+    }
+
+    /// <summary>
+    /// Executes <see cref="DataGrid.RowTappedCommand"/> with this row's item. Unlike the
+    /// selection-changed path, this fires for every tap, including a tap on the already selected
+    /// row and any tap while selection is disabled.
+    /// </summary>
+    private void ExecuteRowTappedCommand()
+    {
+        var rowTappedCommand = DataGrid.RowTappedCommand;
+
+        if (rowTappedCommand?.CanExecute(BindingContext) == true)
+        {
+            rowTappedCommand.Execute(BindingContext);
+        }
+    }
+
+    private void OnRowTappedCommandModeChanged(object? sender, EventArgs e)
+    {
+        UpdateRowTapGesture();
     }
 
     private void OnColumnsChanged(object? sender, EventArgs e)

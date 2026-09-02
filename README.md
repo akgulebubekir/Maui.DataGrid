@@ -195,8 +195,19 @@ so the footer labels can be localized, and `PageSizeVisible="False"` hides the p
 no longer applies. Both are coerced against the grid's current items, so a selection that is not
 present in `ItemsSource` is dropped.
 
-`ItemSelected` (event) and `RowTappedCommand` both fire on selection change; the command receives the
-`SelectionChangedEventArgs` as its parameter.
+`ItemSelected` (event) fires on selection change. `RowTappedCommand` does too by default, receiving
+the `SelectionChangedEventArgs` — which means it does *not* fire when the already-selected row is
+tapped again, nor at all while `SelectionMode="None"`. Set `RowTappedCommandMode="Tap"` to have every
+row tap execute the command with the **tapped item** as its parameter instead, regardless of
+`SelectionMode`:
+
+```xaml
+<dg:DataGrid RowTappedCommand="{Binding RowTapped}" RowTappedCommandMode="Tap" />
+```
+
+In `Tap` mode the command is not executed from the selection-change path, so a tap executes it
+exactly once. `RowTappedCommandMode` defaults to `SelectionChanged` for backwards compatibility; the
+default is expected to change in the next major version.
 
 ### Editing
 
@@ -258,7 +269,8 @@ All of the following are bindable properties.
 | `SelectionMode` | `SelectionMode` | `Single` | `None`, `Single`, or `Multiple`. Two-way. |
 | `SelectedItem` | `object?` | `null` | Selected row in `Single` mode. Two-way. |
 | `SelectedItems` | `IList<object>` | empty | Selected rows in `Multiple` mode. Two-way. |
-| `RowTappedCommand` | `ICommand` | `null` | Executed on selection change with `SelectionChangedEventArgs`. |
+| `RowTappedCommand` | `ICommand` | `null` | Executed on row tap. Parameter and trigger depend on `RowTappedCommandMode`. |
+| `RowTappedCommandMode` | `RowTappedCommandMode` | `SelectionChanged` | `SelectionChanged` passes `SelectionChangedEventArgs` on selection change; `Tap` passes the tapped item on every tap. |
 | `RowToEdit` | `object` | `null` | Row rendered using `EditCellTemplate`. |
 | `SortingEnabled` | `bool` | `true` | Enables sorting for the grid. |
 | `SortedColumnIndex` | `SortData?` | `null` | Current sort. Two-way. Negative `int` means descending. |

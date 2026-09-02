@@ -55,6 +55,20 @@ public partial class DataGrid
         BindablePropertyExtensions.Create<DataGrid, ICommand>();
 
     /// <summary>
+    /// Gets or sets when the Row Tapped Command is executed.
+    /// </summary>
+    public static readonly BindableProperty RowTappedCommandModeProperty =
+        BindablePropertyExtensions.Create<DataGrid, RowTappedCommandMode>(
+            defaultValue: RowTappedCommandMode.SelectionChanged,
+            propertyChanged: (b, _, _) =>
+            {
+                if (b is DataGrid self)
+                {
+                    self._rowTappedCommandModeChangedEventManager.HandleEvent(self, EventArgs.Empty, nameof(RowTappedCommandModeChanged));
+                }
+            });
+
+    /// <summary>
     /// Gets or sets the background color of the footer.
     /// </summary>
     public static readonly BindableProperty FooterBackgroundProperty =
@@ -685,6 +699,7 @@ public partial class DataGrid
     private readonly WeakEventManager _itemSelectedEventManager = new();
     private readonly WeakEventManager _refreshingEventManager = new();
     private readonly WeakEventManager _rowsBackgroundColorPaletteChangedEventManager = new();
+    private readonly WeakEventManager _rowTappedCommandModeChangedEventManager = new();
     private readonly WeakEventManager _rowsTextColorPaletteChangedEventManager = new();
 
     private readonly SortedSet<int> _pageSizeList = [.. DefaultPageSizeSet];
@@ -747,6 +762,15 @@ public partial class DataGrid
     {
         add => _rowsTextColorPaletteChangedEventManager.AddEventHandler(value);
         remove => _rowsTextColorPaletteChangedEventManager.RemoveEventHandler(value);
+    }
+
+    /// <summary>
+    /// Occurs when the <see cref="RowTappedCommandMode"/> of the DataGrid is changed.
+    /// </summary>
+    internal event EventHandler RowTappedCommandModeChanged
+    {
+        add => _rowTappedCommandModeChangedEventManager.AddEventHandler(value);
+        remove => _rowTappedCommandModeChangedEventManager.RemoveEventHandler(value);
     }
 
 #pragma warning disable CA2227 // Collection properties should be read only
@@ -838,12 +862,25 @@ public partial class DataGrid
     }
 
     /// <summary>
-    /// Gets or sets executes the command when a row is tapped. Works with selection disabled.
+    /// Gets or sets the command executed when a row is tapped.
+    /// What triggers it, and what it receives, depends on <see cref="RowTappedCommandMode"/>.
     /// </summary>
     public ICommand RowTappedCommand
     {
         get => (ICommand)GetValue(RowTappedCommandProperty);
         set => SetValue(RowTappedCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets when <see cref="RowTappedCommand"/> is executed, and what it receives.
+    /// Defaults to <see cref="RowTappedCommandMode.SelectionChanged"/> for backwards compatibility;
+    /// use <see cref="RowTappedCommandMode.Tap"/> to have every row tap execute the command with
+    /// the tapped item, including when selection is disabled.
+    /// </summary>
+    public RowTappedCommandMode RowTappedCommandMode
+    {
+        get => (RowTappedCommandMode)GetValue(RowTappedCommandModeProperty);
+        set => SetValue(RowTappedCommandModeProperty, value);
     }
 
     /// <summary>
@@ -1402,7 +1439,12 @@ public partial class DataGrid
     private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         _itemSelectedEventManager.HandleEvent(this, e, nameof(ItemSelected));
-        RowTappedCommand?.Execute(e);
+
+        // In Tap mode the rows themselves execute the command, so it must not fire here as well.
+        if (RowTappedCommandMode == RowTappedCommandMode.SelectionChanged)
+        {
+            RowTappedCommand?.Execute(e);
+        }
     }
 
     private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

@@ -46,7 +46,7 @@
                      PaginationEnabled="{Binding PaginationEnabled}" PageSize="{Binding PageSize}" PageText="{Binding PaginationText}" PerPageText="{Binding PerPageText}"
                      PullToRefreshCommand="{Binding Commands[Refresh]}" IsRefreshing="{Binding IsRefreshing}"
                      RowHeight="70" HeaderHeight="75" x:Name="_dataGrid1"
-                     RowTappedCommand="{Binding Commands[Tapped]}">
+                     RowTappedCommand="{Binding Commands[Tapped]}" RowTappedCommandMode="Tap">
             <dg:DataGrid.Columns>
                 <dg:DataGridColumn Title="Logo" PropertyName="Logo" SortingEnabled="False" FilteringEnabled="False">
                     <dg:DataGridColumn.CellTemplate>
