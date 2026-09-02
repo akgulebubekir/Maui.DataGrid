@@ -32,6 +32,24 @@ public class CellTemplateTest
     }
 
     [Fact]
+    public void Issue230_CellTemplateSelectorIsReSelectedWhenTheRowIsRecycled()
+    {
+        var positive = new TestItem { Value = 1 };
+        var negative = new TestItem { Value = -1 };
+        var dataGrid = CreateDataGrid([positive, negative], cellTemplate: new TestTemplateSelector());
+
+        var row = new DataGridRow { DataGrid = dataGrid, BindingContext = positive };
+
+        Assert.IsType<Label>(GetCellContent(row));
+
+        // Rows are recycled onto other items rather than rebuilt (issue #174),
+        // so the selector has to be consulted again for the new item.
+        row.BindingContext = negative;
+
+        Assert.IsType<Button>(GetCellContent(row));
+    }
+
+    [Fact]
     public void Issue230_PlainCellTemplateIsStillUsedAsIs()
     {
         var item = new TestItem { Value = 1 };
@@ -75,6 +93,11 @@ public class CellTemplateTest
         // Setting the binding context is what builds the row's cells.
         row.BindingContext = item;
 
+        return GetCellContent(row);
+    }
+
+    private static View GetCellContent(DataGridRow row)
+    {
         var cell = Assert.IsType<DataGridCell>(Assert.Single(row.Children));
         var cellContainer = Assert.IsType<ContentView>(cell.Content);
 

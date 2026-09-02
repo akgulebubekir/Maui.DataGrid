@@ -131,6 +131,13 @@ internal sealed class DataGridRow : Grid
         set => SetValue(CellTextColorProperty, value);
     }
 
+    /// <summary>
+    /// Gets a value indicating whether this row is the one being edited. A row which the
+    /// CollectionView has recycled out of view has no item, and an absent item is never the item
+    /// being edited, even when nothing is being edited at all.
+    /// </summary>
+    private bool IsEditing => BindingContext != null && RowToEdit == BindingContext;
+
     #endregion Properties
 
     #region Methods
@@ -190,10 +197,15 @@ internal sealed class DataGridRow : Grid
         return brightness < 0.5 ? Colors.White : Colors.Black;
     }
 
+    /// <summary>
+    /// Brings this row in line with the current columns and binding context, reusing the cells it
+    /// already has. The CollectionView recycles rows by swapping their binding context, so cells are
+    /// only created or replaced when a column, its visibility, or the editing state actually changed.
+    /// Cell content follows the row's binding context through its bindings, so reused cells display
+    /// the recycled row's item without being rebuilt.
+    /// </summary>
     private void InitializeRow()
     {
-        Children.Clear(); // TODO: Revisit this if and when virtualization is straightened out in the underlying MAUI CollectionView control
-
         UpdateSelectedState();
 
         UpdateColors();
@@ -207,9 +219,13 @@ internal sealed class DataGridRow : Grid
             return;
         }
 
-        var isEditing = RowToEdit == BindingContext;
+        var isEditing = IsEditing;
 
         var columnCount = columns.Count;
+
+        // Invisible columns still occupy a column definition, but they have no cell,
+        // so the cell index trails the column index.
+        var cellIndex = 0;
 
         for (var i = 0; i < columnCount; i++)
         {
@@ -228,16 +244,21 @@ internal sealed class DataGridRow : Grid
                 continue;
             }
 
-            if (Children.TryGetItem(i, out var existingChild))
+            if (Children.TryGetItem(cellIndex, out var existingChild))
             {
                 if (existingChild is not DataGridCell existingCell)
                 {
                     throw new InvalidDataException($"{nameof(DataGridRow)} should only contain {nameof(DataGridCell)}s");
                 }
 
-                if (existingCell.Column != col || existingCell.IsEditing != isEditing)
+                if (CanReuseCell(existingCell, col, isEditing))
                 {
-                    Children[i] = GenerateCellForColumn(col, i);
+                    // The cell is reusable as is, but a hidden or removed column may have shifted it.
+                    SetColumn((BindableObject)existingCell, i);
+                }
+                else
+                {
+                    Children[cellIndex] = GenerateCellForColumn(col, i);
                 }
             }
             else
@@ -245,10 +266,50 @@ internal sealed class DataGridRow : Grid
                 var newCell = GenerateCellForColumn(col, i);
                 Children.Add(newCell);
             }
+
+            cellIndex++;
+        }
+
+        // Remove cells belonging to columns which are gone or no longer visible
+        while (Children.Count > cellIndex)
+        {
+            Children.RemoveAt(Children.Count - 1);
         }
 
         // Remove extra columns, if any
         ColumnDefinitions.RemoveAfter(columnCount);
+    }
+
+    /// <summary>
+    /// Determines whether an existing cell can be kept as is. A cell survives its row being recycled
+    /// onto another item, unless it belongs to a different column, is in the wrong editing state, or a
+    /// <see cref="DataTemplateSelector"/> now picks a different template for the row's item.
+    /// </summary>
+    private bool CanReuseCell(DataGridCell cell, DataGridColumn col, bool isEditing)
+    {
+        if (cell.Column != col || cell.IsEditing != isEditing)
+        {
+            return false;
+        }
+
+        var template = isEditing ? col.EditCellTemplate : col.CellTemplate;
+
+        return template is not DataTemplateSelector selector
+            || cell.ContentTemplate == selector.SelectTemplate(BindingContext, this);
+    }
+
+    /// <summary>
+    /// Determines the template a cell's content is created from, resolving a
+    /// <see cref="DataTemplateSelector"/> against this row's item. Calling <c>CreateContent()</c> on a
+    /// selector silently yields an empty <see cref="Label"/> instead of the selected template.
+    /// </summary>
+    private DataTemplate? ResolveCellTemplate(DataGridColumn col, bool isEditing)
+    {
+        var template = isEditing ? col.EditCellTemplate : col.CellTemplate;
+
+        return template is DataTemplateSelector selector
+            ? selector.SelectTemplate(BindingContext, this)
+            : template;
     }
 
     private DataGridCell GenerateCellForColumn(DataGridColumn col, int columnIndex)
@@ -264,29 +325,24 @@ internal sealed class DataGridRow : Grid
 
     private DataGridCell CreateCell(DataGridColumn col)
     {
-        View cellContent;
+        var isEditing = IsEditing;
 
-        var isEditing = RowToEdit == BindingContext;
+        var contentTemplate = ResolveCellTemplate(col, isEditing);
 
-        if (isEditing)
-        {
-            cellContent = CreateEditCell(col);
-        }
-        else
-        {
-            cellContent = CreateViewCell(col);
-        }
+        var cellContent = isEditing
+            ? CreateEditCell(col, contentTemplate)
+            : CreateViewCell(col, contentTemplate);
 
-        return new DataGridCell(cellContent, CellBackgroundColor, col, isEditing);
+        return new DataGridCell(cellContent, CellBackgroundColor, col, isEditing, contentTemplate);
     }
 
-    private View CreateViewCell(DataGridColumn col)
+    private View CreateViewCell(DataGridColumn col, DataTemplate? cellTemplate)
     {
         View cell;
 
-        if (col.CellTemplate != null)
+        if (cellTemplate != null)
         {
-            cell = CreateContentFrom(col.CellTemplate);
+            cell = (View)cellTemplate.CreateContent();
 
             SetBinding(col, cell, BindingContextProperty);
         }
@@ -309,11 +365,18 @@ internal sealed class DataGridRow : Grid
         return cell;
     }
 
-    private View CreateEditCell(DataGridColumn col)
+    private View CreateEditCell(DataGridColumn col, DataTemplate? editCellTemplate)
     {
-        var cell = GenerateTemplatedEditCell(col);
+        if (editCellTemplate == null)
+        {
+            return CreateDefaultEditCell(col);
+        }
 
-        return cell ?? CreateDefaultEditCell(col);
+        var cell = (View)editCellTemplate.CreateContent();
+
+        SetBinding(col, cell, BindingContextProperty);
+
+        return cell;
     }
 
     private View CreateDefaultEditCell(DataGridColumn col)
@@ -337,34 +400,6 @@ internal sealed class DataGridRow : Grid
             TypeCode.DateTime => GenerateDateTimeEditCell(col),
             _ => new TemplatedView(),
         };
-    }
-
-    private View? GenerateTemplatedEditCell(DataGridColumn col)
-    {
-        if (col.EditCellTemplate == null)
-        {
-            return null;
-        }
-
-        var cell = CreateContentFrom(col.EditCellTemplate);
-
-        SetBinding(col, cell, BindingContextProperty);
-
-        return cell;
-    }
-
-    /// <summary>
-    /// Creates the content of a cell template, resolving <see cref="DataTemplateSelector"/>s
-    /// against this row's item. Calling <c>CreateContent()</c> on a selector silently yields
-    /// an empty <see cref="Label"/> instead of the selected template.
-    /// </summary>
-    private View CreateContentFrom(DataTemplate template)
-    {
-        var resolvedTemplate = template is DataTemplateSelector selector
-            ? selector.SelectTemplate(BindingContext, this)
-            : template;
-
-        return (View)resolvedTemplate.CreateContent();
     }
 
     private Entry GenerateTextEditCell(DataGridColumn col)
@@ -433,14 +468,28 @@ internal sealed class DataGridRow : Grid
         return datePicker;
     }
 
+    /// <summary>
+    /// Binds a cell view to its column's property. The binding is relative to the row rather than to
+    /// the item, so that it follows the row when the CollectionView recycles it onto another item.
+    /// Binding to the item directly would pin the cell to whichever item the row happened to hold when
+    /// the cell was built, which is why cells used to be thrown away on every recycle.
+    /// </summary>
     [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Reflection is needed here.")]
     private void SetBinding(DataGridColumn col, View view, BindableProperty bindableProperty)
     {
-        if (!string.IsNullOrWhiteSpace(col.PropertyName))
+        if (string.IsNullOrWhiteSpace(col.PropertyName))
         {
-            var binding = new Binding(col.PropertyName, BindingMode.TwoWay, stringFormat: col.StringFormat, source: BindingContext);
-            view.SetBinding(bindableProperty, binding);
+            return;
         }
+
+        // A column bound to the item itself needs no property appended, since appending one would
+        // produce the invalid path "BindingContext.". Such a binding is also one-way, because writing
+        // back through it would replace the row's item rather than one of the item's properties.
+        var binding = col.PropertyName == Binding.SelfPath
+            ? new Binding(nameof(BindingContext), BindingMode.OneWay, stringFormat: col.StringFormat, source: this)
+            : new Binding($"{nameof(BindingContext)}.{col.PropertyName}", BindingMode.TwoWay, stringFormat: col.StringFormat, source: this);
+
+        view.SetBinding(bindableProperty, binding);
     }
 
     private void UpdateColors()

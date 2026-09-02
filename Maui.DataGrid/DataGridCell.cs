@@ -8,7 +8,7 @@ using Microsoft.Maui.Controls;
 /// </summary>
 internal sealed class DataGridCell : ContentView
 {
-    internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing)
+    internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing, DataTemplate? contentTemplate = null)
     {
         Content = new ContentView
         {
@@ -18,11 +18,19 @@ internal sealed class DataGridCell : ContentView
 
         Column = column;
         IsEditing = isEditing;
+        ContentTemplate = contentTemplate;
     }
 
     public DataGridColumn Column { get; }
 
     public bool IsEditing { get; }
+
+    /// <summary>
+    /// Gets the template the content was created from, with any <see cref="DataTemplateSelector"/>
+    /// already resolved, or null when the content was not created from a template. A recycled row
+    /// compares this against a fresh selection to notice that its new item needs another template.
+    /// </summary>
+    public DataTemplate? ContentTemplate { get; }
 
     internal void UpdateBindings(DataGrid dataGrid)
     {

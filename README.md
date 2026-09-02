@@ -157,6 +157,11 @@ Use `StringFormat` for simple formatting, or `CellTemplate` for arbitrary conten
 `CellTemplate` and `EditCellTemplate` also accept a `DataTemplateSelector`, which is resolved per
 row — `SelectTemplate` receives the row's item — so a cell's content can vary with its data.
 
+Cells are created once per on-screen row and reused as rows are recycled while scrolling, so cell
+content should get everything it displays from its bindings rather than from work done when the
+template is instantiated. A `DataTemplateSelector` is re-consulted whenever a row is recycled, and
+its cell is rebuilt only if the selector picks a different template for the new item.
+
 ### Sorting
 
 Sorting is enabled by default (`DataGrid.SortingEnabled`), and each column can opt out with
