@@ -148,8 +148,11 @@ each intermediate value:
 <dg:DataGridColumn Title="City" PropertyName="Address.City" />
 ```
 
-`Width` accepts the same units as `Grid`: absolute (`120`), star (`0.5*`), or `Auto`. Be careful with
-`Auto` — columns may become misaligned.
+`Width` accepts the same units as `Grid`: absolute (`120`), star (`0.5*`), or `Auto`. An `Auto` column is
+sized to the widest of its header cell and the cells of the rows currently on screen, and the header and
+every row are given that one width. Only the realized rows are measured, so scrolling to a longer value
+widens the column at that point rather than in advance; use an absolute width where that shift is
+unwelcome.
 
 Use `StringFormat` for simple formatting, or `CellTemplate` for arbitrary content. Without a
 `CellTemplate`, a cell renders as a `Label` bound to `PropertyName`.

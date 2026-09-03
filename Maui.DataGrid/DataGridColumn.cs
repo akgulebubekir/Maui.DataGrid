@@ -271,7 +271,12 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// <summary>
     /// Gets or sets width of the column.
     /// Like Grid, you can use <see cref="GridUnitType.Absolute"/>, <see cref="GridUnitType.Star"/>, or <see cref="GridUnitType.Auto"/>.
-    /// Be careful when using Auto. Columns may become misaligned.
+    /// <para>
+    /// An <see cref="GridUnitType.Auto"/> column is sized to the widest of its header cell and the cells
+    /// of the rows currently on screen, and every row is given that same width. Because only the realized
+    /// rows are measured, scrolling to a longer value widens the column at that point rather than in
+    /// advance; use an absolute width where that shift is unwelcome.
+    /// </para>
     /// </summary>
 #if NET10_0_OR_GREATER
     [TypeConverter(typeof(Microsoft.Maui.Converters.GridLengthTypeConverter))]

@@ -717,6 +717,8 @@ public partial class DataGrid
     {
         InitializeComponent();
 
+        ColumnWidths = new ColumnWidthCoordinator(this);
+
         DefaultHeaderLabelStyle = (Style)Resources["DefaultHeaderLabelStyle"];
         DefaultHeaderFilterStyle = (Style)Resources["DefaultHeaderFilterStyle"];
         DefaultSortIconStyle = (Style)Resources["DefaultSortIconStyle"];
@@ -1266,6 +1268,19 @@ public partial class DataGrid
     internal Style DefaultSortIconStyle { get; }
 
     internal ObservableRangeCollection<object> InternalItems { get; } = [];
+
+    /// <summary>
+    /// Gets the coordinator which keeps the header row and the data rows in column agreement.
+    /// </summary>
+    internal ColumnWidthCoordinator ColumnWidths { get; }
+
+    internal DataGridHeaderRow HeaderRow => _headerRow;
+
+    /// <summary>
+    /// Gets the width of the control which hosts the rows. On platforms which inset content for a
+    /// vertical scrollbar this is wider than the rows inside it.
+    /// </summary>
+    internal double ItemsHostWidth => _collectionView.Width;
 
     /// <summary>
     /// Scrolls to the row.

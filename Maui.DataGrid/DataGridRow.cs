@@ -142,11 +142,49 @@ internal sealed class DataGridRow : Grid
 
     #region Methods
 
+    /// <summary>
+    /// Finds this row's cell for a column, which is not simply the child at the column's index because
+    /// invisible columns have no cell.
+    /// </summary>
+    /// <param name="column">The column to find a cell for.</param>
+    /// <returns>The cell, or null when the column has none in this row.</returns>
+    internal DataGridCell? GetCellForColumn(DataGridColumn column)
+    {
+        foreach (var child in Children)
+        {
+            if (child is DataGridCell cell && cell.Column == column)
+            {
+                return cell;
+            }
+        }
+
+        return null;
+    }
+
     /// <inheritdoc/>
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
         InitializeRow();
+    }
+
+    /// <inheritdoc/>
+    protected override void InvalidateMeasureOverride()
+    {
+        base.InvalidateMeasureOverride();
+
+        // Cell content whose size changed may no longer fit the width its Auto column was pinned to.
+        DataGrid?.ColumnWidths.InvalidateAutoWidths();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+
+        // A row fills the items host, so its width is the width the header has to match. Anything the
+        // platform takes out of it for a scrollbar shows up here and nowhere else.
+        DataGrid?.ColumnWidths.OnRowWidthChanged(width);
     }
 
     /// <inheritdoc/>
@@ -167,8 +205,15 @@ internal sealed class DataGridRow : Grid
             column.VisibilityChanged -= OnVisibilityChanged;
         }
 
-        if (Parent != null)
+        if (Parent == null)
         {
+            // The CollectionView has let this row go, so it is no longer a row an Auto column has to fit.
+            DataGrid.ColumnWidths.RemoveRow(this);
+        }
+        else
+        {
+            DataGrid.ColumnWidths.AddRow(this);
+
             DataGrid.ItemSelected += DataGrid_ItemSelected;
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
             DataGrid.RowsBackgroundColorPaletteChanged += OnRowsBackgroundColorPaletteChanged;
@@ -278,6 +323,9 @@ internal sealed class DataGridRow : Grid
 
         // Remove extra columns, if any
         ColumnDefinitions.RemoveAfter(columnCount);
+
+        // This row's cells now hold different content, which an Auto column may have to grow to fit.
+        DataGrid.ColumnWidths.InvalidateAutoWidths();
     }
 
     /// <summary>

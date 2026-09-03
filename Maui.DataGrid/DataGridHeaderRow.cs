@@ -102,6 +102,9 @@ internal sealed class DataGridHeaderRow : Grid
 
         // Remove extra columns, if any
         ColumnDefinitions.RemoveAfter(DataGrid.Columns.Count);
+
+        // The header cells are what an Auto column has to fit alongside its rows.
+        DataGrid.ColumnWidths.InvalidateAutoWidths();
     }
 
     /// <inheritdoc/>
