@@ -275,6 +275,12 @@ restores the built-in default. `BorderColor`, `BorderThickness`, `HeaderBordersV
 `HeaderBackground`, `FooterBackground`, `FooterTextColor`, `FontFamily`, and `FontSize` cover the
 rest of the chrome.
 
+Borders are not drawn as outlines: each cell is inset by half of `BorderThickness` over a surface
+painted in `BorderColor`, and the surface showing through those insets is what looks like a grid
+line. So `BorderColor` is the grid line colour, and `BorderThickness="0"` removes the surface along
+with the lines — set it to zero (or `HeaderBordersVisible="False"` for the header alone) to see the
+grid's own background through the rows.
+
 ## API Reference
 
 ### `DataGrid`
@@ -319,8 +325,8 @@ All of the following are bindable properties.
 | `HeaderFilterStyle` | `Style` | built-in | Style for header filter inputs. |
 | `FooterBackground` | `Color` | `White` | Footer background. |
 | `FooterTextColor` | `Color` | `Black` | Footer text color. |
-| `BorderColor` | `Color` | `Black` | Grid border color. |
-| `BorderThickness` | `Thickness` | `1` | Grid border thickness. Two-way. |
+| `BorderColor` | `Color` | `Black` | Grid line color, and the color of the surface the cells sit on. |
+| `BorderThickness` | `Thickness` | `1` | Grid border thickness. Zero on every edge leaves no lines and a transparent surface. Two-way. |
 | `ActiveRowColor` | `Color` | `RGB(128, 144, 160)` | Selected row color. |
 | `RowsBackgroundColorPalette` | `IColorProvider` | `PaletteCollection { White }` | Per-row background colors. |
 | `RowsTextColorPalette` | `IColorProvider` | `PaletteCollection { Black }` | Per-row text colors. |

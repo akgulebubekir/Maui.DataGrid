@@ -137,9 +137,9 @@ internal sealed class DataGridHeaderRow : Grid
             }
 
 #if NET9_0_OR_GREATER
-            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: DataGrid));
+            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderBackingColor, source: DataGrid));
 #else
-            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderBackingColor), source: DataGrid));
 #endif
         }
     }

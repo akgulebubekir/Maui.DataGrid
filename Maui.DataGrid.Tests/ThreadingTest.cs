@@ -13,14 +13,14 @@ using Xunit;
 public class ThreadingTest
 {
     [Fact]
-    public async Task Issue185_ItemsAddedOffTheUiThreadAreAppliedOnTheUiThread()
+    public void Issue185_ItemsAddedOffTheUiThreadAreAppliedOnTheUiThread()
     {
         var items = CreateItems();
         var dataGrid = CreateDataGrid(items);
 
         using var mainThread = TestBootstrap.Dispatcher.SimulateMainThread();
 
-        await AddOffTheUiThread(items, "Third");
+        AddOffTheUiThread(items, "Third");
 
         // The background thread must have left the grid alone.
         Assert.Equal(2, dataGrid.InternalItems.Count);
@@ -32,14 +32,14 @@ public class ThreadingTest
     }
 
     [Fact]
-    public async Task Issue185_EveryOffThreadMutationIsApplied()
+    public void Issue185_EveryOffThreadMutationIsApplied()
     {
         var items = CreateItems();
         var dataGrid = CreateDataGrid(items);
 
         using var mainThread = TestBootstrap.Dispatcher.SimulateMainThread();
 
-        await AddOffTheUiThread(items, "Third", "Fourth", "Fifth");
+        AddOffTheUiThread(items, "Third", "Fourth", "Fifth");
 
         Assert.Equal(2, dataGrid.InternalItems.Count);
 
@@ -49,7 +49,7 @@ public class ThreadingTest
     }
 
     [Fact]
-    public async Task Issue185_PaginationIsRecalculatedOnTheUiThread()
+    public void Issue185_PaginationIsRecalculatedOnTheUiThread()
     {
         var items = CreateItems();
         var dataGrid = CreateDataGrid(items);
@@ -61,7 +61,7 @@ public class ThreadingTest
         Assert.Equal(1, dataGrid.PageCount);
 
         // PageCount is the property whose setter reaches for the pagination stepper.
-        await AddOffTheUiThread(items, "Third");
+        AddOffTheUiThread(items, "Third");
 
         Assert.Equal(1, dataGrid.PageCount);
 
@@ -86,17 +86,28 @@ public class ThreadingTest
     }
 
     /// <summary>
-    /// Adds items on a pool thread, the way a background worker filling a collection does, and rethrows
-    /// anything which went wrong there.
+    /// Adds items from another thread, the way a background worker filling a collection does, and waits
+    /// for it to finish.
+    /// <para>
+    /// A dedicated thread rather than the pool, and joined rather than awaited: the simulated UI thread is
+    /// whichever thread the test is running on, and awaiting a pooled task hands that thread back to the
+    /// pool, which may then run the mutation on it. The mutation would arrive on the UI thread, need no
+    /// marshalling, and the test would fail having proved nothing.
+    /// </para>
     /// </summary>
-    private static Task AddOffTheUiThread(ObservableCollection<TestItem> items, params string[] names) =>
-        Task.Run(() =>
+    private static void AddOffTheUiThread(ObservableCollection<TestItem> items, params string[] names)
+    {
+        var thread = new Thread(() =>
         {
             foreach (var name in names)
             {
                 items.Add(new TestItem { Name = name });
             }
         });
+
+        thread.Start();
+        thread.Join();
+    }
 
     private static ObservableCollection<TestItem> CreateItems() =>
         [new() { Name = "First" }, new() { Name = "Second" }];

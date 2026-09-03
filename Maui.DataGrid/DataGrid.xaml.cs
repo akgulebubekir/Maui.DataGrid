@@ -90,6 +90,8 @@ public partial class DataGrid
             {
                 var self = (DataGrid)b;
 
+                self.OnPropertyChanged(nameof(BorderBackingColor));
+
                 if (self._headerRow != null && self.HeaderBordersVisible)
                 {
                     self._headerRow.InitializeHeaderRow();
@@ -565,7 +567,14 @@ public partial class DataGrid
     /// Gets or sets the thickness of the border around the DataGrid.
     /// </summary>
     public static readonly BindableProperty BorderThicknessProperty =
-        BindablePropertyExtensions.Create<DataGrid, Thickness>(new Thickness(1), BindingMode.TwoWay);
+        BindablePropertyExtensions.Create<DataGrid, Thickness>(
+            defaultValue: new Thickness(1),
+            defaultBindingMode: BindingMode.TwoWay,
+            propertyChanged: (b, _, _) =>
+            {
+                // Going to or from a thickness of zero decides whether there is a border to paint at all.
+                ((DataGrid)b).OnPropertyChanged(nameof(BorderBackingColor));
+            });
 
     /// <summary>
     /// Gets or sets a value indicating whether the header borders are visible in the DataGrid.
@@ -1281,6 +1290,15 @@ public partial class DataGrid
     /// vertical scrollbar this is wider than the rows inside it.
     /// </summary>
     internal double ItemsHostWidth => _collectionView.Width;
+
+    /// <summary>
+    /// Gets the colour of the surface the cells sit on. Borders are not drawn: a cell is padded by half
+    /// the border thickness and this surface shows through the padding, which is what makes it look like
+    /// a border. So a thickness of zero on every edge means no border was asked for, and the surface has
+    /// to be transparent — left opaque it still shows through wherever <c>Star</c> column rounding leaves
+    /// a sub-pixel gap between cells, which is the stray line of #179 and the black backing of #225.
+    /// </summary>
+    internal Color BorderBackingColor => BorderThickness == default ? Colors.Transparent : BorderColor;
 
     /// <summary>
     /// Scrolls to the row.

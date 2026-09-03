@@ -40,10 +40,10 @@ internal sealed class DataGridCell : ContentView
         if (dataGrid.HeaderBordersVisible)
         {
 #if NET9_0_OR_GREATER
-            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: dataGrid));
+            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderBackingColor, source: dataGrid));
             SetBinding(PaddingProperty, BindingBase.Create<DataGrid, Thickness>(static x => x.BorderThickness, converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
 #else
-            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderBackingColor), source: dataGrid));
             SetBinding(PaddingProperty, new Binding(nameof(DataGrid.BorderThickness), converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
 #endif
         }
@@ -53,6 +53,10 @@ internal sealed class DataGridCell : ContentView
             RemoveBinding(PaddingProperty);
 
             Padding = 0;
+
+            // Removing the binding leaves the last value it wrote in place, and with no padding to fill
+            // that colour can only ever bleed through the gaps between cells.
+            BackgroundColor = Colors.Transparent;
         }
     }
 
