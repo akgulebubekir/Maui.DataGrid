@@ -165,6 +165,17 @@ content should get everything it displays from its bindings rather than from wor
 template is instantiated. A `DataTemplateSelector` is re-consulted whenever a row is recycled, and
 its cell is rebuilt only if the selector picks a different template for the new item.
 
+The default header style truncates a title too long for its column, so each header carries a tooltip
+of its own title. Override it with `HeaderToolTip`, or set `HeaderToolTip=""` for a header with no
+tooltip:
+
+```xaml
+<dg:DataGridColumn Title="Won" HeaderToolTip="Games won at home" PropertyName="Won" />
+```
+
+Note that `ToolTipProperties.Text` cannot be used on a column instead: a `DataGridColumn` is not a
+view and never enters the visual tree, so an attached property set on one has nothing to attach to.
+
 ### Sorting
 
 Sorting is enabled by default (`DataGrid.SortingEnabled`), and each column can opt out with
@@ -355,6 +366,7 @@ All of the following are bindable properties.
 | `PropertyName` | `string` | `null` | Property path to bind, e.g. `Name` or `Address.City`. |
 | `Title` | `string` | `""` | Header text. |
 | `FormattedTitle` | `FormattedString` | `null` | Rich header text; overrides `Title`. |
+| `HeaderToolTip` | `string?` | `null` | Header tooltip. Unset, the title is used; set to `""` for none. |
 | `Width` | `GridLength` | `Star` | Column width (absolute, star, or auto). |
 | `IsVisible` | `bool` | `true` | Shows or hides the column. |
 | `StringFormat` | `string?` | `null` | Format string for the default cell. |

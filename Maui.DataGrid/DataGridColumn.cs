@@ -42,7 +42,20 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     public static readonly BindableProperty TitleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, string>(
             defaultValue: string.Empty,
-            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.Text = n);
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGridColumn)b;
+
+                self.HeaderLabel.Text = n;
+                self.UpdateHeaderToolTip();
+            });
+
+    /// <summary>
+    /// Gets or sets the tooltip shown for the column's header.
+    /// </summary>
+    public static readonly BindableProperty HeaderToolTipProperty =
+        BindablePropertyExtensions.Create<DataGridColumn, string>(
+            propertyChanged: (b, _, _) => ((DataGridColumn)b).UpdateHeaderToolTip());
 
     /// <summary>
     /// Gets or sets the filter text of the column.
@@ -63,7 +76,13 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public static readonly BindableProperty FormattedTitleProperty =
         BindablePropertyExtensions.Create<DataGridColumn, FormattedString>(
-            propertyChanged: (b, _, n) => ((DataGridColumn)b).HeaderLabel.FormattedText = n);
+            propertyChanged: (b, _, n) =>
+            {
+                var self = (DataGridColumn)b;
+
+                self.HeaderLabel.FormattedText = n;
+                self.UpdateHeaderToolTip();
+            });
 
     /// <summary>
     /// Gets or sets the name of the property associated with the column.
@@ -299,6 +318,26 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     }
 
     /// <summary>
+    /// Gets or sets the tooltip shown when the pointer rests on the column's header.
+    /// <para>
+    /// Left unset, the header offers its <see cref="Title"/> — or its <see cref="FormattedTitle"/> when
+    /// there is no plain title — because the default header style truncates a title too long for its
+    /// column and the tooltip is then the only way to read it. Set this to the empty string for a header
+    /// which should have no tooltip at all.
+    /// </para>
+    /// <para>
+    /// Note that <c>ToolTipProperties.Text</c> cannot be used on a column instead: a
+    /// <see cref="DataGridColumn"/> is not a view and never enters the visual tree, so an attached
+    /// property set on one has nothing to attach to.
+    /// </para>
+    /// </summary>
+    public string? HeaderToolTip
+    {
+        get => (string?)GetValue(HeaderToolTipProperty);
+        set => SetValue(HeaderToolTipProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets formatted title for column.
     /// <example>
     /// <code>
@@ -315,7 +354,9 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     /// </summary>
     public FormattedString FormattedTitle
     {
-        get => (string)GetValue(FormattedTitleProperty);
+        // The cast used to be to string, which compiled only because FormattedString converts from one
+        // implicitly, and threw an InvalidCastException on every read of a title that had been set.
+        get => (FormattedString)GetValue(FormattedTitleProperty);
         set => SetValue(FormattedTitleProperty, value);
     }
 
@@ -561,6 +602,26 @@ public sealed class DataGridColumn : BindableObject, IDefinition
     {
         DataType = null;
         _isSortable = null;
+    }
+
+    /// <summary>
+    /// Puts the tooltip on the header's own container, which is the element the column contributes to the
+    /// visual tree. The container rather than the label so that the sort icon beside the title shares it.
+    /// </summary>
+    private void UpdateHeaderToolTip()
+    {
+        // Null means nothing was asked for, so the title stands in; empty means a tooltip was explicitly
+        // declined, and has to be distinguishable from that.
+        var toolTip = HeaderToolTip ?? (string.IsNullOrEmpty(Title) ? FormattedTitle?.ToString() : Title);
+
+        if (string.IsNullOrEmpty(toolTip))
+        {
+            HeaderLabelContainer.ClearValue(ToolTipProperties.TextProperty);
+        }
+        else
+        {
+            ToolTipProperties.SetText(HeaderLabelContainer, toolTip);
+        }
     }
 
     private void OnSizeChanged() => _sizeChangedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SizeChanged));

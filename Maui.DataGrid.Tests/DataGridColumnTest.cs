@@ -21,6 +21,7 @@ public class DataGridColumnTest
         Assert.Null(column.PropertyName);
         Assert.Null(column.StringFormat);
         Assert.Null(column.CellTemplate);
+        Assert.Null(column.HeaderToolTip);
     }
 
     [Fact]
@@ -64,6 +65,13 @@ public class DataGridColumnTest
     {
         var column = new DataGridColumn();
         column.CheckPropertyBindingWorks(DataGridColumn.TitleProperty, "Column A", "Column B");
+    }
+
+    [Fact]
+    public void HeaderToolTipPropertyBinding()
+    {
+        var column = new DataGridColumn();
+        column.CheckPropertyBindingWorks(DataGridColumn.HeaderToolTipProperty, "Games won at home", "Games won away");
     }
 
     [Fact]
