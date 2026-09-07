@@ -10,14 +10,14 @@
       },
       "Microsoft.Maui.Controls": {
         "type": "Direct",
-        "requested": "[10.0.100, )",
-        "resolved": "10.0.100",
-        "contentHash": "vIW7URxjJJw2pD4GC25AZO97OV3n4ljUDTa1aGJuNvVnqW3FRYO/9VpLeZh2YLJFCJuMIoke0O5mPFtcqR7nSg==",
+        "requested": "[10.0.101, )",
+        "resolved": "10.0.101",
+        "contentHash": "2rgDm0YypMg9MyUSww2YWRYbZYwBHepQu/spIukyR+bOHBJ6IRAyC8AVY0VxCi9BGQZL2p5gp6Y6vusoBE/xgA==",
         "dependencies": {
-          "Microsoft.Maui.Controls.Build.Tasks": "10.0.100",
-          "Microsoft.Maui.Controls.Core": "10.0.100",
-          "Microsoft.Maui.Controls.Xaml": "10.0.100",
-          "Microsoft.Maui.Resizetizer": "10.0.100"
+          "Microsoft.Maui.Controls.Build.Tasks": "10.0.101",
+          "Microsoft.Maui.Controls.Core": "10.0.101",
+          "Microsoft.Maui.Controls.Xaml": "10.0.101",
+          "Microsoft.Maui.Resizetizer": "10.0.101"
         }
       },
       "Microsoft.NET.ILLink.Tasks": {
@@ -128,66 +128,66 @@
       },
       "Microsoft.Maui.Controls.Build.Tasks": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "M38jx/ZO/gMWvwdtPpI87Q66/1dmzJSEPgrhMst6K/wcb4shE6JXqwM139MlwaeuQvi/+1WGXrX5XZO5vQF3eA==",
+        "resolved": "10.0.101",
+        "contentHash": "cMM0NkF2CWBEteFs0Vde/GsP2ywzF4kXXSK5BD5fUDhno2hS+2tavQL85ZVcy04Aueaxg3789dPIwms8kLGFWg==",
         "dependencies": {
-          "Microsoft.Maui.Controls.Core": "10.0.100",
-          "Microsoft.Maui.Controls.Xaml": "10.0.100"
+          "Microsoft.Maui.Controls.Core": "10.0.101",
+          "Microsoft.Maui.Controls.Xaml": "10.0.101"
         }
       },
       "Microsoft.Maui.Controls.Core": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "jTZ9bWy5c9KAsIu2glgmnHE9bQlOc7Qv2+OKYNTxhr9VN97vtlrzktxq6xJtqzitoVyMvPTZ+DjWkvBYkg7NsA==",
+        "resolved": "10.0.101",
+        "contentHash": "zwxoNytanyMw+SHavluYuvRKD9/sPdtF5q41VuvfIjw3Cy6/FwkgIbFxvhtxSZN8VD3DwkxE6Dc3L/eLwYdytQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "10.0.0",
           "Microsoft.Extensions.DependencyInjection": "10.0.0",
           "Microsoft.Extensions.Logging": "10.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
-          "Microsoft.Maui.Core": "10.0.100"
+          "Microsoft.Maui.Core": "10.0.101"
         }
       },
       "Microsoft.Maui.Controls.Xaml": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "yj2KHtS3x1D1Ef5HeAW4WRAYfDZnFuWKUXswFKQ0NMav/iCUQs3pXxlYC+z4PDh4fGNcpCEIkmwCXtxPVf0BOg==",
+        "resolved": "10.0.101",
+        "contentHash": "A3IaoDBvGFUn0maYSLRYxVotnCVkCL1+3RxA6XhmEQNhQ3ETx//gksXRGksL8d3jFPwwTaxA2pDbcN3KIr2Pqg==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "10.0.0",
-          "Microsoft.Maui.Controls.Core": "10.0.100",
-          "Microsoft.Maui.Core": "10.0.100"
+          "Microsoft.Maui.Controls.Core": "10.0.101",
+          "Microsoft.Maui.Core": "10.0.101"
         }
       },
       "Microsoft.Maui.Core": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "89RpsQ6wnqpnQ46HwBSA78/QweCe0xrL9CDV1YQ54AfQ3aqnGwQIOgiYk5CF5bB/QaADV0XncLO9tKjYjq9whw==",
+        "resolved": "10.0.101",
+        "contentHash": "RL7KguQE/JcDSnR0b4+r/7ql4Zhp/1n0e5iE+z1n5EYC8Ty1lr5slG5rdAOiMTWI5K9fWaHFcJqsuADract5uQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "10.0.0",
           "Microsoft.Extensions.DependencyInjection": "10.0.0",
           "Microsoft.Extensions.Hosting.Abstractions": "10.0.0",
           "Microsoft.Extensions.Logging": "10.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "10.0.0",
-          "Microsoft.Maui.Essentials": "10.0.100",
-          "Microsoft.Maui.Graphics": "10.0.100"
+          "Microsoft.Maui.Essentials": "10.0.101",
+          "Microsoft.Maui.Graphics": "10.0.101"
         }
       },
       "Microsoft.Maui.Essentials": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "52RhGDbzk4YPZ5ADaNZALO2o0uL03tpTuRVEmGBeCt6ax35rY8UwYpjH7QPbbXaw3O3zlBNe2V6C4swdpDyvvA==",
+        "resolved": "10.0.101",
+        "contentHash": "u8cPWwp6LJXuAutyyLbDXAcejB5GjzxNY4wzc/pu3dMLSRAimuX3xZBafbMhkbSiNiROondtedWZWE3FIRbi7A==",
         "dependencies": {
-          "Microsoft.Maui.Graphics": "10.0.100"
+          "Microsoft.Maui.Graphics": "10.0.101"
         }
       },
       "Microsoft.Maui.Graphics": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "r7kAHiW5yRbqscJYKjjMNef/BOJB6A7m9vymklA6x1in9d3SD62hS/rNFzRjw7Hd0UeZnZmfHTaUgch/hyeShQ=="
+        "resolved": "10.0.101",
+        "contentHash": "Ydtb8Q9MSd8MTJd5IVV+Ef3NPmkpTM2mAMZkWGcpzXzE5tmtL6T/XSh+GFOQb0sp2+X6yKzStnAkge7okVPqwg=="
       },
       "Microsoft.Maui.Resizetizer": {
         "type": "Transitive",
-        "resolved": "10.0.100",
-        "contentHash": "Azlu0jBy8rBjk8m3Ed/vyjISN9ckpIi0NWnyMavLlMFXCrcIftvJ9luPSd0pJNlPaQq0uKhedsUgoIJ/C2sUTw=="
+        "resolved": "10.0.101",
+        "contentHash": "sgaFCRT2K9X8CAfn4YLucteQKydt/SgJY9jGEa1Ypoud/ZLA47fU5IAICCmbIzdWJHx7V4DEta7cCzyxH65Uqw=="
       },
       "StyleCop.Analyzers.Unstable": {
         "type": "Transitive",
