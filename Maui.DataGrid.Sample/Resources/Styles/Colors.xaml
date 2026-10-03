@@ -43,8 +43,13 @@
 
     <Color x:Key="ActiveRowColor">#8899AA</Color>
     <Color x:Key="GridHeaderBgColor">#E0E6F8</Color>
+    <Color x:Key="GridHeaderBgColorDark">#1F2A44</Color>
     <Color x:Key="GridFooterBgColor">#E0E6F8</Color>
+    <Color x:Key="GridFooterBgColorDark">#1F2A44</Color>
     <Color x:Key="GridFooterTextColor">#404040</Color>
+    <Color x:Key="GridFooterTextColorDark">#C8C8C8</Color>
     <Color x:Key="GridBorderColor">#CCCCCC</Color>
     <Color x:Key="GridBgColor">#CCCCCC</Color>
+    <Color x:Key="GridBgColorDark">#444444</Color>
+    
 </ResourceDictionary>

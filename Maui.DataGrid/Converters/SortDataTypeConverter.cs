@@ -21,6 +21,22 @@ public sealed class SortDataTypeConverter : TypeConverter // This needs to be pu
             return (SortData)index;
         }
 
+        var str = value.ToString();
+
+        if (str != null)
+        {
+            var parts = str.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length == 2 && int.TryParse(parts[0], out var columnIndex))
+            {
+                var order = parts[1].Equals("DESC", StringComparison.OrdinalIgnoreCase)
+                    ? SortingOrder.Descendant
+                    : SortingOrder.Ascendant;
+
+                return new SortData(columnIndex, order);
+            }
+        }
+
         return base.ConvertFrom(context, culture, value);
     }
 }

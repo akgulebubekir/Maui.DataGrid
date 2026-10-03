@@ -1,9 +1,9 @@
-namespace Maui.DataGrid.Sample.Tests;
+namespace Maui.DataGrid.Tests;
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Maui.DataGrid.Sample.Models;
-using Maui.DataGrid.Sample.Tests.TestUtils;
+using Maui.DataGrid.Tests.Models;
+using Maui.DataGrid.Tests.TestUtils;
 using Xunit;
 
 public class ItemsSourceTest
@@ -60,7 +60,7 @@ public class ItemsSourceTest
         viewModel.Item.RemoveAt(2);
         var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
         Assert.NotNull(itemsSource);
-        Assert.Equal(_teams.Count - 1, itemsSource!.Count);
+        Assert.Equal(_teams.Count - 1, itemsSource.Count);
         Assert.DoesNotContain(_teams[2], itemsSource);
     }
 
@@ -74,7 +74,28 @@ public class ItemsSourceTest
         viewModel.Item.Add(_dummyTeam);
         var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
         Assert.NotNull(itemsSource);
-        Assert.Equal(_teams.Count + 1, itemsSource!.Count);
+        Assert.Equal(_teams.Count + 1, itemsSource.Count);
         Assert.Contains(_dummyTeam, itemsSource);
+    }
+
+    [Fact]
+    public async Task ClearingObservableCollectionUpdatesItemsSource()
+    {
+        var viewModel = new SingleVM<ObservableCollection<Team>> { Item = new ObservableCollection<Team>(_teams) };
+        var datagrid = new DataGrid();
+        datagrid.SetBinding(DataGrid.ItemsSourceProperty, new Binding("Item", source: viewModel));
+
+        viewModel.Item.Clear();
+        var itemsSource = await datagrid.GetValueSafe(DataGrid.ItemsSourceProperty) as ObservableCollection<Team>;
+        Assert.NotNull(itemsSource);
+        Assert.Empty(itemsSource);
+    }
+
+    [Fact]
+    public void SettingItemsSourceToNull_DoesNotThrow()
+    {
+        var datagrid = new DataGrid { ItemsSource = _teams };
+        var ex = Record.Exception(() => datagrid.ItemsSource = null!);
+        Assert.Null(ex);
     }
 }

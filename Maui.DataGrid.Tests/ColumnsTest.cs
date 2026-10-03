@@ -1,7 +1,7 @@
-namespace Maui.DataGrid.Sample.Tests;
+namespace Maui.DataGrid.Tests;
 
 using System.Collections.ObjectModel;
-using Maui.DataGrid.Sample.Tests.TestUtils;
+using Maui.DataGrid.Tests.TestUtils;
 using Xunit;
 
 public class ColumnsTest

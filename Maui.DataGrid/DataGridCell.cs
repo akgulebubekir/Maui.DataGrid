@@ -8,7 +8,7 @@ using Microsoft.Maui.Controls;
 /// </summary>
 internal sealed class DataGridCell : ContentView
 {
-    internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing)
+    internal DataGridCell(View cellContent, Color? backgroundColor, DataGridColumn column, bool isEditing, DataTemplate? contentTemplate = null)
     {
         Content = new ContentView
         {
@@ -18,11 +18,19 @@ internal sealed class DataGridCell : ContentView
 
         Column = column;
         IsEditing = isEditing;
+        ContentTemplate = contentTemplate;
     }
 
     public DataGridColumn Column { get; }
 
     public bool IsEditing { get; }
+
+    /// <summary>
+    /// Gets the template the content was created from, with any <see cref="DataTemplateSelector"/>
+    /// already resolved, or null when the content was not created from a template. A recycled row
+    /// compares this against a fresh selection to notice that its new item needs another template.
+    /// </summary>
+    public DataTemplate? ContentTemplate { get; }
 
     internal void UpdateBindings(DataGrid dataGrid)
     {
@@ -32,10 +40,10 @@ internal sealed class DataGridCell : ContentView
         if (dataGrid.HeaderBordersVisible)
         {
 #if NET9_0_OR_GREATER
-            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: dataGrid));
+            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderBackingColor, source: dataGrid));
             SetBinding(PaddingProperty, BindingBase.Create<DataGrid, Thickness>(static x => x.BorderThickness, converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
 #else
-            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: dataGrid));
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderBackingColor), source: dataGrid));
             SetBinding(PaddingProperty, new Binding(nameof(DataGrid.BorderThickness), converter: new BorderThicknessToCellPaddingConverter(), source: dataGrid));
 #endif
         }
@@ -45,6 +53,10 @@ internal sealed class DataGridCell : ContentView
             RemoveBinding(PaddingProperty);
 
             Padding = 0;
+
+            // Removing the binding leaves the last value it wrote in place, and with no padding to fill
+            // that colour can only ever bleed through the gaps between cells.
+            BackgroundColor = Colors.Transparent;
         }
     }
 

@@ -1,6 +1,6 @@
-namespace Maui.DataGrid.Sample.Tests;
+namespace Maui.DataGrid.Tests;
 
-using Maui.DataGrid.Sample.Tests.TestUtils;
+using Maui.DataGrid.Tests.TestUtils;
 using Microsoft.Maui.Controls;
 using Xunit;
 

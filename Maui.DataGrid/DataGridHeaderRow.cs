@@ -54,6 +54,7 @@ internal sealed class DataGridHeaderRow : Grid
         }
 
         var columnCount = DataGrid.Columns.Count;
+        var anyColumnFilterable = DataGrid.Columns.Any(c => c.FilteringEnabled);
 
         for (var i = 0; i < columnCount; i++)
         {
@@ -70,7 +71,7 @@ internal sealed class DataGridHeaderRow : Grid
             // Add or update columns as needed
             ColumnDefinitions.AddOrUpdate(col.ColumnDefinition, i);
 
-            col.HeaderCell = CreateHeaderCell(col);
+            col.HeaderCell = CreateHeaderCell(col, anyColumnFilterable);
 
             col.HeaderCell.UpdateBindings(DataGrid);
 
@@ -101,6 +102,9 @@ internal sealed class DataGridHeaderRow : Grid
 
         // Remove extra columns, if any
         ColumnDefinitions.RemoveAfter(DataGrid.Columns.Count);
+
+        // The header cells are what an Auto column has to fit alongside its rows.
+        DataGrid.ColumnWidths.InvalidateAutoWidths();
     }
 
     /// <inheritdoc/>
@@ -115,16 +119,15 @@ internal sealed class DataGridHeaderRow : Grid
     {
         base.OnParentSet();
 
-        if (Parent == null)
-        {
-            DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
+        // Always unsubscribe first to prevent duplicate handlers
+        DataGrid.Columns.CollectionChanged -= OnColumnsChanged;
 
-            foreach (var column in DataGrid.Columns)
-            {
-                column.VisibilityChanged -= OnVisibilityChanged;
-            }
+        foreach (var column in DataGrid.Columns)
+        {
+            column.VisibilityChanged -= OnVisibilityChanged;
         }
-        else
+
+        if (Parent != null)
         {
             DataGrid.Columns.CollectionChanged += OnColumnsChanged;
 
@@ -134,9 +137,9 @@ internal sealed class DataGridHeaderRow : Grid
             }
 
 #if NET9_0_OR_GREATER
-            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderColor, source: DataGrid));
+            SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.BorderBackingColor, source: DataGrid));
 #else
-            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderColor), source: DataGrid));
+            SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.BorderBackingColor), source: DataGrid));
 #endif
         }
     }
@@ -175,11 +178,11 @@ internal sealed class DataGridHeaderRow : Grid
         InitializeHeaderRow();
     }
 
-    private DataGridCell CreateHeaderCell(DataGridColumn column)
+    private DataGridCell CreateHeaderCell(DataGridColumn column, bool anyColumnFilterable)
     {
         if (column.HeaderCell != null)
         {
-            SetFilterRow(column);
+            SetFilterRow(column, anyColumnFilterable);
 
             return column.HeaderCell;
         }
@@ -190,6 +193,7 @@ internal sealed class DataGridHeaderRow : Grid
         };
 
         column.HeaderLabel.Style = column.HeaderLabelStyle ?? DataGrid.HeaderLabelStyle ?? DataGrid.DefaultHeaderLabelStyle;
+
         column.FilterTextbox.Style = column.HeaderFilterStyle ?? DataGrid.HeaderFilterStyle ?? DataGrid.DefaultHeaderFilterStyle;
 
         column.HeaderLabelContainer.Children.Add(column.HeaderLabel);
@@ -212,22 +216,33 @@ internal sealed class DataGridHeaderRow : Grid
 
         cellContent.Children.Add(column.HeaderLabelContainer);
 
-        SetFilterRow(column);
+        SetFilterRow(column, anyColumnFilterable);
 
         cellContent.Children.Add(column.FilterTextboxContainer);
         cellContent.SetRow(column.FilterTextboxContainer, 1);
         cellContent.SetColumnSpan(column.FilterTextboxContainer, 2);
 
-        return new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
+        var cell = new DataGridCell(cellContent, DataGrid.HeaderBackground, column, false);
+
+        if (cell.Content is ContentView innerContentView)
+        {
+#if NET9_0_OR_GREATER
+            innerContentView.SetBinding(BackgroundColorProperty, BindingBase.Create<DataGrid, Color>(static x => x.HeaderBackground, source: DataGrid));
+#else
+            innerContentView.SetBinding(BackgroundColorProperty, new Binding(nameof(DataGrid.HeaderBackground), source: DataGrid));
+#endif
+        }
+
+        return cell;
     }
 
-    private void SetFilterRow(DataGridColumn column)
+    private void SetFilterRow(DataGridColumn column, bool anyColumnFilterable)
     {
         if (DataGrid.FilteringEnabled && column.FilteringEnabled)
         {
             column.FilterTextboxContainer.Content = column.FilterTextbox;
         }
-        else if (DataGrid.FilteringEnabled && DataGrid.Columns.Any(c => c.FilteringEnabled))
+        else if (DataGrid.FilteringEnabled && anyColumnFilterable)
         {
             // Add placeholder
             column.FilterTextboxContainer.Content = new Entry

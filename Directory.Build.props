@@ -1,5 +1,5 @@
 <Project>
-  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="2.0.2" />
+  <Sdk Name="DotNet.ReproducibleBuilds.Isolated" Version="2.0.5" />
 
   <PropertyGroup>
     <!-- Static Analysis Settings -->
@@ -17,8 +17,6 @@
     <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
     <NoWarn>$(NoWarn);CA2007;CS1591;NU1605;SA1101;SA1124;SA1309;SA1600;SA1633</NoWarn>
 
-    <Configurations>Debug;Release;Test</Configurations>
-
     <!-- Generate the lock file -->
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
@@ -26,12 +24,8 @@
     <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework.Contains('net9.0'))">
-      <MauiVersion>9.0.90</MauiVersion>
-  </PropertyGroup>
-
   <PropertyGroup Condition="$(TargetFramework.Contains('net10.0'))">
-      <MauiVersion>10.0.30</MauiVersion>
+      <MauiVersion>10.0.110</MauiVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="2.0.2">
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="2.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
