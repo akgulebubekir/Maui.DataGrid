@@ -1634,6 +1634,10 @@ public partial class DataGrid
 
         IEnumerable<object> items;
 
+        string sortPropertyName = string.IsNullOrEmpty(_sortedColumn.SortPropertyName)
+            ? _sortedColumn.PropertyName
+            : _sortedColumn.SortPropertyName;
+
         switch (sortData.Order)
         {
             case SortingOrder.Ascendant:
@@ -1642,7 +1646,7 @@ public partial class DataGrid
 #else
                 _ = _sortedColumn.SortingIcon.RotateTo(0);
 #endif
-                items = unsortedItems.OrderBy(x => x.GetValueByPath(_sortedColumn.PropertyName));
+                items = unsortedItems.OrderBy(x => x.GetValueByPath(sortPropertyName));
                 break;
             case SortingOrder.Descendant:
 #if NET10_0_OR_GREATER
@@ -1650,7 +1654,7 @@ public partial class DataGrid
 #else
                 _ = _sortedColumn.SortingIcon.RotateTo(180);
 #endif
-                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(_sortedColumn.PropertyName));
+                items = unsortedItems.OrderByDescending(x => x.GetValueByPath(sortPropertyName));
                 break;
             case SortingOrder.None:
                 return unsortedItems;
