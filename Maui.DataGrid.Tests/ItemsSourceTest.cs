@@ -98,4 +98,18 @@ public class ItemsSourceTest
         var ex = Record.Exception(() => datagrid.ItemsSource = null!);
         Assert.Null(ex);
     }
+
+    [Fact]
+    public void SettingItemsSourceToNull_ClearsDisplayedItemsAndPageCount()
+    {
+        var datagrid = new DataGrid { ItemsSource = _teams, PageSize = 5 };
+
+        Assert.Equal(_teams.Count, datagrid.InternalItems.Count);
+        Assert.Equal(3, datagrid.PageCount);
+
+        datagrid.ItemsSource = null!;
+
+        Assert.Empty(datagrid.InternalItems);
+        Assert.Equal(1, datagrid.PageCount);
+    }
 }

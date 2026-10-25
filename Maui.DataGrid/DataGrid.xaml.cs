@@ -1347,6 +1347,8 @@ public partial class DataGrid
     {
         if (ItemsSource is null)
         {
+            PageCount = 1;
+            InternalItems.Clear();
             return;
         }
 
